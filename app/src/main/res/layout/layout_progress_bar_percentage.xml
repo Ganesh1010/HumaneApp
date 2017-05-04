@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularProgressBar_ReceivalPage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        app:cpb_background_progressbar_color="@color/colorDivider"
+        app:cpb_background_progressbar_width="5dp"
+        app:cpb_progressbar_color="@color/colorPrimary"
+        app:cpb_progressbar_width="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:scrollbarFadeDuration="1000"/>
+
+    <TextView
+        android:text="0%"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/circularProgressPercentageTextVIew_ReceivalPage"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:textStyle="normal|bold"
+        android:textAlignment="center" />
+
+</FrameLayout>

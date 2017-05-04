@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top|left"
+    android:elevation="1dp"
+    android:layout_weight="1">
+
+    <TextView
+        android:text="organisationName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orgName"
+        android:textColor="@color/colorPrimaryText"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentStart="false"
+        android:gravity="top|left"
+        android:layout_weight="0"
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orgAddress"
+        android:layout_weight="0"
+        android:textColor="@color/colorSecondaryText"
+        android:gravity="top|left"
+        android:ellipsize="end"
+        android:elevation="1dp"
+        android:maxLines="1" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orgContactNo"
+        android:layout_weight="0"
+        android:textColor="@color/colorSecondaryText"
+        android:gravity="top|left"
+        android:ellipsize="end"
+        android:elevation="1dp"
+        android:maxLines="1" />
+</LinearLayout>

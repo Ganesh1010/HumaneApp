@@ -1,0 +1,20 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="textElevation">20dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="needCardElevation">4dp</dimen>
+    <dimen name="needCardContentPadding">3dp</dimen>
+    <dimen name="needCardPaddingTop">8dp</dimen>
+    <dimen name="needCardPaddingBottom">0dp</dimen>
+    <dimen name="needCardPaddingLeft">0dp</dimen>
+    <dimen name="needCardPaddingRight">0dp</dimen>
+
+    <dimen name="activity_linear_layout_bottom_padding">15dp</dimen>
+    <dimen name="list_heading_left_padding">25dp</dimen>
+
+</resources>

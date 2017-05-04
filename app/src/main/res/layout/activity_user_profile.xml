@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_pofile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="vuram_test_2.vuram.com.vuram_test_2.UserProfileActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:background="?attr/colorPrimary"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar_user_profile"
+            android:elevation="10dp"
+            android:layout_weight="1"
+            android:layout_height="120dp">
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:weightSum="1"
+            android:layout_weight="1">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:id="@+id/scrollview_user_profile"
+                android:scrollbars="none"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardPreventCornerOverlap="false"
+                        app:cardUseCompatPadding="true"
+                        app:cardElevation="7dp"
+                        android:layout_marginTop="35dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/personalDetails"
+                                android:paddingBottom="10dp"
+                                android:layout_marginTop="50dp">
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.2">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/headingTextView"
+                                        android:layout_weight="1"
+                                        android:textAlignment="center"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="18sp"
+                                        android:elevation="@dimen/textElevation"
+                                        android:textStyle="normal|bold"
+                                        android:text="@string/personal_details" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.2"
+                                    android:layout_marginTop="12dp">
+
+                                    <TextView
+                                        android:text="@string/full_name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5"
+                                        android:textColor="@color/colorSecondaryText"
+                                        android:id="@+id/username_label_textview_user_profile" />
+
+                                    <TextView
+                                        android:text="Sujith Velumayil"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:id="@+id/username_textview_user_profile"
+                                        android:layout_weight="0.5"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="14sp"
+                                        android:elevation="@dimen/textElevation"
+                                        android:textStyle="normal|bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.2"
+                                    android:layout_marginTop="12dp">
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5">
+
+                                        <TextView
+                                            android:text="@string/email"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/emailLabel"
+                                            android:textColor="@color/colorSecondaryText"
+                                            android:layout_weight="0.5" />
+
+                                        <TextView
+                                            android:text="sujithborn4u@gmail.com"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/emailText"
+                                            android:textColor="@color/colorPrimary"
+                                            android:elevation="@dimen/textElevation"
+                                            android:layout_weight="0.5"
+                                            android:textStyle="normal|bold" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5">
+
+                                        <TextView
+                                            android:text="@string/phone"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/phoneLabel"
+                                            android:textColor="@color/colorSecondaryText"
+                                            android:layout_weight="0.5" />
+
+                                        <TextView
+                                            android:text="8344052041"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/phoneText"
+                                            android:textColor="@color/colorPrimary"
+                                            android:elevation="@dimen/textElevation"
+                                            android:layout_weight="0.5"
+                                            android:textStyle="normal|bold" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.2"
+                                    android:layout_marginTop="12dp">
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5">
+
+                                        <TextView
+                                            android:text="@string/gender"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/gender_label_textview_user_profile"
+                                            android:textColor="@color/colorSecondaryText"
+                                            android:layout_weight="0.5" />
+
+                                        <TextView
+                                            android:text="Male"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/gender_textview_user_profile"
+                                            android:elevation="@dimen/textElevation"
+                                            android:layout_weight="0.5"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textStyle="normal|bold" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:orientation="vertical"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="0.5">
+
+                                        <TextView
+                                            android:text="@string/user_id"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/userIdLabel"
+                                            android:textColor="@color/colorSecondaryText"
+                                            android:layout_weight="0.5" />
+
+                                        <TextView
+                                            android:text="123456789"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/userIdText"
+                                            android:textColor="@color/colorPrimary"
+                                            android:elevation="@dimen/textElevation"
+                                            android:layout_weight="0.5"
+                                            android:textStyle="normal|bold" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorDivider"
+                                android:id="@+id/divider1"
+                                android:layout_marginTop="5dp" />
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:elevation="10dp"
+                                android:id="@+id/userPost"
+                                android:layout_marginBottom="20dp">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_donor_black"
+                                    android:id="@+id/donor_imagebutton_user_profile"
+                                    android:layout_weight="1" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_organisation"
+                                    android:id="@+id/organisation_imagebutton_user_profile"
+                                    android:layout_weight="1" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:srcCompat="@drawable/ic_volunteer_black"
+                                    android:id="@+id/volunteer_imagebutton_user_profile"
+                                    android:layout_weight="1" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/colorDivider"
+                                android:id="@+id/divider2" />
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:paddingTop="10dp">
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:text="@string/donation_details"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/donation_details_label_user_profile"
+                                            android:layout_weight="1"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="18sp"
+                                            android:textStyle="normal|bold" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:text="No of Donation(s) : 10"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/donation_details_user_profile"
+                                            android:layout_weight="1" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="12dp">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:text="@string/volunteer_services"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/volunteer_services_label_user_profile"
+                                            android:layout_weight="1"
+                                            android:textStyle="normal|bold"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textSize="18sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:text="No of service(s) : 10"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/volunteer_services_user_profile"
+                                            android:layout_weight="1" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="12dp">
+
+                                    <LinearLayout
+                                        android:orientation="horizontal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+                                            android:text="@string/org_list"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:id="@+id/org_details_label_user_profile"
+                                            android:layout_weight="1"
+                                            android:textSize="18sp"
+                                            android:textColor="@color/colorPrimary"
+                                            android:textStyle="normal|bold" />
+                                    </LinearLayout>
+
+                                    <android.support.v7.widget.RecyclerView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/org_details_recyclerview_user_profile"
+                                        android:layout_marginTop="10dp"
+                                        android:nestedScrollingEnabled="true" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/edit_imagebutton_user_profile"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_edit_black"
+                        app:civ_fill_color="@android:drawable/screen_background_light_transparent"
+                        android:layout_weight="0"
+                        android:elevation="7dp"
+                        android:layout_alignTop="@+id/org_logo_donor_need_view"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="55dp"
+                        android:layout_marginEnd="20dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/user_image_user_profile"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/user"
+                        app:civ_fill_color="@color/colorTextIcons"
+                        android:layout_weight="0"
+                        android:elevation="7dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true" />
+
+                </RelativeLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
