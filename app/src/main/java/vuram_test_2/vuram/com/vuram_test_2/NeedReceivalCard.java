@@ -31,8 +31,8 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
     @Override
     public NeedCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Akshaya Changed..
-        View v = LayoutInflater.from(context).inflate(R.layout.receival_cardview,parent,false);
+        //Akshaya Changed.111
+         View v = LayoutInflater.from(context).inflate(R.layout.receival_cardview,parent,false);
         return new NeedCardHolder(v);
     }
 
