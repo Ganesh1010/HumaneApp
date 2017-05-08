@@ -117,7 +117,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         password = _passwordText.getText().toString();
        // String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-       gson= new Gson();
+        gson= new Gson();
         registerDetails=new RegisterDetails();
         registerDetails.setCountry(10);
         new CreateUserAccount().execute();
@@ -231,7 +231,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 details.setPassword(password);
                 details.setEmail(email);
                 details.setRegisterDetails(registerDetails);
-               response=makeRequest("http://vuramdevdb.vuram.com:8000/api/auth/register/",gson.toJson(details).toString());
+               response=makeRequest(RestAPIURL.register,gson.toJson(details).toString());
                 Log.d("Request JSON",gson.toJson(details).toString());
                 if(response!=null)
                 {
