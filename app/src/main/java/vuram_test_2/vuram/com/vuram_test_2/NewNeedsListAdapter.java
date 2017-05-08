@@ -27,6 +27,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            //ChangedBy Ganesh
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view_item, parent, false);
         return new ViewHolder(inflatedView);
     }
