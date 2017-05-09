@@ -41,183 +41,238 @@
                 android:backgroundTint="@color/colorPrimary" />
         </RelativeLayout>
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
-                app:srcCompat="@drawable/user"
-                android:id="@+id/user_image_edit_profile"
-                android:layout_alignParentEnd="true"
-                android:scaleType="centerCrop"
-                android:background="@drawable/gradient" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:background="@drawable/gradient"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                app:fabSize="normal"
-                app:srcCompat="@android:drawable/ic_menu_camera"
-                android:layout_marginEnd="28dp"
-                android:id="@+id/change_user_image_edit_profile"
-                android:tint="@color/colorTextIcons"
-                android:layout_marginTop="198dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+                android:orientation="vertical" >
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingRight="10dp">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_user_black"
-                        android:id="@+id/imageButton"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorTextIcons" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <EditText
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="textPersonName"
-                        android:ems="10"
-                        android:id="@+id/username_textview_edit_profile"
-                        android:layout_weight="1"
-                        android:hint="@string/full_name" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:layout_height="230dp"
+                        app:srcCompat="@drawable/user"
+                        android:id="@+id/user_image_edit_profile"
+                        android:layout_alignParentEnd="true"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/gradient" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:background="@drawable/gradient"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_gender_black"
-                        android:id="@+id/imageButton5"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorTextIcons" />
-                </LinearLayout>
+                        android:clickable="true"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_camera"
+                        android:layout_marginEnd="28dp"
+                        android:id="@+id/change_user_image_edit_profile"
+                        android:tint="@color/colorTextIcons"
+                        android:layout_marginTop="198dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:paddingRight="10dp">
 
-                    <Spinner
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/gender_spinner_edit_profile"
-                        android:drawSelectorOnTop="true"
-                        android:entries="@array/gender_option"
-                        android:layout_marginLeft="2dp" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_user_black"
+                                android:id="@+id/imageButton"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/colorTextIcons" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="textPersonName"
+                                android:ems="10"
+                                android:id="@+id/username_textview_edit_profile"
+                                android:layout_weight="1"
+                                android:hint="@string/full_name" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_gender_black"
+                                android:id="@+id/imageButton5"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/colorTextIcons" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/gender_spinner_edit_profile"
+                                android:drawSelectorOnTop="true"
+                                android:entries="@array/gender_option"
+                                android:layout_marginLeft="2dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_phone_black"
+                                android:id="@+id/imageButton7"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/colorTextIcons" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="phone"
+                                android:ems="10"
+                                android:layout_weight="1"
+                                android:hint="Phone"
+                                android:id="@+id/phone_textview_edit_profile" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/ic_email_black"
+                                android:id="@+id/imageButton8"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/colorTextIcons" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"
+                                android:ems="10"
+                                android:id="@+id/email_textview_edit_profile"
+                                android:layout_weight="1"
+                                android:hint="Email" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:elevation="1dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/org_id_textview_edit_profile"
+                                android:layout_weight="1"
+                                android:text="Org"
+                                android:textAlignment="gravity"
+                                android:gravity="center"
+                                android:elevation="1dp"
+                                android:textColor="@android:color/black"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:elevation="1dp"
+                            android:layout_weight="0.5">
+
+                            <Button
+                                android:text="Add Organisation"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/add_org_button_edit_profile"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/colorPrimary"
+                                android:textColor="@color/colorTextIcons" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
+                <include layout="@layout/layout_org_form"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_phone_black"
-                        android:id="@+id/imageButton7"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorTextIcons" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="phone"
-                        android:ems="10"
-                        android:layout_weight="1"
-                        android:hint="Phone"
-                        android:id="@+id/phone_textview_edit_profile" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_email_black"
-                        android:id="@+id/imageButton8"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorTextIcons" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:ems="10"
-                        android:id="@+id/email_textview_edit_profile"
-                        android:layout_weight="1"
-                        android:hint="Email" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
 
