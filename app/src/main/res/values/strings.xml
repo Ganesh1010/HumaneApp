@@ -29,6 +29,11 @@
     <string name="donation_details">Donation Details</string>
     <string name="volunteer_services">Volunteer Services</string>
     <string name="org_list">Organisation List</string>
+    <string name="org_reg_no">Org Reg No</string>
+    <string name="org_name">Org Name</string>
+    <string name="org_address">Address</string>
+    <string name="org_type">Org Type</string>
+    <string name="org_description">Org Description</string>
 
     <string name="username">UserName</string>
     <string name="password">Password</string>
