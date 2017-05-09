@@ -17,9 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginPage">
-
-        </activity>
+        <activity android:name=".LoginPage"></activity>
         <activity android:name=".RegistrationPage" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".UserProfileActivity" />
@@ -52,6 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CoordinatorRegistration"></activity>
     </application>
 
 </manifest>
