@@ -44,6 +44,8 @@ dependencies {
     compile 'com.google.android.gms:play-services:10.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
 }
