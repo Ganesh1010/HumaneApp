@@ -17,7 +17,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_register_number_black"
+                app:srcCompat="@drawable/ic_donor_black"
                 android:id="@+id/imageButton3"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
@@ -230,7 +230,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_about_black"
+                app:srcCompat="@drawable/ic_organisation"
                 android:id="@+id/imageButton12"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />

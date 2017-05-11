@@ -199,7 +199,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
              if(httpResponse!=null)
                  if(httpResponse.getStatusLine().getStatusCode()==200 || httpResponse.getStatusLine().getStatusCode()==201)
                  {
-                     Toast.makeText(CoordinatorRegistration.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
+                     Toast.makeText(CoordinatorRegistration.this,"Registration Successful",Toast.LENGTH_LONG).show();
                      CoordinatorRegistration.this.startActivity(new Intent(CoordinatorRegistration.this,LoginPage.class));
                      CoordinatorRegistration.this.finish();
                  }
