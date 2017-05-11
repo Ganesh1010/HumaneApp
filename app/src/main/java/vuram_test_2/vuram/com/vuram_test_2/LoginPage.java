@@ -92,8 +92,7 @@ public class LoginPage extends AppCompatActivity {
                     code = httpResponse.getStatusLine().getStatusCode();
                     JSONObject jsonObject=new JSONObject(Connectivity.getJosnFromResponse(httpResponse));
                     String token=jsonObject.getString("auth_token");
-                    Connectivity.storeAuthToken(LoginPage.this,token);
-                   // Log.d("Shared",Connectivity.getAuthToken(LoginPage.this));
+                    Connectivity.storeAuthToken(LoginPage.this,token,Connectivity.Donor_Token);
                 }
         } catch (Exception e) {
                 e.printStackTrace();

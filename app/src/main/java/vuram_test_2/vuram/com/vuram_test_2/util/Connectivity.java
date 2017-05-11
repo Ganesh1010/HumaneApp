@@ -22,7 +22,10 @@ import java.io.UnsupportedEncodingException;
 
 public class Connectivity {
     public static final String MyPREFERENCES = "Creds" ;
-    public static final String Token = "TOKEN";
+    public static final String Donor_Token = "DONOR_TOKEN";
+    public static final String Is_First_Time = "IS_FIRST_TIME";
+    public static final String Coordinator_Token="COORDINATOR_TOKEN";
+    public static final String First_Pref="FIRST_PREF";
     public static String getJsonFromInputSterm(InputStreamReader inputStreamReader ) {
         BufferedReader br = new BufferedReader(inputStreamReader);
         StringBuilder sb = new StringBuilder();
@@ -82,15 +85,15 @@ public class Connectivity {
         }
         return  sb.toString();
     }
-    public  static  String getAuthToken(Context c)
+    public  static  String getAuthToken(Context c,String type)
     {
        SharedPreferences pref=c.getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE);
-        return  pref.getString(Token,null);
+        return  pref.getString(type,null);
     }
-    public static void storeAuthToken(Context c,String token)
+    public static void storeAuthToken(Context c,String token,String type)
     {
         SharedPreferences.Editor pref=c.getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE).edit();
-        pref.putString(Token,token);
+        pref.putString(type,token);
         pref.commit();
     }
 }
