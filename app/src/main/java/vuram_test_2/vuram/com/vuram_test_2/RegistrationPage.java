@@ -33,20 +33,21 @@ import java.io.UnsupportedEncodingException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class RegistrationPage extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private static final String TAG = "Main2Activity";
-    static String name=null;
-    static String mobile=null;
+    String name,email,mobilenumber,password;
+
+   // static String name=null;
+    //static String mobilenumber=null;
     RegisterDetails registerDetails;
-    static String password=null;
-    static String email=null;
+    //static String password=null;
+    //static String email=null;
     UserDetails details;
     ImageView img=null;
     Gson gson;
-    HttpClient client;
-    ImageButton imageButton;
     LinearLayout item=null;
     ProgressDialog progressDialog;
     Button chooseLocationButton;
@@ -112,14 +113,9 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        name = _nameText.getText().toString();
-        email = _emailText.getText().toString();
-        password = _passwordText.getText().toString();
-       // String reEnterPassword = _reEnterPasswordText.getText().toString();
-
         gson= new Gson();
         registerDetails=new RegisterDetails();
-        registerDetails.setCountry(10);
+        registerDetails.setCountry(1);
         new CreateUserAccount().execute();
     }
 
@@ -140,10 +136,10 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        String mobilenumber=_mobileText.getText().toString();
+        name = _nameText.getText().toString();
+        email = _emailText.getText().toString();
+        password = _passwordText.getText().toString();
+        mobilenumber=_mobileText.getText().toString();
       //  String reEnterPassword = _reEnterPasswordText.getText().toString();
         Log.d("coool",name);
         if (name.isEmpty() || name.length() < 3) {
@@ -218,43 +214,37 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         }
     }
     class CreateUserAccount extends AsyncTask{
-        String mobile,username,password,email;
+        //String mobile,username,password,email;
         HttpResponse response;
+        HttpClient client;
         @Override
         protected Object doInBackground(Object[] params) {
-            if(validate())
-            {
+
+                client = new DefaultHttpClient();
+
                 registerDetails.setGender("Male");
-                registerDetails.setMobile(mobile);
+                registerDetails.setMobile(mobilenumber);
+                registerDetails.setCountry(1);
                 details=new UserDetails();
-                details.setUsername(username);
+
+                details.setFirstname(name);
+            details.setLastname("");
                 details.setPassword(password);
                 details.setEmail(email);
+
                 details.setRegisterDetails(registerDetails);
-               response=makeRequest(RestAPIURL.register,gson.toJson(details).toString());
+
+
+
+               response= Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(details).toString(),client);
                 Log.d("Request JSON",gson.toJson(details).toString());
                 if(response!=null)
                 {
                     Log.d("Response Code",response.getStatusLine().getStatusCode()+"");
 
                     try {
-                        InputStream ips = response.getEntity().getContent();
-                        BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));
-                        StringBuilder sb = new StringBuilder();
-                        String s;
-                        while(true )
-                        {
-                            s = buf.readLine();
-                            if(s==null || s.length()==0)
-                                break;
-                            sb.append(s);
-
-                        }
-
-                        buf.close();
-                        ips.close();
-                        Log.d("Response body",sb.toString());
-                    } catch (IOException e) {
+                        Connectivity.getJosnFromResponse(response);
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -263,23 +253,19 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 {
                     Log.d("Response","Null");
                 }
-            }
+
             return null;
         }
         @Override
         protected void onPreExecute() {
-            mobile=_mobileText.getText().toString();
-            username=_nameText.getText().toString();
-            client= new DefaultHttpClient();
-            email=_emailText.getText().toString();
-            password=_passwordText.getText().toString();
+
             super.onPreExecute();
         }
 
         @Override
         protected void onPostExecute(Object o) {
             if(progressDialog!=null)
-                progressDialog.dismiss();
+                 progressDialog.dismiss();
             if(response!=null)
             if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
             {
@@ -287,25 +273,10 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
                 RegistrationPage.this.finish();
             }
-            Log.d("GSON",gson.toJson(registerDetails).toString());
+          //  Log.d("GSON",gson.toJson(registerDetails).toString());
 
             super.onPostExecute(o);
         }
     }
-    public HttpResponse makeRequest(String uri, String json) {
-        try {
-            HttpPost httpPost = new HttpPost(uri);
-            httpPost.setEntity(new StringEntity(json));
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            return client.execute(httpPost);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
 }

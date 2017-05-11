@@ -46,8 +46,19 @@ public class LandingPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.startAnimation(myAnim);
+                LandingPage.this.startActivity(new Intent(LandingPage.this,RegistrationPage.class));
                 Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
             }
         });
+
+        org.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setAnimation(myAnim);
+                Toast.makeText(LandingPage.this,"Organisation Clicked",Toast.LENGTH_LONG).show();
+                LandingPage.this.startActivity(new Intent(LandingPage.this,CoordinatorRegistration.class));
+            }
+        });
     }
+
 }
