@@ -292,7 +292,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(o);
         }
     }
-    public  HttpResponse makeRequest(String uri, String json) {
+    public HttpResponse makeRequest(String uri, String json) {
         try {
             HttpPost httpPost = new HttpPost(uri);
             httpPost.setEntity(new StringEntity(json));

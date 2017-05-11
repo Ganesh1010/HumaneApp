@@ -35,6 +35,11 @@
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
+
+    <style name="spinnerTheme" parent="android:Theme">
+        <item name="android:textColor">@color/colorTextIcons</item>
+    </style>
+
     <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/colorTextIcons</item>
         <item name="android:textColorPrimary">@color/colorTextIcons</item>

@@ -31,15 +31,12 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
     @Override
     public NeedCardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Akshaya Changed.111
-         View v = LayoutInflater.from(context).inflate(R.layout.receival_cardview,parent,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.receival_cardview, parent, false);
         return new NeedCardHolder(v);
     }
 
     @Override
     public void onBindViewHolder(final NeedCardHolder holder, int position) {
-
-
         NeedListViewItems items = (NeedListViewItems) donatedCardDetails.get(position);
         holder.donorName.setText(items.getDonorName());
        // Toast.makeText(context,"donor NAme"+items.getDonorName(),Toast.LENGTH_LONG).show();
@@ -70,8 +67,6 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
                 }
             }
         });
-
-
     }
 
     @Override
