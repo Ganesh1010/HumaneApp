@@ -3,6 +3,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +17,19 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class CoordinatorRegistration extends AppCompatActivity {
 
@@ -33,8 +40,10 @@ public class CoordinatorRegistration extends AppCompatActivity {
     String emailId,firstName,lastName,mobileNo,password,gender,country;
     Boolean validated;
     ProgressDialog progressDialog;
-    UserAccountDetails userAccountDetails;
-    RegistrationPage registrationPage;
+    //UserAccountDetails userAccountDetails;
+   // RegistrationPage registrationPage;
+    UserDetails userDetails;
+    RegisterDetails registerDetails;
     Gson gson;
 
 
@@ -54,6 +63,8 @@ public class CoordinatorRegistration extends AppCompatActivity {
 
         coordinatorRegisterButton = (Button)findViewById(R.id.signup_coordinator_register);
 
+
+
         coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,19 +72,22 @@ public class CoordinatorRegistration extends AppCompatActivity {
             }
         });
 
-       /* emailId = emailEditText.getText().toString();
-        firstName = firstNameEditText.getText().toString();
-        lastName = lastNameEditText.getText().toString();
-        mobileNo = mobileEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-        gender = genderFromSpinner.getSelectedItem().toString();
-        country = countryFromSpinner.getSelectedItem().toString();*/
 
     }
 
     public void register(){
 
+        emailId = emailEditText.getText().toString();
+        firstName = firstNameEditText.getText().toString();
+        lastName = lastNameEditText.getText().toString();
+        mobileNo = mobileEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+        gender = genderFromSpinner.getSelectedItem().toString();
+        country = countryFromSpinner.getSelectedItem().toString();
+
+
         if(validation()){
+          //  Toast.makeText(CoordinatorRegistration.this,"validated",Toast.LENGTH_LONG).show();
             coordinatorRegisterButton.setEnabled(false);
             progressDialog= new ProgressDialog(CoordinatorRegistration.this,
                     R.style.AppTheme_Dark_Dialog);
@@ -81,9 +95,13 @@ public class CoordinatorRegistration extends AppCompatActivity {
             progressDialog.setMessage("Creating Account...");
             progressDialog.show();
             new CreateCoordinatorAccount().execute();
-        }
-        else
+          }
+       else {
             coordinatorRegisterButton.setEnabled(true);
+         //   Toast.makeText(CoordinatorRegistration.this,"validation else part",Toast.LENGTH_LONG).show();
+        }
+
+
 
 
     }
@@ -110,14 +128,15 @@ public class CoordinatorRegistration extends AppCompatActivity {
         } else {
             mobileEditText.setError(null);
         }
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 15) {
             passwordEditText.setError("Between 4 and 10 alphanumeric characters");
             validated = false;
 
         } else {
             passwordEditText.setError(null);
         }
-
+        //Toast.makeText(CoordinatorRegistration.this,"boolean"+validated,Toast.LENGTH_LONG).show();
+        // Log.d("Boolean",validated.toString());
         return validated;
     }
 
@@ -129,57 +148,49 @@ public class CoordinatorRegistration extends AppCompatActivity {
          @Override
          protected void onPreExecute() {
 
-             emailId = emailEditText.getText().toString();
-             firstName = firstNameEditText.getText().toString();
-             lastName = lastNameEditText.getText().toString();
-             mobileNo = mobileEditText.getText().toString();
-             password = passwordEditText.getText().toString();
-             gender = genderFromSpinner.getSelectedItem().toString();
-             country = countryFromSpinner.getSelectedItem().toString();
-
              super.onPreExecute();
          }
 
          @Override
          protected Object doInBackground(Object[] objects)
          {
-             registrationPage = new RegistrationPage();
-             userAccountDetails =  new UserAccountDetails();
+             //registrationPage = new RegistrationPage();
+             userDetails =  new UserDetails();
+             registerDetails =  new RegisterDetails();
+           //  userAccountDetails =  new UserAccountDetails();
              gson =  new Gson();
              httpClient = new DefaultHttpClient();
 
-             userAccountDetails.setFirstName(firstName);
+             registerDetails.setGender(gender);
+             registerDetails.setMobile(mobileNo);
+             registerDetails.setCountry(1);
+
+             userDetails.setEmail(emailId);
+             userDetails.setFirstname(firstName);
+             userDetails.setPassword(password);
+             userDetails.setLastname(lastName);
+             userDetails.setProfile(registerDetails);
+
+
+            /* userAccountDetails.setFirstName(firstName);
              userAccountDetails.setEmail(emailId);
              userAccountDetails.setLastName(lastName);
              userAccountDetails.setMobile(mobileNo);
              userAccountDetails.setPassword(password);
              userAccountDetails.setGender(gender);
-             userAccountDetails.setCountry(country);
+             userAccountDetails.setCountry(country);*/
 
-             httpResponse = registrationPage.makeRequest(RestAPIURL.register,gson.toJson(userAccountDetails).toString());
+             httpResponse = Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(userDetails).toString(),httpClient);
 
              if(httpResponse!=null)
              {
                  Log.d("Response Code",httpResponse.getStatusLine().getStatusCode()+"");
 
                  try {
-                     InputStream ips = httpResponse.getEntity().getContent();
-                     BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));
-                     StringBuilder sb = new StringBuilder();
-                     String s;
-                     while(true )
-                     {
-                         s = buf.readLine();
-                         if(s==null || s.length()==0)
-                             break;
-                         sb.append(s);
 
-                     }
+                    Connectivity.getJosnFromResponse(httpResponse);
 
-                     buf.close();
-                     ips.close();
-                     Log.d("Response body",sb.toString());
-                 } catch (IOException e) {
+                 } catch (Exception e) {
                      e.printStackTrace();
                  }
 
@@ -194,16 +205,18 @@ public class CoordinatorRegistration extends AppCompatActivity {
 
          @Override
          protected void onPostExecute(Object o) {
+
+             //Toast.makeText(CoordinatorRegistration.this,"Registration Successful",Toast.LENGTH_LONG).show();
              if(progressDialog!=null)
                  progressDialog.dismiss();
              if(httpResponse!=null)
                  if(httpResponse.getStatusLine().getStatusCode()==200 || httpResponse.getStatusLine().getStatusCode()==201)
                  {
-                     Toast.makeText(CoordinatorRegistration.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
+                     Toast.makeText(CoordinatorRegistration.this,"Registration Successful",Toast.LENGTH_LONG).show();
                      CoordinatorRegistration.this.startActivity(new Intent(CoordinatorRegistration.this,LoginPage.class));
                      CoordinatorRegistration.this.finish();
                  }
-            Log.d("GSON",gson.toJson(userAccountDetails).toString());
+            Log.d("GSON",gson.toJson(userDetails).toString());
 
              super.onPostExecute(o);
 

@@ -9,7 +9,9 @@ import java.util.Date;
 
 public class RegisterDetails {
    String mobile,gender;
-    public int getCounttry() {
+    int country;
+    Date dob;
+    public int getCountry() {
         return country;
     }
 
@@ -41,6 +43,5 @@ public class RegisterDetails {
         this.dob = dob;
     }
 
-    int country;
-    Date dob;
+
 }

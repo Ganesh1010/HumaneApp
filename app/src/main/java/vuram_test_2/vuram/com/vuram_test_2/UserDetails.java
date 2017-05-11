@@ -5,6 +5,13 @@ package vuram_test_2.vuram.com.vuram_test_2;
  */
 
 public class UserDetails {
+
+    String first_name;
+    String email;
+    String password;
+    String last_name;
+    RegisterDetails profile;
+
     public RegisterDetails getRegisterDetails() {
         return profile;
     }
@@ -13,17 +20,12 @@ public class UserDetails {
         this.profile = registerDetails;
     }
 
-
-    public UserDetails()
-    {
-        profile=new RegisterDetails();
-    }
-    public String getUsername() {
-        return username;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstname(String username) {
+        this.first_name = username;
     }
 
     public String getEmail() {
@@ -42,6 +44,19 @@ public class UserDetails {
         this.password = password;
     }
 
-    String username,email,password;
-    RegisterDetails profile;
+    public String getLastname() {
+        return last_name;
+    }
+
+    public void setLastname(String lastname) {
+        this.last_name = lastname;
+    }
+
+    public RegisterDetails getProfile() {
+        return profile;
+    }
+
+    public void setProfile(RegisterDetails profile) {
+        this.profile = profile;
+    }
 }
