@@ -87,7 +87,7 @@
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_address_black"
+                app:srcCompat="@drawable/ic_add_image"
                 android:id="@+id/imageButton6"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
@@ -197,7 +197,7 @@
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_multiple_choices_black"
+                app:srcCompat="@drawable/user"
                 android:id="@+id/imageButton11"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
