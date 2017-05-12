@@ -7,14 +7,18 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+
+import vuram_test_2.vuram.com.vuram_test_2.HomeActivity;
 
 /**
  * Created by ganeshrajam on 11-05-2017.
@@ -48,6 +52,24 @@ public class Connectivity {
             httpPost.setHeader("Content-type", "application/json");
             return client.execute(httpPost);
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static HttpResponse makeGetRequest(String uri, HttpClient client,String token) {
+        try {
+            HttpGet httpGet = new HttpGet(uri);
+           // Log.d("T",token);
+            //httpGet.setHeader(new BasicHeader("Authorization: Token ",token));
+            httpGet.setHeader("Authorization","Token "+token);
+//            httpGet.addHeader("Authorization"," Token "+token);
+            //Log.d("Header",httpGet.("Authorization").toString());
+            return client.execute(httpGet);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
@@ -94,6 +116,12 @@ public class Connectivity {
     {
         SharedPreferences.Editor pref=c.getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE).edit();
         pref.putString(type,token);
+        pref.commit();
+    }
+    public  static void deleteAuthToken(Context c,String type)
+    {
+        SharedPreferences.Editor pref=c.getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE).edit();
+        pref.remove(type);
         pref.commit();
     }
 }

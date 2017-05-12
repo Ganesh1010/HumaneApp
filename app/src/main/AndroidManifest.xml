@@ -17,9 +17,16 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginPage" />
+        <activity android:name=".LoginPage">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
         <activity android:name=".RegistrationPage" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivity" >
+            </activity>
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".NeedDetailsActivity" />
@@ -44,11 +51,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".LandingPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".SplashScreenActivity"></activity>

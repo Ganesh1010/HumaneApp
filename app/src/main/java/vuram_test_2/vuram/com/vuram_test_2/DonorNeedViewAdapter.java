@@ -75,6 +75,13 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
             NeedItemDetails itemDetails = need.items.get(i);
             // Inflating a new Item View
             itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_view, null);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
+                    context.startActivity(new Intent(context, OrgDetailsActivity.class));
+                }
+            });
             ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);
             TextView itemName = (TextView) itemView.findViewById(R.id.item_name_item_view);
             ProgressBar satisfactionBar = (ProgressBar) itemView.findViewById(R.id.item_status_item_view);
@@ -106,7 +113,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
             }
           // Adding the item to the items layout(Horizontal Scolling Linear Layout)
             holder.needItems.addView(itemView);
-            Log.d("Child count+ postiton",holder.needItems.getChildCount()+"");
+            Log.d("Child count+ position",holder.needItems.getChildCount()+"");
             Log.d(TAG, "onBindViewHolder: " + (i + 1) + " item(s) added");
         }
         Log.d(TAG, "onBindViewHolder: End");
