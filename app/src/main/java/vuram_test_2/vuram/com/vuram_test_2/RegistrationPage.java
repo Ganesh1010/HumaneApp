@@ -221,7 +221,6 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 registerDetails.setMobile(mobilenumber);
                 registerDetails.setCountry(1);
                 details.setFirstname(name);
-                details.setLastname("");
                 details.setPassword(password);
                 details.setEmail(email);
                 details.setRegisterDetails(registerDetails);
