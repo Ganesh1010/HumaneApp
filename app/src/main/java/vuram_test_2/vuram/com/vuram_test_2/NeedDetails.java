@@ -14,14 +14,27 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class NeedDetails {
-    int id;
+    int need_id;
     boolean is_fulfilled;
-    String latitude,longitude;
+    String latitude, longitude;
     List<NeedItemDetails> items;
-    NeedDetails()
-    {
-        items=new ArrayList<>();
+    List<DonationDetails> donations;
+    OrganisationDetails org;
+
+    NeedDetails() {
+        items = new ArrayList<>();
+        donations = new ArrayList<>();
     }
+
+    public OrganisationDetails getOrganisationDetails(OrganisationDetails organisationDetails) {
+        return organisationDetails;
+    }
+
+    public void setOrganisationDetails(OrganisationDetails organisationDetails)
+    {
+        this.org=organisationDetails;
+    }
+
     public  String  print()
     {
         return(items.get(0).print());
