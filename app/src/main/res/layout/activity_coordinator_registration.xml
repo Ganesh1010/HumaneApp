@@ -60,17 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
-                    android:hint="@string/first_name"
-                    android:textColorHint="#FFFFFF"
-                    android:textColor="?attr/colorControlNormal"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp" />
-
-                <EditText android:id="@+id/last_name_coordinator_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:hint="@string/last_name"
+                    android:hint="@string/name"
                     android:textColorHint="#FFFFFF"
                     android:textColor="?attr/colorControlNormal"
                     android:layout_marginBottom="10dp"

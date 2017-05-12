@@ -9,7 +9,6 @@ public class UserDetails {
     String first_name;
     String email;
     String password;
-    String last_name;
     RegisterDetails profile;
 
     public RegisterDetails getRegisterDetails() {
@@ -42,14 +41,6 @@ public class UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getLastname() {
-        return last_name;
-    }
-
-    public void setLastname(String lastname) {
-        this.last_name = lastname;
     }
 
     public RegisterDetails getProfile() {
