@@ -40,8 +40,6 @@ public class CoordinatorRegistration extends AppCompatActivity {
     String emailId,firstName,lastName,mobileNo,password,gender,country;
     Boolean validated;
     ProgressDialog progressDialog;
-    //UserAccountDetails userAccountDetails;
-   // RegistrationPage registrationPage;
     UserDetails userDetails;
     RegisterDetails registerDetails;
     Gson gson;
@@ -60,10 +58,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
         passwordEditText = (EditText)findViewById(R.id.password_coordinator_register);
         genderFromSpinner = (Spinner)findViewById(R.id.gender_spinner_coordinator_register);
         countryFromSpinner = (Spinner)findViewById(R.id.country_spinner_coordinator_register);
-
         coordinatorRegisterButton = (Button)findViewById(R.id.signup_coordinator_register);
-
-
 
         coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,17 +72,17 @@ public class CoordinatorRegistration extends AppCompatActivity {
 
     public void register(){
 
-        emailId = emailEditText.getText().toString();
-        firstName = firstNameEditText.getText().toString();
-        lastName = lastNameEditText.getText().toString();
-        mobileNo = mobileEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-        gender = genderFromSpinner.getSelectedItem().toString();
-        country = countryFromSpinner.getSelectedItem().toString();
+            emailId = emailEditText.getText().toString();
+            firstName = firstNameEditText.getText().toString();
+            lastName = lastNameEditText.getText().toString();
+            mobileNo = mobileEditText.getText().toString();
+            password = passwordEditText.getText().toString();
+            gender = genderFromSpinner.getSelectedItem().toString();
+            country = countryFromSpinner.getSelectedItem().toString();
 
 
         if(validation()){
-          //  Toast.makeText(CoordinatorRegistration.this,"validated",Toast.LENGTH_LONG).show();
+            Toast.makeText(CoordinatorRegistration.this,"Country"+country,Toast.LENGTH_LONG).show();
             coordinatorRegisterButton.setEnabled(false);
             progressDialog= new ProgressDialog(CoordinatorRegistration.this,
                     R.style.AppTheme_Dark_Dialog);
@@ -100,10 +95,6 @@ public class CoordinatorRegistration extends AppCompatActivity {
             coordinatorRegisterButton.setEnabled(true);
          //   Toast.makeText(CoordinatorRegistration.this,"validation else part",Toast.LENGTH_LONG).show();
         }
-
-
-
-
     }
 
     public Boolean validation(){

@@ -40,11 +40,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
     private static final String TAG = "Main2Activity";
     String name,email,mobilenumber,password;
 
-   // static String name=null;
-    //static String mobilenumber=null;
     RegisterDetails registerDetails;
-    //static String password=null;
-    //static String email=null;
     UserDetails details;
     ImageView img=null;
     Gson gson;
@@ -122,9 +118,6 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        //setResult(RESULT_OK, null);
-        //finish();
-        //startActivity(new Intent(RegistrationPage.this, HomeActivity.class));
     }
 
     public void onSignupFailed() {
@@ -141,7 +134,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         password = _passwordText.getText().toString();
         mobilenumber=_mobileText.getText().toString();
       //  String reEnterPassword = _reEnterPasswordText.getText().toString();
-        Log.d("coool",name);
+
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
             valid = false;
@@ -214,29 +207,26 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         }
     }
     class CreateUserAccount extends AsyncTask{
-        //String mobile,username,password,email;
+
         HttpResponse response;
         HttpClient client;
+
         @Override
         protected Object doInBackground(Object[] params) {
 
                 client = new DefaultHttpClient();
+                details=new UserDetails();
 
                 registerDetails.setGender("Male");
                 registerDetails.setMobile(mobilenumber);
                 registerDetails.setCountry(1);
-                details=new UserDetails();
-
                 details.setFirstname(name);
-            details.setLastname("");
+                details.setLastname("");
                 details.setPassword(password);
                 details.setEmail(email);
-
                 details.setRegisterDetails(registerDetails);
 
-
-
-               response= Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(details).toString(),client);
+                response= Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(details).toString(),client);
                 Log.d("Request JSON",gson.toJson(details).toString());
                 if(response!=null)
                 {
