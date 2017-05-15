@@ -94,7 +94,8 @@
                     android:id="@+id/gender_spinner_coordinator_register"
                     android:drawSelectorOnTop="true"
                     android:entries="@array/gender_option"
-                    android:layout_marginLeft="2dp" />
+                    android:layout_marginLeft="2dp"
+                    android:foregroundTint="@color/colorTextIcons" />
 
                 <Spinner
                     android:layout_width="wrap_content"

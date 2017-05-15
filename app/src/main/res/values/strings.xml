@@ -9,7 +9,7 @@
     <string name="gender">Gender</string>
     <string name="mobile_no">Mobile No</string>
     <string-array name="gender_option">
-        <item>GENDER</item>
+        <item>Gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Transgender</item>

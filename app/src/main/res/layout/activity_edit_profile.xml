@@ -269,8 +269,13 @@
                                 android:textColor="@color/colorTextIcons" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <include layout="@layout/layout_org_form"
+                        android:layout_width="match_parent"
+                        android:id="@+id/org_form" />
+
                 </LinearLayout>
-                <include layout="@layout/layout_org_form"/>
+
             </LinearLayout>
         </ScrollView>
 

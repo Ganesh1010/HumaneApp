@@ -267,5 +267,4 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
             super.onPostExecute(o);
         }
     }
-
-}
+  }
