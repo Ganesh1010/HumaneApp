@@ -43,6 +43,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+
 public class HomeActivity extends AppCompatActivity {
 
     private final int MENU_ITEM_ONE = 1;
@@ -127,9 +129,9 @@ public class HomeActivity extends AppCompatActivity {
         initializeNeeds();
 
         Log.d("Size",needs.size()+"");
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new DonorNeedViewAdapter(this, needs));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // recyclerView.setHasFixedSize(true);
+       // recyclerView.setAdapter(new DonorNeedViewAdapter(this, needs));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
         //recyclerView.addItemDecoration(dividerItemDecoration);
 
@@ -192,47 +194,15 @@ public class HomeActivity extends AppCompatActivity {
         HttpResponse response;
         @Override
         protected Object doInBackground(Object[] params) {
-            HttpGet httpGet=new HttpGet(RestAPIURL.login);
-            try {
-                response = client.execute(httpGet);
-            }
-            catch (Exception e)
+            Log.d("Toekn",Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.needList,client,Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
+            if (response != null)
+             //   if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
             {
-
-            }
-                if(response!=null)
-                {
-                    Log.d("Response Code",response.getStatusLine().getStatusCode()+"");
-
-                    try {
-                        InputStream ips = response.getEntity().getContent();
-                        BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));
-                        StringBuilder sb = new StringBuilder();
-                        String s;
-                        while(true )
-                        {
-                            s = buf.readLine();
-                            if(s==null || s.length()==0)
-                                break;
-                            sb.append(s);
-
-                        }
-
-                        buf.close();
-                        ips.close();
-                        Log.d("Response body",sb.toString());
-                        NeedDetails[] need=gson.fromJson(sb.toString(),NeedDetails[].class);
-                        System.out.print(need[0].print());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                    Log.d("Need Response",Connectivity.getJosnFromResponse(response));
                 }
-                else
-                {
-                    Log.d("Response","Null");
-                }
-
+            else
+                    Log.d("CAll ","Reponse null");
             return null;
         }
         @Override
@@ -255,22 +225,6 @@ public class HomeActivity extends AppCompatActivity {
             super.onPostExecute(o);
         }
     }
-    public  HttpResponse makeRequest(String uri, String json) {
-        try {
-            HttpPost httpPost = new HttpPost(uri);
-            httpPost.setEntity(new StringEntity(json));
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            return client.execute(httpPost);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         @Override
@@ -285,10 +239,10 @@ public class HomeActivity extends AppCompatActivity {
 
             if (authorType.equals("Donor")) {
                 newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-                recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
+              //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
             } else {
                 newNeedFloatingActionButton.setVisibility(View.VISIBLE);
-                recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
+              //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
             }
         }
 

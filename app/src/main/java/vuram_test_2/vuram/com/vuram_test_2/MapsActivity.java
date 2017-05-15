@@ -41,8 +41,8 @@ import java.util.Locale;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,GoogleMap.OnMyLocationButtonClickListener {
 
     public Geocoder geocoder;
-    public double latitude;
-    public double longitude;
+    public static double latitude;
+    public static double longitude;
     public double cur_latitude;
     public double cur_longitude;
     public List<Address> addresses = null;

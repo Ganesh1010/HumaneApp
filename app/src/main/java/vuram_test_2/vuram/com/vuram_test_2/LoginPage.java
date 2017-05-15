@@ -145,7 +145,7 @@ public class LoginPage extends AppCompatActivity {
         //finish();
 
         Intent intent = new Intent(this,HomeActivity.class);
-       // startActivity(intent);
+        startActivity(intent);
         finish();
     }
 
