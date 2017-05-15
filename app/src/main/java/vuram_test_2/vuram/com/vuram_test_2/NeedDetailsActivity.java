@@ -148,9 +148,9 @@ public class NeedDetailsActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                     JSONArray results = jsonObject.getJSONArray("results");
                     Gson gson = new Gson();
-                    needData = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                    needDetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
                     }.getType());
-                    Log.d("Results", needData.size() + "");
+                    Log.d("Results", needDetails + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
