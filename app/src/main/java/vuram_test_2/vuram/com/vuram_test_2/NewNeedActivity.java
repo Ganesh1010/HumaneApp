@@ -1,10 +1,13 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,13 +21,23 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class NewNeedActivity extends AppCompatActivity {
 
@@ -50,6 +63,7 @@ public class NewNeedActivity extends AppCompatActivity {
     public Date datetime;
     public View hiddenPanel;
     public RelativeLayout toolbarSubmit;
+    Gson gson;
 
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
     private static final String STATE_TEXTVIEW = "STATE_TEXTVIEW";
@@ -267,6 +281,8 @@ public class NewNeedActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                gson= new Gson();
+                new CreateUserAccount().execute();
             }
         });
     }
@@ -280,4 +296,54 @@ public class NewNeedActivity extends AppCompatActivity {
     private boolean isPanelShown() {
         return hiddenPanel.getVisibility() == View.VISIBLE;
     }
+
+    class CreateUserAccount extends AsyncTask {
+
+        HttpResponse response;
+        HttpClient client;
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+
+            client = new DefaultHttpClient();
+            for(int i=0;i<needDetails.size();i++) {
+                response = Connectivity.makePostRequest(RestAPIURL.register, gson.toJson(needDetails.get(i)).toString(), client);
+                Log.d("Request JSON", gson.toJson(needDetails.get(i)).toString());
+                if (response != null) {
+                    Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
+
+                    try {
+                        Connectivity.getJosnFromResponse(response);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Log.d("Response", "Null");
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            if(response!=null)
+                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
+                {
+                    Toast.makeText(NewNeedActivity.this,"Need successfully posted...",Toast.LENGTH_LONG).show();
+                    //NewNeedActivity.this.startActivity(new Intent(NewNeedActivity.this,LoginPage.class));
+                    NewNeedActivity.this.finish();
+                }
+            //  Log.d("GSON",gson.toJson(registerDetails).toString());
+
+            super.onPostExecute(o);
+        }
+    }
+
 }
