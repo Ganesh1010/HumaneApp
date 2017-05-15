@@ -29,7 +29,9 @@
             </activity>
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditProfileActivity" />
-        <activity android:name=".NeedDetailsActivity" />
+        <activity android:name=".NeedDetailsActivity" >
+
+        </activity>
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".Details_of_quantity_selected" />
         <activity
