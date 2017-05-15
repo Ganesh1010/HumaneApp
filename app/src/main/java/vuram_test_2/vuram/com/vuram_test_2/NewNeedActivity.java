@@ -307,7 +307,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
             client = new DefaultHttpClient();
             for(int i=0;i<needDetails.size();i++) {
-                response = Connectivity.makePostRequest(RestAPIURL.register, gson.toJson(needDetails.get(i)).toString(), client);
+                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(needDetails.get(i)).toString(), client);
                 Log.d("Request JSON", gson.toJson(needDetails.get(i)).toString());
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");

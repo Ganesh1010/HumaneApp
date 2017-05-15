@@ -1,8 +1,15 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +22,13 @@ import com.google.gson.Gson;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    GPSTracker gps;
     Toolbar toolbar;
-    Button addOrgButton, submitOrgFormButton;
+    Button addOrgButton, submitOrgFormButton, goToMap;
     EditText orgRegNoEditText, orgNameEditText, addressEditText, emailEditText, phoneEditText, orgDescEditText;
     Spinner orgTypeSpinner;
     Gson gson;
+    String Address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,9 +90,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 OrganisationDetails orgDetails = new OrganisationDetails();
                 orgDetails.setOrg_reg_no(orgRegNo);
                 orgDetails.setOrg_name(orgName);
-                orgDetails.setLatitude(1);
-                orgDetails.setLongitude(1);
-                orgDetails.setAddress(address);
+                orgDetails.setLatitude((int)MapsActivity.latitude);
+                orgDetails.setLongitude((int)MapsActivity.longitude);
+                orgDetails.setAddress(Address);
                 orgDetails.setEmail(email);
                 orgDetails.setMobile(phone);
                 orgDetails.setOrg_type(orgType);
@@ -93,5 +102,62 @@ public class EditProfileActivity extends AppCompatActivity {
                 String jsonString = gson.toJson(orgDetails).toString();
             }
         });
+
+        goToMap= (Button) findViewById(R.id.map);
+        goToMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // create class object
+                gps = new GPSTracker(EditProfileActivity.this);
+
+                // check if GPS enabled
+                if(gps.canGetLocation()){
+                    if(isNetworkAvailable()) {
+
+                        Intent intent = new Intent(EditProfileActivity.this, MapsActivity.class);
+                        startActivityForResult(intent, 2);
+                    }
+                    else
+                    {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditProfileActivity.this);
+                        alertDialog.setTitle("Internet settings");
+                        alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
+
+                        // On pressing Settings button
+                        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                startActivity(intent);
+                            }
+                        });
+                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+                }else{
+                    gps.showSettingsAlert();
+                }
+            }
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2)
+        {
+            Address=data.getStringExtra("ADDRESS");
+            addressEditText.setText(Address);
+        }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
