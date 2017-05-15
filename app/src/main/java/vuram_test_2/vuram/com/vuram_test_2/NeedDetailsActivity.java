@@ -79,7 +79,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
         headingLayout = (LinearLayout) findViewById(R.id.listHeadingLinearLayout_ReceivalPage);
 
 
-        needListViewAdapter = new NeedListViewAdapter(this, needData);
+        needListViewAdapter = new NeedListViewAdapter(this,needData);
         needrecyclerView.setAdapter(needListViewAdapter);
         needrecyclerView.setLayoutManager(new LinearLayoutManager(this));
         needListLayout.setVisibility(View.GONE);
@@ -148,9 +148,9 @@ public class NeedDetailsActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                     JSONArray results = jsonObject.getJSONArray("results");
                     Gson gson = new Gson();
-                    needitem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                    needData = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
                     }.getType());
-                    Log.d("Results", needitem.size() + "");
+                    Log.d("Results", needData.size() + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
