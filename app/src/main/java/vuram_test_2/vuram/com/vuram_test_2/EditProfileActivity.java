@@ -11,12 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+
 public class EditProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     Button addOrgButton, submitOrgFormButton;
     EditText orgRegNoEditText, orgNameEditText, addressEditText, emailEditText, phoneEditText, orgDescEditText;
     Spinner orgTypeSpinner;
+    Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,27 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String orgRegNo, orgName, address, email, phone, orgType, orgDesc;
+                orgRegNo = orgRegNoEditText.getText().toString();
+                orgName = orgNameEditText.getText().toString();
+                address = addressEditText.getText().toString();
+                email = emailEditText.getText().toString();
+                phone = phoneEditText.getText().toString();
+                orgType = orgTypeSpinner.getSelectedItem().toString();
+                orgDesc = orgDescEditText.getText().toString();
+
+                OrganisationDetails orgDetails = new OrganisationDetails();
+                orgDetails.setOrg_reg_no(orgRegNo);
+                orgDetails.setOrg_name(orgName);
+                orgDetails.setLatitude(1);
+                orgDetails.setLongitude(1);
+                orgDetails.setAddress(address);
+                orgDetails.setEmail(email);
+                orgDetails.setMobile(phone);
+                orgDetails.setOrg_type(orgType);
+                orgDetails.setDescription(orgDesc);
+
+                gson = new Gson();
+                String jsonString = gson.toJson(orgDetails).toString();
             }
         });
     }
