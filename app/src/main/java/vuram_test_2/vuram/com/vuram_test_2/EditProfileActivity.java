@@ -8,11 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    Button addOrgButton;
+    Button addOrgButton, submitOrgFormButton;
+    EditText orgRegNoEditText, orgNameEditText, addressEditText, emailEditText, phoneEditText, orgDescEditText;
+    Spinner orgTypeSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,12 +39,34 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        orgRegNoEditText = (EditText) findViewById(R.id.org_register_num_editText_org_form);
+        orgNameEditText = (EditText) findViewById(R.id.org_name_editText_org_form);
+        addressEditText = (EditText) findViewById(R.id.org_address_editText_org_form);
+        emailEditText = (EditText) findViewById(R.id.org_email_editText_org_form);
+        phoneEditText = (EditText) findViewById(R.id.org_phone_editText_org_form);
+        orgTypeSpinner = (Spinner) findViewById(R.id.org_type_spinner_org_form);
+        orgDescEditText = (EditText) findViewById(R.id.org_desc_editText_org_form);
+
         addOrgButton = (Button) findViewById(R.id.add_org_button_edit_profile);
         addOrgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addOrgButton.setText("Close");
-
+                if (addOrgButton.getText().toString().equals("Add Organisation")) {
+                    addOrgButton.setText("Cancel");
+                    View orgFormView = findViewById(R.id.org_form);
+                    orgFormView.setVisibility(View.GONE);
+                } else {
+                    addOrgButton.setText("Add Organisation");
+                    View orgFormView = findViewById(R.id.org_form);
+                    orgFormView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        submitOrgFormButton = (Button) findViewById(R.id.submit_button_org_form);
+        submitOrgFormButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String orgRegNo, orgName, address, email, phone, orgType, orgDesc;
             }
         });
     }
