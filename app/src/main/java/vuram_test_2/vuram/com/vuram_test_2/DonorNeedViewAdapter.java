@@ -71,7 +71,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
         //Glide.with(context).load(needDetails.orgLogo).into(holder.orgLogo);
         holder.needItems.removeAllViews();
         View itemView = null;
-       /* for (int i = 0; i < need.items.size(); i++) {
+        for (int i = 0; i < need.items.size(); i++) {
             NeedItemDetails itemDetails = need.items.get(i);
             // Inflating a new Item View
             itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_view, null);
@@ -115,7 +115,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
             holder.needItems.addView(itemView);
             Log.d("Child count+ position",holder.needItems.getChildCount()+"");
             Log.d(TAG, "onBindViewHolder: " + (i + 1) + " item(s) added");
-        }*/
+        }
         Log.d(TAG, "onBindViewHolder: End");
     }
 

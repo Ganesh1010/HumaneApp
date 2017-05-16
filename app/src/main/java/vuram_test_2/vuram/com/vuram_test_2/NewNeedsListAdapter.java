@@ -15,12 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapter.ViewHolder> {
-    List<NeedClass> list;
+    List<NeedItemDetails> list;
     Context context;
     AlertDialog.Builder alertDialogBuilder;
     AlertDialog alertDialog;
+    public String categoryID[]={"Food","Clothes","Groceries","Stationeries"};
 
-    public NewNeedsListAdapter(Context context, ArrayList<NeedClass> list)
+    public NewNeedsListAdapter(Context context, ArrayList<NeedItemDetails> list)
     {
         this.list=list;
         this.context=context;
@@ -35,17 +36,17 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.clothesViewLayout.setVisibility(View.GONE);
-        holder.category.setText(holder.category.getText() + list.get(position).getCategory());
-        holder.itemViewName.setText(holder.itemViewName.getText() + list.get(position).getItemName());
-        holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getItemQuantity() + "");
-        holder.dateView.setText(holder.dateView.getText()+ list.get(position).getDate()+"  "+list.get(position).getTime());
+        holder.category.setText(holder.category.getText() + categoryID[list.get(position).getItem_type_id()]);
+        holder.itemViewName.setText(holder.itemViewName.getText() + (list.get(position).getSub_item_type_id()+""));
+        holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getQuantity() + "");
+        holder.dateView.setText(holder.dateView.getText()+ (list.get(position).getDeadline()+""));
 
-        if (list.get(position).getCategory().equals("Clothes")) {
+        if (categoryID[list.get(position).getItem_type_id()].equals("Clothes")) {
             holder.clothesViewLayout.setVisibility(View.VISIBLE);
             holder.genderView.setText(holder.genderView.getText() + list.get(position).getGender());
             holder.ageView.setText(holder.ageView.getText() + list.get(position).getAge());
         }
-        switch (list.get(position).getCategory())
+        switch (categoryID[list.get(position).getItem_type_id()])
         {
             case "Food":
                 holder.categoryIcon.setImageResource(R.drawable.ic_food_black);
@@ -96,7 +97,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    removeAt(list.get(getAdapterPosition()).getItemNumber());
+                    removeAt(list.get(getAdapterPosition()).getNeed_item_id());
                 }
             });
 
@@ -106,13 +107,13 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
 
         @Override
         public boolean onLongClick(View v) {
-            removeAt(list.get(getAdapterPosition()).getItemNumber());
+            removeAt(list.get(getAdapterPosition()).getNeed_item_id());
             return true;
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context,list.get(getAdapterPosition()).getItemNumber()+"",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,list.get(getAdapterPosition()).getNeed_item_id()+"",Toast.LENGTH_SHORT).show();
         }
     }
 
