@@ -1,6 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,9 +28,11 @@ import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.io.SessionOutputBufferImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -63,6 +64,7 @@ public class NewNeedActivity extends AppCompatActivity {
     public Date datetime;
     public View hiddenPanel;
     public RelativeLayout toolbarSubmit;
+    public String categoryID[]={"Food","Clothes","Groceries","Stationeries"};
     Gson gson;
 
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -180,7 +182,9 @@ public class NewNeedActivity extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NeedClass need = new NeedClass();
+                //NeedClass need = new NeedClass();
+
+                NeedClass need=new NeedClass();
 
                 int selectedIdGender = gender.getCheckedRadioButtonId();
                 radioSexButton = (RadioButton) findViewById(selectedIdGender);
@@ -204,6 +208,7 @@ public class NewNeedActivity extends AppCompatActivity {
                     need.setItemQuantity(Integer.parseInt(itemQuantity.getText().toString()));
                     need.setDate(myDateFormat.format(datetime)+"");
                     need.setTime(myTimeFormat.format(datetime)+"");
+                    need.setDatetime(datetime);
                     dataFilled=true;
                 }
 
@@ -307,7 +312,22 @@ public class NewNeedActivity extends AppCompatActivity {
 
             client = new DefaultHttpClient();
             for(int i=0;i<needDetails.size();i++) {
-                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(needDetails.get(i)).toString(), client,Connectivity.getAuthToken(NewNeedActivity.this,Connectivity.Donor_Token));
+
+                NeedDetails need_details=new NeedDetails();
+
+                need_details.getItems().item_type_id= Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory());
+                System.out.println(Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory()));
+                need_details.getItems().gender=needDetails.get(i).getGender();
+                System.out.println(needDetails.get(i).getGender());
+                need_details.getItems().quantity=needDetails.get(i).getItemQuantity();
+                System.out.println(needDetails.get(i).getItemQuantity());
+                need_details.getItems().deadline=needDetails.get(i).getDatetime();
+                System.out.println(needDetails.get(i).getDatetime());
+                need_details.getItems().age=needDetails.get(i).getAge();
+                System.out.println(needDetails.get(i).getAge());
+
+                String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
+                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(need_details), client, coordinator_token);
                 Log.d("Request JSON", gson.toJson(needDetails.get(i)).toString());
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
@@ -345,5 +365,4 @@ public class NewNeedActivity extends AppCompatActivity {
             super.onPostExecute(o);
         }
     }
-
 }
