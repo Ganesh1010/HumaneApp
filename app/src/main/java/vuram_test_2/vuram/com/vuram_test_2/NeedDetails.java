@@ -1,26 +1,44 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.content.ClipData;
+import android.content.Context;
+import android.view.View;
+import android.view.ViewManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class NeedDetails {
     int need_id;
     boolean is_fulfilled;
     String latitude, longitude;
-
-    public NeedItemDetails getItems() {
-        return items;
-    }
-
-    //List<NeedItemDetails> items;
-    NeedItemDetails items;
-
-    public void setItems(NeedItemDetails items) {
-        this.items = items;
-    }
-
+    List<NeedItemDetails> items;
     List<DonationDetails> donations;
     OrganisationDetails org;
+
+    NeedDetails() {
+        items = new ArrayList<>();
+        donations = new ArrayList<>();
+    }
+
+    public OrganisationDetails getOrganisationDetails(OrganisationDetails organisationDetails) {
+        return organisationDetails;
+    }
+
+    public void setOrganisationDetails(OrganisationDetails organisationDetails)
+    {
+        this.org=organisationDetails;
+    }
+
+    public  String  print()
+    {
+        return(items.get(0).print());
+    }
 
     public int getNeed_id() {
         return need_id;
@@ -54,6 +72,13 @@ public class NeedDetails {
         this.longitude = longitude;
     }
 
+    public List<NeedItemDetails> getItems() {
+        return items;
+    }
+
+    public void setItems(List<NeedItemDetails> items) {
+        this.items = items;
+    }
 
     public List<DonationDetails> getDonations() {
         return donations;
@@ -70,24 +95,4 @@ public class NeedDetails {
     public void setOrg(OrganisationDetails org) {
         this.org = org;
     }
-
-    NeedDetails() {
-        //items = new ArrayList<>();
-        items=new NeedItemDetails();
-        donations = new ArrayList<>();
-    }
-
-    public OrganisationDetails getOrganisationDetails(OrganisationDetails organisationDetails) {
-        return organisationDetails;
-    }
-
-    public void setOrganisationDetails(OrganisationDetails organisationDetails)
-    {
-        this.org=organisationDetails;
-    }
-
-    /*public  String  print()
-    {
-        return(items.get(0).print());
-    }*/
 }

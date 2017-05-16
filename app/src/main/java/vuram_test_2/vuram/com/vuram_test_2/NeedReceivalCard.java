@@ -101,7 +101,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
             receivedImg = (CircleImageView) itemView.findViewById(R.id.receivedImgView_ReceivalPage);
             donorName = (TextView)itemView.findViewById(R.id.donorNameTextView_ReceivalPage);
             itemName =(TextView)itemView.findViewById(R.id.itemNameTextView_ReceivalPage);
-            gender = (TextView)itemView.findViewById(R.id.genderTextView_ReceivalPage);
+           // gender = (TextView)itemView.findViewById(R.id.genderTextView_ReceivalPage);
             quantity = (TextView)itemView.findViewById(R.id.quantityTextView_ReceivalPage);
         }
     }
