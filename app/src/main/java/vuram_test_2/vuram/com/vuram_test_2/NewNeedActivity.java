@@ -316,13 +316,21 @@ public class NewNeedActivity extends AppCompatActivity {
             client = new DefaultHttpClient();
 
             NeedDetails need_details=new NeedDetails();
-            need_details.latitude="1234";
-            need_details.longitude="12345";
+            need_details.setLatitude("1234");
+            need_details.setLongitude("12345");
             need_details.items=needDetails;
 
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
-                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(need_details), client, coordinator_token);
-                Log.d("Request JSON", gson.toJson(needDetails.get(0).toString()));
+                String donor_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Donor_Token);
+                response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details,NeedDetails.class), client, donor_token);
+            System.out.println(need_details.getNeed_id());
+            System.out.println(need_details.getItems().get(0).getItem_type_id());
+            System.out.println(need_details.getItems().get(0).getDeadline());
+            System.out.println(need_details.getItems().get(0).getSub_item_type_id());
+            System.out.println(need_details.getItems().get(0).getQuantity());
+            System.out.println(need_details.getLatitude());
+            System.out.println(need_details.getLongitude());
+                Log.d("Request JSON", gson.toJson(needDetails,NeedDetails.class));
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
 
