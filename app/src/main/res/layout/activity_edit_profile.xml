@@ -226,54 +226,6 @@
                                 android:hint="Email" />
                         </LinearLayout>
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:elevation="1dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:id="@+id/org_id_textview_edit_profile"
-                                android:layout_weight="1"
-                                android:text="Org"
-                                android:textAlignment="gravity"
-                                android:gravity="center"
-                                android:elevation="1dp"
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:elevation="1dp"
-                            android:layout_weight="0.5">
-
-                            <Button
-                                android:text="Add Organisation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/add_org_button_edit_profile"
-                                android:layout_weight="1"
-                                android:backgroundTint="@color/colorPrimary"
-                                android:textColor="@color/colorTextIcons" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <include layout="@layout/layout_org_form"
-                        android:layout_width="match_parent"
-                        android:id="@+id/org_form" />
-
                 </LinearLayout>
 
             </LinearLayout>

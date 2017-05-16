@@ -1,5 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import java.util.Date;
+
 public class NeedClass {
 
     String category;
@@ -9,8 +11,17 @@ public class NeedClass {
     String age;
     String date;
     String time;
-
     int itemNumber;
+
+    public Date getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(Date datetime) {
+        this.datetime = datetime;
+    }
+
+    Date datetime;
 
     public NeedClass()
     {
