@@ -30,7 +30,11 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class NeedDetailsActivity extends AppCompatActivity {
 
-    ArrayList<NeedListViewItems> needData, needCardData;
+    ArrayList<NeedListViewItems> needListData,needCardData;
+    ArrayList<DonationDetails> donatedDetailsList;
+    List  donatedItemList,itemslist;
+    int donatedItemId,needItemId,needQuantity,donatedQuantity;
+    String donorName;
     RecyclerView needrecyclerView, receivalCardView;
     NeedListViewAdapter needListViewAdapter;
     NeedReceivalCard needReceivalCard;
@@ -39,7 +43,10 @@ public class NeedDetailsActivity extends AppCompatActivity {
     CircularProgressBar progressBar;
     TextView percentage;
     View divider1;
-    NeedDetails needDetails;
+    NeedDetails needDetails,needItemResult;
+    NeedItemDetails needItemDetails;
+    DonationDetails donationDetails;
+    DonatedItemDetails donatedItemDetails;
     Toolbar toolbar;
 
     @Override
@@ -59,9 +66,16 @@ public class NeedDetailsActivity extends AppCompatActivity {
             }
         });
 
-        needData = new ArrayList();
-        needCardData = new ArrayList();
 
+        needDetails = new NeedDetails();
+        needItemDetails =  new NeedItemDetails();
+        needItemResult = new NeedDetails();
+        donatedDetailsList = new ArrayList<>();
+
+        needDetails.setNeed_id(8);
+
+         needListData = new ArrayList();
+         needCardData = new ArrayList();
         //needViewData();
         //needCardViewData();
 
@@ -78,15 +92,18 @@ public class NeedDetailsActivity extends AppCompatActivity {
         needListLayout = (LinearLayout) findViewById(R.id.needListDivider_ReceivalPage);
         headingLayout = (LinearLayout) findViewById(R.id.listHeadingLinearLayout_ReceivalPage);
 
+        new NeedAndDonatedDetails().execute();
 
-        needListViewAdapter = new NeedListViewAdapter(this,needData);
+        needListViewAdapter = new NeedListViewAdapter(this,needListData);
         needrecyclerView.setAdapter(needListViewAdapter);
         needrecyclerView.setLayoutManager(new LinearLayoutManager(this));
         needListLayout.setVisibility(View.GONE);
         headingLayout.setVisibility(View.GONE);
 
+
+
         // Toast.makeText(this,"after list adapter",Toast.LENGTH_LONG).show();
-        needReceivalCard = new NeedReceivalCard(this, needCardData);
+        needReceivalCard = new NeedReceivalCard(this,needCardData);
         receivalCardView.setAdapter(needReceivalCard);
         receivalCardView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -133,27 +150,66 @@ public class NeedDetailsActivity extends AppCompatActivity {
     class NeedAndDonatedDetails extends AsyncTask {
         HttpResponse response;
         HttpClient client;
+        NeedListViewItems needListViewItems;
 
         @Override
         protected Object doInBackground(Object[] objects) {
 
             client = new DefaultHttpClient();
-            needDetails = new NeedDetails();
+
+
 
             response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/need/", client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null)
 // if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+            if(needDetails.getNeed_id()== 8)
             {
                 try {
                     JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                     JSONArray results = jsonObject.getJSONArray("results");
                     Gson gson = new Gson();
-                    needDetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                    needItemResult = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
                     }.getType());
-                    Log.d("Results", needDetails + "");
+                    Log.d("Results", needItemResult.getNeed_id() + "");
+
+                     itemslist = needItemResult.getItems();
+
+                    for (int i = 0; i < itemslist.size(); i++) {
+                        NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
+                        needItemId = needItemDetails.getNeed_item_id();
+                        needQuantity = needItemDetails.getQuantity();
+                        needListViewItems =  new NeedListViewItems(needItemId,needQuantity);
+                        needListData.add(needListViewItems);
+
+                    }
+
+
+                    donatedDetailsList = (ArrayList<DonationDetails>) needItemResult.getDonations();
+
+                    for (int i = 0; i < donatedDetailsList.size(); i++) {
+                        DonationDetails donationDetails = donatedDetailsList.get(i);
+
+                        donatedItemList = donationDetails.getDonateditems();
+                        donorName = donationDetails.getUser();
+
+                        for (int j = 0; j < donatedItemList.size(); j++) {
+                            DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
+
+                            donatedItemId = donatedItemDetails.getDonated_item_id();
+                            donatedQuantity = donatedItemDetails.getQuantity();
+                        }
+
+                        needListViewItems = new NeedListViewItems(donatedItemId,donorName,donatedQuantity);
+                        needCardData.add(needListViewItems);
+
+                    }
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
 
                 return null;
             }

@@ -38,8 +38,6 @@ public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapte
 
         NeedListViewItems items = (NeedListViewItems) needListViewItems.get(position);
         itemNameView.setText(items.getItemName());
-
-        genderView.setText(items.getGender());
         quantityView.setText(items.getQuantity());
 
 
@@ -55,7 +53,6 @@ public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapte
         public NeedViewHolder(View itemView) {
             super(itemView);
             itemNameView = (TextView)itemView.findViewById(R.id.itemNameTextView_ReceivalPage);
-            genderView = (TextView)itemView.findViewById(R.id.genderTextView_ReceivalPage);
             quantityView = (TextView)itemView.findViewById(R.id.quantityTextView_ReceivalPage);
         }
     }

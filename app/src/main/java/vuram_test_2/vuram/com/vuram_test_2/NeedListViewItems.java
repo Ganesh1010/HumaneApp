@@ -6,7 +6,8 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 public class NeedListViewItems {
 
-    String itemName,gender,quantity,donorName;
+    String itemName,donorName;
+    int quantity,itemId,donatedId;
 
 
     public NeedListViewItems(String donorName) {
@@ -14,18 +15,19 @@ public class NeedListViewItems {
 
     }
 
-    public NeedListViewItems(String itemName, String gender, String quantity) {
-        this.itemName = itemName;
-        this.gender = gender;
+    public NeedListViewItems(int itemId, int quantity) {
+     //   this.itemName = itemName;
+        this.itemId = itemId;
         this.quantity = quantity;
     }
 
-    public NeedListViewItems(String itemName, String gender, String quantity, String donorName) {
-        this.itemName = itemName;
-        this.gender = gender;
+    public NeedListViewItems(int donatedId, String donorName,int quantity) {
+      //  this.itemName = itemName;
+        this.donatedId = donatedId;
         this.quantity = quantity;
         this.donorName = donorName;
     }
+
 
     public String getItemName() {
         return itemName;
@@ -35,23 +37,13 @@ public class NeedListViewItems {
         this.itemName = itemName;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-
 
     public String getDonorName() {
         return donorName;
