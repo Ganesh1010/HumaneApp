@@ -23,29 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -61,17 +50,13 @@ public class HomeActivity extends AppCompatActivity {
     Gson gson;
     HttpClient client;
     private final String TAG = "HomeActivity.java";
-    ArrayList<TestNeedDetails> needs;
-    NeedItemDetails[] itemDetailses;
     private RecyclerView recyclerView;
     private ImageButton filterImageButton;
     private FloatingActionButton newNeedFloatingActionButton;
-    NeedItemDetails needItemDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        needs = new ArrayList<>();
         appliedFilter=new TreeSet<>();
         /* Spinner */
         SpinnerListener spinnerListener = new SpinnerListener();
@@ -137,8 +122,6 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         getWidgets();
-
-        Log.d("Size",needs.size()+"");
         newNeedFloatingActionButton = (FloatingActionButton) findViewById(R.id.new_need_home_page);
         newNeedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +151,6 @@ public class HomeActivity extends AppCompatActivity {
         ArrayList<NeedDetails> needitem;
         @Override
         protected Object doInBackground(Object[] params) {
-            Log.d("Toekn",Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
             response = Connectivity.makeGetRequest(RestAPIURL.needList,client,Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
@@ -183,7 +165,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 }
             else
-                    Log.d("CAll ","Reponse null");
+                    Log.d("CAll ","Response null");
             return null;
         }
         @Override
@@ -206,7 +188,6 @@ public class HomeActivity extends AppCompatActivity {
                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
                    // RegistrationPage.this.finish();
                 }
-           // Log.d("GSON",gson.toJson(registerDetails).toString());
 
             super.onPostExecute(o);
         }
