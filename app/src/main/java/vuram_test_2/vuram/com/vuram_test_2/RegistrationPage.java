@@ -216,7 +216,6 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
 
                 client = new DefaultHttpClient();
                 details=new UserDetails();
-
                 registerDetails.setGender("Male");
                 registerDetails.setMobile(mobilenumber);
                 registerDetails.setCountry(1);
