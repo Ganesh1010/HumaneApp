@@ -44,9 +44,11 @@ public class Connectivity {
         }
         return sb.toString();
     }
-    public static HttpResponse makePostRequest(String uri, String json, HttpClient client) {
+    public static HttpResponse makePostRequest(String uri, String json, HttpClient client,String token) {
         try {
             HttpPost httpPost = new HttpPost(uri);
+            if(token!=null)
+                httpPost.setHeader("Authorization","Token "+token);
             httpPost.setEntity(new StringEntity(json));
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
@@ -66,6 +68,7 @@ public class Connectivity {
             HttpGet httpGet = new HttpGet(uri);
            // Log.d("T",token);
             //httpGet.setHeader(new BasicHeader("Authorization: Token ",token));
+            if(token!=null)
             httpGet.setHeader("Authorization","Token "+token);
 //            httpGet.addHeader("Authorization"," Token "+token);
             //Log.d("Header",httpGet.("Authorization").toString());
