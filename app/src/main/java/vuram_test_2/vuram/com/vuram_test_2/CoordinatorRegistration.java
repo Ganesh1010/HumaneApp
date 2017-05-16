@@ -177,7 +177,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
              userAccountDetails.setGender(gender);
              userAccountDetails.setCountry(country);*/
 
-             httpResponse = Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(userDetails).toString(),httpClient);
+             httpResponse = Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(userDetails).toString(),httpClient,null);
 
              if(httpResponse!=null)
              {

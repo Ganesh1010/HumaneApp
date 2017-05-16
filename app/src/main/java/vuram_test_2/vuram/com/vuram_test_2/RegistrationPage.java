@@ -225,7 +225,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 details.setEmail(email);
                 details.setRegisterDetails(registerDetails);
 
-                response= Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(details).toString(),client);
+                response= Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(details).toString(),client,null);
                 Log.d("Request JSON",gson.toJson(details).toString());
                 if(response!=null)
                 {
