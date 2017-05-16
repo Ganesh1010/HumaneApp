@@ -148,8 +148,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 orgDetails = new OrganisationDetails();
                 orgDetails.setOrg_reg_no(orgRegNo);
                 orgDetails.setOrg_name(orgName);
-                orgDetails.setLatitude((int)MapsActivity.latitude);
-                orgDetails.setLongitude((int)MapsActivity.longitude);
+                orgDetails.setLatitude((int)MapActivity.latitude);
+                orgDetails.setLongitude((int)MapActivity.longitude);
                 if (mapAddress != null) {
                     if (!mapAddress.isEmpty()) {
                         address = mapAddress;
@@ -176,7 +176,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 if(gps.canGetLocation()){
                     if(isNetworkAvailable()) {
 
-                        Intent intent = new Intent(UserProfileActivity.this, MapsActivity.class);
+                        Intent intent = new Intent(UserProfileActivity.this, MapActivity.class);
                         startActivityForResult(intent, 2);
                     }
                     else
