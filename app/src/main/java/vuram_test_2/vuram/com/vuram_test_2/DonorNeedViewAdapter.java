@@ -27,13 +27,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<TestNeedDetails> needs;
+    //private ArrayList<TestNeedDetails> needs;
     private int screenWidth;
-    private NeedDetails[] needDetails;
+    private ArrayList<NeedDetails> needDetails;
     private final String TAG = "DonorNeedViewAdapter";
-    public DonorNeedViewAdapter(Context context, ArrayList<TestNeedDetails> needs) {
+    public DonorNeedViewAdapter(Context context, ArrayList<NeedDetails> needs) {
         this.context = context;
-        this.needs = needs;
+        this.needDetails = needs;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -52,7 +52,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
     public void onBindViewHolder(DonorNeedViewAdapter.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Start @Need " + (position + 1));
        // TestNeedDetails needDetails = needs.get(position);
-        NeedDetails need=needDetails[position];
+        NeedDetails need=needDetails.get(position);
         holder.donorNeedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +60,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
                 context.startActivity(new Intent(context, OrgDetailsActivity.class));
             }
         });
-        holder.orgName.setText("Org Name Test");
+        holder.orgName.setText(need.org.org_name);
         holder.orgAddress.setText("Address");
         holder.orgContactNo.setText("957851907");
         holder.orgLogo.setImageResource(R.drawable.ngo);
@@ -121,7 +121,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
 
     @Override
     public int getItemCount() {
-        return needs.size();
+        return needDetails.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

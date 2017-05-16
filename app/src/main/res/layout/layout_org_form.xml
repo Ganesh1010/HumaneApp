@@ -95,7 +95,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
             <EditText
@@ -106,12 +106,24 @@
                 android:id="@+id/org_address_editText_org_form"
                 android:layout_weight="1"
                 android:hint="Address" />
+
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:text="go to map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/map"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:elevation="1dp"
+                android:textColor="@color/colorTextIcons"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
