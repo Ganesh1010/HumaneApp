@@ -1,6 +1,8 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
         return new NeedCardHolder(v);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.ECLAIR_MR1)
     @Override
     public void onBindViewHolder(final NeedCardHolder holder, int position) {
         NeedListViewItems items = (NeedListViewItems) donatedCardDetails.get(position);

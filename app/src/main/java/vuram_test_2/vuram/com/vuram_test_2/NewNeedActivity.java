@@ -1,7 +1,9 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,9 +33,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -56,7 +60,7 @@ public class NewNeedActivity extends AppCompatActivity {
     public TextView textView;
     public RecyclerView recyclerView;
     public String category;
-    public ArrayList<NeedClass> needDetails;
+    public ArrayList<NeedItemDetails> needDetails;
     boolean dataFilled=false;
     static int id=-1;
     public Date datetime;
@@ -180,11 +184,10 @@ public class NewNeedActivity extends AppCompatActivity {
             }
         });
         post.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public void onClick(View v) {
-                //NeedClass need = new NeedClass();
-
-                NeedClass need=new NeedClass();
+                NeedItemDetails needItemDetails=new NeedItemDetails();
 
                 int selectedIdGender = gender.getCheckedRadioButtonId();
                 radioSexButton = (RadioButton) findViewById(selectedIdGender);
@@ -202,13 +205,11 @@ public class NewNeedActivity extends AppCompatActivity {
                     itemQuantity.setError("enter the item Quantity");
                 }
                 else {
-                    need.setItemNumber(++NewNeedActivity.id);
-                    need.setCategory(category);
-                    need.setItemName(itemName.getText().toString());
-                    need.setItemQuantity(Integer.parseInt(itemQuantity.getText().toString()));
-                    need.setDate(myDateFormat.format(datetime)+"");
-                    need.setTime(myTimeFormat.format(datetime)+"");
-                    need.setDatetime(datetime);
+                    needItemDetails.setNeed_item_id(++NewNeedActivity.id);
+                    needItemDetails.setItem_type_id(Arrays.asList(categoryID).indexOf(category));
+                    needItemDetails.setSub_item_type_id(1);
+                    needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
+                    needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
 
@@ -224,14 +225,14 @@ public class NewNeedActivity extends AppCompatActivity {
                     }
 
                     else {
-                        need.setGender(radioSexButton.getText().toString());
-                        need.setAge(radioAgeButton.getText().toString());
+                        needItemDetails.setGender(radioSexButton.getText().toString());
+                        needItemDetails.setAge(radioAgeButton.getText().toString());
                         dataFilled=true;
                     }
                 }
 
                 if(dataFilled) {
-                    needDetails.add(need);
+                    needDetails.add(needItemDetails);
                     recyclerView.setAdapter(new NewNeedsListAdapter(NewNeedActivity.this, needDetails));
                     recyclerView.setLayoutManager(new LinearLayoutManager(NewNeedActivity.this));
                     hiddenPanel.startAnimation(bottomDown);
@@ -284,6 +285,7 @@ public class NewNeedActivity extends AppCompatActivity {
         });
 
         submit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
             @Override
             public void onClick(View v) {
                 gson= new Gson();
@@ -302,6 +304,7 @@ public class NewNeedActivity extends AppCompatActivity {
         return hiddenPanel.getVisibility() == View.VISIBLE;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     class CreateUserAccount extends AsyncTask {
 
         HttpResponse response;
@@ -311,24 +314,15 @@ public class NewNeedActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] params) {
 
             client = new DefaultHttpClient();
-            for(int i=0;i<needDetails.size();i++) {
 
-                NeedDetails need_details=new NeedDetails();
-
-                /*need_details.getItems().item_type_id= Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory());
-                System.out.println(Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory()));
-                need_details.getItems().gender=needDetails.get(i).getGender();
-                System.out.println(needDetails.get(i).getGender());
-                need_details.getItems().quantity=needDetails.get(i).getItemQuantity();
-                System.out.println(needDetails.get(i).getItemQuantity());
-                need_details.getItems().deadline=needDetails.get(i).getDatetime();
-                System.out.println(needDetails.get(i).getDatetime());
-                need_details.getItems().age=needDetails.get(i).getAge();
-                System.out.println(needDetails.get(i).getAge());*/
+            NeedDetails need_details=new NeedDetails();
+            need_details.latitude="1234";
+            need_details.longitude="12345";
+            need_details.items=needDetails;
 
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
                 response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(need_details), client, coordinator_token);
-                Log.d("Request JSON", gson.toJson(needDetails.get(i)).toString());
+                Log.d("Request JSON", gson.toJson(needDetails.get(0).toString()));
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
 
@@ -341,7 +335,6 @@ public class NewNeedActivity extends AppCompatActivity {
                 } else {
                     Log.d("Response", "Null");
                 }
-            }
             return null;
         }
 
@@ -356,7 +349,7 @@ public class NewNeedActivity extends AppCompatActivity {
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
-                    Toast.makeText(NewNeedActivity.this,"Need successfully posted...",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewNeedActivity.this,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
                     //NewNeedActivity.this.startActivity(new Intent(NewNeedActivity.this,LoginPage.class));
                     NewNeedActivity.this.finish();
                 }
