@@ -100,6 +100,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                 gson = new Gson();
                 String jsonString = gson.toJson(orgDetails).toString();
+
+
             }
         });
 
