@@ -38,7 +38,7 @@ public class PopulateCountryDetails {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            response = Connectivity.makeGetRequest(RestAPIURL.code, client, null);
+            //response = Connectivity.makeGetRequest(RestAPIURL.code, client, null);
             if (response != null)
  if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
      {

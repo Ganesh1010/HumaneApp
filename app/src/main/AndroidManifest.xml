@@ -23,10 +23,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity android:name=".RegistrationPage" />
-        <activity android:name=".HomeActivity" >
-            </activity>
+        <activity android:name=".HomeActivity"></activity>
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".NeedDetailsActivity" />
@@ -37,9 +36,6 @@
         <activity
             android:name=".AndroidGPSTrackingActivity"
             android:theme="@style/AppTheme1" />
-        <activity
-            android:name=".MapsActivity"
-            android:theme="@style/AppTheme1" />
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -48,10 +44,26 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".NewNeedActivity" android:theme="@style/AppTheme1">
-        </activity>
+        <activity
+            android:name=".NewNeedActivity"
+            android:theme="@style/AppTheme1"></activity>
         <activity android:name=".CoordinatorRegistration" />
-        <activity android:name=".SplashScreenActivity"></activity>
+        <activity android:name=".SplashScreenActivity" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>

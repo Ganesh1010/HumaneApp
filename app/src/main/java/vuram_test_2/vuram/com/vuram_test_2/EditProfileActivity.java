@@ -98,8 +98,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 orgDetails = new OrganisationDetails();
                 orgDetails.setOrg_reg_no(orgRegNo);
                 orgDetails.setOrg_name(orgName);
-                orgDetails.setLatitude((int)MapsActivity.latitude);
-                orgDetails.setLongitude((int)MapsActivity.longitude);
+                orgDetails.setLatitude((int)MapActivity.latitude);
+                orgDetails.setLongitude((int)MapActivity.longitude);
                 orgDetails.setAddress(mapAddress);
                 orgDetails.setEmail(email);
                 orgDetails.setMobile(phone);
@@ -121,7 +121,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if(gps.canGetLocation()){
                     if(isNetworkAvailable()) {
 
-                        Intent intent = new Intent(EditProfileActivity.this, MapsActivity.class);
+                        Intent intent = new Intent(EditProfileActivity.this, MapActivity.class);
                         startActivityForResult(intent, 2);
                     }
                     else

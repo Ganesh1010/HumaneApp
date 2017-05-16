@@ -7,6 +7,20 @@ import java.util.Date;
  */
 
 public class  NeedItemDetails {
+
+    int need_item_id;
+    int donated_amount;
+    int donated_and_received_amount;
+    boolean is_fulfilled;
+
+    int item_type_id;
+    int sub_item_type_id;
+    int quantity;
+    String gender;
+    String age;
+    Date deadline;
+
+
     public int getNeed_item_id() {
         return need_item_id;
     }
@@ -31,12 +45,28 @@ public class  NeedItemDetails {
         this.donated_and_received_amount = donated_and_received_amount;
     }
 
+    public boolean is_fulfilled() {
+        return is_fulfilled;
+    }
+
+    public void setIs_fulfilled(boolean is_fulfilled) {
+        this.is_fulfilled = is_fulfilled;
+    }
+
     public int getItem_type_id() {
         return item_type_id;
     }
 
     public void setItem_type_id(int item_type_id) {
         this.item_type_id = item_type_id;
+    }
+
+    public int getSub_item_type_id() {
+        return sub_item_type_id;
+    }
+
+    public void setSub_item_type_id(int sub_item_type_id) {
+        this.sub_item_type_id = sub_item_type_id;
     }
 
     public int getQuantity() {
@@ -55,12 +85,12 @@ public class  NeedItemDetails {
         this.gender = gender;
     }
 
-    public boolean is_fulfilled() {
-        return is_fulfilled;
+    public String getAge() {
+        return age;
     }
 
-    public void setIs_fulfilled(boolean is_fulfilled) {
-        this.is_fulfilled = is_fulfilled;
+    public void setAge(String age) {
+        this.age = age;
     }
 
     public Date getDeadline() {
@@ -71,10 +101,6 @@ public class  NeedItemDetails {
         this.deadline = deadline;
     }
 
-    int need_item_id,donated_amount,donated_and_received_amount, item_type_id, quantity;
-    String gender,age;
-    boolean is_fulfilled;
-    Date deadline;
     public String print()
     {
         return ("Item Type : "+item_type_id+ "gender : "+gender);
