@@ -54,7 +54,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 if (view == bt1)
 
                 {
-                    Intent intent = new Intent(OrgDetailsActivity.this, Details_of_quantity_selected.class);
+                    Intent intent = new Intent(OrgDetailsActivity.this, DetailsOfQuantitySelected.class);
                     startActivity(intent);
                 }
             }

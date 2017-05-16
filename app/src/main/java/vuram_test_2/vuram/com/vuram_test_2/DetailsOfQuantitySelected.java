@@ -18,13 +18,13 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class Details_of_quantity_selected extends AppCompatActivity {
+public class DetailsOfQuantitySelected extends AppCompatActivity {
     static Context context;
     private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        context = Details_of_quantity_selected.this;
+        context = DetailsOfQuantitySelected.this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         PopulateCountryDetails populateCountryDetails=new PopulateCountryDetails(this);
@@ -50,10 +50,10 @@ public class Details_of_quantity_selected extends AppCompatActivity {
                 Fragment fr = null;
                 switch (i) {
                     case R.id.doante_by_urself_details:
-                        fr = new Urself();
+                        fr = new EmptyFragment();
                         break;
                     case R.id.need_volunteer_details:
-                        fr = new Need_volunteer();
+                        fr = new Needvolunteer();
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
