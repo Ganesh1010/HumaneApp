@@ -1,6 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
