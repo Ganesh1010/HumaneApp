@@ -37,7 +37,7 @@ public class AndroidGPSTrackingActivity extends Activity {
 		        if(gps.canGetLocation()){
 		        	if(isNetworkAvailable()) {
 
-						Intent intent = new Intent(AndroidGPSTrackingActivity.this, MapsActivity.class);
+						Intent intent = new Intent(AndroidGPSTrackingActivity.this, MapActivity.class);
 						startActivityForResult(intent, 2);
 					}
 					else

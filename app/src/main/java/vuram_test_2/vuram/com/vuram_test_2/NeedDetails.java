@@ -35,7 +35,7 @@ public class NeedDetails {
         this.org=organisationDetails;
     }
 
-    public  String  print()
+    public String print()
     {
         return(items.get(0).print());
     }

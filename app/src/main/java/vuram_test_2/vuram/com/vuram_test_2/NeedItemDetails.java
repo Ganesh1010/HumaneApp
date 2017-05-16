@@ -7,6 +7,12 @@ import java.util.Date;
  */
 
 public class  NeedItemDetails {
+
+    int need_item_id,donated_amount,donated_and_received_amount, item_type_id, quantity;
+    String gender,age;
+    boolean is_fulfilled;
+    Date deadline;
+
     public int getNeed_item_id() {
         return need_item_id;
     }
@@ -71,10 +77,6 @@ public class  NeedItemDetails {
         this.deadline = deadline;
     }
 
-    int need_item_id,donated_amount,donated_and_received_amount, item_type_id, quantity;
-    String gender,age;
-    boolean is_fulfilled;
-    Date deadline;
     public String print()
     {
         return ("Item Type : "+item_type_id+ "gender : "+gender);
