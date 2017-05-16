@@ -42,7 +42,6 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
        // Toast.makeText(context,"donor NAme"+items.getDonorName(),Toast.LENGTH_LONG).show();
         holder.itemName.setText(items.getItemName());
         //Toast.makeText(context,"Item NAme"+items.getItemName(),Toast.LENGTH_LONG).show();
-        holder.gender.setText(items.getGender());
         //Toast.makeText(context,"Gender"+items.getGender(),Toast.LENGTH_LONG).show();
         holder.quantity.setText(items.getQuantity());
         //Toast.makeText(context,"Quantity"+items.getQuantity(),Toast.LENGTH_LONG).show();
