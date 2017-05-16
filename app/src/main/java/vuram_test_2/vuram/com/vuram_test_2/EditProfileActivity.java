@@ -178,7 +178,8 @@ public class EditProfileActivity extends AppCompatActivity {
             client = new DefaultHttpClient();
             gson = new Gson();
             String jsonString = gson.toJson(orgDetails).toString();
-            response = Connectivity.makePostRequest(RestAPIURL.registerOrg, jsonString, client);
+            String token = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Coordinator_Token);
+            response = Connectivity.makePostRequest(RestAPIURL.registerOrg, jsonString, client, token);
             if (response != null) {
                 Log.d("Response Code",response.getStatusLine().getStatusCode()+"");
 
