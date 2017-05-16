@@ -71,9 +71,8 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
         //Glide.with(context).load(needDetails.orgLogo).into(holder.orgLogo);
         holder.needItems.removeAllViews();
         View itemView = null;
-       /* for (int i = 0; i < need.items.size(); i++) {
+        for (int i = 0; i < need.items.size(); i++) {
             NeedItemDetails itemDetails = need.items.get(i);
-            // Inflating a new Item View
             itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_view, null);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,7 +84,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
             ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);
             TextView itemName = (TextView) itemView.findViewById(R.id.item_name_item_view);
             ProgressBar satisfactionBar = (ProgressBar) itemView.findViewById(R.id.item_status_item_view);
-            switch (new Random().nextInt(4)) {
+            switch (itemDetails.getItem_type_id()) {
                 case 0:
                     itemIcon.setImageResource(R.drawable.ic_food_black);
                     //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
@@ -104,7 +103,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
                     itemName.setText("Grocery");
                     satisfactionBar.setProgress(40);
                     break;
-                case 3:
+                default:
                     itemIcon.setImageResource(R.drawable.ic_stationery_black);
                     //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                     itemName.setText("Stationery");
@@ -115,7 +114,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter<DonorNeedViewAdap
             holder.needItems.addView(itemView);
             Log.d("Child count+ position",holder.needItems.getChildCount()+"");
             Log.d(TAG, "onBindViewHolder: " + (i + 1) + " item(s) added");
-        }*/
+        }
         Log.d(TAG, "onBindViewHolder: End");
     }
 

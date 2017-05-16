@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,GoogleMap.OnMyLocationButtonClickListener {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,GoogleMap.OnMyLocationButtonClickListener {
 
     public Geocoder geocoder;
     public static double latitude;
@@ -55,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_map);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         geocoder = new Geocoder(this, Locale.getDefault());
@@ -168,7 +168,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Prompt the user once explanation has been shown
-                        ActivityCompat.requestPermissions(MapsActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
+                        ActivityCompat.requestPermissions(MapActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_LOCATION);
                     }
                 }).create().show();
             } else {
@@ -309,21 +309,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(addresses.size()>0)
             addresses.clear();
         //String locations = locationSearch.getText().toString();
-            try {
-                addresses = geocoder.getFromLocationName(locations, 1);
-                Address address = addresses.get(0);
-                if (mCurrLocationMarker != null) {
-                    mCurrLocationMarker.remove();
-                }
-                latitude=address.getLatitude();
-                longitude=address.getLongitude();
-                location=new LatLng(latitude,longitude);
-                mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(latitude,longitude)));
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,17));
-
-            } catch (IOException e) {
-                e.printStackTrace();
+        try {
+            addresses = geocoder.getFromLocationName(locations, 1);
+            Address address = addresses.get(0);
+            if (mCurrLocationMarker != null) {
+                mCurrLocationMarker.remove();
             }
+            latitude=address.getLatitude();
+            longitude=address.getLongitude();
+            location=new LatLng(latitude,longitude);
+            mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(latitude,longitude)));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,17));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
