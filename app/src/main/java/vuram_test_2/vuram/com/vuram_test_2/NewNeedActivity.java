@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -306,8 +307,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
             client = new DefaultHttpClient();
             for(int i=0;i<needDetails.size();i++) {
-                String coordinatorToken = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
-                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(needDetails.get(i)).toString(), client, coordinatorToken);
+                response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(needDetails.get(i)).toString(), client,Connectivity.getAuthToken(NewNeedActivity.this,Connectivity.Donor_Token));
                 Log.d("Request JSON", gson.toJson(needDetails.get(i)).toString());
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
