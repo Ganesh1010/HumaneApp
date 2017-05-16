@@ -28,11 +28,9 @@ import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.io.SessionOutputBufferImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -76,6 +74,8 @@ public class NewNeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_need);
+        PopulateCountryDetails populateCountryDetails=new PopulateCountryDetails(this);
+        populateCountryDetails.getCountryDetailsFromAPI();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dateTimeFragment = (SwitchDateTimeDialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
         if(dateTimeFragment == null) {
@@ -315,7 +315,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 NeedDetails need_details=new NeedDetails();
 
-                need_details.getItems().item_type_id= Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory());
+                /*need_details.getItems().item_type_id= Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory());
                 System.out.println(Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory()));
                 need_details.getItems().gender=needDetails.get(i).getGender();
                 System.out.println(needDetails.get(i).getGender());
@@ -324,7 +324,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 need_details.getItems().deadline=needDetails.get(i).getDatetime();
                 System.out.println(needDetails.get(i).getDatetime());
                 need_details.getItems().age=needDetails.get(i).getAge();
-                System.out.println(needDetails.get(i).getAge());
+                System.out.println(needDetails.get(i).getAge());*/
 
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
                 response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(need_details), client, coordinator_token);
