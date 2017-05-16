@@ -8,17 +8,24 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
+
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.client.HttpClient;
+import org.apache.http.HttpResponse;
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -28,7 +35,8 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText orgRegNoEditText, orgNameEditText, addressEditText, emailEditText, phoneEditText, orgDescEditText;
     Spinner orgTypeSpinner;
     Gson gson;
-    String Address;
+    String mapAddress;
+    OrganisationDetails orgDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,21 +95,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 orgType = orgTypeSpinner.getSelectedItem().toString();
                 orgDesc = orgDescEditText.getText().toString();
 
-                OrganisationDetails orgDetails = new OrganisationDetails();
+                orgDetails = new OrganisationDetails();
                 orgDetails.setOrg_reg_no(orgRegNo);
                 orgDetails.setOrg_name(orgName);
                 orgDetails.setLatitude((int)MapsActivity.latitude);
                 orgDetails.setLongitude((int)MapsActivity.longitude);
-                orgDetails.setAddress(Address);
+                orgDetails.setAddress(mapAddress);
                 orgDetails.setEmail(email);
                 orgDetails.setMobile(phone);
                 orgDetails.setOrg_type(orgType);
                 orgDetails.setDescription(orgDesc);
 
-                gson = new Gson();
-                String jsonString = gson.toJson(orgDetails).toString();
-
-
+                new RegisterOrgTask().execute();
             }
         });
 
@@ -153,13 +158,40 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2)
         {
-            Address=data.getStringExtra("ADDRESS");
-            addressEditText.setText(Address);
+            mapAddress = data.getStringExtra("ADDRESS");
+            addressEditText.setText(mapAddress);
         }
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    class RegisterOrgTask extends AsyncTask {
+
+        HttpClient client;
+        HttpResponse response;
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            client = new DefaultHttpClient();
+            gson = new Gson();
+            String jsonString = gson.toJson(orgDetails).toString();
+            String token = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Coordinator_Token);
+            response = Connectivity.makePostRequest(RestAPIURL.registerOrg, jsonString, client, token);
+            if (response != null) {
+                Log.d("Response Code",response.getStatusLine().getStatusCode()+"");
+
+                try {
+                    Connectivity.getJosnFromResponse(response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Response","Null");
+            }
+            return null;
+        }
     }
 }

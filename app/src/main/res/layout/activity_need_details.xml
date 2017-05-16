@@ -83,20 +83,6 @@
                                 android:gravity="center"
                                 android:layout_gravity="left|center">
 
-                                <TextView
-                                    android:text="@string/need_id_receival_page"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/textView3"
-                                    android:layout_weight="0.5"
-                                    android:gravity="left|center" />
-
-                                <TextView
-                                    android:text="345678"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:id="@+id/needIdTextView_ReceivalPage"
-                                    android:layout_weight="3.43" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -173,15 +159,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView8"
-                            android:layout_weight="0.33"
-                            android:textColor="@color/colorPrimary"
-                            android:textAllCaps="true" />
-
-                        <TextView
-                            android:text="@string/list_heading_gender"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView6"
                             android:layout_weight="0.33"
                             android:textColor="@color/colorPrimary"
                             android:textAllCaps="true" />

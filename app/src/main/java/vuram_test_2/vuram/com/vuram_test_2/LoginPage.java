@@ -87,7 +87,7 @@ public class LoginPage extends AppCompatActivity {
                 JSONObject obj = new JSONObject();
                 obj.put("username",username);
                 obj.put("password",pass);
-                httpResponse= Connectivity.makePostRequest(RestAPIURL.login,obj.toString(),httpClient);
+                httpResponse= Connectivity.makePostRequest(RestAPIURL.login,obj.toString(),httpClient,null);
                 if(httpResponse!=null) {
                     code = httpResponse.getStatusLine().getStatusCode();
                     JSONObject jsonObject=new JSONObject(Connectivity.getJosnFromResponse(httpResponse));

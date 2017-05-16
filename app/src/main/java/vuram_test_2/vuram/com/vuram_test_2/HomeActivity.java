@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -30,6 +33,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,13 +96,19 @@ public class HomeActivity extends AppCompatActivity {
                 menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, "My Profile");
                 menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, "Settings");
                 menu.add(Menu.NONE, MENU_ITEM_THREE, Menu.NONE, "About Us");
-               // menu.add(Menu.NONE, MENU_ITEM_FOUR, Menu.NONE, "Login");
-
+                if(Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token)!=null)
+                    menu.add(Menu.NONE, MENU_ITEM_FOUR, Menu.NONE, "Logout");
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         Toast.makeText(HomeActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
                         if (item.getTitle().toString().equals("My Profile"))
                             startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
+                        else if(item.getTitle().toString().equals("Logout"))
+                        {
+                            Connectivity.deleteAuthToken(HomeActivity.this,Connectivity.Donor_Token);
+                            startActivity(new Intent(HomeActivity.this,LoginPage.class));
+                            HomeActivity.this.finish();
+                        }
                         return true;
                     }
                 });
@@ -124,17 +136,9 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        /* RecyclerView */
         getWidgets();
-        initializeNeeds();
 
         Log.d("Size",needs.size()+"");
-       // recyclerView.setHasFixedSize(true);
-       // recyclerView.setAdapter(new DonorNeedViewAdapter(this, needs));
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-        //recyclerView.addItemDecoration(dividerItemDecoration);
-
         newNeedFloatingActionButton = (FloatingActionButton) findViewById(R.id.new_need_home_page);
         newNeedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,47 +163,24 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.needs_recyclerview_home_page);
     }
 
-    private void initializeNeeds() {
-        Random randomNumberGenerator = new Random();
-        int needsCount = randomNumberGenerator.nextInt(6) + 15;
-        Log.d(TAG, "initializeNeeds: Needs : " + needsCount);
-        for (int i = 0; i < needsCount; i++) {
-            int sumOfDatisfiedPercent = 0;
-            TestNeedDetails needDetails = new TestNeedDetails();
-            needDetails.orgName =   "Vuram Technologies Solutions\n";
-            needDetails.orgAddress = "Chennai - 600093\n";
-            needDetails.orgContactNo = "123456789";
-            needDetails.orgLogo = "";
-
-            int itemsCount = randomNumberGenerator.nextInt(6) + 1;
-            Log.d(TAG, "initializeNeeds: Items : " + itemsCount);
-            for (int j = 0; j < itemsCount; j++) {
-                ItemDetails itemDetails = new ItemDetails();
-                itemDetails.itemName = "Food";
-                itemDetails.itemIcon = "";
-                int itemStatus = randomNumberGenerator.nextInt(71) + 30;
-                itemDetails.satisfiedPercentage = itemStatus;
-
-                needDetails.itemDetailsList.add(itemDetails);
-
-                sumOfDatisfiedPercent += itemStatus;
-            }
-            needDetails.overallSatisfiedPercentage = sumOfDatisfiedPercent / itemsCount;
-            // Adding one more Need to the Needs list
-            needs.add(needDetails);
-        }
-    }
     class GetNeedItemDetails extends AsyncTask {
-        String mobile,username,password,email;
         HttpResponse response;
+        ArrayList<NeedDetails> needitem;
         @Override
         protected Object doInBackground(Object[] params) {
             Log.d("Toekn",Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
             response = Connectivity.makeGetRequest(RestAPIURL.needList,client,Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
             if (response != null)
-             //   if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-            {
-                    Log.d("Need Response",Connectivity.getJosnFromResponse(response));
+                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                try {
+                    JSONObject jsonObject=new JSONObject(Connectivity.getJosnFromResponse(response));
+                    JSONArray results=jsonObject.getJSONArray("results");
+                    Gson gson=new Gson();
+                    needitem=gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>(){}.getType());
+                    Log.d("Results",needitem.size()+"");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 }
             else
                     Log.d("CAll ","Reponse null");
@@ -216,6 +197,11 @@ public class HomeActivity extends AppCompatActivity {
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
+                     recyclerView.setHasFixedSize(true);
+                     recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this,needitem));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                    recyclerView.addItemDecoration(dividerItemDecoration);
                    // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
                    // RegistrationPage.this.finish();

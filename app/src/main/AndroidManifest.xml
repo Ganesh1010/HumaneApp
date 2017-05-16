@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingPage">
+        <activity android:name=".NewNeedActivity" android:theme="@style/AppTheme1">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,8 +48,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".NewNeedActivity"
-            android:theme="@style/AppTheme1">
+        <activity android:name=".LandingPage">
         </activity>
         <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".SplashScreenActivity"></activity>
