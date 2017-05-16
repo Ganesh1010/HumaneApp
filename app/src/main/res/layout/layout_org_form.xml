@@ -225,7 +225,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/org_type_spinner_org_form"
                 android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary" />
+                android:backgroundTint="@color/colorPrimary"
+                android:entries="@array/org_type" />
         </LinearLayout>
     </LinearLayout>
 

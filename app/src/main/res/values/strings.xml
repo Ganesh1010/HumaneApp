@@ -31,13 +31,17 @@
     <string name="org_reg_no">Org Reg No</string>
     <string name="org_name">Org Name</string>
     <string name="org_address">Address</string>
-    <string name="org_type">Org Type</string>
+    <string-array name="org_type">
+        <item>Org Type</item>
+        <item>Children Home</item>
+        <item>Old Age Home</item>
+    </string-array>
     <string name="org_description">Org Description</string>
 
     <string name="username">UserName</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="google_maps_key">AIzaSyDkDRmcG-HwCpOnW_KFo9iKBnvA-x1RQs4</string>
+    <string name="google_maps_key">AIzaSyClUk8siahSbOOh5uVhAd8NgOF4RfPguNo</string>
     <string name="not_an_account">No account yet? Create one</string>
     <string name="reenter_password">Re-enter Password</string>
     <string name="add_an_organisation">Add an Organisation</string>
@@ -81,4 +85,5 @@
 
     <string name="apply_filter">Apply</string>
     <string name="clear_filter">Clear</string>
+    <string name="title_activity_map">Map</string>
 </resources>

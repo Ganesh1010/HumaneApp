@@ -8,19 +8,19 @@ public class CountryLookUpTableDetails {
     int id;
     String country_name;
 
-    public String getCountryname() {
+    public String getCountryName() {
         return country_name;
     }
 
-    public void setCountryname(String countryname) {
+    public void setCountryName(String countryname) {
         this.country_name = countryname;
     }
 
-    public int getCountryid() {
+    public int getCountryId() {
         return id;
     }
 
-    public void setCountryid(int countryid) {
+    public void setCountryId(int countryid) {
         this.id = countryid;
     }
 
