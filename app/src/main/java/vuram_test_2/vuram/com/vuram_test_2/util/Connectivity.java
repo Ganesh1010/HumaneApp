@@ -45,6 +45,9 @@ public class Connectivity {
         try {
             HttpPost httpPost = new HttpPost(uri);
             httpPost.setEntity(new StringEntity(json));
+            if(token!=null)
+                httpPost.setHeader("Authorization","Token "+token);
+
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
             return client.execute(httpPost);

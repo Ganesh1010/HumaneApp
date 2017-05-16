@@ -43,11 +43,12 @@ public class NeedDetailsActivity extends AppCompatActivity {
     CircularProgressBar progressBar;
     TextView percentage;
     View divider1;
+    Toolbar toolbar;
     NeedDetails needDetails,needItemResult;
     NeedItemDetails needItemDetails;
-    DonationDetails donationDetails;
-    DonatedItemDetails donatedItemDetails;
-    Toolbar toolbar;
+    //DonationDetails donationDetails;
+    //DonatedItemDetails donatedItemDetails;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,13 +158,11 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
             client = new DefaultHttpClient();
 
-
-
             response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/need/", client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null)
-// if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-            if(needDetails.getNeed_id()== 8)
             {
+// if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+
                 try {
                     JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                     JSONArray results = jsonObject.getJSONArray("results");
@@ -172,13 +171,18 @@ public class NeedDetailsActivity extends AppCompatActivity {
                     }.getType());
                     Log.d("Results", needItemResult.getNeed_id() + "");
 
-                     itemslist = needItemResult.getItems();
+                    if(needDetails.getNeed_id()== 8) {
+                    itemslist = needItemResult.getItems();
 
                     for (int i = 0; i < itemslist.size(); i++) {
                         NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
                         needItemId = needItemDetails.getNeed_item_id();
                         needQuantity = needItemDetails.getQuantity();
-                        needListViewItems =  new NeedListViewItems(needItemId,needQuantity);
+                        Log.d("Need Item id", "doInBackground: "+needItemId);
+                        Log.d("Need Quantity", "doInBackground: "+needQuantity);
+
+
+                        needListViewItems = new NeedListViewItems(needItemId, needQuantity);
                         needListData.add(needListViewItems);
 
                     }
@@ -191,17 +195,21 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
                         donatedItemList = donationDetails.getDonateditems();
                         donorName = donationDetails.getUser();
+                        Log.d("donor Name", "doInBackground: "+donorName);
+
 
                         for (int j = 0; j < donatedItemList.size(); j++) {
                             DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
 
                             donatedItemId = donatedItemDetails.getDonated_item_id();
                             donatedQuantity = donatedItemDetails.getQuantity();
+                            Log.d("donated Item", "doInBackground: "+donatedItemId);
+                            Log.d("donated Quantity", "doInBackground: "+donatedQuantity);
                         }
 
-                        needListViewItems = new NeedListViewItems(donatedItemId,donorName,donatedQuantity);
+                        needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
                         needCardData.add(needListViewItems);
-
+                    }
                     }
 
 
@@ -211,7 +219,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
 
 
-                return null;
+               // return null;
             }
             return null;
         }

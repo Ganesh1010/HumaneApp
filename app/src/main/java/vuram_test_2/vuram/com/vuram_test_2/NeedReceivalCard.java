@@ -77,7 +77,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
         public ImageView listImg;
         public CircleImageView donorImg,receivedImg;
-        public TextView donorName,itemName,quantity,gender;
+        public TextView donorName,itemName,quantity;
         public LinearLayout layout;
         public RecyclerView donatedItemDetails;
         public LinearLayout cardListHeading;

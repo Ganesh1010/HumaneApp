@@ -315,6 +315,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 NeedDetails need_details=new NeedDetails();
 
+                /*
                 need_details.getItems().item_type_id= Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory());
                 System.out.println(Arrays.asList(categoryID).indexOf(needDetails.get(i).getCategory()));
                 need_details.getItems().gender=needDetails.get(i).getGender();
@@ -325,6 +326,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 System.out.println(needDetails.get(i).getDatetime());
                 need_details.getItems().age=needDetails.get(i).getAge();
                 System.out.println(needDetails.get(i).getAge());
+                */
 
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
                 response = Connectivity.makePostRequest(RestAPIURL.needList, gson.toJson(need_details), client, coordinator_token);
