@@ -18,11 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".NewNeedActivity" android:theme="@style/AppTheme1">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             </activity>
         <activity android:name=".RegistrationPage" />
         <activity android:name=".HomeActivity" >
@@ -34,7 +29,13 @@
         </activity>
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".Details_of_quantity_selected" />
-        <activity android:name=".LoginPage" />
+        <activity android:name=".LoginPage" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
         <activity android:name=".filter" />
         <activity
             android:name=".AndroidGPSTrackingActivity"

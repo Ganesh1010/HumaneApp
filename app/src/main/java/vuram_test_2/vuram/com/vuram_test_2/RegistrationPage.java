@@ -262,8 +262,6 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
                 RegistrationPage.this.finish();
             }
-          //  Log.d("GSON",gson.toJson(registerDetails).toString());
-
             super.onPostExecute(o);
         }
     }
