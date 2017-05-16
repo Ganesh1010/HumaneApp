@@ -10,15 +10,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-import vuram_test_2.vuram.com.vuram_test_2.HomeActivity;
 
 /**
  * Created by ganeshrajam on 11-05-2017.
@@ -47,8 +44,6 @@ public class Connectivity {
     public static HttpResponse makePostRequest(String uri, String json, HttpClient client,String token) {
         try {
             HttpPost httpPost = new HttpPost(uri);
-            if(token!=null)
-                httpPost.setHeader("Authorization","Token "+token);
             httpPost.setEntity(new StringEntity(json));
             httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-type", "application/json");
