@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.NeedCardHolder> {
 
     Context context;
-    ArrayList<DonationDetails> donatedCardDetails;
+    ArrayList donatedCardDetails;
     ArrayList<NeedItemDetails> needItems;
     NeedListViewAdapter adapter;
     DonatedItemDetails donatedItem;
@@ -32,7 +32,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
     NeedItemDetails needItemDetails;
 
 
-    public NeedReceivalCard(Context context, ArrayList<DonationDetails> donatedCardDetails) {
+    public NeedReceivalCard(Context context, ArrayList donatedCardDetails) {
         this.context = context;
         this.donatedCardDetails = donatedCardDetails;
     }
@@ -61,9 +61,12 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
           needId = donatedItem.getDonated_item_id();
           needQuantity = donatedItem.getQuantity();
 
-          needItemDetails = new NeedItemDetails();
-          needItemDetails.setNeed_item_id(needId);
-          needItemDetails.setQuantity(needQuantity);
+          needItemDetails = new NeedItemDetails(needId,needQuantity);
+          needItems = new ArrayList<>();
+          needItems.add(needItemDetails);
+         Toast.makeText(context,"size"+needItems.size(),Toast.LENGTH_LONG).show();
+         // needItemDetails.setNeed_item_id(needId);
+          //needItemDetails.setQuantity(needQuantity);
           ///needItemDetails = new DonatedItemDetails(2,100);
           //needItems = new ArrayList();
          //  needItems.add(needItemDetails);
@@ -116,7 +119,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
             super(itemView);
 
            // Toast.makeText(context,"receival card holdder",Toast.LENGTH_LONG).show();
-            //adapter = new NeedListViewAdapter(context,donatedCardDetails);
+             //adapter = new NeedListViewAdapter(context,donatedCardDetails);
             adapter = new NeedListViewAdapter(context,needItems);
 
             layout = (LinearLayout) itemView.findViewById(R.id.cardrecyclerViewLinearLayout_ReceivalPage);
