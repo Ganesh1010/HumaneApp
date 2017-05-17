@@ -46,9 +46,10 @@ public class NeedDetailsActivity extends AppCompatActivity {
     View divider1;
     Toolbar toolbar;
     ArrayList<NeedDetails> needItemResult;
+    NeedDetails need;
     NeedDetails needDetails;
     NeedItemDetails needItemDetails;
-    NeedDetails need;
+    //NeedDetails need;
     //DonationDetails donationDetails;
     //DonatedItemDetails donatedItemDetails;
 
@@ -75,6 +76,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
         needItemDetails =  new NeedItemDetails();
         needItemResult = new ArrayList<>();
         donatedDetailsList = new ArrayList<>();
+        need = new NeedDetails();
 
         needDetails.setNeed_id(8);
 
@@ -146,15 +148,20 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         Log.d("Results", needItemResult.size() + "");
                         Log.d("output", needItemResult + "");
 
+                       //need = needItemResult.get(needItemResult.indexOf(8));
+
                        // for(int k=0;k<needItemResult.size();k++) {
-                           need = needItemResult.get(1);
-                            needId=need.getNeed_id();
+                          // need = needItemResult.get(need.getNeed_id());
+                        //  Log.d("output for need id 8", need + "");
+
+                        // needId=need.getNeed_id();
                        // }
 
-                        if (needId == 8) {
+                       /* if (needId == 8) {
 
                             Toast.makeText(NeedDetailsActivity.this, "Json Object", Toast.LENGTH_SHORT).show();
-                              itemslist = need.getItems();
+                              //itemslist = need.getItems();
+                            itemslist =
 
                             for (int i = 0; i < itemslist.size(); i++) {
                                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
@@ -196,7 +203,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         else
                             Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
 
-
+*/
 
                     } catch (JSONException e) {
                         e.printStackTrace();
