@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,7 +50,7 @@ public class UserProfileActivity extends AppCompatActivity {
     Gson gson;
     String mapAddress;
     OrganisationDetails orgDetails;
-
+    View orgFormView;
 
     Random randomNumberGenerator = null;
     ArrayList<OrgDetails> orgDetailsList = null;
@@ -65,10 +66,10 @@ public class UserProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
+        // Back Arrow
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,22 +77,11 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        scrollView = ((ScrollView) findViewById(R.id.scrollview_user_profile));
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
-        orgListView = (RecyclerView) findViewById(R.id.org_details_recyclerview_user_profile);
-        editImageButton = (CircleImageView) findViewById(R.id.edit_imagebutton_user_profile);
-        editImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(UserProfileActivity.this, EditProfileActivity.class));
-            }
-        });
+        // Fetching User details
+        // Downloading User profile picture
+        /*new DownloadProfilePic().execute();*/
 
+        // Creating a list of org details
         orgDetailsList = new ArrayList<OrgDetails>();
         randomNumberGenerator = new Random();
         orgCount = randomNumberGenerator.nextInt(2) + 2;
@@ -104,9 +94,55 @@ public class UserProfileActivity extends AppCompatActivity {
             orgDetailsList.add(orgDetails);
         }
         Log.d(TAG, "onCreate: Org List Size " + orgDetailsList.size());
+
+        // Adapting the list to the Recycler View
         OrgListAdapter orgListAdapter = new OrgListAdapter(this, orgDetailsList);
+        orgListView = (RecyclerView) findViewById(R.id.org_details_recyclerview_user_profile);
         orgListView.setAdapter(orgListAdapter);
         orgListView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Focusing up the page
+        scrollView = ((ScrollView) findViewById(R.id.scrollview_user_profile));
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
+
+        // Edit button functionality
+        editImageButton = (CircleImageView) findViewById(R.id.edit_imagebutton_user_profile);
+        editImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserProfileActivity.this, EditProfileActivity.class));
+            }
+        });
+
+        // Add Organisation Button
+        addOrgButton = (Button) findViewById(R.id.add_org_button_edit_profile);
+        addOrgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                orgFormView = findViewById(R.id.org_form);
+                String addOrganisation = "Add Organisation", editOrganisation = "Edit Organisation", cancel = "Cancel";
+                String buttonName = addOrgButton.getText().toString();
+                String actualButtonName = "*Working on it*";
+                if (buttonName.equals(addOrganisation)) {
+                    actualButtonName = buttonName;
+                    addOrgButton.setText(cancel);
+                    orgFormView.setVisibility(View.VISIBLE);
+                } else if (buttonName.equals(editOrganisation)) {
+                    actualButtonName = buttonName;
+                    addOrgButton.setText(cancel);
+                    orgFormView.setVisibility(View.VISIBLE);
+
+                } else if (buttonName.equals(cancel)) {
+                    addOrgButton.setText(actualButtonName);
+                    orgFormView.setVisibility(View.GONE);
+                }
+            }
+        });
 
         // Org Registration Form
         orgRegNoEditText = (EditText) findViewById(R.id.org_register_num_editText_org_form);
@@ -117,21 +153,7 @@ public class UserProfileActivity extends AppCompatActivity {
         orgTypeSpinner = (Spinner) findViewById(R.id.org_type_spinner_org_form);
         orgDescEditText = (EditText) findViewById(R.id.org_desc_editText_org_form);
 
-        addOrgButton = (Button) findViewById(R.id.add_org_button_edit_profile);
-        addOrgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (addOrgButton.getText().toString().equals("Add Organisation")) {
-                    addOrgButton.setText("Cancel");
-                    View orgFormView = findViewById(R.id.org_form);
-                    orgFormView.setVisibility(View.VISIBLE);
-                } else {
-                    addOrgButton.setText("Add Organisation");
-                    View orgFormView = findViewById(R.id.org_form);
-                    orgFormView.setVisibility(View.GONE);
-                }
-            }
-        });
+        // Submit button
         submitOrgFormButton = (Button) findViewById(R.id.submit_button_org_form);
         submitOrgFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +249,14 @@ public class UserProfileActivity extends AppCompatActivity {
 
         HttpClient client;
         HttpResponse response;
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(UserProfileActivity.this);
+            progressDialog.show();
+        }
 
         @Override
         protected Object doInBackground(Object[] params) {
@@ -249,5 +279,62 @@ public class UserProfileActivity extends AppCompatActivity {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.cancel();
+            addOrgButton.setText("Edit Organisation");
+            orgFormView.setVisibility(View.GONE);
+        }
     }
+    /*
+    private class DownloadProfilePic extends AsyncTask<String, Void, Bitmap> {
+
+        ProgressDialog mProgressDialog;
+        ImageView image;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            image = (ImageView) findViewById(R.id.user_image_user_profile);
+
+            // Create a progressdialog
+            mProgressDialog = new ProgressDialog(UserProfileActivity.this);
+            // Set progressdialog title
+            mProgressDialog.setTitle("Download Image Tutorial");
+            // Set progressdialog message
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(false);
+            // Show progressdialog
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... URL) {
+
+            String imageURL = URL[0];
+
+            Bitmap bitmap = null;
+            try {
+                // Download Image from URL
+                InputStream input = new java.net.URL(imageURL).openStream();
+                // Decode Bitmap
+                bitmap = BitmapFactory.decodeStream(input);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // Set the bitmap into ImageView
+            image.setImageBitmap(result);
+            // Close progressdialog
+            mProgressDialog.dismiss();
+        }
+    }
+    */
 }

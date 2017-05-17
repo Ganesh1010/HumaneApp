@@ -31,14 +31,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -79,8 +77,8 @@ public class NewNeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_need);
-        PopulateCountryDetails populateCountryDetails=new PopulateCountryDetails(this);
-        populateCountryDetails.getCountryDetailsFromAPI();
+        DetailsPopulator detailsPopulator =new DetailsPopulator(this);
+        detailsPopulator.getCountryDetailsFromAPI();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dateTimeFragment = (SwitchDateTimeDialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
         if(dateTimeFragment == null) {

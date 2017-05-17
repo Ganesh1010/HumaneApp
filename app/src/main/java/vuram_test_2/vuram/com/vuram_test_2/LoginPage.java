@@ -144,6 +144,11 @@ public class LoginPage extends AppCompatActivity {
         _loginButton.setEnabled(true);
         //finish();
 
+        // Main Item & Sub Item details Synchronization Test
+        DetailsPopulator detailsPopulator = new DetailsPopulator(LoginPage.this);
+        detailsPopulator.getMainItemDetailsFromAPI();
+        detailsPopulator.getSubItemDetailsFromAPI();
+
         Intent intent = new Intent(this,HomeActivity.class);
         startActivity(intent);
         finish();
