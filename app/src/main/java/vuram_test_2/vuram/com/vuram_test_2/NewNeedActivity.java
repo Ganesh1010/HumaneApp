@@ -211,7 +211,10 @@ public class NewNeedActivity extends AppCompatActivity {
                     needItemDetails.setSub_item_type_id(1);
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
-                    needItemDetails.setDeadline(datetime);
+                    java.util.Date date = new java.util.Date();
+                    System.out.println("date"+date);
+                    needItemDetails.setDeadline(date);
+                    //needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
 
@@ -325,13 +328,6 @@ public class NewNeedActivity extends AppCompatActivity {
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
                 String donor_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Donor_Token);
                 response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details,NeedDetails.class), client, donor_token);
-            System.out.println(need_details.getNeed_id());
-            System.out.println(need_details.getItems().get(0).getItem_type_id());
-            System.out.println(need_details.getItems().get(0).getDeadline());
-            System.out.println(need_details.getItems().get(0).getSub_item_type_id());
-            System.out.println(need_details.getItems().get(0).getQuantity());
-            System.out.println(need_details.getLatitude());
-            System.out.println(need_details.getLongitude());
                 Log.d("Request JSON", gson.toJson(need_details,NeedDetails.class));
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
