@@ -20,7 +20,7 @@ import java.util.Locale;
 /**
  * Created by gokulrajk on 3/6/2017.
  */
-public class Need_volunteer extends Fragment {
+public class Needvolunteer extends Fragment {
     View view;
     private static final String TAG = "Sample";
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
