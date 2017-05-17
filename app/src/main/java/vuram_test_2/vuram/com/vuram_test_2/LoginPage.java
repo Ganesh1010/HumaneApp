@@ -17,8 +17,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -26,15 +24,19 @@ public class LoginPage extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     ProgressDialog progressDialog=null;
-    @Bind(R.id.email_login) EditText _emailText;
-    @Bind(R.id.password_login) EditText _passwordText;
-    @Bind(R.id.btn_login) Button _loginButton;
-    @Bind(R.id.link_login) TextView _signupLink;
+    EditText _emailText;
+    EditText _passwordText;
+    Button _loginButton;
+    TextView _signupLink;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         ButterKnife.bind(this);
+        _emailText=(EditText)findViewById(R.id.email_login);
+        _passwordText=(EditText)findViewById(R.id.password_login);
+        _loginButton=(Button)findViewById(R.id.btn_login);
+        _signupLink=(TextView)findViewById(R.id.link_login);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -143,6 +145,11 @@ public class LoginPage extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         //finish();
+
+        // Main Item & Sub Item details Synchronization Test
+        DetailsPopulator detailsPopulator = new DetailsPopulator(LoginPage.this);
+        detailsPopulator.getMainItemDetailsFromAPI();
+        detailsPopulator.getSubItemDetailsFromAPI();
 
         Intent intent = new Intent(this,HomeActivity.class);
         startActivity(intent);

@@ -31,14 +31,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -79,8 +77,8 @@ public class NewNeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_need);
-        PopulateCountryDetails populateCountryDetails=new PopulateCountryDetails(this);
-        populateCountryDetails.getCountryDetailsFromAPI();
+        DetailsPopulator detailsPopulator =new DetailsPopulator(this);
+        detailsPopulator.getCountryDetailsFromAPI();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dateTimeFragment = (SwitchDateTimeDialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
         if(dateTimeFragment == null) {
@@ -211,7 +209,10 @@ public class NewNeedActivity extends AppCompatActivity {
                     needItemDetails.setSub_item_type_id(1);
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
-                    needItemDetails.setDeadline(datetime);
+                    java.util.Date date = new java.util.Date();
+                    System.out.println("date"+date);
+                    needItemDetails.setDeadline(date);
+                    //needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
 
@@ -325,13 +326,6 @@ public class NewNeedActivity extends AppCompatActivity {
                 String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
                 String donor_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Donor_Token);
                 response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details,NeedDetails.class), client, donor_token);
-            System.out.println(need_details.getNeed_id());
-            System.out.println(need_details.getItems().get(0).getItem_type_id());
-            System.out.println(need_details.getItems().get(0).getDeadline());
-            System.out.println(need_details.getItems().get(0).getSub_item_type_id());
-            System.out.println(need_details.getItems().get(0).getQuantity());
-            System.out.println(need_details.getLatitude());
-            System.out.println(need_details.getLongitude());
                 Log.d("Request JSON", gson.toJson(need_details,NeedDetails.class));
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
