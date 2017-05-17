@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapter.NeedViewHolder> {
 
     Context context;
-    TextView itemNameView,quantityView,genderView;
+    TextView itemNameView,quantityView;
     ArrayList needListViewItems;
 
     public NeedListViewAdapter(Context context, ArrayList<NeedListViewItems> needListViewItems){

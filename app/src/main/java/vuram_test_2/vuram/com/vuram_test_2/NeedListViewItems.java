@@ -1,19 +1,11 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-/**
- * Created by akshayagr on 21-03-2017.
- */
 
 public class NeedListViewItems {
 
     String itemName,donorName;
     int quantity,itemId,donatedId;
 
-
-    public NeedListViewItems(String donorName) {
-        this.donorName = donorName;
-
-    }
 
     public NeedListViewItems(int itemId, int quantity) {
      //   this.itemName = itemName;

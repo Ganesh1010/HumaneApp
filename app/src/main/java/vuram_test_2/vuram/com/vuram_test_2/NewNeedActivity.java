@@ -31,6 +31,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -209,6 +210,7 @@ public class NewNeedActivity extends AppCompatActivity {
                     needItemDetails.setItem_type_id(Arrays.asList(categoryID).indexOf(category));
                     needItemDetails.setSub_item_type_id(1);
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
+
                     needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
@@ -330,7 +332,7 @@ public class NewNeedActivity extends AppCompatActivity {
             System.out.println(need_details.getItems().get(0).getQuantity());
             System.out.println(need_details.getLatitude());
             System.out.println(need_details.getLongitude());
-                Log.d("Request JSON", gson.toJson(needDetails,NeedDetails.class));
+                Log.d("Request JSON", gson.toJson(need_details,NeedDetails.class));
                 if (response != null) {
                     Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
 
