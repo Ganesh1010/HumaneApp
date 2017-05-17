@@ -31,8 +31,10 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class NeedDetailsActivity extends AppCompatActivity {
 
-    ArrayList<NeedListViewItems> needListData,needCardData;
+    ArrayList<NeedItemDetails> needListData;
+    ArrayList<DonationDetails> needCardData;
     ArrayList<DonationDetails> donatedDetailsList;
+    ArrayList<NeedDetails> needItemResult;
     List  donatedItemList,itemslist;
     int donatedItemId,needItemId,needQuantity,donatedQuantity,needId;
     String donorName;
@@ -45,13 +47,12 @@ public class NeedDetailsActivity extends AppCompatActivity {
     TextView percentage;
     View divider1;
     Toolbar toolbar;
-    ArrayList<NeedDetails> needItemResult;
-    NeedDetails need;
-    NeedDetails needDetails;
+    NeedItemDetails needItemsToDisplay;
+    NeedDetails needDetails,need;
     NeedItemDetails needItemDetails;
     //NeedDetails need;
-    //DonationDetails donationDetails;
-    //DonatedItemDetails donatedItemDetails;
+     DonationDetails donationDetailsToDisplay;
+     DonatedItemDetails donatedItemDetailsTodisplay;
 
 
     @Override
@@ -77,8 +78,9 @@ public class NeedDetailsActivity extends AppCompatActivity {
         needItemResult = new ArrayList<>();
         donatedDetailsList = new ArrayList<>();
         need = new NeedDetails();
+        itemslist = new ArrayList();
 
-        needDetails.setNeed_id(8);
+     //   needDetails.setNeed_id(8);
 
          needListData = new ArrayList();
          needCardData = new ArrayList();
@@ -142,26 +144,27 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
-                        Log.d("123", "doInBackground: "+results.toString());
+                     //   Log.d("123", "doInBackground: "+results.toString());
                         needItemResult = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
                         }.getType());
-                        Log.d("Results", needItemResult.size() + "");
-                        Log.d("output", needItemResult + "");
 
-                       //need = needItemResult.get(needItemResult.indexOf(8));
+                        Log.d("output", needItemResult + "");
+                        needId = 1;
+                        need = needItemResult.get(needId);
+
+                        //need = needItemResult.get(needItemResult.indexOf(8));
 
                        // for(int k=0;k<needItemResult.size();k++) {
                           // need = needItemResult.get(need.getNeed_id());
-                        //  Log.d("output for need id 8", need + "");
+                        Log.d("output for need id 3", need + "");
 
                         // needId=need.getNeed_id();
                        // }
 
-                       /* if (needId == 8) {
+                        if (need != null) {
 
-                            Toast.makeText(NeedDetailsActivity.this, "Json Object", Toast.LENGTH_SHORT).show();
-                              //itemslist = need.getItems();
-                            itemslist =
+                            itemslist = need.getItems();
+                            Log.d("ItemsList", "doInBackground: "+itemslist);
 
                             for (int i = 0; i < itemslist.size(); i++) {
                                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
@@ -171,8 +174,8 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 Log.d("Need Quantity", "doInBackground: " + needQuantity);
 
 
-                                needListViewItems = new NeedListViewItems(needItemId, needQuantity);
-                                needListData.add(needListViewItems);
+                                needItemsToDisplay = new NeedItemDetails(needItemId, needQuantity);
+                                needListData.add(needItemsToDisplay);
 
                             }
 
@@ -183,7 +186,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 DonationDetails donationDetails = donatedDetailsList.get(i);
 
                                 donatedItemList = donationDetails.getDonateditems();
-                                // donorName = donationDetails.getUser();
+                                 donorName = donationDetails.getUser();
                                 Log.d("donor Name", "doInBackground: " + donorName);
 
 
@@ -196,14 +199,17 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                     Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
                                 }
 
-                                needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
-                                needCardData.add(needListViewItems);
+                                donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
+                                donationDetailsToDisplay = new DonationDetails(donatedItemDetailsTodisplay,donorName);
+                              //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
+
+                                needCardData.add(donationDetailsToDisplay);
                             }
                         }
                         else
                             Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
 
-*/
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
