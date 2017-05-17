@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,19 +18,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -47,16 +36,14 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
     LinearLayout item=null;
     ProgressDialog progressDialog;
     Button chooseLocationButton;
-    @Bind(R.id.name_register) EditText _nameText;
-    @Bind(R.id.input_count)EditText _mobileText;
-    @Bind(R.id.email_register) EditText _emailText;
-    @Bind(R.id.password_register) EditText _passwordText;
+    EditText _nameText;
+    EditText _mobileText;
+    EditText _emailText;
+    EditText _passwordText;
 //    @Bind(R.id.reEnterPassword_register) EditText _reEnterPasswordText;
-    @Bind(R.id.signup_register) Button _signupButton;
+    Button _signupButton;
   //  @Bind(R.id.org_details_register)
     Button org_details;
-    @Bind(R.id.link_login_register)
-
     TextView _loginLink;
 
 
@@ -66,6 +53,12 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         setContentView(R.layout.activity_registration_page);
 
         ButterKnife.bind(this);
+        _nameText=(EditText)findViewById(R.id.name_register);
+        _mobileText=(EditText)findViewById(R.id.input_count);
+        _emailText=(EditText)findViewById(R.id.email_register);
+        _passwordText=(EditText)findViewById(R.id.password_register);
+        _signupButton=(Button) findViewById(R.id.signup_register);
+        _loginLink=(TextView)findViewById(R.id.link_login_register);
 //        org_details.setOnClickListener(this);
        // imageButton=(ImageButton)findViewById(R.id.back_button);
 //        imageButton.setOnClickListener(new View.OnClickListener() {
