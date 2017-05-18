@@ -14,11 +14,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class filterRecycleAdapter extends RecyclerView.Adapter<filterRecycleAdapter.ViewHolder> {
-    List<filterItemCategoryList> list;
+public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdapter.ViewHolder> {
+    List<FilterItemCategoryList> list;
     Context context;
     public static ArrayList<CheckBox>allCheckBoxes=new ArrayList<>();
-    public filterRecycleAdapter(Context context, ArrayList<filterItemCategoryList> list)
+    public FilterRecycleAdapter(Context context, ArrayList<FilterItemCategoryList> list)
     {
         this.list=list;
         this.context=context;

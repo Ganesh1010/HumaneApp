@@ -214,6 +214,7 @@ public class NewNeedActivity extends AppCompatActivity {
                     java.util.Date date = new java.util.Date();
                     System.out.println("date"+date);
                     needItemDetails.setDeadline(date);
+
                     //needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
