@@ -469,7 +469,7 @@
                         android:id="@+id/user_image_user_profile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/user"
+                        android:src="@drawable/ic_user_black"
                         app:civ_fill_color="@color/colorTextIcons"
                         android:layout_weight="0"
                         android:elevation="7dp"

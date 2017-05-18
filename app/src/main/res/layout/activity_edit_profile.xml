@@ -48,6 +48,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical" >
 
                 <RelativeLayout
@@ -57,11 +58,12 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="230dp"
-                        app:srcCompat="@drawable/user"
+                        app:srcCompat="@drawable/ic_user_black"
                         android:id="@+id/user_image_edit_profile"
                         android:layout_alignParentEnd="true"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/gradient" />
+                        android:background="@drawable/gradient"
+                        android:elevation="1dp" />
 
                     <View
                         android:layout_width="match_parent"

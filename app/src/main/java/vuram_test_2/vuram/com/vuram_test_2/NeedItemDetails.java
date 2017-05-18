@@ -16,6 +16,14 @@ public class  NeedItemDetails {
     String age;
     Date deadline;
 
+    public NeedItemDetails() {
+    }
+
+    public NeedItemDetails(int need_item_id, int quantity) {
+
+        this.need_item_id = need_item_id;
+        this.quantity = quantity;
+    }
 
     public int getNeed_item_id() {
         return need_item_id;

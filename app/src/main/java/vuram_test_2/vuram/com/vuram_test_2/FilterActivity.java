@@ -9,11 +9,11 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-public class filter extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity {
 
-    ArrayList<filterItemCategoryList> filterItems;
+    ArrayList<FilterItemCategoryList> filterItems;
     ArrayList<String>itemName;
-    filterItemCategoryList item;
+    FilterItemCategoryList item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class filter extends AppCompatActivity {
 
         filterItems= new ArrayList<>();
 
-        item=new filterItemCategoryList();
+        item=new FilterItemCategoryList();
         itemName=new ArrayList();
         itemName.add("Breakfast");
         itemName.add("Lunch");
@@ -34,7 +34,7 @@ public class filter extends AppCompatActivity {
         item.setItemName(itemName);
         filterItems.add(item);
 
-        item=new filterItemCategoryList();
+        item=new FilterItemCategoryList();
         itemName=new ArrayList();
         itemName.add("Male");
         itemName.add("Female");
@@ -42,7 +42,7 @@ public class filter extends AppCompatActivity {
         item.setItemName(itemName);
         filterItems.add(item);
 
-        item=new filterItemCategoryList();
+        item=new FilterItemCategoryList();
         itemName=new ArrayList();
         itemName.add("wheat");
         itemName.add("rice");
@@ -52,7 +52,7 @@ public class filter extends AppCompatActivity {
         item.setItemName(itemName);
         filterItems.add(item);
 
-        item=new filterItemCategoryList();
+        item=new FilterItemCategoryList();
         itemName=new ArrayList();
         itemName.add("Pen");
         itemName.add("Pencil");
@@ -63,7 +63,7 @@ public class filter extends AppCompatActivity {
         filterItems.add(item);
 
 
-        recyclerView.setAdapter(new filterRecycleAdapter(this,filterItems));
+        recyclerView.setAdapter(new FilterRecycleAdapter(this,filterItems));
         recyclerView.setLayoutManager(new GridLayoutManager(this,1));
 
         findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
@@ -79,8 +79,8 @@ public class filter extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                for(int i = 0; i< filterRecycleAdapter.allCheckBoxes.size(); i++)
-                    filterRecycleAdapter.allCheckBoxes.get(i).setChecked(false);
+                for(int i = 0; i< FilterRecycleAdapter.allCheckBoxes.size(); i++)
+                    FilterRecycleAdapter.allCheckBoxes.get(i).setChecked(false);
                 HomeActivity.appliedFilter.clear();
             }
         });
