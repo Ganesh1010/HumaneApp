@@ -256,11 +256,12 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                                     needitem.remove(needitem.size() - 1);
                                     mAdapter.notifyItemRemoved(needitem.size());
 
-                                    if(!jsonObject.isNull("next"))
+                                    /*if(!jsonObject.isNull("next"))
                                        nextNeedDetails.nextURL("next");
 
                                     else
-                                      nextNeedDetails.nextURL("finished");
+                                      nextNeedDetails.nextURL("finished");*/
+                                    needitem.addAll(tempneeditem);
                                     mAdapter.notifyDataSetChanged();
                                     mAdapter.setLoaded();
                                 }
