@@ -137,7 +137,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
             client = new DefaultHttpClient();
 
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/need/", client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.mainItemDetails, client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
