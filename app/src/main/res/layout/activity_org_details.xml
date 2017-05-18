@@ -10,6 +10,7 @@
     android:id="@+id/activity_donor_org_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     tools:context="com.example.gokulrajk.vuram2.donor_org_details"
     android:orientation="vertical"
     android:weightSum="1"

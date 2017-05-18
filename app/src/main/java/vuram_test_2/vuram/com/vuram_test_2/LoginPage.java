@@ -17,6 +17,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -57,6 +59,16 @@ public class LoginPage extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+        DetailsPopulator populator=new DetailsPopulator(this);
+        populator.getMainItemDetailsFromAPI();
+        DatabaseHelper helper=new DatabaseHelper(this);
+        ArrayList<MainItemDetails> list= helper.getAllMainItemDetails();
+        Log.d("Size",list.size()+"");
+        for(MainItemDetails details:list)
+        {
+            Log.d("Look up",details.getMainItemName());
+        }
+
     }
 
     public void login() {
@@ -73,7 +85,8 @@ public class LoginPage extends AppCompatActivity {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
-
+        //DetailsPopulator populator=new DetailsPopulator(this);
+        //populator.getCountryDetailsFromAPI();
         new CheckUser().execute();
     }
     class CheckUser extends AsyncTask {
