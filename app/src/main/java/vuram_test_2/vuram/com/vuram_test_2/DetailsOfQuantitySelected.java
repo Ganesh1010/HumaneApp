@@ -27,8 +27,8 @@ public class DetailsOfQuantitySelected extends AppCompatActivity {
         context = DetailsOfQuantitySelected.this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        PopulateCountryDetails populateCountryDetails=new PopulateCountryDetails(this);
-        populateCountryDetails.getCountryDetailsFromAPI();
+        DetailsPopulator detailsPopulator =new DetailsPopulator(this);
+        detailsPopulator.getCountryDetailsFromAPI();
         Button edit = (Button) findViewById(R.id.edit_details);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override

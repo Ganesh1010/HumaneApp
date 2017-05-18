@@ -17,14 +17,14 @@ public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapte
 
     Context context;
     TextView itemNameView,quantityView;
-    ArrayList needListViewItems;
+    ArrayList needDetailsList;
 
-    public NeedListViewAdapter(Context context, ArrayList<NeedListViewItems> needListViewItems){
+    public NeedListViewAdapter(Context context, ArrayList needListViewItems){
 
         this.context = context;
-        this.needListViewItems = needListViewItems;
-
+        this.needDetailsList = needListViewItems;
     }
+
     @Override
     public NeedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -36,9 +36,13 @@ public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapte
     @Override
     public void onBindViewHolder(NeedViewHolder holder, int position) {
 
-        NeedListViewItems items = (NeedListViewItems) needListViewItems.get(position);
-        itemNameView.setText(items.getItemName());
-        quantityView.setText(items.getQuantity());
+        NeedItemDetails items = (NeedItemDetails) needDetailsList.get(position);
+        // itemNameView.setText(items.getNeed_item_id());
+         //quantityView.setText(items.getQuantity());
+
+         itemNameView.setText("1");
+         quantityView.setText("2");
+
 
 
 
@@ -46,7 +50,7 @@ public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapte
 
     @Override
     public int getItemCount() {
-        return needListViewItems.size() ;
+        return needDetailsList.size();
     }
 
     public  class NeedViewHolder extends RecyclerView.ViewHolder {

@@ -9,6 +9,21 @@ public class DonationDetails {
     int donation_id;
     List<DonatedItemDetails> donateditems;
     String user;
+    DonatedItemDetails donatedItemDetails;
+
+    public DonationDetails(DonatedItemDetails donatedItemDetails, String user) {
+        this.donatedItemDetails = donatedItemDetails;
+        this.user = user;
+    }
+
+    public DonatedItemDetails getDonatedItemDetails() {
+
+        return donatedItemDetails;
+    }
+
+    public void setDonatedItemDetails(DonatedItemDetails donatedItemDetails) {
+        this.donatedItemDetails = donatedItemDetails;
+    }
 
     public DonationDetails() {
 
