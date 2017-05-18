@@ -15,13 +15,6 @@
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/genderTextView_ReceivalPage"
-        android:layout_weight="0.33" />
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/quantityTextView_ReceivalPage"
         android:layout_weight="0.33" />
 </LinearLayout>

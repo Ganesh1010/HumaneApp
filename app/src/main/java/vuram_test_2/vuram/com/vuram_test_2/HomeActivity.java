@@ -1,9 +1,11 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,21 +19,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.os.Handler;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,19 +40,29 @@ import java.util.TreeSet;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails{
 
     private final int MENU_ITEM_ONE = 1;
     private final int MENU_ITEM_TWO = 2;
     private final int MENU_ITEM_THREE = 3;
     private final int MENU_ITEM_FOUR = 4;
     public static Set<String> appliedFilter;
+    protected Handler handler;
+    HttpResponse response;
+    private DonorNeedViewAdapter mAdapter;
     Gson gson;
     HttpClient client;
+    String nextUrl=RestAPIURL.needList;
+    ProgressDialog progressDialog=null;
+    ArrayList<NeedDetails> needitem=new ArrayList<>();
+    ArrayList<NeedDetails> tempneeditem;
     private final String TAG = "HomeActivity.java";
     private RecyclerView recyclerView;
     private ImageButton filterImageButton;
+    private TextView  tvEmptyView;
+    private GetNeedItemDetails getNeedItemDetails;
     private FloatingActionButton newNeedFloatingActionButton;
+    JSONObject jsonObject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +71,24 @@ public class HomeActivity extends AppCompatActivity {
         /* Spinner */
         SpinnerListener spinnerListener = new SpinnerListener();
         Spinner spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
+        tvEmptyView = (TextView) findViewById(R.id.empty_view);
         spinner.setOnItemSelectedListener(spinnerListener);
         gson= new Gson();
         List<String> categories = new ArrayList<String>();
         categories.add("Donor");
         categories.add("Organization");
 
+
+        progressDialog= new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
+
+        handler = new Handler();
 
         /* Menu Button */
         final ImageButton menuButton = (ImageButton) findViewById(R.id.menu_imagebutton_donor_home);
@@ -111,12 +130,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        new GetNeedItemDetails().execute();
+        startAsyncTask();
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(HomeActivity.this,filter.class);
+                Intent intent=new Intent(HomeActivity.this,FilterActivity.class);
                 startActivityForResult(intent, 2);
             }
         });
@@ -130,6 +149,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void getWidgets() {
+        recyclerView = (RecyclerView) findViewById(R.id.needs_recyclerview_home_page);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -142,30 +166,53 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void getWidgets() {
-        recyclerView = (RecyclerView) findViewById(R.id.needs_recyclerview_home_page);
+    private void startAsyncTask(){
+        getNeedItemDetails=new GetNeedItemDetails();
+        getNeedItemDetails.nextNeedDetails=this;
+        getNeedItemDetails.execute();
+    }
+
+    private final Handler mHandler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            super.handleMessage(msg);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+        }
+    };
+
+    @Override
+    public void nextURL(String result) {
+        if(result.equals("next"))
+            startAsyncTask();
+        else
+            getNeedItemDetails.cancel(true);
     }
 
     class GetNeedItemDetails extends AsyncTask {
-        HttpResponse response;
-        ArrayList<NeedDetails> needitem;
+
+        public LoadNextNeedDetails nextNeedDetails;
         @Override
-        protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest(RestAPIURL.needList,client,Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token));
-            if (response != null)
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+        protected Object doInBackground(Object[] params)
+        {
+            response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
+            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                 try {
-                    JSONObject jsonObject=new JSONObject(Connectivity.getJosnFromResponse(response));
-                    JSONArray results=jsonObject.getJSONArray("results");
-                    Gson gson=new Gson();
-                    needitem=gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>(){}.getType());
-                    Log.d("Results",needitem.size()+"");
+                    jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    nextUrl = jsonObject.getString("next");
+                    Gson gson = new Gson();
+                    tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
+                    needitem.addAll(tempneeditem);
+
+                    Log.d("Results", needitem.size() + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                }
-            else
-                    Log.d("CAll ","Response null");
+            } else
+                Log.d("CAll ", "Response null");
             return null;
         }
         @Override
@@ -174,24 +221,62 @@ public class HomeActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
+
         @Override
         protected void onPostExecute(Object o) {
+            mHandler.sendMessageDelayed(new Message(), 3000);
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
-                     recyclerView.setHasFixedSize(true);
-                     recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this,needitem));
+                    recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    mAdapter=new DonorNeedViewAdapter(HomeActivity.this,needitem,recyclerView);
+                    recyclerView.setAdapter(mAdapter);
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
                     recyclerView.addItemDecoration(dividerItemDecoration);
-                   // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
-                   // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
-                   // RegistrationPage.this.finish();
+                    if (needitem.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore() {
+                            //add null , so the adapter will check view_type and show progress bar at bottom
+                            needitem.add(null);
+                            mAdapter.notifyItemInserted(needitem.size() - 1);
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //   remove progress item
+                                    needitem.remove(needitem.size() - 1);
+                                    mAdapter.notifyItemRemoved(needitem.size());
+
+                                    if(!jsonObject.isNull("next"))
+                                       nextNeedDetails.nextURL("next");
+
+                                    else
+                                      nextNeedDetails.nextURL("finished");
+                                    mAdapter.notifyDataSetChanged();
+                                    mAdapter.setLoaded();
+                                }
+                            }, 2000);
+                        }
+                    });
+                    // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
+                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
+                    // RegistrationPage.this.finish();
                 }
 
             super.onPostExecute(o);
         }
     }
+
+
     class SpinnerListener implements AdapterView.OnItemSelectedListener {
 
         @Override
@@ -206,10 +291,10 @@ public class HomeActivity extends AppCompatActivity {
 
             if (authorType.equals("Donor")) {
                 newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-              //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
+                //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
             } else {
                 newNeedFloatingActionButton.setVisibility(View.VISIBLE);
-              //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
+                //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
             }
         }
 

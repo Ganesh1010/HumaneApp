@@ -33,7 +33,7 @@
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".DetailsOfQuantitySelected" />
         <activity android:name=".LoginPage" />
-        <activity android:name=".filter" />
+        <activity android:name=".FilterActivity" />
         <activity
             android:name=".AndroidGPSTrackingActivity"
             android:theme="@style/AppTheme1" />
