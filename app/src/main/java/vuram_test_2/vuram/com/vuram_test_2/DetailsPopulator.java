@@ -49,7 +49,7 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            //response = Connectivity.makeGetRequest(RestAPIURL.code, client, null);
+            response = Connectivity.makeGetRequest(RestAPIURL.code, client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
@@ -81,12 +81,13 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest(RestAPIURL.mainItemDetails, client, null);
+            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/mainItemDetails/", client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
                         JSONArray jsonObject = new JSONArray(Connectivity.getJosnFromResponse(response));
                         Gson gson = new Gson();
+                        Log.d(TAG, "doInBackground: JSON: " + jsonObject.toString());
                         mainItemDetailsList = gson.fromJson(jsonObject.toString(), new TypeToken<List<MainItemDetails>>() {}.getType());
                         DatabaseHelper db = new DatabaseHelper(context);
                         db.insertIntoMainItemDetails(mainItemDetailsList);
@@ -112,7 +113,7 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest(RestAPIURL.subItemDetails, client, null);
+            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/subItemDetails/", client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {

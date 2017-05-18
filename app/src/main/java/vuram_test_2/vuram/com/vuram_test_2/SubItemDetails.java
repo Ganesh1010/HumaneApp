@@ -5,31 +5,31 @@ package vuram_test_2.vuram.com.vuram_test_2;
  */
 
 public class SubItemDetails {
-    int subItemCode;
-    String subItemName;
-    int mainItemCode;
+    int item_id;
+    String item_name;
+    int main_item_id;
 
     public int getSubItemCode() {
-        return subItemCode;
+        return item_id;
     }
 
     public void setSubItemCode(int subItemCode) {
-        this.subItemCode = subItemCode;
+        this.item_id = subItemCode;
     }
 
     public String getSubItemName() {
-        return subItemName;
+        return item_name;
     }
 
     public void setSubItemName(String subItemName) {
-        this.subItemName = subItemName;
+        this.item_name = subItemName;
     }
 
     public int getMainItemCode() {
-        return mainItemCode;
+        return main_item_id;
     }
 
     public void setMainItemCode(int mainItemCode) {
-        this.mainItemCode = mainItemCode;
+        this.main_item_id = mainItemCode;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
  */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final String TAG = "DatabaseHelper.java";
     SQLiteDatabase db;
     private static final String DATABASE_NAME = "Test.db";
     private static final int DATABASE_VERSION = 2;
@@ -108,6 +110,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             contentValues.put(MAIN_ITEM_CODE, mainItemDetails.getMainItemCode());
             contentValues.put(MAIN_ITEM_NAME, mainItemDetails.getMainItemName());
             db.insert(MAIN_ITEM_TABLE_NAME, null, contentValues);
+            Log.d(TAG, "insertIntoMainItemDetails: Item Code: " + mainItemDetails.getMainItemCode());
+            Log.d(TAG, "insertIntoMainItemDetails: Item Name: " + mainItemDetails.getMainItemName());
         }
         db.close();
     }
