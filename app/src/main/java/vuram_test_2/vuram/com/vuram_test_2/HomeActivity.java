@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails{
@@ -57,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     ArrayList<NeedDetails> needitem=new ArrayList<>();
     ArrayList<NeedDetails> tempneeditem;
     private final String TAG = "HomeActivity.java";
+    public int count=0;
     private RecyclerView recyclerView;
     private ImageButton filterImageButton;
     private TextView  tvEmptyView;
@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
 
@@ -205,7 +205,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                     nextUrl = jsonObject.getString("next");
                     Gson gson = new Gson();
                     tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                    needitem.addAll(tempneeditem);
+                    if(count==0)
+                        needitem.addAll(tempneeditem);
 
                     Log.d("Results", needitem.size() + "");
                 } catch (JSONException e) {
@@ -224,16 +225,20 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
         @Override
         protected void onPostExecute(Object o) {
-            mHandler.sendMessageDelayed(new Message(), 3000);
+            //mHandler.sendMessageDelayed(new Message(), 3000);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                    mAdapter=new DonorNeedViewAdapter(HomeActivity.this,needitem,recyclerView);
-                    recyclerView.setAdapter(mAdapter);
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-                    recyclerView.addItemDecoration(dividerItemDecoration);
+                    if(count==0) {
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
+                        recyclerView.setAdapter(mAdapter);
+                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                        recyclerView.addItemDecoration(dividerItemDecoration);
+                    }
                     if (needitem.isEmpty()) {
                         recyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
@@ -242,6 +247,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                         recyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     }
+
                     mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
@@ -256,16 +262,23 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                                     needitem.remove(needitem.size() - 1);
                                     mAdapter.notifyItemRemoved(needitem.size());
 
-                                    /*if(!jsonObject.isNull("next"))
-                                       nextNeedDetails.nextURL("next");
 
-                                    else
-                                      nextNeedDetails.nextURL("finished");*/
-                                    needitem.addAll(tempneeditem);
-                                    mAdapter.notifyDataSetChanged();
-                                    mAdapter.setLoaded();
+                                    if(!jsonObject.isNull("next")) {
+                                        nextNeedDetails.nextURL("next");
+                                        count++;
+                                        if(count>0) {
+                                            needitem.addAll(tempneeditem);
+                                            mAdapter.notifyDataSetChanged();
+                                            mAdapter.setLoaded();
+                                        }
+                                    }
+
+                                    else {
+                                        nextNeedDetails.nextURL("finished");
+                                        Toast.makeText(getApplicationContext(),"No more needs to load..",Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }, 2000);
+                            }, 3000);
                         }
                     });
                     // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();

@@ -199,7 +199,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         @Override
         protected Object doInBackground(Object[] objects) {
             client = new DefaultHttpClient();
-            response = Connectivity.makeGetRequest(RestAPIURL.NeedURL, client, Connectivity.getAuthToken(OrgDetailsActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.needList, client, Connectivity.getAuthToken(OrgDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {

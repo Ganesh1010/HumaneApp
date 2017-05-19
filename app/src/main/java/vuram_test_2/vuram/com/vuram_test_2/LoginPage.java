@@ -66,7 +66,7 @@ public class LoginPage extends AppCompatActivity {
         Log.d("Size",list.size()+"");
         for(MainItemDetails details:list)
         {
-            Log.d("Look up",details.getMainItemName());
+            //Log.d("Look up",details.getMainItemName());
         }
 
     }
