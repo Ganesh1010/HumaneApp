@@ -37,7 +37,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
     ArrayList<NeedDetails> needItemResult;
     List  donatedItemList,itemslist;
     int donatedItemId,needItemId,needQuantity,donatedQuantity,needId;
-    String donorName;
+    String donorName,mainItemName;
     RecyclerView needrecyclerView, receivalCardView;
     NeedListViewAdapter needListViewAdapter;
     NeedReceivalCard needReceivalCard;
@@ -53,6 +53,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
     //NeedDetails need;
      DonationDetails donationDetailsToDisplay;
      DonatedItemDetails donatedItemDetailsTodisplay;
+     DatabaseHelper databaseHelper;
 
 
     @Override
@@ -136,6 +137,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
 
             client = new DefaultHttpClient();
+            databaseHelper = new DatabaseHelper(NeedDetailsActivity.this);
 
             response = Connectivity.makeGetRequest(RestAPIURL.mainItemDetails, client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null) {
@@ -170,8 +172,11 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
                                 needItemId = needItemDetails.getNeed_item_id();
                                 needQuantity = needItemDetails.getQuantity();
+                                mainItemName = databaseHelper.getItemNameFromLookUp(needItemId);
+
                                 Log.d("Need Item id", "doInBackground: " + needItemId);
                                 Log.d("Need Quantity", "doInBackground: " + needQuantity);
+                                Log.d("Main Item Name", "doInBackground: " + mainItemName);
 
 
                                 needItemsToDisplay = new NeedItemDetails(needItemId, needQuantity);
@@ -195,6 +200,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
                                     donatedItemId = donatedItemDetails.getDonated_item_id();
                                     donatedQuantity = donatedItemDetails.getQuantity();
+
                                     Log.d("donated Item", "doInBackground: " + donatedItemId);
                                     Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
                                 }

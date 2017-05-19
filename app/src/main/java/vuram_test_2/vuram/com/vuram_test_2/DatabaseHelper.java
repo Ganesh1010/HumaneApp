@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper.java";
     SQLiteDatabase db;
+    String itemName;
     private static final String DATABASE_NAME = "Test.db";
     private static final int DATABASE_VERSION = 2;
     private static final String ID = "ID";
@@ -148,5 +149,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(SUB_ITEM_TABLE_NAME, null, contentValues);
         }
         db.close();
+    }
+
+    public String getItemNameFromLookUp(int itemCode){
+
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select"+MAIN_ITEM_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+MAIN_ITEM_CODE +"="+itemCode,null);
+
+        if(itemCode == 1 || itemCode == 2) {
+            if (cursor != null)
+                cursor.moveToFirst();
+                itemName = cursor.getString(cursor.getColumnIndex(MAIN_ITEM_NAME));
+        }
+        else
+              itemName = getSubItemNameFromLookUp(itemCode);
+
+        return itemName;
+    }
+
+    public String getSubItemNameFromLookUp(int subItemCode){
+
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select"+SUB_ITEM_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+SUB_ITEM_CODE +"="+subItemCode,null);
+
+        if(cursor!=null)
+            cursor.moveToFirst();
+        String subItemName = cursor.getString(cursor.getColumnIndex(SUB_ITEM_NAME));
+
+        return subItemName;
+    }
+
+    public String getCountryNameFromLookUp(int countryCode){
+
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select"+COUNTRY_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+MAIN_ITEM_CODE +"="+countryCode,null);
+
+        if(cursor!=null)
+            cursor.moveToFirst();
+        String countryName = cursor.getString(cursor.getColumnIndex(COUNTRY_NAME));
+
+        return countryName;
     }
 }
