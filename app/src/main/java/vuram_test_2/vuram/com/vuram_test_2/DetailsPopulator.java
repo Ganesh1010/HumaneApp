@@ -81,7 +81,7 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/mainItemDetails/", client, null);
+            response = Connectivity.makeGetRequest(RestAPIURL.mainItemDetails, client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
@@ -113,7 +113,7 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/subItemDetails/", client, null);
+            response = Connectivity.makeGetRequest(RestAPIURL.subItemDetails, client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
