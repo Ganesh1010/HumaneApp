@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +18,15 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
-        TextView quantity;
-        ImageView imageView;
         TextView requested;
-        TextView donated;
+        ImageView imageView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.imageView=(ImageView)itemView.findViewById(R.id.imageView);
             this.title = (TextView) itemView.findViewById(R.id.title1);
-            this.quantity=(TextView) itemView.findViewById(R.id.quantity_entered_donor_org);
-            this.requested = (TextView) itemView.findViewById(R.id.requested);
-            this.donated=(TextView) itemView.findViewById(R.id.donated);
+            this.requested=(TextView) itemView.findViewById(R.id.requested);
+
 
         }
     }
@@ -54,8 +52,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.setIsRecyclable(false);
         holder.title.setText(dataSet.get(listPosition).getName());
         holder.imageView.setImageResource(dataSet.get(listPosition).getImage());
-        holder.requested.setText("Requested: "+dataSet.get(listPosition).getRequested());
-        holder.donated.setText("Donated: "+dataSet.get(listPosition).getdonated());
+        holder.requested.setText("Quantity "+dataSet.get(listPosition).getRequested()+"");
+        Log.d("value",dataSet.get(listPosition).getRequested()+"");
     }
 
     @Override
