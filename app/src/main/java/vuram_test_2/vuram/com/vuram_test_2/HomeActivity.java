@@ -294,7 +294,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
             if (authorType.equals("Donor")) {
                 newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
                 startAsyncTask();
-               // new GetNeedItemDetails().execute();
+                //new GetNeedItemDetails().execute();
                 //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
             } else {
                 newNeedFloatingActionButton.setVisibility(View.VISIBLE);
@@ -305,12 +305,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                 Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
 
                 new GetOrganisationNeedDetails().execute();
-                Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
             }
-
-            else
-                Toast.makeText(parent.getContext(), " Testing Selected:Failed " + authorType, Toast.LENGTH_LONG).show();
-
 
         }
 
