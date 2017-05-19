@@ -161,8 +161,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         if(requestCode==2)
         {
             Iterator i=appliedFilter.iterator();
-            while (i.hasNext())
+            while (i.hasNext()) {
                 System.out.println(i.next());
+            }
         }
     }
 
