@@ -5,16 +5,12 @@ public class DataModel {
 
 
     String title;
-    String requested;
-    String donated;
-    int id_;
+    int requested;
     int image;
 
-    public DataModel(int image,String title ,String requested,String donated,int id_) {
+    public DataModel(int image,String title ,int requested) {
         this.title = title;
         this.requested=requested;
-        this.donated=donated;
-        this.id_ = id_;
         this.image=image;
     }
 
@@ -24,14 +20,7 @@ public class DataModel {
     public int getImage() {
         return image;
     }
-    public String getRequested() {
-    return requested;
-}
-    public String getdonated()
-    {
-        return donated;
-    }
-    public int getId() {
-        return id_;
+    public int getRequested() {
+        return requested;
     }
 }

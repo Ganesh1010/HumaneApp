@@ -37,6 +37,8 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 public class OrgDetailsActivity extends AppCompatActivity  {
     Button bt1;
     ImageButton imageButton;
+    String[] needName;
+    int[] needQuantities;
     static int count=0;;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
@@ -100,30 +102,10 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 R.drawable.ngo,
                 R.drawable.ngo };
 
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
-        recyclerView.setHasFixedSize(true);
+
 
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < MyData.nameArray.length; i++) {
-            data.add(new DataModel(
-                    MyData.drawableArray[i],
-                    MyData.nameArray[i],
-                    MyData.requestarray[i],
-                    MyData.donatedarray[i],
-                    MyData.id_[i]
-
-            ));
-        }
-
-        removedItems = new ArrayList<Integer>();
         myOnClickListener = new MyOnClickListener(this);
-        adapter = new ItemDetailsAdapter(data);
-        recyclerView.setAdapter(adapter);
-
 
         simpleViewPager.setImageIds(resourceIds, new ImageResourceLoader() {
             @Override
@@ -199,15 +181,14 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         @Override
         protected Object doInBackground(Object[] objects) {
             client = new DefaultHttpClient();
-            response = Connectivity.makeGetRequest(RestAPIURL.NeedURL, client, Connectivity.getAuthToken(OrgDetailsActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.needList, client, Connectivity.getAuthToken(OrgDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
-                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
-                        }.getType());
+                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
                         Log.d("Result", needdetails.size() + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -221,11 +202,18 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
         protected void onPostExecute(Object o) {
             needid = 0;
             need = needdetails.get(needid);
             Log.d("out", need + "");
             itemslist = need.getItems();
+            needQuantities=new int[itemslist.size()];
+            needName=new String[itemslist.size()];
             Log.d("ItemsList", "doInBackground: " + itemslist);
             orgdetails = need.getOrg();
             DisplayOrgDetails(orgdetails);
@@ -239,34 +227,34 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
                 needItemId=needItemDetails.getItem_type_id();
                 needQuantity=needItemDetails.getQuantity();
-                Log.d("name2",needItemId+"");
+                Log.d("needItemId",needItemId+"");
+                needQuantities[i]=needQuantity;
                 subItemId = needItemDetails.getSub_item_type_id();
 
 
                 for (int j = 0; j < mainItemDetailsList.size(); j++) {
                     MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
-                    Log.d("name",mainItemDetails.getMainItemCode()+"");
                     if (needItemId == mainItemDetails.getMainItemCode()) {
                         String mainItemName = mainItemDetails.getMainItemName();
-                        Log.d("name1",mainItemName+"");
-                        //needitems.add(mainItemName);
-                        //needitems.add(needQuantity);
+                        needName[i]=mainItemName;
+
+
                     }
+
                 }
 
-               /* mainItemDetails=mainItemDetailsList.get(needItemId);
-                mainItemCode=mainItemDetails.getMainItemCode();
-                if(mainItemCode==needItemId)
-               {
-                    mainitemname=mainItemDetails.getMainItemName();
-
-                    needitems.add(mainitemname);
-                    needitems.add(needQuantity);
-                }*/
+                //Log.d("Quantity", String.valueOf(needQuantities));
             }
-
-
+            Log.d("nameList", String.valueOf(needName.length));
+            recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            removedItems = new ArrayList<Integer>();
+            itemsToBedispalyed();
         }
+
+
 
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
            OrgName=orgdetails.org_name;
@@ -278,6 +266,19 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             Organisationaddress.setText(Address);
             Organisationemail.setText(EmailId);
         }
+    }
+
+   public void itemsToBedispalyed()
+    {
+        data = new ArrayList<DataModel>();
+        for (int i = 0; i < needName.length; i++) {
+            data.add(new DataModel(
+                    MyData.drawableArray[i],needName[i],needQuantities[i]
+            ));
+            Log.d("need", String.valueOf(needQuantities[i]));
+        }
+        adapter = new ItemDetailsAdapter(data);
+        recyclerView.setAdapter(adapter);
     }
 
 }
