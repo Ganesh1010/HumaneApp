@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -38,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -79,7 +81,9 @@ public class NewNeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_need);
         DetailsPopulator detailsPopulator =new DetailsPopulator(this);
         detailsPopulator.getCountryDetailsFromAPI();
+
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         dateTimeFragment = (SwitchDateTimeDialogFragment) getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
         if(dateTimeFragment == null) {
             dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
@@ -98,7 +102,7 @@ public class NewNeedActivity extends AppCompatActivity {
         dateTimeFragment.set24HoursMode(false);
         dateTimeFragment.setMinimumDateTime(new GregorianCalendar(2015, Calendar.JANUARY, 1).getTime());
         dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
-        dateTimeFragment.setDefaultDateTime(new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),now.get(Calendar.HOUR) ,now.get(Calendar.AM_PM), now.get(Calendar.MINUTE)).getTime());
+        dateTimeFragment.setDefaultDateTime(new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),now.get(Calendar.HOUR) ,now.get(Calendar.MINUTE),now.get(Calendar.HOUR_OF_DAY)>12?(now.get(Calendar.PM)):(now.get(Calendar.AM))).getTime());
         try {
             dateTimeFragment.setSimpleDateMonthAndDayFormat(new SimpleDateFormat("MMMM dd", Locale.getDefault()));
         } catch (SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException e) {
@@ -209,9 +213,10 @@ public class NewNeedActivity extends AppCompatActivity {
                     needItemDetails.setSub_item_type_id(1);
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
-                    java.util.Date date = new java.util.Date();
-                    System.out.println("date"+date);
-                    needItemDetails.setDeadline(date);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+                    //sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                    needItemDetails.setDeadline(sdf.format(datetime));
 
                     //needItemDetails.setDeadline(datetime);
                     dataFilled=true;
@@ -363,4 +368,14 @@ public class NewNeedActivity extends AppCompatActivity {
             super.onPostExecute(o);
         }
     }
-}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
+    }}
