@@ -82,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         progressDialog= new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -278,7 +279,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                                         Toast.makeText(getApplicationContext(),"No more needs to load..",Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }, 3000);
+                            }, 1000);
                         }
                     });
                     // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
