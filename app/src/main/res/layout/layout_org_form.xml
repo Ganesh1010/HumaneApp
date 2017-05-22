@@ -101,21 +101,27 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:inputType="textPostalAddress"
+                android:inputType="textMultiLine"
                 android:ems="10"
+                android:maxLines="6"
                 android:id="@+id/org_address_editText_org_form"
                 android:layout_weight="1"
-                android:hint="Address" />
+                android:hint="Address"
+                android:layout_toLeftOf="@+id/map"
+                android:ellipsize="end"
+                android:scrollbars="vertical"
+                android:scrollbarAlwaysDrawVerticalTrack="true"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
 
             <Button
-                android:text="go to map"
+                android:text="Choose Location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/map"
