@@ -1,6 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -83,6 +82,8 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
         bt1 = (Button) findViewById(R.id.donate_donor_org);
+
+
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +106,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
 
 
         layoutManager = new LinearLayoutManager(this);
-        myOnClickListener = new MyOnClickListener(this);
 
         simpleViewPager.setImageIds(resourceIds, new ImageResourceLoader() {
             @Override
@@ -121,59 +121,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
 
 
 
-    private static class MyOnClickListener implements View.OnClickListener {
 
-        private final Context context;
-        private MyOnClickListener(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onClick(View v) {
-            final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.layout_select_quantity);
-            dialog.setTitle("Enter The Quantity");
-
-
-            final TextView value=(TextView)dialog.findViewById(R.id.number_custom);
-
-            Button increment=(Button) dialog.findViewById(R.id.increment_custom);
-            Button decrement=(Button) dialog.findViewById(R.id.decrement_custom);
-            increment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    count++;
-                    value.setText(String.valueOf(count));
-
-                }
-            });
-            decrement.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    count--;
-                    value.setText(String.valueOf(count));
-
-                }
-            });
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.cancel_custom);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            final Button yesButton=(Button)dialog.findViewById(R.id.submit);
-            yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                     //quantity.setText("Your donation is: "+count);
-                     dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-    }
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;
         ArrayList<NeedDetails> needdetails;
@@ -212,23 +160,23 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             need = needdetails.get(needid);
             Log.d("out", need + "");
             itemslist = need.getItems();
-            needQuantities=new int[itemslist.size()];
-            needName=new String[itemslist.size()];
+            needQuantities = new int[itemslist.size()];
+            needName = new String[itemslist.size()];
             Log.d("ItemsList", "doInBackground: " + itemslist);
             orgdetails = need.getOrg();
             DisplayOrgDetails(orgdetails);
             Log.d("ItemListsize", String.valueOf(itemslist.size()));
 
-            DatabaseHelper db=new DatabaseHelper(context);
-            mainItemDetailsList=db.getAllMainItemDetails();
+            DatabaseHelper db = new DatabaseHelper(context);
+            mainItemDetailsList = db.getAllMainItemDetails();
 
-            for(int i=0;i<itemslist.size();i++)
-            {
+
+            for (int i = 0; i < itemslist.size(); i++) {
                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
-                needItemId=needItemDetails.getItem_type_id();
-                needQuantity=needItemDetails.getQuantity();
-                Log.d("needItemId",needItemId+"");
-                needQuantities[i]=needQuantity;
+                needItemId = needItemDetails.getItem_type_id();
+                needQuantity = needItemDetails.getQuantity();
+                Log.d("needItemId", needItemId + "");
+                needQuantities[i] = needQuantity;
                 subItemId = needItemDetails.getSub_item_type_id();
 
 
@@ -236,7 +184,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                     MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
                     if (needItemId == mainItemDetails.getMainItemCode()) {
                         String mainItemName = mainItemDetails.getMainItemName();
-                        needName[i]=mainItemName;
+                        needName[i] = mainItemName;
 
 
                     }

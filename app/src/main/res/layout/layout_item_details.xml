@@ -13,8 +13,10 @@
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/colorTextIcons"
         card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="5dp"
-        card_view:cardUseCompatPadding="true">
+        card_view:cardElevation="2dp"
+        card_view:cardUseCompatPadding="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
 
         <LinearLayout
@@ -50,27 +52,31 @@
                         android:id="@+id/title1"
                         android:layout_weight="1"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/colorPrimary" />
-
-                    <TextView
-                        android:id="@+id/requested"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/colorSecondaryText"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginTop="5dp" />
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_marginBottom="5dp">
+
+                        <TextView
+                            android:id="@+id/requested"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textColor="@color/colorSecondaryText"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginTop="5dp" />
+
                         <ImageView
-                            android:layout_width="62dp"
                             app:srcCompat="@drawable/minus"
-                            android:id="@+id/imageView6"
-                            android:layout_height="35dp" />
+                            android:id="@+id/decrement_custom"
+                            android:layout_height="35dp"
+                            android:layout_width="50dp" />
 
                         <TextView android:id="@+id/number_custom"
                             android:layout_width="50dp"
@@ -80,21 +86,11 @@
                             android:gravity="center" />
 
                         <ImageView
-                            android:layout_width="62dp"
                             app:srcCompat="@drawable/plus"
-                            android:id="@+id/imageView7"
-                            android:layout_height="35dp" />
+                            android:id="@+id/increment_custom"
+                            android:layout_height="35dp"
+                            android:layout_width="50dp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:text="doante"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/textView2"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:linksClickable="true"
-                        android:textColor="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color" />
 
                 </LinearLayout>
 
