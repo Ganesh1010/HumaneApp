@@ -1,6 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,6 +36,8 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 public class OrgDetailsActivity extends AppCompatActivity  {
     Button bt1;
     ImageButton imageButton;
+    String[] needName;
+    int[] needQuantities;
     static int count=0;;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
@@ -81,6 +82,8 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
         bt1 = (Button) findViewById(R.id.donate_donor_org);
+
+
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,30 +103,9 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 R.drawable.ngo,
                 R.drawable.ngo };
 
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
-        recyclerView.setHasFixedSize(true);
+
 
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < MyData.nameArray.length; i++) {
-            data.add(new DataModel(
-                    MyData.drawableArray[i],
-                    MyData.nameArray[i],
-                    MyData.requestarray[i],
-                    MyData.donatedarray[i],
-                    MyData.id_[i]
-
-            ));
-        }
-
-        removedItems = new ArrayList<Integer>();
-        myOnClickListener = new MyOnClickListener(this);
-        adapter = new ItemDetailsAdapter(data);
-        recyclerView.setAdapter(adapter);
-
 
         simpleViewPager.setImageIds(resourceIds, new ImageResourceLoader() {
             @Override
@@ -139,59 +121,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
 
 
 
-    private static class MyOnClickListener implements View.OnClickListener {
 
-        private final Context context;
-        private MyOnClickListener(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onClick(View v) {
-            final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.layout_select_quantity);
-            dialog.setTitle("Enter The Quantity");
-
-
-            final TextView value=(TextView)dialog.findViewById(R.id.number_custom);
-
-            Button increment=(Button) dialog.findViewById(R.id.increment_custom);
-            Button decrement=(Button) dialog.findViewById(R.id.decrement_custom);
-            increment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    count++;
-                    value.setText(String.valueOf(count));
-
-                }
-            });
-            decrement.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    count--;
-                    value.setText(String.valueOf(count));
-
-                }
-            });
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.cancel_custom);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            final Button yesButton=(Button)dialog.findViewById(R.id.submit);
-            yesButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                     //quantity.setText("Your donation is: "+count);
-                     dialog.dismiss();
-                }
-            });
-            dialog.show();
-        }
-    }
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;
         ArrayList<NeedDetails> needdetails;
@@ -206,8 +136,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
-                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
-                        }.getType());
+                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
                         Log.d("Result", needdetails.size() + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -221,52 +150,59 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
         protected void onPostExecute(Object o) {
             needid = 0;
             need = needdetails.get(needid);
             Log.d("out", need + "");
             itemslist = need.getItems();
+            needQuantities = new int[itemslist.size()];
+            needName = new String[itemslist.size()];
             Log.d("ItemsList", "doInBackground: " + itemslist);
             orgdetails = need.getOrg();
             DisplayOrgDetails(orgdetails);
             Log.d("ItemListsize", String.valueOf(itemslist.size()));
 
-            DatabaseHelper db=new DatabaseHelper(context);
-            mainItemDetailsList=db.getAllMainItemDetails();
+            DatabaseHelper db = new DatabaseHelper(context);
+            mainItemDetailsList = db.getAllMainItemDetails();
 
-            for(int i=0;i<itemslist.size();i++)
-            {
+
+            for (int i = 0; i < itemslist.size(); i++) {
                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
-                needItemId=needItemDetails.getItem_type_id();
-                needQuantity=needItemDetails.getQuantity();
-                Log.d("name2",needItemId+"");
+                needItemId = needItemDetails.getItem_type_id();
+                needQuantity = needItemDetails.getQuantity();
+                Log.d("needItemId", needItemId + "");
+                needQuantities[i] = needQuantity;
                 subItemId = needItemDetails.getSub_item_type_id();
 
 
                 for (int j = 0; j < mainItemDetailsList.size(); j++) {
                     MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
-                    Log.d("name",mainItemDetails.getMainItemCode()+"");
                     if (needItemId == mainItemDetails.getMainItemCode()) {
                         String mainItemName = mainItemDetails.getMainItemName();
-                        Log.d("name1",mainItemName+"");
-                        //needitems.add(mainItemName);
-                        //needitems.add(needQuantity);
+                        needName[i] = mainItemName;
+
+
                     }
+
                 }
 
-               /* mainItemDetails=mainItemDetailsList.get(needItemId);
-                mainItemCode=mainItemDetails.getMainItemCode();
-                if(mainItemCode==needItemId)
-               {
-                    mainitemname=mainItemDetails.getMainItemName();
-
-                    needitems.add(mainitemname);
-                    needitems.add(needQuantity);
-                }*/
+                //Log.d("Quantity", String.valueOf(needQuantities));
             }
-
-
+            Log.d("nameList", String.valueOf(needName.length));
+            recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            removedItems = new ArrayList<Integer>();
+            itemsToBedispalyed();
         }
+
+
 
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
            OrgName=orgdetails.org_name;
@@ -278,6 +214,19 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             Organisationaddress.setText(Address);
             Organisationemail.setText(EmailId);
         }
+    }
+
+   public void itemsToBedispalyed()
+    {
+        data = new ArrayList<DataModel>();
+        for (int i = 0; i < needName.length; i++) {
+            data.add(new DataModel(
+                    MyData.drawableArray[i],needName[i],needQuantities[i]
+            ));
+            Log.d("need", String.valueOf(needQuantities[i]));
+        }
+        adapter = new ItemDetailsAdapter(data);
+        recyclerView.setAdapter(adapter);
     }
 
 }
