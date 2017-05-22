@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_marginRight="2dp"
+    android:layout_marginLeft="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_loing_page"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:src="@drawable/ngo"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="120dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="374dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:layout_weight="0.77">
+        <!-- Name Label -->
+
+        <EditText android:id="@+id/name_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/name"
+            android:textColorHint="#FFFFFF"
+            android:textColor="?attr/colorControlNormal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
+
+        <EditText android:id="@+id/mobile_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/mobile_no"
+            android:textColorHint="#FFFFFF"
+            android:textColor="?attr/colorControlNormal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <EditText android:id="@+id/email_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email"
+            android:textColorHint="#FFFFFF"
+            android:textColor="?attr/colorControlNormal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
+
+        <EditText android:id="@+id/password_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:fontFamily="@string/sans_serif"
+            android:hint="@string/password"
+            android:textColorHint="#FFFFFF"
+            android:textColor="?attr/colorControlNormal"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal">
+
+            <!-- Signup Button -->
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/signup_register"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:padding="12dp"
+                android:background="@drawable/button_circle_edge"
+                android:textColor="@color/colorTextIcons"
+                android:text="@string/create_account"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/link_login_register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/already_member"
+            android:gravity="center"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="16dip"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
