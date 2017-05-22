@@ -3,12 +3,14 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import butterknife.Bind;
@@ -18,6 +20,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 public class LandingPage extends AppCompatActivity {
     @Bind(R.id.donarActivity) Button donor;
     @Bind(R.id.orgActivity) Button org;
+    RelativeLayout parentLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +28,7 @@ public class LandingPage extends AppCompatActivity {
         ButterKnife.bind(this);
         SharedPreferences preferences=getSharedPreferences(Connectivity.MyPREFERENCES, Context.MODE_PRIVATE);
         Boolean isfirsttme=preferences.getBoolean(Connectivity.Is_First_Time,true);
+        parentLayout= (RelativeLayout) findViewById(R.id.activity_landing_page);
         if(!isfirsttme)
         {
             SharedPreferences.Editor editor=getSharedPreferences(Connectivity.MyPREFERENCES,Context.MODE_PRIVATE).edit();
@@ -66,6 +70,7 @@ public class LandingPage extends AppCompatActivity {
                 LandingPage.this.startActivity(new Intent(LandingPage.this,CoordinatorRegistration.class));
             }
         });
+        Connectivity.ShowDialogBar(this);
     }
 
 }
