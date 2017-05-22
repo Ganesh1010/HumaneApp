@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:nestedScrollingEnabled="true">
-<LinearLayout
+
+
+
+    <LinearLayout
     android:id="@+id/activity_donor_org_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,9 +22,33 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
         android:orientation="vertical"
-        android:paddingLeft="3dp">
+        android:layout_height="200dp">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:background="?attr/colorPrimary"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar3"
+            android:layout_height="60dp">
+
+        <ImageView
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/cart"
+            android:id="@+id/pager"
+            android:layout_gravity="end"
+            android:layout_width="70dp" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_back_black"
+                android:id="@+id/back_home"
+                android:background="@color/colorPrimary" />
+
+        </android.support.v7.widget.Toolbar>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,12 +61,6 @@
                 app:scaleType="CENTER_CROP"
                 app:circlesPaddingBottom="60dp"/>
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_back_black"
-                android:id="@+id/back_home"
-                android:background="@color/colorTextIcons" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -68,7 +90,6 @@
                 android:layout_height="80dp"
                 android:weightSum="1">
                 <TextView
-                    android:text="Vasantham"
                     android:layout_height="30dp"
                     android:textStyle="normal|bold"
                     android:textSize="22sp"
@@ -89,7 +110,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="@string/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView15"
@@ -98,7 +118,6 @@
                 android:layout_marginStart="10dp" />
 
             <TextView
-                android:text="044 - 2656 0662"
                 android:textSize="14sp"
                 android:id="@+id/adapter5"
                 android:layout_width="143dp"
@@ -114,7 +133,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="@string/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView16"
@@ -128,7 +146,6 @@
                 android:layout_width="wrap_content"
                 android:maxLines="4"
                 android:lines="4"
-                android:text="East Mogappair,(Next to TNEB Office and Telephone Exchange),Chennai 600 037"
                 android:layout_weight="1"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
@@ -144,7 +161,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="@string/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView17"
@@ -152,7 +168,6 @@
                 android:layout_marginStart="10dp" />
 
             <TextView
-                android:text="vasantham89@gmail.com"
                 android:textSize="14sp"
                 android:id="@+id/adapter3"
                 android:layout_width="match_parent"
@@ -182,13 +197,38 @@
         </LinearLayout>
 
     </LinearLayout>
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/main_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view_donor_org"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                android:background="#F1F1F2" />
+            <android.support.design.widget.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:fabSize="normal"
+                app:srcCompat="@android:drawable/ic_input_add"
+                android:id="@+id/floating"
+                android:layout_weight="1"
+                android:layout_marginBottom="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom|right"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="?android:attr/colorAccent"
+                android:tint="@android:color/white">
+            </android.support.design.widget.FloatingActionButton>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view_donor_org"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        />
+            </android.support.design.widget.CoordinatorLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -200,7 +240,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:gravity="right">
-        <Button
+
+            <Button
             android:layout_width="match_parent"
             android:id="@+id/donate_donor_org"
             android:text="@string/Donate"
@@ -209,6 +250,5 @@
             android:gravity="center_vertical|center_horizontal|center" />
         </LinearLayout>
         </LinearLayout>
-
 </LinearLayout>
 </ScrollView>

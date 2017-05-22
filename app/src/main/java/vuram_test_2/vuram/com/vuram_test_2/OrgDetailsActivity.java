@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.readystatesoftware.viewbadger.BadgeView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -38,7 +39,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     ImageButton imageButton;
     String[] needName;
     int[] needQuantities;
-    static int count=0;;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
     static Context context;
@@ -199,6 +199,10 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             removedItems = new ArrayList<Integer>();
+            View target = findViewById(R.id.pager);
+            BadgeView badge = new BadgeView(context, target);
+            badge.setText("1");
+            badge.show();
             itemsToBedispalyed();
         }
 
