@@ -15,14 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdapter.ViewHolder> {
+
     List<FilterItemCategoryList> list;
     Context context;
-    public static ArrayList<CheckBox>allCheckBoxes=new ArrayList<>();
-    public FilterRecycleAdapter(Context context, ArrayList<FilterItemCategoryList> list)
-    {
+    public static ArrayList<CheckBox> allCheckBoxes=new ArrayList<>();
+    public static ArrayList<SubItemDetails> subItemDetailsArrayList;
+
+    public FilterRecycleAdapter(Context context, ArrayList<FilterItemCategoryList> list) {
         this.list=list;
         this.context=context;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.filter_row_view_item, parent, false);
@@ -31,6 +34,7 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
         holder.itemCategory.setText(list.get(position).getItemCategory());
         switch (list.get(position).getItemCategory())
         {
@@ -86,126 +90,52 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
             itemName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                    {
-                        if (itemName.getText().toString().equals("Male")) {
-                            genderMale.setVisibility(View.VISIBLE);
-                            final CheckBox children= (CheckBox) genderMale.findViewById(R.id.children);
-                            final CheckBox adult= (CheckBox) genderMale.findViewById(R.id.adult);
-                            final CheckBox elder= (CheckBox) genderMale.findViewById(R.id.elder);
-                            children.setChecked(true);
-                            adult.setChecked(true);
-                            elder.setChecked(true);
-                            allCheckBoxes.add(children);
-                            allCheckBoxes.add(adult);
-                            allCheckBoxes.add(elder);
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+children.getText().toString());
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+adult.getText().toString());
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+elder.getText().toString());
-
-                            children.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+children.getText().toString());
-                                    else
-                                        HomeActivity.appliedFilter.remove(itemName.getText().toString()+" "+children.getText().toString());
-                                }
-                            });
-                            adult.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+adult.getText().toString());
-                                    else
-                                        HomeActivity.appliedFilter.remove(itemName.getText().toString()+" "+adult.getText().toString());
-                                }
-                            });
-                            elder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+elder.getText().toString());
-                                    else
-                                        HomeActivity.appliedFilter.remove(itemName.getText().toString()+" "+elder.getText().toString());
-                                }
-                            });
+                    String subItemName = itemName.getText().toString();
+                    if (isChecked) {
+                        // Finding subItemCode & mainItemCode of this checked item
+                        DatabaseHelper db = new DatabaseHelper(context);
+                        ArrayList<SubItemDetails> subItemDetailsArrayList = db.getAllSubItemDetails();
+                        for (int i = 0; i < subItemDetailsArrayList.size(); i++) {
+                            SubItemDetails subItemDetails = subItemDetailsArrayList.get(i);
+                            if (subItemDetails.getSubItemName().equals(subItemName)) {
+                                subItemDetailsArrayList.add(subItemDetails);
+                                break;
+                            }
+                        }
+                        // following line is created by Rahul
+                        HomeActivity.appliedFilter.add(subItemName);
+                    } else {
+                        // Searching for this subItem in checked list
+                        for (int i = 0; i < subItemDetailsArrayList.size(); i++) {
+                            SubItemDetails subItemDetails = subItemDetailsArrayList.get(i);
+                            if (subItemDetails.getSubItemName().equals(subItemName)) {
+                                subItemDetailsArrayList.remove(i);
+                                break;
+                            }
                         }
 
-                        else if (itemName.getText().toString().equals("Female")) {
-                            genderFemale.setVisibility(View.VISIBLE);
-
-                            final CheckBox children= (CheckBox) genderFemale.findViewById(R.id.children);
-                            final CheckBox adult= (CheckBox) genderFemale.findViewById(R.id.adult);
-                            final CheckBox elder= (CheckBox) genderFemale.findViewById(R.id.elder);
-                            children.setChecked(true);
-                            adult.setChecked(true);
-                            elder.setChecked(true);
-                            allCheckBoxes.add(children);
-                            allCheckBoxes.add(adult);
-                            allCheckBoxes.add(elder);
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+children.getText().toString());
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+adult.getText().toString());
-                            HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+elder.getText().toString());
-
-                            children.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+children.getText().toString());
-                                }
-                            });
-                            adult.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+adult.getText().toString());
-                                }
-                            });
-                            elder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    if(isChecked)
-                                        HomeActivity.appliedFilter.add(itemName.getText().toString()+" "+elder.getText().toString());
-                                }
-                            });
-                        }
-                            HomeActivity.appliedFilter.add(itemName.getText().toString());
-                    }
-
-                    else {
-                        if (itemName.getText().toString().equals("Male")) {
-                            HomeActivity.appliedFilter.remove("Male Children");
-                            HomeActivity.appliedFilter.remove("Male Adult");
-                            HomeActivity.appliedFilter.remove("Male Elder");
-
-                            genderMale.setVisibility(View.GONE);
-                        }
-                        else if (itemName.getText().toString().equals("Female")) {
-
-                            HomeActivity.appliedFilter.remove("Female Children");
-                            HomeActivity.appliedFilter.remove("Female Adult");
-                            HomeActivity.appliedFilter.remove("Female Elder");
-                            genderFemale.setVisibility(View.GONE);
-                        }
-
-                        HomeActivity.appliedFilter.remove(itemName.getText().toString());
+                        // following line is created by Rahul
+                        HomeActivity.appliedFilter.remove(subItemName);
                     }
                     //Toast.makeText(context, itemName.getText(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
+
     public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener {
+
         public TextView itemCategory;
         public LinearLayout filterLayout;
         public ImageView filterItemIcon;
         public ImageView indicationIcon;
         public View view;
+
         public ViewHolder(View v) {
             super(v);
             //System.out.println(v.getTag().toString());
@@ -219,6 +149,7 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
             view=v.findViewById(R.id.view);
             v.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View v) {
             if(filterLayout.getVisibility() == View.VISIBLE) {

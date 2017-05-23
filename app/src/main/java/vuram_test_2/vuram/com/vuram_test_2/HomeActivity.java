@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,24 +20,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.os.Handler;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails{
@@ -122,14 +125,14 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         });
 
         /* SearchView */
-        final SearchView searchView = (SearchView) findViewById(R.id.searchView_donor_home);
+        /*final SearchView searchView = (SearchView) findViewById(R.id.searchView_donor_home);
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(HomeActivity.this, "Dynamic",Toast.LENGTH_SHORT).show();
                 searchView.setIconified(false);
             }
-        });
+        });*/
 
         startAsyncTask();
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
