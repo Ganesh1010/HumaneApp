@@ -29,22 +29,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import eu.fiskur.simpleviewpager.ImageResourceLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
-public class OrgDetailsActivity extends AppCompatActivity  {
+public class OrgDetailsActivity extends AppCompatActivity {
     Button bt1;
     ImageButton imageButton;
     String[] needName;
     int[] needQuantities;
+    String OrgName, Address, EmailId, Mobile;
     ArrayList<MainItemDetails> mainItemDetailsList;
-    int needItemId,needQuantity,subItemId,mainItemCode;
-    static Context context;
-    List itemslist,subItemlist;
-    List<NeedItemDetails> items,subItem;
-    private static RecyclerView.Adapter adapter;
+    int needItemId, needQuantity, subItemId, mainItemCode;
+    Context context;
+    List itemslist, subItemlist;
+    List<NeedItemDetails> items, subItem;
+    ItemDetailsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
     private static ArrayList<DataModel> data;
@@ -52,25 +52,26 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     private static ArrayList<Integer> removedItems;
     ArrayList needitems;
     HttpClient client;
-    String OrgName,Address,EmailId,Mobile;
+
     NeedDetails needDetails;
     NeedItemDetails needItemDetails;
     NeedDetails need;
     String mainitemname;
     MainItemDetails mainItemDetails;
-    TextView Organisationname,Organisationemail,Organisationmobile,Organisationaddress;
+    TextView Organisationname, Organisationemail, Organisationmobile, Organisationaddress;
     int needid;
     OrganisationDetails orgdetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_details);
-        imageButton=(ImageButton)findViewById(R.id.back_home);
-        Organisationname=(TextView)findViewById(R.id.adapter1);
-        Organisationmobile=(TextView)findViewById(R.id.adapter5);
-        Organisationaddress=(TextView)findViewById(R.id.address1);
-        Organisationemail=(TextView)findViewById(R.id.adapter3);
+        imageButton = (ImageButton) findViewById(R.id.back_home);
+        Organisationname = (TextView) findViewById(R.id.adapter1);
+        Organisationmobile = (TextView) findViewById(R.id.adapter5);
+        Organisationaddress = (TextView) findViewById(R.id.address1);
+        Organisationemail = (TextView) findViewById(R.id.adapter3);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +81,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         context = getBaseContext();
         new GetParticularNeedDetails().execute();
         needDetails = new NeedDetails();
-        needItemDetails =  new NeedItemDetails();
+        needItemDetails = new NeedItemDetails();
         bt1 = (Button) findViewById(R.id.donate_donor_org);
 
 
@@ -101,8 +102,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 R.drawable.ngo,
                 R.drawable.ngo,
                 R.drawable.ngo,
-                R.drawable.ngo };
-
+                R.drawable.ngo};
 
 
         layoutManager = new LinearLayoutManager(this);
@@ -120,8 +120,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     }
 
 
-
-
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;
         ArrayList<NeedDetails> needdetails;
@@ -136,7 +134,8 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
-                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
+                        needdetails = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                        }.getType());
                         Log.d("Result", needdetails.size() + "");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -158,58 +157,26 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         protected void onPostExecute(Object o) {
             needid = 0;
             need = needdetails.get(needid);
-            Log.d("out", need + "");
-            itemslist = need.getItems();
+            itemslist=need.getItems();
             needQuantities = new int[itemslist.size()];
             needName = new String[itemslist.size()];
             Log.d("ItemsList", "doInBackground: " + itemslist);
             orgdetails = need.getOrg();
             DisplayOrgDetails(orgdetails);
-            Log.d("ItemListsize", String.valueOf(itemslist.size()));
-
-            DatabaseHelper db = new DatabaseHelper(context);
-            mainItemDetailsList = db.getAllMainItemDetails();
-
-
-            for (int i = 0; i < itemslist.size(); i++) {
-                NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
-                needItemId = needItemDetails.getItem_type_id();
-                needQuantity = needItemDetails.getQuantity();
-                Log.d("needItemId", needItemId + "");
-                needQuantities[i] = needQuantity;
-                subItemId = needItemDetails.getSub_item_type_id();
-
-
-                for (int j = 0; j < mainItemDetailsList.size(); j++) {
-                    MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
-                    if (needItemId == mainItemDetails.getMainItemCode()) {
-                        String mainItemName = mainItemDetails.getMainItemName();
-                        needName[i] = mainItemName;
-
-
-                    }
-
-                }
-
-                //Log.d("Quantity", String.valueOf(needQuantities));
-            }
-            Log.d("nameList", String.valueOf(needName.length));
+            adapter = new ItemDetailsAdapter(needdetails,OrgDetailsActivity.this);
             recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
             removedItems = new ArrayList<Integer>();
             View target = findViewById(R.id.pager);
             BadgeView badge = new BadgeView(context, target);
             badge.setText("1");
             badge.show();
-            itemsToBedispalyed();
         }
-
-
-
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
-           OrgName=orgdetails.org_name;
+            OrgName=orgdetails.org_name;
             Address=orgdetails.address;
             Mobile=orgdetails.mobile;
             EmailId=orgdetails.email;
@@ -218,21 +185,8 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             Organisationaddress.setText(Address);
             Organisationemail.setText(EmailId);
         }
-    }
 
-   public void itemsToBedispalyed()
-    {
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < needName.length; i++) {
-            data.add(new DataModel(
-                    MyData.drawableArray[i],needName[i],needQuantities[i]
-            ));
-            Log.d("need", String.valueOf(needQuantities[i]));
-        }
-        adapter = new ItemDetailsAdapter(data);
-        recyclerView.setAdapter(adapter);
     }
-
 }
 
 
