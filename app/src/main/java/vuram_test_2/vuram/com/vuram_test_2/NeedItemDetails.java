@@ -14,7 +14,7 @@ public class  NeedItemDetails {
     int quantity;
     String gender;
     String age;
-    Date deadline;
+    String deadline;
 
     public NeedItemDetails() {
     }
@@ -97,11 +97,11 @@ public class  NeedItemDetails {
         this.age = age;
     }
 
-    public Date getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 

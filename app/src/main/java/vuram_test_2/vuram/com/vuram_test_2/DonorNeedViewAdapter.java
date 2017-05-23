@@ -28,7 +28,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
     private final String TAG = "DonorNeedViewAdapter";
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
-    private int visibleThreshold = 5;
+    private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
