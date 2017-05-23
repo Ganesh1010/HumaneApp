@@ -8,8 +8,6 @@
     android:layout_height="match_parent"
     android:nestedScrollingEnabled="true">
 
-
-
     <LinearLayout
     android:id="@+id/activity_donor_org_details"
     android:layout_width="match_parent"
@@ -36,7 +34,7 @@
         <ImageView
             android:layout_height="50dp"
             app:srcCompat="@drawable/cart"
-            android:id="@+id/pager"
+            android:id="@+id/cart"
             android:layout_gravity="end"
             android:layout_width="70dp" />
 
@@ -48,7 +46,6 @@
                 android:background="@color/colorPrimary" />
 
         </android.support.v7.widget.Toolbar>
-
 
         <RelativeLayout
             android:layout_width="match_parent"
