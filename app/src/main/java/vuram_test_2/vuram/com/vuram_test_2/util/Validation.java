@@ -3,9 +3,9 @@ package vuram_test_2.vuram.com.vuram_test_2.util;
 
 public class Validation {
 
-    Boolean validate = false;
+    static Boolean validate = false;
 
-    public Boolean validate(String userLogin) {
+    public static Boolean validate(String userLogin) {
         if (userLogin != null) {
             if (android.util.Patterns.EMAIL_ADDRESS.matcher(userLogin).matches())
                 validate = true;
@@ -19,6 +19,15 @@ public class Validation {
             } else
                 validate = false;
         }
+        return validate;
+    }
+
+    public static Boolean validate_email(String email){
+        if(email!= null || android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            validate = true;
+        else
+            validate = false;
+
         return validate;
     }
 }

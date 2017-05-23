@@ -15,16 +15,21 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.readystatesoftware.viewbadger.BadgeView;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import eu.fiskur.simpleviewpager.ImageResourceLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -34,7 +39,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     ImageButton imageButton;
     String[] needName;
     int[] needQuantities;
-    static int count=0;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
     static Context context;
@@ -194,7 +198,11 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            removedItems = new ArrayList<>();
+            removedItems = new ArrayList<Integer>();
+            View target = findViewById(R.id.pager);
+            BadgeView badge = new BadgeView(context, target);
+            badge.setText("1");
+            badge.show();
             itemsToBedispalyed();
         }
 
@@ -214,7 +222,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
 
    public void itemsToBedispalyed()
     {
-        data = new ArrayList<>();
+        data = new ArrayList<DataModel>();
         for (int i = 0; i < needName.length; i++) {
             data.add(new DataModel(
                     MyData.drawableArray[i],needName[i],needQuantities[i]

@@ -163,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         else
               itemName = getSubItemNameFromLookUp(itemCode);
-
+        db.close();
         return itemName;
     }
 
@@ -175,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor!=null)
             cursor.moveToFirst();
         String subItemName = cursor.getString(cursor.getColumnIndex(SUB_ITEM_NAME));
-
+        db.close();
         return subItemName;
     }
 
@@ -187,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor!=null)
             cursor.moveToFirst();
         String countryName = cursor.getString(cursor.getColumnIndex(COUNTRY_NAME));
-
+        db.close();
         return countryName;
     }
 }

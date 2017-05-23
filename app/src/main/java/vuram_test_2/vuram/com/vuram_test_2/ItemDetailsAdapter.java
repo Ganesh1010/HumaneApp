@@ -10,13 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static vuram_test_2.vuram.com.vuram_test_2.OrgDetailsActivity.count;
-
 
 public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.MyViewHolder> {
 
     private ArrayList<DataModel> dataSet;
-
+    int count=0;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
@@ -25,6 +23,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         ImageView increment;
         ImageView decrement;
         TextView value;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             this.imageView=(ImageView)itemView.findViewById(R.id.imageView);
@@ -59,7 +58,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.setIsRecyclable(false);
         holder.title.setText(dataSet.get(listPosition).getName());
         holder.imageView.setImageResource(dataSet.get(listPosition).getImage());
-        holder.requested.setText("Quantity "+dataSet.get(listPosition).getRequested()+"");
+        holder.requested.setText("Required: "+dataSet.get(listPosition).getRequested()+"");
         holder.increment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
