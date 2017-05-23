@@ -54,8 +54,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     String nextUrl=RestAPIURL.needList;
     ProgressDialog progressDialog=null;
     ArrayList<NeedDetails> needitem=new ArrayList<>();
-    ArrayList<NeedDetails> orgNeeds = new ArrayList<>();
-    ArrayList<NeedDetails> tempneeditem,tempOrgNeeds;
+    ArrayList<NeedDetails> tempneeditem;
     private final String TAG = "HomeActivity.java";
     public int count=0;
     private RecyclerView recyclerView;
@@ -163,9 +162,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         if(requestCode==2)
         {
             Iterator i=appliedFilter.iterator();
-            while (i.hasNext()) {
+            while (i.hasNext())
                 System.out.println(i.next());
-            }
         }
     }
 
@@ -308,112 +306,16 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
             if (authorType.equals("Donor")) {
                 newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-                startAsyncTask();
-                //new GetNeedItemDetails().execute();
                 //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
             } else {
                 newNeedFloatingActionButton.setVisibility(View.VISIBLE);
                 //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
             }
-
-            if(authorType.equals("Organization")) {
-                Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
-
-                new GetOrganisationNeedDetails().execute();
-            }
-
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
 
         }
-    }
-
-    class GetOrganisationNeedDetails extends AsyncTask{
-
-        @Override
-        protected void onPreExecute() {
-            client = new DefaultHttpClient();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/orgdetails/", client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
-            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                try {
-                    jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                    JSONArray results = jsonObject.getJSONArray("results");
-                    nextUrl = jsonObject.getString("next");
-                    Gson gson = new Gson();
-                    tempOrgNeeds= gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                    orgNeeds.addAll(tempOrgNeeds);
-
-                    Log.d("Results", orgNeeds.size() + "");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else
-                Log.d("CAll ", "Response null");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-
-            mHandler.sendMessageDelayed(new Message(), 3000);
-            if(response!=null)
-                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
-                {
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                    mAdapter=new DonorNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
-                    recyclerView.setAdapter(mAdapter);
-                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-                    recyclerView.addItemDecoration(dividerItemDecoration);
-                    if (needitem.isEmpty()) {
-                        recyclerView.setVisibility(View.GONE);
-                        tvEmptyView.setVisibility(View.VISIBLE);
-
-                    } else {
-                        recyclerView.setVisibility(View.VISIBLE);
-                        tvEmptyView.setVisibility(View.GONE);
-                    }
-                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-                        @Override
-                        public void onLoadMore() {
-                            //add null , so the adapter will check view_type and show progress bar at bottom
-                            needitem.add(null);
-                            mAdapter.notifyItemInserted(needitem.size() - 1);
-
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //   remove progress item
-                                    needitem.remove(needitem.size() - 1);
-                                    mAdapter.notifyItemRemoved(needitem.size());
-
-                                    /*if(!jsonObject.isNull("next"))
-                                       nextNeedDetails.nextURL("next");
-
-                                    else
-                                      nextNeedDetails.nextURL("finished");*/
-                                    needitem.addAll(tempneeditem);
-                                    mAdapter.notifyDataSetChanged();
-                                    mAdapter.setLoaded();
-                                }
-                            }, 2000);
-                        }
-                    });
-                    // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
-                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
-                    // RegistrationPage.this.finish();
-                }
-
-            super.onPostExecute(o);
-        }
-
     }
 }
