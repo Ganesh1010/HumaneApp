@@ -41,7 +41,7 @@ public class DonorRegistrationFragment extends Fragment {
     Gson gson;
     RegisterDetails registerDetails;
     UserDetails details;
-    String email,password,mobilenumber,name;
+    String name,email,mobilenumber,password;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
@@ -74,13 +74,11 @@ public class DonorRegistrationFragment extends Fragment {
         loginLinkTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  Intent intent = new Intent(landingPage, LoginPage.class);
-                startActivity(intent);
-                landingPage.finish();*/
+
+
                 fragment = new LoginPageFragment();
                 fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
 
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
@@ -123,13 +121,13 @@ public class DonorRegistrationFragment extends Fragment {
     }
 
     public boolean validate() {
+
         boolean valid = true;
 
         name = nameEditText.getText().toString();
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
         mobilenumber = mobileEditText.getText().toString();
-        //  String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nameEditText.setError("at least 3 characters");
@@ -142,6 +140,10 @@ public class DonorRegistrationFragment extends Fragment {
             valid = false;
         } else {
             emailEditText.setError(null);
+        }*/
+
+        if(!Validation.validate_email(email)){
+            emailEditText.setError("enter valid mail id");
         }
 
         if (mobilenumber.isEmpty() || mobilenumber.length() != 10) {
@@ -149,10 +151,10 @@ public class DonorRegistrationFragment extends Fragment {
             valid = false;
         } else {
             mobileEditText.setError(null);
-        }*/
+        }
 
-        if(!Validation.validate_email(email))
-            emailEditText.setError("enter valid email");
+        /*if(!Validation.validate_email(email))
+            emailEditText.setError("enter valid email");*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             passwordEditText.setError("between 4 and 10 alphanumeric characters");
@@ -160,13 +162,6 @@ public class DonorRegistrationFragment extends Fragment {
         } else {
             passwordEditText.setError(null);
         }
-
-//        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-//            _reEnterPasswordText.setError("Password Do not match");
-//            valid = false;
-//        } else {
-//            _reEnterPasswordText.setError(null);
-//        }
 
         return valid;
     }

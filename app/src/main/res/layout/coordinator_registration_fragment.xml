@@ -10,12 +10,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -43,7 +44,8 @@
                 android:paddingTop="6dp"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:layout_weight="0.77">
+                android:layout_weight="0.77"
+                android:weightSum="1">
                 <!-- Name Label -->
 
                 <EditText android:id="@+id/email_coordinator_register"
@@ -91,51 +93,36 @@
                 <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/gender_spinner_coordinator_register"
-                    android:drawSelectorOnTop="true"
-                    android:entries="@array/gender_option"
-                    android:layout_marginLeft="2dp"
-                    android:foregroundTint="@color/colorTextIcons" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/country_spinner_coordinator_register"
                     android:drawSelectorOnTop="true"
                     android:entries="@array/country_option"
 
                     android:layout_marginLeft="2dp" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom|center"
+                android:weightSum="1"
+                android:layout_weight="4.12">
+
+                <!-- Signup Button -->
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/signup_coordinator_register"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|center_horizontal">
-
-                    <!-- Signup Button -->
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/signup_coordinator_register"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:padding="12dp"
-                        android:background="@drawable/button_circle_edge"
-                        android:textColor="@color/colorTextIcons"
-                        android:text="@string/create_account"
-                        android:gravity="center" />
-                </LinearLayout>
-
-                <TextView android:id="@+id/link_login_coordinator_register"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:text="@string/already_member"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:padding="12dp"
+                    android:background="@drawable/button_circle_edge"
+                    android:textColor="@color/colorTextIcons"
+                    android:text="@string/next"
                     android:gravity="center"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="16dip"/>
-
-
+                    android:layout_weight="3.77" />
             </LinearLayout>
 
         </LinearLayout>
