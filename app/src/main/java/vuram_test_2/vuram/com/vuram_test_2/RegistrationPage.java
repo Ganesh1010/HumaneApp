@@ -1,9 +1,15 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +46,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
     EditText _mobileText;
     EditText _emailText;
     EditText _passwordText;
+    GPSTracker gps;
 //    @Bind(R.id.reEnterPassword_register) EditText _reEnterPasswordText;
     Button _signupButton;
   //  @Bind(R.id.org_details_register)
@@ -185,7 +192,40 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
             chooseLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //startActivity(new Intent(RegistrationPage.this, AndroidGPSTrackingActivity.class));
+                    gps = new GPSTracker(RegistrationPage.this);
+
+                    // check if GPS enabled
+                    if(gps.canGetLocation()){
+                        if(isNetworkAvailable()) {
+
+                            Intent intent = new Intent(RegistrationPage.this, MapActivity.class);
+                            startActivityForResult(intent, 2);
+                        }
+                        else
+                        {
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(RegistrationPage.this);
+                            alertDialog.setTitle("Internet settings");
+                            alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
+
+                            // On pressing Settings button
+                            alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                    startActivity(intent);
+                                }
+                            });
+                            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                            // Showing Alert Message
+                            alertDialog.show();
+                        }
+                    }else{
+                        gps.showSettingsAlert();
+                    }
                 }
             });
 
@@ -198,6 +238,11 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                 }
             });
         }
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     class CreateUserAccount extends AsyncTask{
 

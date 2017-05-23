@@ -12,11 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/colorTextIcons"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="2dp"
         card_view:cardElevation="2dp"
         card_view:cardUseCompatPadding="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="5dp">
 
 
         <LinearLayout
@@ -61,7 +60,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:layout_marginBottom="5dp">
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/requested"
@@ -70,26 +69,28 @@
                             android:textColor="@color/colorSecondaryText"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp" />
 
                         <ImageView
                             app:srcCompat="@drawable/minus"
                             android:id="@+id/decrement_custom"
-                            android:layout_height="35dp"
-                            android:layout_width="50dp" />
+                            android:layout_height="30dp"
+                            android:layout_width="40dp" />
 
                         <TextView android:id="@+id/number_custom"
-                            android:layout_width="50dp"
-                            android:layout_height="fill_parent"
                             android:layout_alignBottom="@+id/button1"
                             android:layout_toRightOf="@+id/button1"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:paddingBottom="5dp"
+                            android:layout_height="30dp"
+                            android:layout_width="20dp" />
 
                         <ImageView
                             app:srcCompat="@drawable/plus"
                             android:id="@+id/increment_custom"
-                            android:layout_height="35dp"
-                            android:layout_width="50dp" />
+                            android:layout_height="30dp"
+                            android:layout_width="40dp" />
                     </LinearLayout>
 
                 </LinearLayout>

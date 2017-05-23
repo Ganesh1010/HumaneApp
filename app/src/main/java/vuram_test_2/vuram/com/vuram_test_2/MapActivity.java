@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +21,8 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,7 +36,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -45,29 +48,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public double cur_latitude;
     public double cur_longitude;
     public List<Address> addresses = null;
-    GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    LatLng location;
-    Marker mCurrLocationMarker;
+    public GoogleMap mGoogleMap;
+    public SupportMapFragment mapFrag;
+    public LocationRequest mLocationRequest;
+    public GoogleApiClient mGoogleApiClient;
+    public LatLng location;
+    public Marker mCurrLocationMarker;
+    public Button setLocation;
+    public ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        progressDialog=new ProgressDialog(this);
 
         geocoder = new Geocoder(this, Locale.getDefault());
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
+        setLocation= (Button) findViewById(R.id.setLocation);
+        setLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               new getLocation().execute();
+            }
+        });
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-        //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
@@ -87,14 +98,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 longitude = latLng.longitude;
                 location = new LatLng(latitude, longitude);
                 mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, latLng.longitude)).draggable(true).visible(true).title(getAaddress(latitude, longitude)));
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
             }
         });
 
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //Initialize Google Play Services
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
@@ -149,7 +160,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         location = new LatLng(cur_latitude, cur_longitude);
         mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(cur_latitude, cur_longitude)));
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -186,20 +197,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
                         mGoogleMap.setMyLocationEnabled(true);
                     }
+
                 } else {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
+                return;
             }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
@@ -241,6 +261,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return Address.toString();
     }
 
@@ -254,26 +275,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = getMenuInflater();
-        mi.inflate(R.menu.menu, menu);
+        mi.inflate(R.menu.menu_map, menu);
 
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
         searchView.setQueryHint("Search for your Location...");
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSubmitButtonEnabled(true);
         searchView.setIconifiedByDefault(false);// Do not iconify the widget; expand it by defaul
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String newText) {
-                // This is your adapter that will be filtered
-                //  Toast.makeText(getApplicationContext(),"textChanged :"+newText,Toast.LENGTH_SHORT).show();
                 return true;
             }
 
             public boolean onQueryTextSubmit(String query) {
                 onMapSearch(query);
-                // **Here you can get the value "query" which is entered in the search box.**
-                //Toast.makeText(getApplicationContext(),"searchvalue :"+query,Toast.LENGTH_SHORT).show();
                 return true;
             }
         };
@@ -284,21 +302,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.satellite_mode:
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                return true;
-            case R.id.normal_mode:
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                return true;
-            case R.id.hybrid_mode:
-                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                return true;
-            case R.id.action_menu_done:
-                try {
-                    confirmAddress();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            case android.R.id.home:
+                this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -319,7 +324,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             longitude=address.getLongitude();
             location=new LatLng(latitude,longitude);
             mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(latitude,longitude)));
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,17));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -337,8 +342,40 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         latitude=cur_latitude;
         longitude=cur_longitude;
         mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(cur_latitude,cur_longitude)));
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,17));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17));
 
         return true;
+    }
+
+    class getLocation extends AsyncTask
+    {
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            try {
+                confirmAddress();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog= new ProgressDialog(MapActivity.this, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Getting Address...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+            super.onPostExecute(o);
+        }
     }
 }

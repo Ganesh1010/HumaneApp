@@ -57,6 +57,7 @@ public class LoginPage extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 //finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
             }
         });
         DetailsPopulator populator=new DetailsPopulator(this);

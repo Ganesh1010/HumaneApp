@@ -233,7 +233,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==2)
+        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
         {
             mapAddress = data.getStringExtra("ADDRESS");
             addressEditText.setText(mapAddress);
