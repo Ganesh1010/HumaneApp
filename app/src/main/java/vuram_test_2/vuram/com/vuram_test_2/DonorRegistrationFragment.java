@@ -41,7 +41,7 @@ public class DonorRegistrationFragment extends Fragment {
     Gson gson;
     RegisterDetails registerDetails;
     UserDetails details;
-    String email,password,mobilenumber,name;
+    String name,email,mobilenumber,password;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
@@ -137,7 +137,7 @@ public class DonorRegistrationFragment extends Fragment {
         } else {
             nameEditText.setError(null);
         }
-      /*  if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("enter a valid email address");
             valid = false;
         } else {
@@ -149,10 +149,10 @@ public class DonorRegistrationFragment extends Fragment {
             valid = false;
         } else {
             mobileEditText.setError(null);
-        }*/
+        }
 
-        if(!Validation.validate_email(email))
-            emailEditText.setError("enter valid email");
+        /*if(!Validation.validate_email(email))
+            emailEditText.setError("enter valid email");*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             passwordEditText.setError("between 4 and 10 alphanumeric characters");

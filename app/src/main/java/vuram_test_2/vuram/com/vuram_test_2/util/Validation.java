@@ -23,11 +23,12 @@ public class Validation {
     }
 
     public static Boolean validate_email(String email){
-        if(email!= null || android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
-            validate = true;
-        else
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+           // emailEditText.setError("enter a valid email address");
             validate = false;
-
+        } else {
+           /// emailEditText.setError(null);
+        }
         return validate;
     }
 }

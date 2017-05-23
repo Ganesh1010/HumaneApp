@@ -164,8 +164,8 @@ public class LoginPageFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-          //  username = .getText().toString();
-           // pass = _passwordText.getText().toString();
+            username = emailEditText.getText().toString();
+            pass = passwordEditText.getText().toString();
             super.onPreExecute();
         }
 
