@@ -55,7 +55,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
         DonationDetails items = (DonationDetails) donatedCardDetails.get(position);
         holder.donorName.setText(items.getUser());
-        Toast.makeText(context,"donor NAme"+items.getUser(),Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"donor Name"+items.getUser(),Toast.LENGTH_LONG).show();
         donatedItem = items.getDonatedItemDetails();
 
           needId = donatedItem.getDonated_item_id();
