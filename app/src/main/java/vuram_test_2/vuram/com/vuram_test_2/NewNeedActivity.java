@@ -294,7 +294,6 @@ public class NewNeedActivity extends AppCompatActivity {
         });
 
         submit.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
             @Override
             public void onClick(View v) {
                 gson= new Gson();
