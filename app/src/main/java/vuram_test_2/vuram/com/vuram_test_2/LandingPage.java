@@ -67,7 +67,7 @@ public class LandingPage extends AppCompatActivity {
 
                // Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
 
-                v.startAnimation(myAnim);
+               // v.startAnimation(myAnim);
 
                 org.setVisibility(View.INVISIBLE);
                 donor.setVisibility(View.INVISIBLE);
