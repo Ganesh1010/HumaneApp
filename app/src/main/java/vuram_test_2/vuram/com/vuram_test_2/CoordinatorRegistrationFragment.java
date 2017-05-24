@@ -3,7 +3,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,8 +25,11 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.ArrayList;
+
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
-import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
+
+import static vuram_test_2.vuram.com.vuram_test_2.R.array.country_option;
 
 
 public class CoordinatorRegistrationFragment extends Fragment {
@@ -38,11 +43,14 @@ public class CoordinatorRegistrationFragment extends Fragment {
     Boolean validated;
     ProgressDialog progressDialog;
     UserDetails userDetails;
-    RegisterDetails registerDetails;
     Gson gson;
     LandingPage landingPage;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+    RegisterDetails registerDetails;
+    String coordinatorDetails;
+
+
 
     @Nullable
     @Override
@@ -66,11 +74,18 @@ public class CoordinatorRegistrationFragment extends Fragment {
         coordinatorNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment = new OrganisationRegistrationFragment();
-                fragmentManager = getActivity().getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+
+                    register();
+                    fragment = new OrganisationRegistrationFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
             }
         });
+
+      /* ArrayAdapter dataAdapter = new ArrayAdapter<>(landingPage, android.R.layout.simple_spinner_item,R.array.country_option);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
+        countryFromSpinner.setAdapter(dataAdapter);*/
 
 
        /* coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -108,23 +123,38 @@ public class CoordinatorRegistrationFragment extends Fragment {
         country = countryFromSpinner.getSelectedItem().toString();
 
 
+
         if(validation()){
             //Toast.makeText(CoordinatorRegistration.this,"Country"+country,Toast.LENGTH_LONG).show();
-            coordinatorRegisterButton.setEnabled(false);
-            progressDialog= new ProgressDialog(landingPage,
+            coordinatorNextButton.setEnabled(false);
+            registerDetails.setCountry(1);
+            registerDetails.setMobile(mobileNo);
+            userDetails.setFirstname(firstName);
+            userDetails.setPassword(password);
+            userDetails.setEmail(emailId);
+            userDetails.setProfile(registerDetails);
+
+            coordinatorDetails = gson.toJson(userDetails);
+            Bundle bundle = new Bundle();
+            bundle.putString("COORDINATOR",coordinatorDetails);
+
+
+
+
+          /*  progressDialog= new ProgressDialog(landingPage,
                     R.style.AppTheme_Dark_Dialog);
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Creating Account...");
-            progressDialog.show();
-            new CreateCoordinatorAccount().execute();
+            progressDialog.show();*/
+         //   new CreateCoordinatorAccount().execute();
         }
         else {
-            coordinatorRegisterButton.setEnabled(true);
+            coordinatorNextButton.setEnabled(true);
             //   Toast.makeText(CoordinatorRegistration.this,"validation else part",Toast.LENGTH_LONG).show();
         }
     }
 
-    public Boolean validation(){
+    public boolean validation(){
         validated = true;
         if(firstName.isEmpty()||firstName.length()<=3){
             firstNameEditText.setError("Atleast 3 characters");
@@ -158,7 +188,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
         return validated;
     }
 
-    class CreateCoordinatorAccount extends AsyncTask {
+  /*  class CreateCoordinatorAccount extends AsyncTask {
 
         HttpResponse httpResponse;
         HttpClient httpClient;
@@ -196,9 +226,9 @@ public class CoordinatorRegistrationFragment extends Fragment {
              userAccountDetails.setGender(gender);
              userAccountDetails.setCountry(country);*/
 
-            httpResponse = Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(userDetails).toString(),httpClient,null);
+            //httpResponse = Connectivity.makePostRequest(RestAPIURL.register,gson.toJson(userDetails).toString(),httpClient,null);
 
-            if(httpResponse!=null)
+            /*if(httpResponse!=null)
             {
                 Log.d("Response Code",httpResponse.getStatusLine().getStatusCode()+"");
 
@@ -237,7 +267,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
             super.onPostExecute(o);
 
         }
-    }
+    }*/
 
 
 }

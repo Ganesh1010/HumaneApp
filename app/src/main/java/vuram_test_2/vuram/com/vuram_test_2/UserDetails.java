@@ -10,6 +10,15 @@ public class UserDetails {
     String email;
     String password;
     RegisterDetails profile;
+    OrganisationDetails organisationDetails;
+
+    public OrganisationDetails getOrganisationDetails() {
+        return organisationDetails;
+    }
+
+    public void setOrganisationDetails(OrganisationDetails organisationDetails) {
+        this.organisationDetails = organisationDetails;
+    }
 
     public RegisterDetails getRegisterDetails() {
         return profile;

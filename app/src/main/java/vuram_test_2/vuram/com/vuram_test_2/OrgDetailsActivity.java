@@ -199,11 +199,11 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             removedItems = new ArrayList<Integer>();
-            View target = findViewById(R.id.pager);
+            View target = findViewById(R.id.cart);
             BadgeView badge = new BadgeView(context, target);
             badge.setText("1");
             badge.show();
-            itemsToBedispalyed();
+            //itemsToBedispalyed();
         }
 
 
@@ -220,7 +220,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
     }
 
-   public void itemsToBedispalyed()
+   /*public void itemsToBedispalyed()
     {
         data = new ArrayList<DataModel>();
         for (int i = 0; i < needName.length; i++) {
@@ -231,7 +231,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
         adapter = new ItemDetailsAdapter(data);
         recyclerView.setAdapter(adapter);
-    }
+    }*/
 
 }
 

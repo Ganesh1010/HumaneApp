@@ -90,14 +90,28 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp" />
 
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/country_spinner_coordinator_register"
-                    android:drawSelectorOnTop="true"
-                    android:entries="@array/country_option"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    android:layout_marginLeft="2dp" />
+                    <TextView
+                        android:text="Country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView2"
+                        android:layout_weight="1"
+                        android:textColor="#FFFFFF"/>
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/country_spinner_coordinator_register"
+                        android:drawSelectorOnTop="true"
+                        android:entries="@array/country_option"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="1" />
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -113,7 +127,7 @@
                 <!-- Signup Button -->
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/signup_coordinator_register"
-                    android:layout_width="match_parent"
+                    android:layout_width="173dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="12dp"
@@ -121,8 +135,7 @@
                     android:background="@drawable/button_circle_edge"
                     android:textColor="@color/colorTextIcons"
                     android:text="@string/next"
-                    android:gravity="center"
-                    android:layout_weight="3.77" />
+                    android:gravity="center" />
             </LinearLayout>
 
         </LinearLayout>

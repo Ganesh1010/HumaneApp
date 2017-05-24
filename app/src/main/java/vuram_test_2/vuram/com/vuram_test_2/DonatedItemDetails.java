@@ -9,6 +9,9 @@ public class DonatedItemDetails {
         return donated_item_id;
     }
 
+    public DonatedItemDetails() {
+    }
+
     public DonatedItemDetails(int donated_item_id, int quantity) {
         this.donated_item_id = donated_item_id;
         this.quantity = quantity;
