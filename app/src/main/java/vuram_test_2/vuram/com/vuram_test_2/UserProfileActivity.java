@@ -154,7 +154,7 @@ public class UserProfileActivity extends AppCompatActivity {
         orgDescEditText = (EditText) findViewById(R.id.org_desc_editText_org_form);
 
         // Submit button
-        submitOrgFormButton = (Button) findViewById(R.id.submit_button_org_form);
+        submitOrgFormButton = (Button) findViewById(R.id.register_button_org_form);
         submitOrgFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

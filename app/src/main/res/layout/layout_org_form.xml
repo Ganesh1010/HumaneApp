@@ -277,14 +277,6 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-        <Button
-            android:text="Add"
-            android:layout_width="131dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/submit_button_org_form"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/colorTextIcons" />
-
 
     </LinearLayout>
 

@@ -8,6 +8,24 @@ public class OrganisationDetails
 {
     String org_reg_no,org_name,address,email,description,mobile,org_type;
     int latitude,longitude;
+    RegisterDetails coordinatorDetails;
+    UserDetails profile;
+
+    public RegisterDetails getCoordinatorDetails() {
+        return coordinatorDetails;
+    }
+
+    public void setCoordinatorDetails(RegisterDetails coordinatorDetails) {
+        this.coordinatorDetails = coordinatorDetails;
+    }
+
+    public UserDetails getProfile() {
+        return profile;
+    }
+
+    public void setProfile(UserDetails profile) {
+        this.profile = profile;
+    }
 
     public String getOrg_reg_no() {
         return org_reg_no;

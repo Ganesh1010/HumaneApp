@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,26 +32,32 @@ import java.util.List;
 
 import eu.fiskur.simpleviewpager.ImageResourceLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
-import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class OrgDetailsActivity extends AppCompatActivity  {
+    Button bt1;
     ImageButton imageButton;
     String[] needName;
     int[] needQuantities;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
     static Context context;
-    List itemslist;
+    List itemslist,subItemlist;
+    List<NeedItemDetails> items,subItem;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
+    private static ArrayList<DataModel> data;
     static View.OnClickListener myOnClickListener;
+    private static ArrayList<Integer> removedItems;
+    ArrayList needitems;
     HttpClient client;
     String OrgName,Address,EmailId,Mobile;
     NeedDetails needDetails;
     NeedItemDetails needItemDetails;
     NeedDetails need;
+    String mainitemname;
+    MainItemDetails mainItemDetails;
     TextView Organisationname,Organisationemail,Organisationmobile,Organisationaddress;
     int needid;
     OrganisationDetails orgdetails;
@@ -70,10 +78,24 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             }
         });
         context = getBaseContext();
-        CommonUI.displayCheckoutUI(findViewById(R.id.activity_donor_org_details),10,OrgDetailsActivity.this);
         new GetParticularNeedDetails().execute();
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
+        bt1 = (Button) findViewById(R.id.donate_donor_org);
+
+
+        bt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (view == bt1)
+
+                {
+                    Intent intent = new Intent(OrgDetailsActivity.this, DetailsOfQuantitySelected.class);
+                    startActivity(intent);
+                }
+            }
+        });
         final SimpleViewPager simpleViewPager = (SimpleViewPager) findViewById(R.id.simple_view_pager_donor_org);
         int[] resourceIds = new int[]{
                 R.drawable.ngo,
@@ -95,7 +117,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         int indicatorColor = Color.parseColor("#ffffff");
         int selectedIndicatorColor = Color.parseColor("#8BC34A");
         simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
-
     }
 
 
@@ -174,16 +195,15 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             }
             Log.d("nameList", String.valueOf(needName.length));
             recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
-            adapter=new ItemDetailsAdapter(needdetails,context);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
-            View target = findViewById(R.id.cart);
+            removedItems = new ArrayList<Integer>();
+            View target = findViewById(R.id.pager);
             BadgeView badge = new BadgeView(context, target);
             badge.setText("1");
             badge.show();
-
+            itemsToBedispalyed();
         }
 
 
@@ -200,6 +220,18 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
     }
 
+   public void itemsToBedispalyed()
+    {
+        data = new ArrayList<DataModel>();
+        for (int i = 0; i < needName.length; i++) {
+            data.add(new DataModel(
+                    MyData.drawableArray[i],needName[i],needQuantities[i]
+            ));
+            Log.d("need", String.valueOf(needQuantities[i]));
+        }
+        adapter = new ItemDetailsAdapter(data);
+        recyclerView.setAdapter(adapter);
+    }
 
 }
 
