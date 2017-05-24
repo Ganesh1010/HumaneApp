@@ -1,8 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +27,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,needid;
     DonatedItemDetails item;
+    public interface OnRecyclerItemClickListener {
 
+        void onRecyclerItemClick(String data);
+    }
+    private OnRecyclerItemClickListener onRecyclerItemClickListener;
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         TextView requested;
@@ -83,7 +85,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         holder.setIsRecyclable(false);
-        final int[] count = {0};
         for (int i = 0; i < itemslist.size(); i++) {
             NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
             needItemId = needItemDetails.getItem_type_id();
@@ -100,31 +101,9 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             }
             // holder.imageView.setImageResource(dataSet.get(listPosition).getImage());
         }
+        holder.imageView.setImageResource(getimages(listPosition));
         holder.title.setText(needName[listPosition]);
         holder.requested.setText(needQuantities[listPosition]+"");
-        holder.value.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater inflater = (LayoutInflater)
-                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View npView = inflater.inflate(R.layout.dialog_number_picker, null);
-                new AlertDialog.Builder(context)
-                        .setTitle("Text Size:")
-                        .setView(npView)
-                        .setPositiveButton("Ok",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                    }
-                                })
-                        .create().show();
-            }
-        });
         holder.increment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -144,7 +123,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                         item.setQuantity(1);
                         donatedItemDetails.add(item);
                     }
-                    holder.value.setText((item.getQuantity()+""));
+                    holder.value.setText(("Requested: "+item.getQuantity()+""));
 
                 }
             });
@@ -176,6 +155,10 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             //Log.d("value", dataSet.get(listPosition).getRequested() + "");
 
     }
+    private int getimages(int listPosition) {
+        Integer[] drawableArray = {R.drawable.ic_food_black,R.drawable.ic_food_black,R.drawable.ic_food_black,R.drawable.ic_cloth_black,R.drawable.ic_grocery_cart_black,R.drawable.ic_stationery_black};
+        return drawableArray[listPosition];
+    }
 
     @Override
     public int getItemCount() {
@@ -183,4 +166,5 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
 
     }
+
 
