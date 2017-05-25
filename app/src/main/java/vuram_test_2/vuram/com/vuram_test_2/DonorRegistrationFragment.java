@@ -74,13 +74,11 @@ public class DonorRegistrationFragment extends Fragment {
         loginLinkTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  Intent intent = new Intent(landingPage, LoginPage.class);
-                startActivity(intent);
-                landingPage.finish();*/
+
+
                 fragment = new LoginPageFragment();
                 fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
 
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
@@ -123,13 +121,13 @@ public class DonorRegistrationFragment extends Fragment {
     }
 
     public boolean validate() {
+
         boolean valid = true;
 
         name = nameEditText.getText().toString();
         email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
         mobilenumber = mobileEditText.getText().toString();
-        //  String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
             nameEditText.setError("at least 3 characters");
@@ -137,11 +135,15 @@ public class DonorRegistrationFragment extends Fragment {
         } else {
             nameEditText.setError(null);
         }
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+      /*  if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailEditText.setError("enter a valid email address");
             valid = false;
         } else {
             emailEditText.setError(null);
+        }*/
+
+        if(!Validation.validate_email(email)){
+            emailEditText.setError("enter valid mail id");
         }
 
         if (mobilenumber.isEmpty() || mobilenumber.length() != 10) {
@@ -160,13 +162,6 @@ public class DonorRegistrationFragment extends Fragment {
         } else {
             passwordEditText.setError(null);
         }
-
-//        if (reEnterPassword.isEmpty() || reEnterPassword.length() < 4 || reEnterPassword.length() > 10 || !(reEnterPassword.equals(password))) {
-//            _reEnterPasswordText.setError("Password Do not match");
-//            valid = false;
-//        } else {
-//            _reEnterPasswordText.setError(null);
-//        }
 
         return valid;
     }

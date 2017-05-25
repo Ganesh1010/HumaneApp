@@ -1,7 +1,10 @@
 package vuram_test_2.vuram.com.vuram_test_2.util;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -124,5 +127,37 @@ public class Connectivity {
         SharedPreferences.Editor pref=c.getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE).edit();
         pref.remove(type);
         pref.commit();
+    }
+    public static boolean ShowDialogBar(final Context context) {
+        if (isNetworkAvailable(context))
+        {
+            return true;
+            }
+        else
+        {
+            try {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                alertDialog.setCancelable(false);
+                alertDialog.setTitle("Connection Failed");
+                alertDialog.setMessage("Please Check your Internet Connection");
+                alertDialog.setPositiveButton ("Retry", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(isNetworkAvailable(context))
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.create().show();
+                return false;
+            }
+            catch(Exception e)
+            {
+                Log.d("Dialog", "Show Dialog: "+e.getMessage());
+            }
+            return true;
+        }
+    }
+    public static boolean isNetworkAvailable(Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

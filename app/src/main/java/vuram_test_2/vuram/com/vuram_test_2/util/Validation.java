@@ -3,9 +3,9 @@ package vuram_test_2.vuram.com.vuram_test_2.util;
 
 public class Validation {
 
-    static Boolean validate = false;
+    static boolean validate = false;
 
-    public static Boolean validate(String userLogin) {
+    public static boolean validate(String userLogin) {
         if (userLogin != null) {
             if (android.util.Patterns.EMAIL_ADDRESS.matcher(userLogin).matches())
                 validate = true;
@@ -22,13 +22,12 @@ public class Validation {
         return validate;
     }
 
-    public static Boolean validate_email(String email){
+    public static boolean validate_email(String email){
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-           // emailEditText.setError("enter a valid email address");
             validate = false;
-        } else {
-           /// emailEditText.setError(null);
         }
+        else
+            validate = true;
         return validate;
     }
 }

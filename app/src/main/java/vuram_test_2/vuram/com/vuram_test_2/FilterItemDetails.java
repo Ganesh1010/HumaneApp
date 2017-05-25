@@ -4,7 +4,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
  * Created by sujithv on 5/19/2017.
  */
 
-public class FilterItemDetails {
+public class      FilterItemDetails {
     int subItemCode;
     int mainItemCode;
 

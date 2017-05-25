@@ -1,8 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.readystatesoftware.viewbadger.BadgeView;
@@ -53,14 +51,12 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     static View.OnClickListener myOnClickListener;
     private static ArrayList<Integer> removedItems;
     ArrayList needitems;
-
     HttpClient client;
     String OrgName,Address,EmailId,Mobile;
     NeedDetails needDetails;
     NeedItemDetails needItemDetails;
     NeedDetails need;
     String mainitemname;
-    ImageView cart;
     MainItemDetails mainItemDetails;
     TextView Organisationname,Organisationemail,Organisationmobile,Organisationaddress;
     int needid;
@@ -69,7 +65,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_org_details);
         imageButton=(ImageButton)findViewById(R.id.back_home);
         Organisationname=(TextView)findViewById(R.id.adapter1);
@@ -87,15 +82,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
         bt1 = (Button) findViewById(R.id.donate_donor_org);
-        cart= (ImageView) findViewById(R.id.cart);
 
-        cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(OrgDetailsActivity.this,test.class));
-            }
-        });
 
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,7 +199,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             removedItems = new ArrayList<Integer>();
-            View target = findViewById(R.id.cart);
+            View target = findViewById(R.id.pager);
             BadgeView badge = new BadgeView(context, target);
             badge.setText("1");
             badge.show();
@@ -235,7 +222,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
 
    public void itemsToBedispalyed()
     {
-        data = new ArrayList<>();
+        data = new ArrayList<DataModel>();
         for (int i = 0; i < needName.length; i++) {
             data.add(new DataModel(
                     MyData.drawableArray[i],needName[i],needQuantities[i]
