@@ -1,7 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -78,9 +77,11 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             }
         });
         context = getBaseContext();
+
         new GetParticularNeedDetails().execute();
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
+
         final SimpleViewPager simpleViewPager = (SimpleViewPager) findViewById(R.id.simple_view_pager_donor_org);
         int[] resourceIds = new int[]{
                 R.drawable.ngo,
@@ -179,10 +180,12 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 //Log.d("Quantity", String.valueOf(needQuantities));
             }
             Log.d("nameList", String.valueOf(needName.length));
+            adapter=new ItemDetailsAdapter(needdetails,context, OrgDetailsActivity.this);
             recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view_donor_org);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
             removedItems = new ArrayList<Integer>();
             View target = findViewById(R.id.cart);
             BadgeView badge = new BadgeView(context, target);
@@ -203,7 +206,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             Organisationemail.setText(EmailId);
         }
     }
-
 
 }
 
