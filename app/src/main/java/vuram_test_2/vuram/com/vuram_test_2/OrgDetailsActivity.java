@@ -1,7 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,21 +80,9 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         new GetParticularNeedDetails().execute();
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
-        bt1 = (Button) findViewById(R.id.donate_donor_org);
 
 
-        bt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (view == bt1)
-
-                {
-                    Intent intent = new Intent(OrgDetailsActivity.this, DetailsOfQuantitySelected.class);
-                    startActivity(intent);
-                }
-            }
-        });
         final SimpleViewPager simpleViewPager = (SimpleViewPager) findViewById(R.id.simple_view_pager_donor_org);
         int[] resourceIds = new int[]{
                 R.drawable.ngo,
@@ -199,11 +186,10 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             removedItems = new ArrayList<Integer>();
-            View target = findViewById(R.id.pager);
+            View target = findViewById(R.id.cart);
             BadgeView badge = new BadgeView(context, target);
             badge.setText("1");
             badge.show();
-            itemsToBedispalyed();
         }
 
 
@@ -220,18 +206,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         }
     }
 
-   public void itemsToBedispalyed()
-    {
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < needName.length; i++) {
-            data.add(new DataModel(
-                    MyData.drawableArray[i],needName[i],needQuantities[i]
-            ));
-            Log.d("need", String.valueOf(needQuantities[i]));
-        }
-        adapter = new ItemDetailsAdapter(data);
-        recyclerView.setAdapter(adapter);
-    }
 
 }
 
