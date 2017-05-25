@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
+
 
 public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.MyViewHolder> {
 
@@ -21,7 +24,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     int[] needQuantities;
     Context context;
     OrganisationDetails orgdetails;
-
+    Activity activity;
     ArrayList<NeedItemDetails> needItemDetailses;
     ArrayList<DonatedItemDetails> donatedItemDetails;
     ArrayList<MainItemDetails> mainItemDetailsList;
@@ -52,10 +55,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         }
     }
 
-    public ItemDetailsAdapter(ArrayList<NeedDetails> needdetails,Context context) {
+    public ItemDetailsAdapter(ArrayList<NeedDetails> needdetails,Context context,Activity activity) {
         needid = 0;
         this.context=context;
         need = needdetails.get(needid);
+        this.activity=activity;
         itemslist=need.getItems();
         needQuantities = new int[itemslist.size()];
         needName = new String[itemslist.size()];
@@ -114,6 +118,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                                 item.setQuantity(item.getQuantity() + 1);
                                 donatedItemDetails.set(i, item);
                                 isExists = true;
+                                   // CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),item.getQuantity(),activity);
+
                             }
 
                     }
@@ -123,7 +129,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                         item.setQuantity(1);
                         donatedItemDetails.add(item);
                     }
-                    holder.value.setText(("Requested: "+item.getQuantity()+""));
+                    holder.value.setText((item.getQuantity()+""));
+                    CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),item.getQuantity(),activity);
 
                 }
             });

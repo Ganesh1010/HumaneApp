@@ -165,7 +165,7 @@
                 android:id="@+id/textView17"
                 android:layout_weight="1"
                 android:layout_marginStart="10dp"
-                android:text="EmailId" />
+                android:text="Email" />
 
             <TextView
                 android:textSize="14sp"
