@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.readystatesoftware.viewbadger.BadgeView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +22,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
     NeedDetails need;
     List itemslist;
+    int count=0,badger=0;
     String[] needName;
     int[] needQuantities;
     Context context;
-    OrganisationDetails orgdetails;
     Activity activity;
-    ArrayList<NeedItemDetails> needItemDetailses;
     ArrayList<DonatedItemDetails> donatedItemDetails;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,needid;
@@ -118,8 +119,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                                 item.setQuantity(item.getQuantity() + 1);
                                 donatedItemDetails.set(i, item);
                                 isExists = true;
+                                break;
                                    // CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),item.getQuantity(),activity);
-
                             }
 
                     }
@@ -130,7 +131,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                         donatedItemDetails.add(item);
                     }
                     holder.value.setText((item.getQuantity()+""));
-                    CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),item.getQuantity(),activity);
+                    CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),++count,activity);
+                    View target = activity.findViewById(R.id.cart);
+                    BadgeView badge = new BadgeView(context, target);
+                    badge.setText((count)+"");
+                    badge.show();
 
                 }
             });
@@ -144,6 +149,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                             item.setQuantity(item.getQuantity() - 1);
                             donatedItemDetails.set(i, item);
                             isExists = true;
+                            break;
                         }
 
                     }
@@ -155,7 +161,12 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     }
                     holder.value.setText((item.getQuantity()+""));
 
-
+                    CommonUI.displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),--count,activity);
+                    View target = activity.findViewById(R.id.cart);
+                    BadgeView badge = new BadgeView(context, target);
+                    Log.d("view",count+"");
+                    badge.setText(count+"");
+                    badge.show();
                 }
             });
 
