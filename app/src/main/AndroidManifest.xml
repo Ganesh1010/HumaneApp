@@ -48,9 +48,11 @@
             android:name=".NewNeedActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme1" />
-        <activity android:name=".test"
+        <activity
+            android:name=".test"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme1"></activity>
+            android:theme="@style/AppTheme1" />
+        <activity android:name=".GeneralUser"></activity>
     </application>
 
 </manifest>
