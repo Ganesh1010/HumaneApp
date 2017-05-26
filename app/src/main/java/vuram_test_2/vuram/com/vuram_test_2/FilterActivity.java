@@ -119,7 +119,7 @@ public class FilterActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent();
-                    setResult(2,intent);
+                    setResult(HomeActivity.FILTER_REQUEST,intent);
                     finish();
                 }
             });

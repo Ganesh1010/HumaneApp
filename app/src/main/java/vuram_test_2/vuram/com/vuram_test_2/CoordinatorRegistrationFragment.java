@@ -39,7 +39,11 @@ public class CoordinatorRegistrationFragment extends Fragment {
     Spinner genderFromSpinner,countryFromSpinner;
     Button coordinatorRegisterButton,coordinatorNextButton;
     TextView coordinatorLoginTextView;
-    String emailId,firstName,mobileNo,password,gender,country;
+    String emailId;
+    String firstName;
+    String mobileNo;
+    String password;
+    int country;
     Boolean validated;
     ProgressDialog progressDialog;
     UserDetails userDetails;
@@ -47,8 +51,9 @@ public class CoordinatorRegistrationFragment extends Fragment {
     LandingPage landingPage;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    RegisterDetails registerDetails;
-    String coordinatorDetails;
+    RegisterDetails registerDetails = new RegisterDetails();
+    String coordinatorDetails = null;
+    Bundle bundle;
 
 
 
@@ -77,15 +82,12 @@ public class CoordinatorRegistrationFragment extends Fragment {
 
                     register();
                     fragment = new OrganisationRegistrationFragment();
+                    fragment.setArguments(bundle);
                     fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
             }
         });
-
-      /* ArrayAdapter dataAdapter = new ArrayAdapter<>(landingPage, android.R.layout.simple_spinner_item,R.array.country_option);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
-        countryFromSpinner.setAdapter(dataAdapter);*/
 
 
        /* coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -120,22 +122,31 @@ public class CoordinatorRegistrationFragment extends Fragment {
         mobileNo = mobileEditText.getText().toString();
         password = passwordEditText.getText().toString();
        //gender = genderFromSpinner.getSelectedItem().toString();
-        country = countryFromSpinner.getSelectedItem().toString();
+        country = countryFromSpinner.getSelectedItemPosition();
 
+       /* Toast.makeText(landingPage,"email ID"+emailId,Toast.LENGTH_LONG).show();
+        Toast.makeText(landingPage,"name"+firstName,Toast.LENGTH_LONG).show();
+        Toast.makeText(landingPage,"mobileNo"+mobileNo,Toast.LENGTH_LONG).show();
+        Toast.makeText(landingPage,"password"+password,Toast.LENGTH_LONG).show();
+        Toast.makeText(landingPage,"Country"+country,Toast.LENGTH_LONG).show();*/
 
 
         if(validation()){
             //Toast.makeText(CoordinatorRegistration.this,"Country"+country,Toast.LENGTH_LONG).show();
             coordinatorNextButton.setEnabled(false);
-            registerDetails.setCountry(1);
-            registerDetails.setMobile(mobileNo);
+            registerDetails = new RegisterDetails();
+            userDetails = new UserDetails();
             userDetails.setFirstname(firstName);
             userDetails.setPassword(password);
             userDetails.setEmail(emailId);
+            registerDetails.setCountry(1);
+            registerDetails.setMobile(mobileNo);
             userDetails.setProfile(registerDetails);
 
+
+            Gson gson=new Gson();
             coordinatorDetails = gson.toJson(userDetails);
-            Bundle bundle = new Bundle();
+            bundle= new Bundle();
             bundle.putString("COORDINATOR",coordinatorDetails);
 
 
