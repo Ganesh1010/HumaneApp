@@ -11,13 +11,7 @@ public class OrganisationDetails
     RegisterDetails coordinatorDetails;
     UserDetails profile;
 
-    public RegisterDetails getCoordinatorDetails() {
-        return coordinatorDetails;
-    }
 
-    public void setCoordinatorDetails(RegisterDetails coordinatorDetails) {
-        this.coordinatorDetails = coordinatorDetails;
-    }
 
     public UserDetails getProfile() {
         return profile;

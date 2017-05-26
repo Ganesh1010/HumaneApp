@@ -2,6 +2,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,7 +34,8 @@ public class OrganisationRegistrationFragment extends Fragment {
     EditText orgNoEditText,orgNameEditText,orgaddressEditText,orgEmailEditText,orgMobNoEditText,orgDescEditText;
     Spinner orgTypeFromSpinner;
     Button orgRegisterButton;
-    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType;
+    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType,lastName;
+    int latitude,longitude;
     Gson gson;
     ProgressDialog progressDialog;
     LandingPage landingPage;
@@ -41,21 +43,23 @@ public class OrganisationRegistrationFragment extends Fragment {
     OrganisationDetails organisationDetails;
     RegisterDetails coordinatorDetails;
     UserDetails userDetails;
-
+    String orgDetailsString;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        if(v==null)
+        Bundle i=getArguments();
+        if(i!=null) {
+            orgDetailsString=i.getString("COORDINATOR");
+        }
+         if(v==null)
             v = inflater.inflate(R.layout.layout_org_form,container,false);
-
         landingPage = (LandingPage)getActivity();
         orgNoEditText = (EditText)v.findViewById(R.id.org_register_num_editText_org_form);
         orgNameEditText = (EditText)v.findViewById(R.id.org_name_editText_org_form);
         orgaddressEditText = (EditText)v.findViewById(R.id.org_address_editText_org_form);
         orgEmailEditText = (EditText)v.findViewById(R.id.org_email_editText_org_form);
-        orgMobNoEditText = (EditText)v.findViewById(R.id.mobile_coordinator_register);
+        orgMobNoEditText = (EditText)v.findViewById(R.id.org_phone_editText_org_form);
         orgDescEditText = (EditText)v.findViewById(R.id.org_desc_editText_org_form);
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
         orgRegisterButton = (Button)v.findViewById(R.id.register_button_org_form);
@@ -139,6 +143,7 @@ public class OrganisationRegistrationFragment extends Fragment {
             client = new DefaultHttpClient();
             organisationDetails = new OrganisationDetails();
             coordinatorDetails = new RegisterDetails();
+            userDetails = new UserDetails();
 
             organisationDetails.setEmail(orgMail);
             organisationDetails.setMobile(orgMobile);
@@ -147,23 +152,21 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setOrg_name(orgName);
             organisationDetails.setOrg_reg_no(orgNo);
             organisationDetails.setOrg_type(orgType);
-
-
-            Bundle bundle = new Bundle();
-            coordinatorInfo = bundle.getString("COORDINATOR");
-            Type type = new TypeToken<Class<UserDetails>>() {}.getType();
-            userDetails = gson.fromJson(coordinatorInfo,type);
+            organisationDetails.setLatitude(12);
+            organisationDetails.setLongitude(50);
+  //          Bundle bundle = new Bundle();
+//            coordinatorInfo = bundle.getString("COORDINATOR");
+           // Type type = new TypeToken<Class<UserDetails>>() {}.getType();
+            Log.d("Org", "doInBackground: "+orgDetailsString);
+            userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.setOrganisationDetails(organisationDetails);
             //userDetails.setOrganisationDetails(gson.fromJson(coordinatorInfo Class<UserDetails>()));
 
+            response = Connectivity.makePostRequest(RestAPIURL.registerOrgandProfile, gson.toJson(userDetails).toString(), client, null);
 
-
-
-
-            response = Connectivity.makePostRequest(RestAPIURL.register, gson.toJson(userDetails).toString(), client, null);
             Log.d("Request JSON", gson.toJson(userDetails).toString());
             if (response != null) {
-                Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
+                Log.d("Response Code", response.getStatusLine().getReasonPhrase() + "");
 
                 try {
                     Connectivity.getJosnFromResponse(response);
