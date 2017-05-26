@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.readystatesoftware.viewbadger.BadgeView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -197,10 +196,16 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
             removedItems = new ArrayList<Integer>();
-            View target = findViewById(R.id.cart);
-            BadgeView badge = new BadgeView(context, target);
-            badge.setText("1");
-            badge.show();
+            ImageView im=(ImageView)findViewById(R.id.cart);
+            im.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i=new Intent(OrgDetailsActivity.this,GeneralUser.class);
+                    startActivity(i);
+                }
+            });
+
+
         }
 
 
