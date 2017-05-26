@@ -195,14 +195,13 @@ public class UserProfileActivity extends AppCompatActivity {
                 gps = new GPSTracker(UserProfileActivity.this);
 
                 // check if GPS enabled
-                if(gps.canGetLocation()){
+                if(gps.isGPSTrackingEnabled){
                     if(isNetworkAvailable()) {
 
                         Intent intent = new Intent(UserProfileActivity.this, MapActivity.class);
                         startActivityForResult(intent, 2);
                     }
-                    else
-                    {
+                    else {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserProfileActivity.this);
                         alertDialog.setTitle("Internet settings");
                         alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");

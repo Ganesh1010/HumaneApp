@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/search_view_pad_left"
+    android:paddingRight="@dimen/search_view_pad_right"
+    android:paddingTop="@dimen/search_view_pad_top"
+    android:paddingBottom="@dimen/search_view_pad_bottom"
+    android:elevation="5dp">
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/city_name_textview"
+        android:layout_marginBottom="@dimen/search_view_pad_bottom"
+        android:textSize="18sp" />
+    <include layout="@layout/layout_divider" />
+</LinearLayout>

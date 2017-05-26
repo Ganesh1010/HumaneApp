@@ -16,5 +16,10 @@
 
     <dimen name="activity_linear_layout_bottom_padding">15dp</dimen>
     <dimen name="list_heading_left_padding">25dp</dimen>
+    
+    <dimen name="search_view_pad_left">10dp</dimen>
+    <dimen name="search_view_pad_right">10dp</dimen>
+    <dimen name="search_view_pad_top">10dp</dimen>
+    <dimen name="search_view_pad_bottom">10dp</dimen>
 
 </resources>

@@ -48,7 +48,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     private final int MENU_ITEM_TWO = 2;
     private final int MENU_ITEM_THREE = 3;
     private final int MENU_ITEM_FOUR = 4;
+    public static final int FILTER_REQUEST = 5;
+    public static final int LOCATION_REQUEST = 6;
+
     public static Set<String> appliedFilter;
+    public static String locationName = "Chennai";
     protected Handler handler;
     HttpResponse response;
     private DonorNeedViewAdapter mAdapter;
@@ -72,6 +76,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         appliedFilter=new TreeSet<>();
+
         /* Spinner */
         SpinnerListener spinnerListener = new SpinnerListener();
         Spinner spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
@@ -81,7 +86,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         List<String> categories = new ArrayList<String>();
         categories.add("Donor");
         categories.add("Organization");
-
 
         progressDialog= new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
@@ -135,6 +139,16 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
             }
         });*/
 
+        /* Location ImageButton */
+        ImageButton currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_home);
+        currentLocationImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ChooseLocationActivity.class);
+                startActivityForResult(intent, LOCATION_REQUEST);
+            }
+        });
+
         startAsyncTask();
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(new View.OnClickListener() {
@@ -160,15 +174,16 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==2)
-        {
+        if(requestCode == FILTER_REQUEST) {
             Iterator i=appliedFilter.iterator();
             while (i.hasNext()) {
                 System.out.println(i.next());
             }
+        } else if (requestCode == LOCATION_REQUEST) {
+            TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_name_home);
+            currentLocationTextView.setText(locationName);
         }
     }
 
@@ -178,11 +193,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         getNeedItemDetails.execute();
     }
 
-    private final Handler mHandler = new Handler()
-    {
+    private final Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg)
-        {
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
@@ -295,7 +308,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
             super.onPostExecute(o);
         }
     }
-
 
     class SpinnerListener implements AdapterView.OnItemSelectedListener {
 

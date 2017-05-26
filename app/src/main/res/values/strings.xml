@@ -36,6 +36,7 @@
         <item>Children Home</item>
         <item>Old Age Home</item>
     </string-array>
+    <string name="location">Location</string>
     <string name="org_description">Org Description</string>
 
     <string name="username">UserName</string>
