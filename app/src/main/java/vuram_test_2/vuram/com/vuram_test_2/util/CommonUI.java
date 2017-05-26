@@ -12,14 +12,11 @@ import android.widget.Toast;
 public class CommonUI {
     public static void displayCheckoutUI(View v, int itemsCount, final Context context)
     {
-        Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG)
-                .setAction("Donate", new View.OnClickListener() {
+        Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // Perform anything for the action selected
-                        Toast.makeText(context,"Donate Clicked",Toast.LENGTH_LONG).show();
-                    }
-                })
-                .show();
+                        Toast.makeText(context,"Donate Clicked",Toast.LENGTH_LONG).show();}
+                }).show();
     }
 }

@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         donationCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,test.class));
+                startActivity(new Intent(OrgDetailsActivity.this,DonationConfirmationActivity.class));
             }
         });
 

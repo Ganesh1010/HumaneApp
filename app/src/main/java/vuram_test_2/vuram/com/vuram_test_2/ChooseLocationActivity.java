@@ -56,12 +56,8 @@ public class ChooseLocationActivity extends AppCompatActivity  implements
             public void onClick(View v) {
                 if (new GPSTracker(ChooseLocationActivity.this).getIsGPSTrackingEnabled()) {
                     if (Build.VERSION.SDK_INT >= 23) {
-                        if (ContextCompat.checkSelfPermission(ChooseLocationActivity.this,
-                                Manifest.permission.ACCESS_FINE_LOCATION) !=
-                                PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(ChooseLocationActivity.this,
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+                        if (ContextCompat.checkSelfPermission(ChooseLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(ChooseLocationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                         } else {
                             HomeActivity.locationName = new GPSTracker(ChooseLocationActivity.this).getLocality(ChooseLocationActivity.this);
                             finish();
