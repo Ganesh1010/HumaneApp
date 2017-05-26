@@ -277,13 +277,23 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center">
+
         <Button
-            android:text="Add"
-            android:layout_width="wrap_content"
+            android:text="REGISTER"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/submit_button_org_form"
+            android:id="@+id/register_button_org_form"
             android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/colorTextIcons" />
     </LinearLayout>
+
 
 </LinearLayout>

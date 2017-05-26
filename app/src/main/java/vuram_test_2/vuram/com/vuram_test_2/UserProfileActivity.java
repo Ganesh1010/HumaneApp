@@ -154,7 +154,7 @@ public class UserProfileActivity extends AppCompatActivity {
         orgDescEditText = (EditText) findViewById(R.id.org_desc_editText_org_form);
 
         // Submit button
-        submitOrgFormButton = (Button) findViewById(R.id.submit_button_org_form);
+        submitOrgFormButton = (Button) findViewById(R.id.register_button_org_form);
         submitOrgFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,13 +195,14 @@ public class UserProfileActivity extends AppCompatActivity {
                 gps = new GPSTracker(UserProfileActivity.this);
 
                 // check if GPS enabled
-                if(gps.isGPSTrackingEnabled){
+                if(gps.getIsGPSTrackingEnabled()){
                     if(isNetworkAvailable()) {
 
                         Intent intent = new Intent(UserProfileActivity.this, MapActivity.class);
                         startActivityForResult(intent, 2);
                     }
-                    else {
+                    else
+                    {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserProfileActivity.this);
                         alertDialog.setTitle("Internet settings");
                         alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");

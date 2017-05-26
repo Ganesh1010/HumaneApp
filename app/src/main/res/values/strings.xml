@@ -31,6 +31,7 @@
     <string name="org_reg_no">Org Reg No</string>
     <string name="org_name">Org Name</string>
     <string name="org_address">Address</string>
+    <string name="next">NEXT</string>
     <string-array name="org_type">
         <item>Org Type</item>
         <item>Children Home</item>
@@ -79,13 +80,16 @@
     <string name="choose_address">Choose Address</string>
 
     <string name="category_name_display">Category : </string>
-    <string name="item_name_display">Item Name-> </string>
-    <string name="item_quantity_display">Quantity-> </string>
+    <string name="item_name_display">Item Name  </string>
+    <string name="item_quantity_display">Quantity  </string>
     <string name="gender_display">Gender-> </string>
     <string name="age_display">Age-> </string>
-    <string name="required_at_display">Required @-> </string>
+    <string name="required_at_display">Required at-> </string>
 
     <string name="apply_filter">Apply</string>
     <string name="clear_filter">Clear</string>
     <string name="title_activity_map">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

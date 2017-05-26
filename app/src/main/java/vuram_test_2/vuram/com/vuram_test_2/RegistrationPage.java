@@ -195,7 +195,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
                     gps = new GPSTracker(RegistrationPage.this);
 
                     // check if GPS enabled
-                    if(gps.isGPSTrackingEnabled){
+                    if(gps.getIsGPSTrackingEnabled()){
                         if(isNetworkAvailable()) {
 
                             Intent intent = new Intent(RegistrationPage.this, MapActivity.class);

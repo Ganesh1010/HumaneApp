@@ -10,6 +10,19 @@ public class UserDetails {
     String email;
     String password;
     RegisterDetails profile;
+    OrganisationDetails org;
+    UserDetails()
+    {
+        org=new OrganisationDetails();
+        profile=new RegisterDetails();
+    }
+    public OrganisationDetails getOrganisationDetails() {
+        return org;
+    }
+
+    public void setOrganisationDetails(OrganisationDetails organisationDetails) {
+        this.org = organisationDetails;
+    }
 
     public RegisterDetails getRegisterDetails() {
         return profile;

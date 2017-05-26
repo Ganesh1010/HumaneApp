@@ -2,6 +2,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,6 +37,9 @@ public class LoginPageFragment extends Fragment {
     private static final int REQUEST_SIGNUP = 0;
     ProgressDialog progressDialog;
     LandingPage landingPage;
+    String email,password;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
 
 
     @Nullable
@@ -49,6 +54,9 @@ public class LoginPageFragment extends Fragment {
         signupButton = (Button) v.findViewById(R.id.link_login);
         landingPage = (LandingPage) getActivity();
 
+
+
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,14 +67,35 @@ public class LoginPageFragment extends Fragment {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(landingPage, RegistrationPage.class);
-                startActivityForResult(intent, REQUEST_SIGNUP);
-                //finish();
 
-                landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                if(LandingPage.user.equals("DONOR")) {
+                    fragment = new DonorRegistrationFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                    //  Intent intent = new Intent(landingPage, RegistrationPage.class);
+                    // startActivityForResult(intent, REQUEST_SIGNUP);
+                    //finish();
+
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+
+                if(LandingPage.user.equals("COORDINATOR")){
+
+                    fragment = new CoordinatorRegistrationFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                }
             }
         });
+
 
         DetailsPopulator populator = new DetailsPopulator(landingPage);
         populator.getMainItemDetailsFromAPI();
@@ -102,9 +131,16 @@ public class LoginPageFragment extends Fragment {
     }
 
     public boolean validate() {
+
         boolean valid = true;
-        String email = emailEditText.getText().toString();//So far no  email validation
-        String password = passwordEditText.getText().toString();
+
+        email = emailEditText.getText().toString();//So far no  email validation
+        password = passwordEditText.getText().toString();
+
+        if(!Validation.validate(email)){
+           Toast.makeText(landingPage,"invalid user name",Toast.LENGTH_SHORT).show();
+            emailEditText.setError("enter valid user name");
+        }
         if (password.isEmpty() || password.length() < 8) {
             passwordEditText.setError("password should be at-least 8 characters");
             valid = false;
@@ -136,7 +172,7 @@ public class LoginPageFragment extends Fragment {
     }
 
     class CheckUser extends AsyncTask {
-        String username, pass;
+
         int code;
         HttpResponse httpResponse;
         HttpClient httpClient;
@@ -146,8 +182,8 @@ public class LoginPageFragment extends Fragment {
             try {
                 httpClient = new DefaultHttpClient();
                 JSONObject obj = new JSONObject();
-                obj.put("username", username);
-                obj.put("password", pass);
+                obj.put("username", email);
+                obj.put("password", password);
                 httpResponse = Connectivity.makePostRequest(RestAPIURL.login, obj.toString(), httpClient, null);
                 if (httpResponse != null) {
                     code = httpResponse.getStatusLine().getStatusCode();
@@ -164,8 +200,7 @@ public class LoginPageFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            username = emailEditText.getText().toString();
-            pass = passwordEditText.getText().toString();
+
             super.onPreExecute();
         }
 

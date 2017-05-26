@@ -28,6 +28,8 @@ public class LandingPage extends AppCompatActivity {
     @Bind(R.id.viewLine) View viewLine;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+    static String user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class LandingPage extends AppCompatActivity {
                // Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
 
                // v.startAnimation(myAnim);
+                user = "DONOR";
 
                 org.setVisibility(View.INVISIBLE);
                 donor.setVisibility(View.INVISIBLE);
@@ -83,9 +86,9 @@ public class LandingPage extends AppCompatActivity {
         org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                view.setAnimation(myAnim);
+              //  view.setAnimation(myAnim);
 // must be changed to organisation registration fragment
-
+                user = "COORDINATOR";
                 org.setVisibility(View.INVISIBLE);
                 donor.setVisibility(View.INVISIBLE);
                 viewLine.setVisibility(View.INVISIBLE);

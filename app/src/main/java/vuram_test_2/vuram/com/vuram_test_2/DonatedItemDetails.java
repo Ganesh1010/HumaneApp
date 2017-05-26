@@ -5,9 +5,14 @@ package vuram_test_2.vuram.com.vuram_test_2;
  */
 
 public class DonatedItemDetails {
+    public DonatedItemDetails() {
+
+    }
+
     public int getDonated_item_id() {
         return donated_item_id;
     }
+
 
     public DonatedItemDetails(int donated_item_id, int quantity) {
         this.donated_item_id = donated_item_id;

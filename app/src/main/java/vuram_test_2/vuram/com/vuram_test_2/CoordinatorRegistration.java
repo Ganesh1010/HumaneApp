@@ -39,14 +39,14 @@ public class CoordinatorRegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coordinator_registration);
+        setContentView(R.layout.coordinator_registration_fragment);
 
-        coordinatorLoginTextView = (TextView)findViewById(R.id.link_login_coordinator_register);
+     //   coordinatorLoginTextView = (TextView)findViewById(R.id.link_login_coordinator_register);
         emailEditText=(EditText)findViewById(R.id.email_coordinator_register);
         firstNameEditText = (EditText)findViewById(R.id.first_name_coordinator_register);
         mobileEditText = (EditText)findViewById(R.id.mobile_coordinator_register);
         passwordEditText = (EditText)findViewById(R.id.password_coordinator_register);
-        genderFromSpinner = (Spinner)findViewById(R.id.gender_spinner_coordinator_register);
+       // genderFromSpinner = (Spinner)findViewById(R.id.gender_spinner_coordinator_register);
         countryFromSpinner = (Spinner)findViewById(R.id.country_spinner_coordinator_register);
         coordinatorRegisterButton = (Button)findViewById(R.id.signup_coordinator_register);
 

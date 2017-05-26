@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -32,8 +33,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                     i=new Intent(SplashScreenActivity.this,LoginPage.class);
 
                 }
-                startActivity(i);
-                finish();
+                //startActivity(i);
+                // finish();
+                CommonUI.displayCheckoutUI(findViewById(R.id.activity_splash_screen),10,SplashScreenActivity.this);
             }
         }, SPLASH_TIME_OUT);
     }
