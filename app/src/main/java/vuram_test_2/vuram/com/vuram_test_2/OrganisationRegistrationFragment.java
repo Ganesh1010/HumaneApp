@@ -1,10 +1,17 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,12 +35,14 @@ import java.util.ArrayList;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 public class OrganisationRegistrationFragment extends Fragment {
 
     View v;
     EditText orgNoEditText,orgNameEditText,orgaddressEditText,orgEmailEditText,orgMobNoEditText,orgDescEditText;
     Spinner orgTypeFromSpinner;
-    Button orgRegisterButton;
+    Button orgRegisterButton,chooseLocationButton;
     String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType,lastName;
     int latitude,longitude;
     Gson gson;
@@ -43,7 +52,19 @@ public class OrganisationRegistrationFragment extends Fragment {
     OrganisationDetails organisationDetails;
     RegisterDetails coordinatorDetails;
     UserDetails userDetails;
-    String orgDetailsString;
+    String orgDetailsString,mapAddress;
+    GPSTracker gps;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
+        {
+            mapAddress = data.getStringExtra("ADDRESS");
+            orgaddressEditText.setText(mapAddress);
+        }
+    }
 
     @Nullable
     @Override
@@ -63,6 +84,8 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgDescEditText = (EditText)v.findViewById(R.id.org_desc_editText_org_form);
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
         orgRegisterButton = (Button)v.findViewById(R.id.register_button_org_form);
+        chooseLocationButton = (Button)v.findViewById(R.id.map);
+        v.getRootView().setBackgroundColor(Color.WHITE);
 
         orgRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +94,55 @@ public class OrganisationRegistrationFragment extends Fragment {
             }
         });
 
+        chooseLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // create class object
+                gps = new GPSTracker(landingPage);
+
+                // check if GPS enabled
+                if(gps.getIsGPSTrackingEnabled()){
+                    if(isNetworkAvailable()) {
+
+                        Intent intent = new Intent(landingPage, MapActivity.class);
+                        startActivityForResult(intent, 2);
+                    }
+                    else
+                    {
+                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(landingPage);
+                        alertDialog.setTitle("Internet settings");
+                        alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
+
+                        // On pressing Settings button
+                        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                startActivity(intent);
+                            }
+                        });
+                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        // Showing Alert Message
+                        alertDialog.show();
+                    }
+                }else{
+                    gps.showSettingsAlert();
+                }
+            }
+        });
+
+
         return v;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) landingPage.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public void register(){
@@ -135,7 +206,11 @@ public class OrganisationRegistrationFragment extends Fragment {
 
         HttpResponse response;
         HttpClient client;
-        String coordinatorInfo;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -154,12 +229,14 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setOrg_type(orgType);
             organisationDetails.setLatitude(12);
             organisationDetails.setLongitude(50);
+
+            coordinatorDetails.setOrg(organisationDetails);
   //          Bundle bundle = new Bundle();
 //            coordinatorInfo = bundle.getString("COORDINATOR");
            // Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
-            userDetails.setOrganisationDetails(organisationDetails);
+            userDetails.setRegisterDetails(coordinatorDetails);
             //userDetails.setOrganisationDetails(gson.fromJson(coordinatorInfo Class<UserDetails>()));
 
             response = Connectivity.makePostRequest(RestAPIURL.registerOrgandProfile, gson.toJson(userDetails).toString(), client, null);
@@ -178,6 +255,21 @@ public class OrganisationRegistrationFragment extends Fragment {
                 Log.d("Response", "Null");
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+
+            if (progressDialog != null)
+                progressDialog.dismiss();
+            if (response != null)
+                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                    Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
+                    // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
+                    //landingPage.finish();
+                }
+
+            super.onPostExecute(o);
         }
     }
 

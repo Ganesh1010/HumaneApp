@@ -1,11 +1,15 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +33,7 @@ import java.util.ArrayList;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static vuram_test_2.vuram.com.vuram_test_2.R.array.country_option;
 
 
@@ -38,13 +43,13 @@ public class CoordinatorRegistrationFragment extends Fragment {
     EditText emailEditText,firstNameEditText,mobileEditText,passwordEditText;
     Spinner genderFromSpinner,countryFromSpinner;
     Button coordinatorRegisterButton,coordinatorNextButton;
-    TextView coordinatorLoginTextView;
+  //  TextView coordinatorLoginTextView;
     String emailId;
     String firstName;
     String mobileNo;
-    String password;
+    String password,orgAddress;
     int country;
-    Boolean validated;
+    Boolean validated,registered;
     ProgressDialog progressDialog;
     UserDetails userDetails;
     Gson gson;
@@ -54,6 +59,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
     RegisterDetails registerDetails = new RegisterDetails();
     String coordinatorDetails = null;
     Bundle bundle;
+
 
 
 
@@ -80,14 +86,19 @@ public class CoordinatorRegistrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                    register();
+                if(register()) {
                     fragment = new OrganisationRegistrationFragment();
                     fragment.setArguments(bundle);
                     fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                }
+
+                else
+                    Toast.makeText(landingPage,"ENTER VALID DATA",Toast.LENGTH_SHORT).show();
 
             }
         });
+
 
 
        /* coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +126,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
 
     }
 
-    public void register(){
+    public boolean register(){
 
         emailId = emailEditText.getText().toString();
         firstName = firstNameEditText.getText().toString();
@@ -132,6 +143,8 @@ public class CoordinatorRegistrationFragment extends Fragment {
 
 
         if(validation()){
+
+            registered = true;
             //Toast.makeText(CoordinatorRegistration.this,"Country"+country,Toast.LENGTH_LONG).show();
             coordinatorNextButton.setEnabled(false);
             registerDetails = new RegisterDetails();
@@ -160,9 +173,11 @@ public class CoordinatorRegistrationFragment extends Fragment {
          //   new CreateCoordinatorAccount().execute();
         }
         else {
+            registered =false;
             coordinatorNextButton.setEnabled(true);
             //   Toast.makeText(CoordinatorRegistration.this,"validation else part",Toast.LENGTH_LONG).show();
         }
+        return registered;
     }
 
     public boolean validation(){
