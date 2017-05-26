@@ -195,7 +195,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 gps = new GPSTracker(UserProfileActivity.this);
 
                 // check if GPS enabled
-                if(gps.canGetLocation()){
+                if(gps.getIsGPSTrackingEnabled()){
                     if(isNetworkAvailable()) {
 
                         Intent intent = new Intent(UserProfileActivity.this, MapActivity.class);

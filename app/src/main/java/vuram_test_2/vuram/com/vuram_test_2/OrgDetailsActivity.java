@@ -61,6 +61,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     TextView Organisationname,Organisationemail,Organisationmobile,Organisationaddress;
     int needid;
     OrganisationDetails orgdetails;
+    ImageView donationCart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,6 +78,14 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 onBackPressed();
             }
         });
+        donationCart= (ImageView) findViewById(R.id.cart);
+        donationCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(OrgDetailsActivity.this,test.class));
+            }
+        });
+
         context = getBaseContext();
         new GetParticularNeedDetails().execute();
         needDetails = new NeedDetails();
