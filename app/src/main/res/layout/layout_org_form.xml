@@ -5,38 +5,41 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <ImageView
+            android:src="@drawable/ngo"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_donor_black"
-                android:id="@+id/imageButton3"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorTextIcons" />
-        </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_height="120dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/org_register_num_editText_org_form"
-                android:layout_weight="1"
-                android:hint="@string/org_reg_no" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_donor_black" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/org_register_num_editText_org_form"
+                    android:layout_weight="1"
+                    android:hint="@string/org_reg_no" />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -49,12 +52,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_organisation"
                 android:id="@+id/imageButton4"
-                android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
         </LinearLayout>
 
@@ -64,12 +66,11 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="333dp"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/org_name_editText_org_form"
-                android:layout_weight="1"
                 android:hint="@string/org_name" />
         </LinearLayout>
     </LinearLayout>
@@ -84,12 +85,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_add_image"
                 android:id="@+id/imageButton6"
-                android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
         </LinearLayout>
 
@@ -99,13 +99,12 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="191dp"
                 android:layout_height="match_parent"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:maxLines="6"
                 android:id="@+id/org_address_editText_org_form"
-                android:layout_weight="1"
                 android:hint="Address"
                 android:layout_toLeftOf="@+id/map"
                 android:ellipsize="end"
@@ -122,10 +121,9 @@
 
             <Button
                 android:text="Choose Location"
-                android:layout_width="wrap_content"
+                android:layout_width="94dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/map"
-                android:layout_weight="1"
                 android:backgroundTint="@color/colorPrimary"
                 android:elevation="1dp"
                 android:textColor="@color/colorTextIcons"/>
@@ -142,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_email_black"
@@ -177,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_phone_black"
@@ -212,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_organisation"
@@ -246,7 +244,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_organisation"
@@ -272,27 +270,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-
-    </LinearLayout>
-
-    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom|center">
+        android:gravity="bottom|center"
+        android:weightSum="1">
 
         <Button
             android:text="REGISTER"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="76dp"
             android:id="@+id/register_button_org_form"
             android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/colorTextIcons" />
+            android:textColor="@color/colorTextIcons"
+            android:gravity="center_vertical|center_horizontal|center" />
     </LinearLayout>
 
 

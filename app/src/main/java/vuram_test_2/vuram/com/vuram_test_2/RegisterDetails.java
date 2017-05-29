@@ -11,6 +11,16 @@ public class RegisterDetails {
    String mobile,gender;
     int country;
     Date dob;
+    OrganisationDetails org;
+
+    public OrganisationDetails getOrg() {
+        return org;
+    }
+
+    public void setOrg(OrganisationDetails org) {
+        this.org = org;
+    }
+
     public int getCountry() {
         return country;
     }
