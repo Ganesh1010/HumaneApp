@@ -356,7 +356,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         @Override
         protected Object doInBackground(Object[] objects) {
 
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/orgdetails/", client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.orgDetails, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
             if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                 try {
                     jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));

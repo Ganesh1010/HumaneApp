@@ -42,9 +42,10 @@ public class DonationConfirmationActivity extends AppCompatActivity {
                     builder.setTitle("Item Details");
                     LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View dialogView = inflater.inflate(R.layout.donation_confirmation_item_display, null);
+                    RecyclerView itemToDisplay= (RecyclerView) dialogView.findViewById(R.id.itemToDisplay);
+                    itemToDisplay.setAdapter(new DonationConfirmationItemDisplayAdapter());
                     builder.setView(dialogView);
-                    RecyclerView itemToDisplay= (RecyclerView) findViewById(R.id.itemToDisplay);
-                    itemToDisplay.setAdapter(new DonationConfirmationItemDislayAdapter());
+                    itemToDisplay.setAdapter(new DonationConfirmationItemDisplayAdapter());
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.dismiss();

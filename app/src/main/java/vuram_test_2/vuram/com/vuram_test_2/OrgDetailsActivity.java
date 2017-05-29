@@ -34,13 +34,12 @@ import eu.fiskur.simpleviewpager.SimpleViewPager;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class OrgDetailsActivity extends AppCompatActivity  {
-    Button bt1;
     ImageButton imageButton;
     String[] needName;
     int[] needQuantities;
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,mainItemCode;
-    static Context context;
+    public static Context context;
     List itemslist,subItemlist;
     List<NeedItemDetails> items,subItem;
     private static RecyclerView.Adapter adapter;
@@ -81,7 +80,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         donationCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,DonationConfirmationActivity.class));
+                startActivity(new Intent(OrgDetailsActivity.this,GeneralUser.class));
             }
         });
 
@@ -195,15 +194,16 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
-            removedItems = new ArrayList<Integer>();
-            ImageView im=(ImageView)findViewById(R.id.cart);
+            removedItems = new ArrayList<>();
+
+            /*ImageView im=(ImageView)findViewById(R.id.cart);
             im.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i=new Intent(OrgDetailsActivity.this,GeneralUser.class);
                     startActivity(i);
                 }
-            });
+            });*/
 
 
         }

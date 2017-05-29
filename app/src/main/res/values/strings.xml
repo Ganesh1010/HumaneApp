@@ -68,6 +68,7 @@
     <string name="minus">&#45;</string>
     <string name="add">&#43;</string>
     <string name="contact">Contact</string>
+    <string name="register_later"><u>Register Later</u></string>
 
     <string name="your_contribution">YourContribution</string>
     <string name="edit">Edit</string>

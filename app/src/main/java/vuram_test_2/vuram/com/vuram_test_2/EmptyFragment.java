@@ -12,6 +12,6 @@ import android.view.ViewGroup;
 public class EmptyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.urself, container, false);
+        return inflater.inflate(R.layout.empty_layout, container, false);
     }
 }

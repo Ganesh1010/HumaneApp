@@ -40,6 +40,7 @@ public class LoginPageFragment extends Fragment {
     String email,password;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+    TextView registerLater;
 
 
     @Nullable
@@ -52,8 +53,15 @@ public class LoginPageFragment extends Fragment {
         passwordEditText = (EditText) v.findViewById(R.id.password_login);
         loginButton = (Button) v.findViewById(R.id.btn_login);
         signupButton = (Button) v.findViewById(R.id.link_login);
+        registerLater= (TextView) v.findViewById(R.id.registerLater);
         landingPage = (LandingPage) getActivity();
-
+        registerLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(landingPage, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

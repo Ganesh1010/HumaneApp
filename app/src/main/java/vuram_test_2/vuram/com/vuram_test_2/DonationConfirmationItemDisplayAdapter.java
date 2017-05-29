@@ -4,14 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class DonationConfirmationItemDislayAdapter extends RecyclerView.Adapter<DonationConfirmationItemDislayAdapter.ViewHolder> {
+public class DonationConfirmationItemDisplayAdapter extends RecyclerView.Adapter<DonationConfirmationItemDisplayAdapter.ViewHolder> {
     @Override
-    public DonationConfirmationItemDislayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DonationConfirmationItemDisplayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_name_and_quantity_layout, parent, false);
-        return new DonationConfirmationItemDislayAdapter.ViewHolder(inflatedView);
+        return new DonationConfirmationItemDisplayAdapter.ViewHolder(inflatedView);
     }
 
     @Override
