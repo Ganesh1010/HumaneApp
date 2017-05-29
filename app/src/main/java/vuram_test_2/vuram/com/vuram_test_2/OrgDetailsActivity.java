@@ -113,9 +113,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
     }
 
-
-
-
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;
         ArrayList<NeedDetails> needdetails;

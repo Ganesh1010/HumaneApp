@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by akshayagr on 21-03-2017.
- */
 
 public class NeedListViewAdapter extends RecyclerView.Adapter<NeedListViewAdapter.NeedViewHolder> {
 
