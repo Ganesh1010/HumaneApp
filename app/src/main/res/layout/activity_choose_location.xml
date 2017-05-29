@@ -43,7 +43,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_navigation_black"
-                android:id="@+id/detectLocationImageButton"
+                android:id="@+id/detect_my_location_imagebutton"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorTextIcons" />
 
@@ -51,7 +51,7 @@
                 android:text="Detect My Location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/detectMyLocation"
+                android:id="@+id/detect_my_location_textview"
                 android:textSize="18sp"
                 android:layout_weight="1" />
         </LinearLayout>

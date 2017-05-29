@@ -81,7 +81,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         donationCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,test.class));
+                startActivity(new Intent(OrgDetailsActivity.this,DonationConfirmationActivity.class));
             }
         });
 
@@ -113,9 +113,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         int selectedIndicatorColor = Color.parseColor("#8BC34A");
         simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
     }
-
-
-
 
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;

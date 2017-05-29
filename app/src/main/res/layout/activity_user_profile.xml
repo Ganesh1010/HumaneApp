@@ -273,12 +273,6 @@
                                     android:id="@+id/organisation_imagebutton_user_profile"
                                     android:layout_weight="1" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:srcCompat="@drawable/ic_volunteer_black"
-                                    android:id="@+id/volunteer_imagebutton_user_profile"
-                                    android:layout_weight="1" />
                             </LinearLayout>
 
                             <View
@@ -328,21 +322,15 @@
                                         android:layout_weight="0.5">
 
                                         <Button
-                                            android:text="Add Organisation"
+                                            android:text="My Organisation"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:id="@+id/add_org_button_edit_profile"
+                                            android:id="@+id/my_org_button_edit_profile"
                                             android:layout_weight="1"
                                             android:backgroundTint="@color/colorPrimary"
                                             android:textColor="@color/colorTextIcons" />
                                     </LinearLayout>
                                 </LinearLayout>
-
-                                <include layout="@layout/layout_org_form"
-                                    android:id="@+id/org_form"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:visibility="gone" />
 
                                 <LinearLayout
                                     android:orientation="vertical"
