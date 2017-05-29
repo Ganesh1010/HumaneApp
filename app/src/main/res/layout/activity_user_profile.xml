@@ -273,12 +273,6 @@
                                     android:id="@+id/organisation_imagebutton_user_profile"
                                     android:layout_weight="1" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:srcCompat="@drawable/ic_volunteer_black"
-                                    android:id="@+id/volunteer_imagebutton_user_profile"
-                                    android:layout_weight="1" />
                             </LinearLayout>
 
                             <View

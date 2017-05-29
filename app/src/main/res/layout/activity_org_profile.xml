@@ -56,7 +56,7 @@
                         android:text="Vuram Technology Solutions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView18"
+                        android:id="@+id/org_name_textview_org_profile"
                         android:textSize="24sp"
                         android:textColor="@color/colorSecondaryText"
                         android:fontFamily="sans-serif"
@@ -67,7 +67,7 @@
                         android:text="Chennai - 600 001"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView19"
+                        android:id="@+id/org_city_name_testview_org_profile"
                         android:textSize="18sp"
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp" />
@@ -76,7 +76,7 @@
                         android:text="+91 9876543210"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView26"
+                        android:id="@+id/org_mobile_no_textview_org_profile"
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp" />
 
@@ -84,7 +84,7 @@
                         android:text="venkatesh@vuram.com"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView27"
+                        android:id="@+id/org_email_textview_org_profile"
                         android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp" />
                 </LinearLayout>
@@ -103,7 +103,7 @@
                         android:layout_weight="1">
 
                         <TextView
-                            android:text="People Strength"
+                            android:text="People Count"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView23"
@@ -113,28 +113,7 @@
                             android:text="256"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView20"
-                            android:gravity="center" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:text="Coordinator"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView24"
-                            android:gravity="center" />
-
-                        <TextView
-                            android:text="Venky"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/textView21"
+                            android:id="@+id/org_people_count_textview_org_profile"
                             android:gravity="center" />
                     </LinearLayout>
 
@@ -155,7 +134,7 @@
                             android:text="Child"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView25"
+                            android:id="@+id/org_type_textview_org_profile"
                             android:gravity="center" />
                     </LinearLayout>
                 </LinearLayout>
