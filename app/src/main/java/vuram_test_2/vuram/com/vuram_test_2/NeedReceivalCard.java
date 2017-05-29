@@ -17,9 +17,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by akshayagr on 21-03-2017.
- */
+
 
 public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.NeedCardHolder> {
 
