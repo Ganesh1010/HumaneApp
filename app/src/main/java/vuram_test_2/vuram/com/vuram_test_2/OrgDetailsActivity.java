@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -113,9 +114,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         int selectedIndicatorColor = Color.parseColor("#8BC34A");
         simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
     }
-
-
-
 
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;

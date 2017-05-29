@@ -292,6 +292,9 @@ public class GPSTracker extends Service implements LocationListener {
 	 */
 	public String getLocality(Context context) {
 		List<Address> addresses = getGeocoderAddress(context);
+		if (addresses == null) {
+			Log.d(TAG, "getLocality: Address list is null");
+		}
 		Log.d(TAG, "getLocality: Address List:" + addresses.toString());
 		if (addresses != null && addresses.size() > 0) {
 			Address address = addresses.get(0);
