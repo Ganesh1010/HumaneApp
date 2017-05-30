@@ -52,8 +52,8 @@ public class LoginPageFragment extends Fragment {
         passwordEditText = (EditText) v.findViewById(R.id.password_login);
         loginButton = (Button) v.findViewById(R.id.btn_login);
         signupButton = (Button) v.findViewById(R.id.link_login);
-       // registerLater=
         landingPage = (LandingPage) getActivity();
+//        registerLater=v.findViewById(R.id.register_later);
 //        registerLater.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
