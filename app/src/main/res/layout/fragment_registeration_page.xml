@@ -210,9 +210,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:letterSpacing="0.025"
-            android:id="@+id/link"
             android:text="already have an account ? "
             android:textColor="#fff"
+            android:id="@+id/link_login_register"
             android:textSize="14dp" />
 
         <Button
@@ -220,7 +220,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:background="#00000000"
-            android:id="@+id/link_login_register"
+            android:id="@+id/link_login"
             android:gravity="left|center_vertical"
             android:letterSpacing="0.025"
             android:padding="0dp"
