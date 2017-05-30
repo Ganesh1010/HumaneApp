@@ -36,9 +36,6 @@
         <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".DonationConfirmationActivity"
             android:theme="@style/AppTheme1"></activity>
-        <activity android:name=".GeneralUser"
-            android:theme="@style/AppTheme1">
-        </activity>
 
         <activity android:name=".SplashScreenActivity" />
         <meta-data

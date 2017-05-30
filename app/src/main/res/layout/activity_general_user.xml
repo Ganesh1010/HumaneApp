@@ -5,16 +5,31 @@
     android:id="@+id/activity_general_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vuram_test_2.vuram.com.vuram_test_2.GeneralUser"
     android:orientation="vertical"
-    android:gravity="center"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:gravity="center">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="Confirm Donation"
+            android:textColor="@color/colorTextIcons"/>
+    </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="10dp">
 
         <EditText
             android:layout_width="match_parent"
@@ -22,17 +37,17 @@
             android:inputType="text"
             android:ems="10"
             android:hint="Name"
-            android:id="@+id/name_general_user"/>
+            android:id="@+id/name_general_user" />
 
     </LinearLayout>
-
-
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <com.hbb20.CountryCodePicker
                 android:id="@+id/ccp"
@@ -57,30 +72,31 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_gravity="center">
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
                     <EditText
                         android:inputType="textMultiLine"
                         android:ems="10"
                         android:maxLines="6"
                         android:id="@+id/address_general_user"
-                        android:hint="Address"
+                        android:hint="Pick Location"
                         android:layout_toLeftOf="@+id/map"
                         android:ellipsize="end"
                         android:scrollbars="vertical"
                         android:scrollbarAlwaysDrawVerticalTrack="true"
                         android:layout_width="wrap_content"
                         android:layout_height="100dp"
-                        android:visibility="gone"/>
+                        android:enabled="false" />
 
-                    <android.support.v7.widget.AppCompatButton
+                    <ImageView
                         android:id="@+id/btn_map"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Choose Location"
-                        android:gravity="center"
-                        android:layout_weight="0.6" />
+                        android:src="@drawable/ic_marker"
+                        android:gravity="center" />
                 </LinearLayout>
-
 </LinearLayout>
 
 

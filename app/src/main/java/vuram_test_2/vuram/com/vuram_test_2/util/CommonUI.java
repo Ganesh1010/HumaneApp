@@ -7,31 +7,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageView;
 import vuram_test_2.vuram.com.vuram_test_2.GPSTracker;
 import vuram_test_2.vuram.com.vuram_test_2.MapActivity;
 import vuram_test_2.vuram.com.vuram_test_2.R;
-
 import static android.app.Activity.RESULT_CANCELED;
 
 public class CommonUI{
-    static Button getLocation;
+    static ImageView getLocation;
     static Context context;
     static EditText address,name;
     static GPSTracker gps;
     static String mapAddress;
     static View dialogView;
-
 
     public static void displayCheckoutUI(View v, int itemsCount, final Activity context)
     {
@@ -39,13 +32,13 @@ public class CommonUI{
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Confirm Donation");
+                        //builder.setTitle("Confirm Donation");
                         CommonUI.context=context.getApplicationContext();
                         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         dialogView = inflater.inflate(R.layout.activity_general_user, null);
                         name= (EditText) dialogView.findViewById(R.id.name_general_user);
                         address= (EditText) dialogView.findViewById(R.id.address_general_user);
-                        getLocation= (Button) dialogView.findViewById(R.id.btn_map);
+                        getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
                         getLocation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -111,7 +104,7 @@ public class CommonUI{
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 2 || !(resultCode == RESULT_CANCELED)) {
-            address.setVisibility(View.VISIBLE);
+            address.setEnabled(true);
             mapAddress = data.getStringExtra("ADDRESS");
             address.setText(mapAddress);
         }

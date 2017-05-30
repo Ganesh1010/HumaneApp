@@ -89,7 +89,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         donationCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,GeneralUser.class));
+                startActivity(new Intent(OrgDetailsActivity.this,DonationCart.class));
             }
         });
 
