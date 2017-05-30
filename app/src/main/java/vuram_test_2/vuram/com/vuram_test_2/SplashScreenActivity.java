@@ -30,7 +30,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 else
                 //if(first_pref=RestAPIURL.DONOR)
                 {
-                    i=new Intent(SplashScreenActivity.this,LoginPage.class);
+                    i=new Intent(SplashScreenActivity.this,LoginPageFragment.class);
 
                 }
                 //startActivity(i);

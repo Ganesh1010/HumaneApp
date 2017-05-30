@@ -60,7 +60,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
         coordinatorLoginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),LoginPage.class);
+                Intent intent = new Intent(getApplicationContext(),LoginPageFragment.class);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -201,7 +201,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
                  if(httpResponse.getStatusLine().getStatusCode()==200 || httpResponse.getStatusLine().getStatusCode()==201)
                  {
                      Toast.makeText(CoordinatorRegistration.this,"Registration Successful",Toast.LENGTH_LONG).show();
-                     CoordinatorRegistration.this.startActivity(new Intent(CoordinatorRegistration.this,LoginPage.class));
+                     CoordinatorRegistration.this.startActivity(new Intent(CoordinatorRegistration.this,LoginPageFragment.class));
                      CoordinatorRegistration.this.finish();
                  }
             Log.d("GSON",gson.toJson(userDetails).toString());
