@@ -10,80 +10,62 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="vuram_test_2.vuram.com.vuram_test_2.GeneralUser"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
+
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center|clip_horizontal"
-        android:gravity="center_vertical|center|clip_horizontal">
+        android:gravity="center">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="150dp">
+            app:defaultNameCode="INDIA"
+            app:countryPreference="India,US,CHINA"
+            android:gravity="center"
+            android:layout_weight="0.6"/>
 
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:defaultNameCode="INDIA"
-                app:countryPreference="India,US,CHINA"
-                android:gravity="center_vertical|center_horizontal|center" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:ems="10"
-                android:id="@+id/editText"
-                android:layout_weight="1"
-                android:hint="MobileNumber" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/address_general_user"
+            android:hint="MobileNumber"
+            android:layout_weight="0.4"
+            android:gravity="center"/>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_height="wrap_content"
-                android:weightSum="1"
-                android:layout_width="match_parent"
-                android:gravity="left"
-                android:layout_marginTop="100dp">
+    </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center">
-                    <TextView
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center">
+        <EditText
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:maxLines="6"
+            android:id="@+id/org_address_editText_org_form"
+            android:hint="Address"
+            android:layout_toLeftOf="@+id/map"
+            android:ellipsize="end"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_width="wrap_content" />
 
-                        android:text="Address"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.92"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="18sp"
-                        android:layout_width="match_parent"
-                        android:gravity="center|start" />
-                </LinearLayout>
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Choose Location"
-                    android:gravity="center"
-                    android:layout_marginLeft="150dp" />
-
-            </LinearLayout>
-        </LinearLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Location"
+            android:gravity="center"
+            android:layout_weight="0.6" />
     </LinearLayout>
 
 </LinearLayout>

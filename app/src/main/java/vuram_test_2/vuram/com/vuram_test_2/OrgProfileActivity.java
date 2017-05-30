@@ -16,6 +16,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -64,12 +65,21 @@ public class OrgProfileActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] params) {
             httpClient = new DefaultHttpClient();
-            String coordinatorToken = Connectivity.getAuthToken(OrgProfileActivity.this, Connectivity.Coordinator_Token);
+            String coordinatorToken = Connectivity.getAuthToken(OrgProfileActivity.this, Connectivity.Donor_Token);
             httpResponse = Connectivity.makeGetRequest(RestAPIURL.getOrgDetails,httpClient,coordinatorToken);
             String JSONString = Connectivity.getJosnFromResponse(httpResponse);
             Log.d(TAG, "doInBackground: " + JSONString);
             Gson gson = new Gson();
-            organisationDetails = gson.fromJson(JSONString, new TypeToken<List<NeedDetails>>() {}.getType());
+            ArrayList<OrganisationDetails> organisationDetailsList = gson.fromJson(JSONString, new TypeToken<List<OrganisationDetails>>() {}.getType());
+            if (organisationDetailsList != null) {
+                if (organisationDetailsList.size() > 0) {
+                    organisationDetails = organisationDetailsList.get(0);
+                } else {
+                    Log.e(TAG, "doInBackground: Organisation list is empty", new ArrayIndexOutOfBoundsException());
+                }
+            } else {
+                Log.e(TAG, "doInBackground: Organisation data not found", new NullPointerException());
+            }
             return organisationDetails;
         }
 
@@ -83,6 +93,7 @@ public class OrgProfileActivity extends AppCompatActivity {
             orgMobileNo.setText(organisationDetails.getMobile());
             orgEmail.setText(organisationDetails.getEmail());
             orgType.setText(organisationDetails.getOrg_type());
+            orgPeopleCount.setText(100 + "");
         }
     }
 }
