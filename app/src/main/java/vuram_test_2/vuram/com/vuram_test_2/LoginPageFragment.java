@@ -44,7 +44,7 @@ public class LoginPageFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateVie+-w(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (v == null)
             v = inflater.inflate(R.layout.login_fragment, container, false);
