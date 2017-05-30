@@ -14,60 +14,58 @@
     android:gravity="center">
 
 
-        <LinearLayout
-            android:orientation="horizontal"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNameCode="INDIA"
+            app:countryPreference="India,US,CHINA"
+            android:gravity="center"
+            android:layout_weight="0.6"/>
+
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/address_general_user"
+            android:hint="MobileNumber"
+            android:layout_weight="0.4"
+            android:gravity="center"/>
 
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNameCode="INDIA"
-                app:countryPreference="India,US,CHINA"
-                android:gravity="center"
-                android:layout_weight="0.6"/>
+    </LinearLayout>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:ems="10"
-                android:id="@+id/address_general_user"
-                android:hint="MobileNumber"
-                android:layout_weight="0.4"
-                android:gravity="center"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_gravity="center">
+        <EditText
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:maxLines="6"
+            android:id="@+id/org_address_editText_org_form"
+            android:hint="Address"
+            android:layout_toLeftOf="@+id/map"
+            android:ellipsize="end"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_width="wrap_content" />
 
-        </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_gravity="center">
-                    <EditText
-                        android:layout_height="match_parent"
-                        android:inputType="textMultiLine"
-                        android:ems="10"
-                        android:maxLines="6"
-                        android:id="@+id/org_address_editText_org_form"
-                        android:hint="Address"
-                        android:layout_toLeftOf="@+id/map"
-                        android:ellipsize="end"
-                        android:scrollbars="vertical"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:layout_width="wrap_content" />
-
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/btn_map"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Choose Location"
-                        android:gravity="center"
-                        android:layout_weight="0.6" />
-                </LinearLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Location"
+            android:gravity="center"
+            android:layout_weight="0.6" />
+    </LinearLayout>
 
 </LinearLayout>
-
-

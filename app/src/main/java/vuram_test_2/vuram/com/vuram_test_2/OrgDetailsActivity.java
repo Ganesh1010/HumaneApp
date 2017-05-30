@@ -31,6 +31,7 @@ import java.util.List;
 
 import eu.fiskur.simpleviewpager.ImageResourceLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class OrgDetailsActivity extends AppCompatActivity  {
@@ -60,6 +61,14 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     int needid;
     OrganisationDetails orgdetails;
     ImageView donationCart;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
+            CommonUI.onActivityResult(requestCode,resultCode,data);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

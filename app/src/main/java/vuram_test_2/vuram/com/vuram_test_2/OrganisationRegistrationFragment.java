@@ -58,7 +58,6 @@ public class OrganisationRegistrationFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2 && !(resultCode==RESULT_CANCELED))
         {
             mapAddress = data.getStringExtra("ADDRESS");
@@ -160,8 +159,7 @@ public class OrganisationRegistrationFragment extends Fragment {
             return;
         }
 
-        progressDialog = new ProgressDialog(landingPage,
-                R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(landingPage, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
@@ -231,9 +229,9 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setLongitude(50);
 
             coordinatorDetails.setOrg(organisationDetails);
-  //          Bundle bundle = new Bundle();
-//            coordinatorInfo = bundle.getString("COORDINATOR");
-           // Type type = new TypeToken<Class<UserDetails>>() {}.getType();
+//          Bundle bundle = new Bundle();
+//            coordinatorInfo = bundle.getString("COORDINATOR")
+//  Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.setRegisterDetails(coordinatorDetails);
