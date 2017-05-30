@@ -51,10 +51,10 @@ public class DonorRegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (v == null)
-            v = inflater.inflate(R.layout.donor_registration_fragment, container, false);
+            v = inflater.inflate(R.layout.fragment_registeration_page, container, false);
 
-        nameEditText = (EditText) v.findViewById(R.id.name_register);
-        emailEditText = (EditText) v.findViewById(R.id.email_register);
+        nameEditText = (EditText) v.findViewById(R.id.name_login);
+        emailEditText = (EditText) v.findViewById(R.id.email_login);
         mobileEditText = (EditText) v.findViewById(R.id.mobile_register);
         passwordEditText = (EditText) v.findViewById(R.id.password_register);
         registerButton = (Button) v.findViewById(R.id.signup_register);
