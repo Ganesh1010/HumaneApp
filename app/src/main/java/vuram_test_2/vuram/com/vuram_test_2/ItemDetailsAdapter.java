@@ -31,6 +31,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     ArrayList<MainItemDetails> mainItemDetailsList;
     int needItemId,needQuantity,subItemId,needid;
     DonatedItemDetails item;
+
     public interface OnRecyclerItemClickListener {
 
         void onRecyclerItemClick(String data);
@@ -70,9 +71,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         DatabaseHelper db = new DatabaseHelper(context);
         mainItemDetailsList = db.getAllMainItemDetails();
 
-
-
-            donatedItemDetails = new ArrayList<DonatedItemDetails>();
+            donatedItemDetails = new ArrayList<>();
         }
 
     @Override

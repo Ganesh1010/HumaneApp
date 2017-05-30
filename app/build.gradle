@@ -53,4 +53,5 @@ dependencies {
     compile files('android-viewbadger.jar')
     compile files('libs/android-viewbadger.jar')
     compile 'com.hbb20:ccp:1.7.6'
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
