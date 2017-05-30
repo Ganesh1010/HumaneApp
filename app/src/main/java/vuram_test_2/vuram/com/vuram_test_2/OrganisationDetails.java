@@ -7,7 +7,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 public class OrganisationDetails
 {
     String org_reg_no,org_name,address,email,description,mobile,org_type;
-    int latitude,longitude;
+    double latitude,longitude;
 
 
 
@@ -28,7 +28,7 @@ public class OrganisationDetails
         this.org_name = org_name;
     }
 
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -36,7 +36,7 @@ public class OrganisationDetails
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

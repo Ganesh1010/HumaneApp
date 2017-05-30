@@ -85,7 +85,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
         _loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),LoginPage.class);
+                Intent intent = new Intent(getApplicationContext(),LoginPageFragment.class);
                 startActivity(intent);
                 finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -136,13 +136,13 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
       //  String reEnterPassword = _reEnterPasswordText.getText().toString();
 
         if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+            _nameText.setError("At least 3 characters");
             valid = false;
         } else {
             _nameText.setError(null);
         }
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
+            _emailText.setError("Enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
@@ -296,7 +296,7 @@ public class RegistrationPage extends AppCompatActivity implements AdapterView.O
             if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
             {
                 Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
-                RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
+                RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPageFragment.class));
                 RegistrationPage.this.finish();
             }
             super.onPostExecute(o);

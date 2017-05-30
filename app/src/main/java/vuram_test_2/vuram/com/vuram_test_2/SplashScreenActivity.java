@@ -12,6 +12,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +26,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if(first_pref==null)
                 {
                     i=new Intent(SplashScreenActivity.this,LandingPage.class);
-
                 }
                 else
                 //if(first_pref=RestAPIURL.DONOR)
                 {
-                    i=new Intent(SplashScreenActivity.this,LoginPage.class);
+                    i=new Intent(SplashScreenActivity.this,LoginPageFragment.class);
 
                 }
                 //startActivity(i);
