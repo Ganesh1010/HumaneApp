@@ -22,17 +22,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.entity.StringEntity;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.io.IOException;
-
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
+import java.io.FileNotFoundException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -43,7 +41,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String userImageFilePath;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int SELECT_PHOTO = 2;
-    private final String postImageURL = "http://vuramdevdb.vuram.com:8000/api/photos/";
+//    private final String postImageURL = "http://vuramdevdb.vuram.com:8000/api/photos/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,19 +95,17 @@ public class EditProfileActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userImageFilePath != null) {
-                    new PostDate().execute();
-                }
+                    new PostData().execute();
             }
         });
     }
 
-    class PostDate extends AsyncTask
+    class PostData extends AsyncTask
     {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            postFile(userImageFilePath, postImageURL);
+            postFile(userImageFilePath);
             return null;
         }
     }
@@ -138,49 +134,33 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void postFile(String filepath, String fileURL) {
-//        HttpClient httpclient = new DefaultHttpClient();
-//        httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-//
-//        HttpPost httppost = new HttpPost(fileURL);
-//        File file = new File(filepath);
-//        MultipartEntityBuilder mpEntity = MultipartEntityBuilder.create();
-//        FileBody fileBody = new FileBody(file);
-//        mpEntity.addPart("image", fileBody);
-//
-//        httppost.setEntity((HttpEntity) mpEntity);
-//        System.out.println("executing request " + httppost.getRequestLine());
-//        HttpResponse response = null;
-//        try {
-//            response = httpclient.execute(httppost);
-//            HttpEntity resEntity = response.getEntity();
-//            System.out.println(response.getStatusLine());
-//            if (resEntity != null) {
-//                System.out.println(EntityUtils.toString(resEntity));
-//            }
-//            if (resEntity != null) {
-//                resEntity.getContent();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-       // httpclient.getConnectionManager().shutdown();
-        final OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addPart(
-                        Headers.of("Content-Disposition", "form-data; name=\"image\";filename=\"To Do List 1.png\"\n"),
-                        RequestBody.create(MediaType.parse("image/png"), new File(userImageFilePath))).addPart(Headers.of("Content-Disposition","form-data; name=\"name\""),RequestBody.create(MediaType.parse("applicaion/json"),"123")).build();
-                Request request = new Request.Builder()
-             //   .header("Authorization", "Token " + Connectivity.getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token))
-                .url("http://vuramdevdb.vuram.com:8000/api/photos/")
-                .post(requestBody)
-                .build();
+    private void postFile(String userImageFilePath) {
+        SyncHttpClient client = new SyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("address","a2323");
         try {
-            Response response = client.newCall(request).execute();
-            Log.d("Response",response.body().string()+"");
-        } catch (IOException e) {
+           if(userImageFilePath!=null)
+               if(new File(userImageFilePath).exists())
+                    params.put("image", new File(userImageFilePath));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        client.post(RestAPIURL.registerOrg, params,
+                new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+
+                Log.d("Edit", "onFailure: "+responseString);
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+
+                Log.d("Edit", "onSuccess: "+responseString);
+
+            }
+        });
     }
 
 }
