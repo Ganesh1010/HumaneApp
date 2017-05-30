@@ -31,6 +31,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.github.TR4Android:Swipeable-RecyclerView:0.2.0'
     compile 'com.github.fiskurgit:SimpleViewPager:1.0.10'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.mikhaellopez:circularprogressbar:1.1.1'
@@ -48,8 +49,9 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile files('android-viewbadger.jar')
+    compile files('android-viewbadger.jar')
     compile files('libs/android-viewbadger.jar')
-    compile 'com.github.johnpersano:supertoasts:1.3.4.1'
     compile 'com.hbb20:ccp:1.7.6'
     compile 'com.loopj.android:android-async-http:1.4.9'
 }

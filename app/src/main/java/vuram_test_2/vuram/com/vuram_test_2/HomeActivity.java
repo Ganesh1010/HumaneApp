@@ -42,7 +42,7 @@ import java.util.TreeSet;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
-public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails{
+public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private final int MENU_ITEM_ONE = 1;
     private final int MENU_ITEM_TWO = 2;
@@ -71,6 +71,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     private GetNeedItemDetails getNeedItemDetails;
     private FloatingActionButton newNeedFloatingActionButton;
     JSONObject jsonObject;
+
+    ImageButton menuButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +81,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         appliedFilter=new TreeSet<>();
 
         /* Spinner */
-        SpinnerListener spinnerListener = new SpinnerListener();
         Spinner spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
-        spinner.setOnItemSelectedListener(spinnerListener);
+        spinner.setOnItemSelectedListener(HomeActivity.this);
         gson= new Gson();
         List<String> categories = new ArrayList<String>();
         categories.add("Donor");
@@ -100,10 +102,71 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         handler = new Handler();
 
         /* Menu Button */
-        final ImageButton menuButton = (ImageButton) findViewById(R.id.menu_imagebutton_donor_home);
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        menuButton = (ImageButton) findViewById(R.id.menu_imagebutton_donor_home);
+        menuButton.setOnClickListener(HomeActivity.this);
+
+        /* Choose Location */
+        ImageButton currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_home);
+        currentLocationImageButton.setOnClickListener(HomeActivity.this);
+        TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
+        currentLocationTextView.setOnClickListener(HomeActivity.this);
+
+        startAsyncTask();
+        filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
+        filterImageButton.setOnClickListener(HomeActivity.this);
+
+        getWidgets();
+        newNeedFloatingActionButton = (FloatingActionButton) findViewById(R.id.new_need_home_page);
+        newNeedFloatingActionButton.setOnClickListener(HomeActivity.this);
+    }
+
+    private void getWidgets() {
+        recyclerView = (RecyclerView) findViewById(R.id.needs_recyclerview_home_page);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == FILTER_REQUEST) {
+            Iterator i=appliedFilter.iterator();
+            while (i.hasNext()) {
+                System.out.println(i.next());
+            }
+        } else if (requestCode == LOCATION_REQUEST) {
+            TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
+            currentLocationTextView.setText(locationName);
+        }
+    }
+
+    private void startAsyncTask(){
+        getNeedItemDetails = new GetNeedItemDetails();
+        getNeedItemDetails.nextNeedDetails=this;
+        getNeedItemDetails.execute();
+    }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+        }
+    };
+
+    @Override
+    public void nextURL(String result) {
+        if(result.equals("next"))
+            startAsyncTask();
+        else
+            getNeedItemDetails.cancel(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewId = v.getId();
+
+        switch (viewId) {
+            case R.id.menu_imagebutton_donor_home:
                 PopupMenu popupMenu = new PopupMenu(HomeActivity.this, menuButton);
                 Menu menu = popupMenu.getMenu();
                 menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, "My Profile");
@@ -126,88 +189,23 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                     }
                 });
                 popupMenu.show();
-            }
-        });
+                break;
 
-        /* SearchView */
-        /*final SearchView searchView = (SearchView) findViewById(R.id.searchView_donor_home);
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Dynamic",Toast.LENGTH_SHORT).show();
-                searchView.setIconified(false);
-            }
-        });*/
-
-        /* Location ImageButton */
-        ImageButton currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_home);
-        currentLocationImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.current_location_imagebutton_home:
+            case R.id.current_location_textview_home:
                 Intent intent = new Intent(HomeActivity.this, ChooseLocationActivity.class);
                 startActivityForResult(intent, LOCATION_REQUEST);
-            }
-        });
+                break;
 
-        startAsyncTask();
-        filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
-        filterImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(HomeActivity.this,FilterActivity.class);
+            case R.id.filter_imagebutton_donor_home:
+                intent = new Intent(HomeActivity.this, FilterActivity.class);
                 startActivityForResult(intent, 2);
-            }
-        });
+                break;
 
-        getWidgets();
-        newNeedFloatingActionButton = (FloatingActionButton) findViewById(R.id.new_need_home_page);
-        newNeedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case R.id.new_need_home_page:
                 startActivity(new Intent(HomeActivity.this, NewNeedActivity.class));
-            }
-        });
-    }
-
-    private void getWidgets() {
-        recyclerView = (RecyclerView) findViewById(R.id.needs_recyclerview_home_page);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == FILTER_REQUEST) {
-            Iterator i=appliedFilter.iterator();
-            while (i.hasNext()) {
-                System.out.println(i.next());
-            }
-        } else if (requestCode == LOCATION_REQUEST) {
-            TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_name_home);
-            currentLocationTextView.setText(locationName);
+                break;
         }
-    }
-
-    private void startAsyncTask(){
-        getNeedItemDetails=new GetNeedItemDetails();
-        getNeedItemDetails.nextNeedDetails=this;
-        getNeedItemDetails.execute();
-    }
-
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (progressDialog.isShowing())
-                progressDialog.dismiss();
-        }
-    };
-
-    @Override
-    public void nextURL(String result) {
-        if(result.equals("next"))
-            startAsyncTask();
-        else
-            getNeedItemDetails.cancel(true);
     }
 
     class GetNeedItemDetails extends AsyncTask {
@@ -309,41 +307,36 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         }
     }
 
-    class SpinnerListener implements AdapterView.OnItemSelectedListener {
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            TextView userType = (TextView) parent.getChildAt(0);
-            if (userType != null) {
-                userType.setTextColor(Color.WHITE);
-            }
-
-            String authorType = parent.getItemAtPosition(position).toString();
-            Toast.makeText(parent.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
-
-            if (authorType.equals("Donor")) {
-                newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-                startAsyncTask();
-                //new GetNeedItemDetails().execute();
-                //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
-            } else {
-                newNeedFloatingActionButton.setVisibility(View.VISIBLE);
-                //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
-            }
-
-            if(authorType.equals("Organization")) {
-                Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
-
-                new GetOrganisationNeedDetails().execute();
-            }
-
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        TextView userType = (TextView) parent.getChildAt(0);
+        if (userType != null) {
+            userType.setTextColor(Color.WHITE);
         }
 
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
+        String authorType = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
 
+        if (authorType.equals("Donor")) {
+            newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
+            startAsyncTask();
+            //new GetNeedItemDetails().execute();
+            //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
+        } else {
+            newNeedFloatingActionButton.setVisibility(View.VISIBLE);
+            //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
         }
+
+        if(authorType.equals("Organization")) {
+            Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
+
+            new GetOrganisationNeedDetails().execute();
+        }
+
     }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     class GetOrganisationNeedDetails extends AsyncTask{
 
@@ -356,7 +349,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         @Override
         protected Object doInBackground(Object[] objects) {
 
-            response = Connectivity.makeGetRequest("http://vuramdevdb.vuram.com:8000/api/orgdetails/", client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.orgDetails, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
             if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                 try {
                     jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));

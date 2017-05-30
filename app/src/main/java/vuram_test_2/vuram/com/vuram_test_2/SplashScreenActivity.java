@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
                 //startActivity(i);
-                // finish();
+
                 CommonUI.displayCheckoutUI(findViewById(R.id.activity_splash_screen),10,SplashScreenActivity.this);
             }
         }, SPLASH_TIME_OUT);

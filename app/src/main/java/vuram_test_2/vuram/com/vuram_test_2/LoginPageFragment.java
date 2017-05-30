@@ -33,26 +33,34 @@ public class LoginPageFragment extends Fragment {
 
     View v;
     EditText emailEditText, passwordEditText;
-    Button loginButton,signupButton;
+    Button loginButton, signupButton;
     private static final int REQUEST_SIGNUP = 0;
     ProgressDialog progressDialog;
     LandingPage landingPage;
     String email,password;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-
+    TextView registerLater;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateVie+-w(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (v == null)
-            v = inflater.inflate(R.layout.fragment_loign_page, container, false);
+            v = inflater.inflate(R.layout.login_fragment, container, false);
         emailEditText = (EditText) v.findViewById(R.id.email_login);
         passwordEditText = (EditText) v.findViewById(R.id.password_login);
         loginButton = (Button) v.findViewById(R.id.btn_login);
         signupButton = (Button) v.findViewById(R.id.link_login);
         landingPage = (LandingPage) getActivity();
+        registerLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(landingPage, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,7 +118,7 @@ public class LoginPageFragment extends Fragment {
 
         if (!validate()) {
             onLoginFailed();
-          //  return;
+            return;
         }
 
         loginButton.setEnabled(false);
@@ -180,7 +188,6 @@ public class LoginPageFragment extends Fragment {
                 JSONObject obj = new JSONObject();
                 obj.put("username", email);
                 obj.put("password", password);
-                Log.d("Json Value", "doInBackground: "+obj.toString());
                 httpResponse = Connectivity.makePostRequest(RestAPIURL.login, obj.toString(), httpClient, null);
                 if (httpResponse != null) {
                     code = httpResponse.getStatusLine().getStatusCode();
