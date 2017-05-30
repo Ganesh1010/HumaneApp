@@ -203,7 +203,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                         else if(item.getTitle().toString().equals("Logout"))
                         {
                             Connectivity.deleteAuthToken(HomeActivity.this,Connectivity.Donor_Token);
-                            startActivity(new Intent(HomeActivity.this,LoginPage.class));
+                            startActivity(new Intent(HomeActivity.this,LoginPageFragment.class));
                             HomeActivity.this.finish();
                         }
                         return true;

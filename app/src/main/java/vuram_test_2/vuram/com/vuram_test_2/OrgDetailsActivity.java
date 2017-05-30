@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +30,7 @@ import java.util.List;
 
 import eu.fiskur.simpleviewpager.ImageResourceLoader;
 import eu.fiskur.simpleviewpager.SimpleViewPager;
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class OrgDetailsActivity extends AppCompatActivity  {
@@ -38,28 +38,31 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     String[] needName;
     int[] needQuantities;
     ArrayList<MainItemDetails> mainItemDetailsList;
-    int needItemId,needQuantity,subItemId,mainItemCode;
+    int needItemId,needQuantity,subItemId;
     public static Context context;
-    List itemslist,subItemlist;
-    List<NeedItemDetails> items,subItem;
+    List itemslist;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private static ArrayList<DataModel> data;
     static View.OnClickListener myOnClickListener;
     private static ArrayList<Integer> removedItems;
-    ArrayList needitems;
     HttpClient client;
     String OrgName,Address,EmailId,Mobile;
     NeedDetails needDetails;
     NeedItemDetails needItemDetails;
     NeedDetails need;
-    String mainitemname;
-    MainItemDetails mainItemDetails;
     TextView Organisationname,Organisationemail,Organisationmobile,Organisationaddress;
     int needid;
     OrganisationDetails orgdetails;
     ImageView donationCart;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
+            CommonUI.onActivityResult(requestCode,resultCode,data);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -80,7 +83,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         donationCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,GeneralUser.class));
+                startActivity(new Intent(OrgDetailsActivity.this,DonationCart.class));
             }
         });
 
@@ -96,8 +99,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 R.drawable.ngo,
                 R.drawable.ngo,
                 R.drawable.ngo };
-
-
 
         layoutManager = new LinearLayoutManager(this);
 
@@ -135,8 +136,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 } else {
                     Log.d("CAllS ", "Response null");
                 }
-
-
             return null;
         }
 
@@ -161,7 +160,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             DatabaseHelper db = new DatabaseHelper(context);
             mainItemDetailsList = db.getAllMainItemDetails();
 
-
             for (int i = 0; i < itemslist.size(); i++) {
                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
                 needItemId = needItemDetails.getItem_type_id();
@@ -169,20 +167,13 @@ public class OrgDetailsActivity extends AppCompatActivity  {
                 Log.d("needItemId", needItemId + "");
                 needQuantities[i] = needQuantity;
                 subItemId = needItemDetails.getSub_item_type_id();
-
-
                 for (int j = 0; j < mainItemDetailsList.size(); j++) {
                     MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
                     if (needItemId == mainItemDetails.getMainItemCode()) {
                         String mainItemName = mainItemDetails.getMainItemName();
                         needName[i] = mainItemName;
-
-
                     }
-
                 }
-
-                //Log.d("Quantity", String.valueOf(needQuantities));
             }
             Log.d("nameList", String.valueOf(needName.length));
             adapter=new ItemDetailsAdapter(needdetails,context, OrgDetailsActivity.this);
@@ -192,20 +183,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
             removedItems = new ArrayList<>();
-
-            /*ImageView im=(ImageView)findViewById(R.id.cart);
-            im.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i=new Intent(OrgDetailsActivity.this,GeneralUser.class);
-                    startActivity(i);
-                }
-            });*/
-
-
         }
-
-
 
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
            OrgName=orgdetails.org_name;
@@ -218,9 +196,4 @@ public class OrgDetailsActivity extends AppCompatActivity  {
             Organisationemail.setText(EmailId);
         }
     }
-
 }
-
-
-
-

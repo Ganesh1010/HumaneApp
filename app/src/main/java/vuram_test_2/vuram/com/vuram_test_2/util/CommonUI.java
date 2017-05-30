@@ -7,44 +7,38 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import vuram_test_2.vuram.com.vuram_test_2.GPSTracker;
-import vuram_test_2.vuram.com.vuram_test_2.GeneralUser;
 import vuram_test_2.vuram.com.vuram_test_2.MapActivity;
 import vuram_test_2.vuram.com.vuram_test_2.R;
-
 import static android.app.Activity.RESULT_CANCELED;
-import static vuram_test_2.vuram.com.vuram_test_2.R.string.address;
 
-/**
- * Created by ganeshrajam on 23-05-2017.
- */
-
-public class CommonUI implements PreferenceManager.OnActivityResultListener {
-    public static Activity context;
-    static Button getLocation;
-    static TextView address;
+public class CommonUI{
+    static ImageView getLocation;
+    static Context context;
+    static EditText address,name;
     static GPSTracker gps;
-    String mapAddress;
+    static String mapAddress;
+    static View dialogView;
+
     public static void displayCheckoutUI(View v, int itemsCount, final Activity context)
     {
-        CommonUI.context=context;
         Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setTitle("Confirm Donation");
+                        //builder.setTitle("Confirm Donation");
+                        CommonUI.context=context.getApplicationContext();
                         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View dialogView = inflater.inflate(R.layout.activity_general_user, null);
-
-                        address= (TextView) dialogView.findViewById(R.id.address_general_user);
-                        getLocation= (Button) dialogView.findViewById(R.id.btn_map);
+                        dialogView = inflater.inflate(R.layout.activity_general_user, null);
+                        name= (EditText) dialogView.findViewById(R.id.name_general_user);
+                        address= (EditText) dialogView.findViewById(R.id.address_general_user);
+                        getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
                         getLocation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -82,10 +76,7 @@ public class CommonUI implements PreferenceManager.OnActivityResultListener {
                                     gps.showSettingsAlert();
                                 }
                             }
-
-
                         });
-
                         builder.setView(dialogView);
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -110,14 +101,12 @@ public class CommonUI implements PreferenceManager.OnActivityResultListener {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    @Override
-    public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
-        {
-            System.out.println(mapAddress);
+    public static void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 2 || !(resultCode == RESULT_CANCELED)) {
+            address.setEnabled(true);
             mapAddress = data.getStringExtra("ADDRESS");
             address.setText(mapAddress);
         }
-        return false;
     }
 }
