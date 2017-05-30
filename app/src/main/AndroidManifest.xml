@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingPage">
+        <activity android:name=".SwipeCardForReceival">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,8 +32,8 @@
         <activity android:name=".NeedDetailsActivity" />
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".DetailsOfQuantitySelected" />
-        <activity android:name=".LoginPage" />
         <activity android:name=".FilterActivity" />
+        <activity android:name=".LandingPage" />
         <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".DonationConfirmationActivity"
             android:theme="@style/AppTheme1"></activity>

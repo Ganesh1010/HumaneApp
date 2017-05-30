@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal|center"
+    android:orientation="vertical">
+
+
+
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="0dp">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="1dp">
+            <View
+                android:layout_width="3dp"
+                android:background="@color/colorSecondaryText"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/cast_expanded_controller_margin_between_seek_bar_and_control_buttons" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingLeft="20dp">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/donor_name_swipe_card_textView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textSize="15sp"
+                android:textAllCaps="true" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/donor_mob_swipe_card_text_view"
+                    android:layout_weight="1"
+                    android:paddingLeft="6dp" />
+
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/date_swipe_Card_textView"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Notification"
+                    android:paddingEnd="7dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
