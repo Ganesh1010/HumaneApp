@@ -107,14 +107,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView23"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryText" />
 
                         <TextView
                             android:text="256"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/org_people_count_textview_org_profile"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textColor="@color/colorSecondaryText" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -128,14 +130,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/textView22"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimaryText" />
 
                         <TextView
                             android:text="Child"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/org_type_textview_org_profile"
-                            android:gravity="center" />
+                            android:gravity="center"
+                            android:textColor="@color/colorSecondaryText" />
                     </LinearLayout>
                 </LinearLayout>
 
