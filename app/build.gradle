@@ -49,8 +49,6 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
-    compile files('android-viewbadger.jar')
-    compile files('android-viewbadger.jar')
     compile files('libs/android-viewbadger.jar')
     compile 'com.hbb20:ccp:1.7.6'
     compile 'com.loopj.android:android-async-http:1.4.9'
