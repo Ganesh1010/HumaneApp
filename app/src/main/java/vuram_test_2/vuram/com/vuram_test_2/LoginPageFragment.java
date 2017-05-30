@@ -28,6 +28,9 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_OK;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 public class LoginPageFragment extends Fragment {
 
@@ -38,6 +41,8 @@ public class LoginPageFragment extends Fragment {
     ProgressDialog progressDialog;
     LandingPage landingPage;
     String email,password;
+    Bundle key;
+    String user_selection;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView registerLater;
@@ -236,10 +241,22 @@ public class LoginPageFragment extends Fragment {
             DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
             detailsPopulator.getMainItemDetailsFromAPI();
             detailsPopulator.getSubItemDetailsFromAPI();
-
-            Intent intent = new Intent(landingPage, HomeActivity.class);
-            startActivity(intent);
-            landingPage.finish();
+            if(getArguments()!=null) {
+                if (getArguments().get(USER_KEY_TYPE) == "DONOR") {
+                    Intent intent = new Intent(landingPage, HomeActivity.class);
+                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                    Toast.makeText(landingPage, "Donor", Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                    landingPage.finish();
+                }
+                if (getArguments().get(USER_KEY_TYPE) == "ORGANISATION") {
+                    Intent intent = new Intent(landingPage, HomeActivity.class);
+                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+                    Toast.makeText(landingPage, "Organisation", Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+                    landingPage.finish();
+                }
+            }
         }
 
         public void onLoginFailed() {

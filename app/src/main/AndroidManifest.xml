@@ -9,7 +9,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -34,26 +34,27 @@
         <activity android:name=".LoginPage" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".CoordinatorRegistration" />
-        <activity android:name=".DonationConfirmationActivity"
+        <activity
+            android:name=".DonationConfirmationActivity"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".GeneralUser"
             android:theme="@style/AppTheme1"></activity>
-        <activity android:name=".GeneralUser"
-            android:theme="@style/AppTheme1">
-        </activity>
-
         <activity android:name=".SplashScreenActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
             android:name=".MapActivity"
-            android:theme="@style/AppTheme1"
-            android:label="@string/app_name"></activity>
-
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".NewNeedActivity"
-            android:theme="@style/AppTheme1"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme1" />
+        <activity android:name=".OrganisationLandingPage"></activity>
     </application>
 
 </manifest>

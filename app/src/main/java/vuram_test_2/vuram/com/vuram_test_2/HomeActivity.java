@@ -42,6 +42,8 @@ import java.util.TreeSet;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+
 public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private final int MENU_ITEM_ONE = 1;
@@ -50,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     private final int MENU_ITEM_FOUR = 4;
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
-
+    String compareValue;
     public static Set<String> appliedFilter;
     public static String locationName = "Chennai";
     protected Handler handler;
@@ -65,12 +67,14 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     ArrayList<NeedDetails> tempneeditem,tempOrgNeeds;
     private final String TAG = "HomeActivity.java";
     public int count=0;
+    Intent intent;
     private RecyclerView recyclerView;
     private ImageButton filterImageButton;
     private TextView  tvEmptyView;
     private GetNeedItemDetails getNeedItemDetails;
     private FloatingActionButton newNeedFloatingActionButton;
     JSONObject jsonObject;
+    Spinner spinner;
 
     ImageButton menuButton;
 
@@ -78,18 +82,17 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        appliedFilter=new TreeSet<>();
+        appliedFilter = new TreeSet<>();
 
         /* Spinner */
-        Spinner spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
+        spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         spinner.setOnItemSelectedListener(HomeActivity.this);
-        gson= new Gson();
+        gson = new Gson();
         List<String> categories = new ArrayList<String>();
         categories.add("Donor");
         categories.add("Organization");
-
-        progressDialog= new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+        progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -98,6 +101,24 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
+        intent = getIntent();
+        Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
+      if (intent.getStringExtra(USER_KEY_TYPE).equals( "DONOR")) {
+          if (compareValue != null) {
+              compareValue = "Donor";
+              int spinnerPosition = dataAdapter.getPosition(compareValue);
+              spinner.setSelection(spinnerPosition);
+              Log.d("hai", spinnerPosition + "");
+          }
+      }
+        if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION"))
+
+        compareValue = "Organization";
+        if (compareValue != null) {
+            int spinnerPosition = dataAdapter.getPosition(compareValue);
+            spinner.setSelection(spinnerPosition);
+            Log.d("hai", spinnerPosition + "");
+        }
 
         handler = new Handler();
 
