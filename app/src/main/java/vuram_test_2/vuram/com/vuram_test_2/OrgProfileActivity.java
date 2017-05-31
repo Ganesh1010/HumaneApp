@@ -32,9 +32,8 @@ public class OrgProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_org_profile);
 
         // Embedding Map fragment
-        Fragment myMapFragment = new MyMapFragment();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.map_holder_linear_layout_org_profile, myMapFragment).commit();
+       // fragmentTransaction.add(R.id.map_holder_linear_layout_org_profile, myMapFragment).commit();
 
         // Defining the objects to the views
         orgName = (TextView) findViewById(R.id.org_name_textview_org_profile);

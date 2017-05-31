@@ -32,7 +32,7 @@ public class DonorRegistrationFragment extends Fragment {
     View v;
     EditText nameEditText, emailEditText, mobileEditText, passwordEditText;
     Button registerButton;
-    TextView loginLinkTextView;
+    TextView loginLinkTextView,signInTextView;
     ProgressDialog progressDialog;
     LandingPage landingPage;
     Gson gson;
@@ -42,6 +42,7 @@ public class DonorRegistrationFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class DonorRegistrationFragment extends Fragment {
         passwordEditText = (EditText) v.findViewById(R.id.password_register);
         registerButton = (Button) v.findViewById(R.id.signup_register);
         loginLinkTextView = (TextView) v.findViewById(R.id.link_login_register);
+        signInTextView = (TextView)v.findViewById(R.id.link_login_sign_in);
         landingPage = (LandingPage) getActivity();
         frameLayout = (FrameLayout) landingPage.findViewById(fragmentLayout);
 
@@ -64,6 +66,20 @@ public class DonorRegistrationFragment extends Fragment {
             public void onClick(View view) {
 
                 signup();
+            }
+        });
+
+        signInTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                fragment = new LoginPageFragment();
+                fragmentManager = getActivity().getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+
+                landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
             }
         });
 
@@ -171,7 +187,7 @@ public class DonorRegistrationFragment extends Fragment {
             chooseLocationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //startActivity(new Intent(RegistrationPage.this, AndroidGPSTrackingActivity.class));
+
                 }
             });
 
