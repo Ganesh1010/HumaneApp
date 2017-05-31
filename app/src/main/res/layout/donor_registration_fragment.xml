@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:fontFamily="@string/sans_serif"
+            android:fontFamily="sans-serif"
             android:hint="@string/password"
             android:textColorHint="#FFFFFF"
             android:textColor="?attr/colorControlNormal"

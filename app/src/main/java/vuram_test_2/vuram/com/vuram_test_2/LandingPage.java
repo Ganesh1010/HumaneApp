@@ -24,27 +24,38 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE
 public class LandingPage extends AppCompatActivity {
 
 
-
-    @Bind(R.id.fragmentLayout)FrameLayout frameLayout;
-    @Bind(R.id.donarActivity) Button donor;
-    @Bind(R.id.orgActivity) Button org;
-    @Bind(R.id.viewLine) View viewLine;
+    FrameLayout frameLayout;
+    Button donor,org;
+    View viewLine;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     static String user;
+
+
+/*    @Bind(R.id.fragmentLayout)FrameLayout frameLayout;
+    @Bind(R.id.donarActivity) Button donor;
+    @Bind(R.id.orgActivity) Button org;
+    @Bind(R.id.viewLine) View viewLine;*/
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-        ButterKnife.bind(this);
+       // ButterKnife.bind(this);
+        frameLayout = (FrameLayout)findViewById(R.id.fragmentLayout);
+        donor = (Button)findViewById(R.id.donarActivity);
+        org = (Button)findViewById(R.id.orgActivity);
+        viewLine = findViewById(R.id.viewLine);
+
+
 
         SharedPreferences preferences=getSharedPreferences(Connectivity.MyPREFERENCES, Context.MODE_PRIVATE);
         Boolean isfirsttme=preferences.getBoolean(Connectivity.Is_First_Time,true);
         if(!isfirsttme)
         {
-            SharedPreferences.Editor editor=getSharedPreferences(Connectivity.MyPREFERENCES,Context.MODE_PRIVATE).edit();
+            SharedPreferences.Editor editor = getSharedPreferences(Connectivity.MyPREFERENCES,Context.MODE_PRIVATE).edit();
         }
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
         BounceInterpolator interpolator = new BounceInterpolator(0.2, 20);
@@ -78,8 +89,10 @@ public class LandingPage extends AppCompatActivity {
                 org.setVisibility(View.INVISIBLE);
                 donor.setVisibility(View.INVISIBLE);
                 viewLine.setVisibility(View.INVISIBLE);
+
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+
                 fragment = new  LoginPageFragment();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
@@ -93,13 +106,15 @@ public class LandingPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
               //  view.setAnimation(myAnim);
-// must be changed to organisation registration fragment
+
                 user = "COORDINATOR";
                 org.setVisibility(View.INVISIBLE);
                 donor.setVisibility(View.INVISIBLE);
                 viewLine.setVisibility(View.INVISIBLE);
+
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+
                 fragment = new LoginPageFragment();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
