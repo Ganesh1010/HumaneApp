@@ -26,9 +26,6 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import org.apache.http.entity.StringEntity;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -100,8 +97,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    class PostData extends AsyncTask
-    {
+    class PostData extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] params) {
@@ -109,6 +105,7 @@ public class EditProfileActivity extends AppCompatActivity {
             return null;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
