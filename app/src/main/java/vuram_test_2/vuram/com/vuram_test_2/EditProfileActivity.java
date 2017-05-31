@@ -177,20 +177,16 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        client.post(RestAPIURL.register, params,
-                new TextHttpResponseHandler() {
+        client.post(RestAPIURL.register, params, new TextHttpResponseHandler() {
+
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
-
                 Log.d("Edit", "onFailure: "+responseString);
-
             }
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
-
                 Log.d("Edit", "onSuccess: "+responseString);
-
             }
         });
     }
