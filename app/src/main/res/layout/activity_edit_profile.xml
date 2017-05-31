@@ -48,7 +48,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical" >
 
                 <RelativeLayout
@@ -119,43 +118,11 @@
                                 android:layout_height="match_parent"
                                 android:inputType="textPersonName"
                                 android:ems="10"
-                                android:id="@+id/username_textview_edit_profile"
+                                android:id="@+id/user_name_edittext_edit_profile"
                                 android:layout_weight="1"
-                                android:hint="@string/full_name" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_gender_black"
-                                android:id="@+id/imageButton5"
-                                android:layout_weight="1"
-                                android:backgroundTint="@color/colorTextIcons" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <Spinner
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:id="@+id/gender_spinner_edit_profile"
-                                android:drawSelectorOnTop="true"
-                                android:entries="@array/gender_option"
-                                android:layout_marginLeft="2dp" />
+                                android:hint="@string/full_name"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -184,13 +151,15 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:inputType="phone"
                                 android:ems="10"
                                 android:layout_weight="1"
                                 android:hint="Phone"
-                                android:id="@+id/phone_textview_edit_profile" />
+                                android:id="@+id/phone_edittext_edit_profile"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -219,15 +188,67 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:inputType="textEmailAddress"
                                 android:ems="10"
-                                android:id="@+id/email_textview_edit_profile"
+                                android:id="@+id/email_edittext_edit_profile"
                                 android:layout_weight="1"
-                                android:hint="Email" />
+                                android:hint="Email"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginRight="15dp">
+
+                        <CheckBox
+                            android:text="CheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/change_password_checkbox"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="60dp"
+                        android:id="@+id/change_password_linear_layout_edit_profile">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/old_password_edittext_edit_profile"
+                            android:hint="Old Password" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/new_password_edittext_edit_profile"
+                            android:hint="New Password" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:ems="10"
+                            android:id="@+id/confirm_password_edittext_edit_profile"
+                            android:hint="Confirm Password" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
