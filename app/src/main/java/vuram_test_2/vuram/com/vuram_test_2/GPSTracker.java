@@ -113,27 +113,29 @@ public class GPSTracker extends Service implements LocationListener {
 			}
 
 			// Application can use GPS or Network Provider
-			if (!provider_info.isEmpty()) {
-				if (ActivityCompat.checkSelfPermission((Activity)mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-					// TODO: Consider calling
-					//    ActivityCompat#requestPermissions
-					// here to request the missing permissions, and then overriding
-					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-					//                                          int[] grantResults)
-					// to handle the case where the user grants the permission. See the documentation
-					// for ActivityCompat#requestPermissions for more details.
-					return;
-				}
-				locationManager.requestLocationUpdates(
-						provider_info,
-						MIN_TIME_BW_UPDATES,
-						MIN_DISTANCE_CHANGE_FOR_UPDATES,
-						this
-				);
+			if (provider_info != null) {
+				if (!provider_info.isEmpty()) {
+					if (ActivityCompat.checkSelfPermission((Activity) mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+						// TODO: Consider calling
+						//    ActivityCompat#requestPermissions
+						// here to request the missing permissions, and then overriding
+						//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+						//                                          int[] grantResults)
+						// to handle the case where the user grants the permission. See the documentation
+						// for ActivityCompat#requestPermissions for more details.
+						return;
+					}
+					locationManager.requestLocationUpdates(
+							provider_info,
+							MIN_TIME_BW_UPDATES,
+							MIN_DISTANCE_CHANGE_FOR_UPDATES,
+							this
+					);
 
-				if (locationManager != null) {
-					location = locationManager.getLastKnownLocation(provider_info);
-					updateGPSCoordinates();
+					if (locationManager != null) {
+						location = locationManager.getLastKnownLocation(provider_info);
+						updateGPSCoordinates();
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -294,18 +296,19 @@ public class GPSTracker extends Service implements LocationListener {
 		List<Address> addresses = getGeocoderAddress(context);
 		if (addresses == null) {
 			Log.d(TAG, "getLocality: Address list is null");
-		}
-		Log.d(TAG, "getLocality: Address List:" + addresses.toString());
-		if (addresses != null && addresses.size() > 0) {
-			Address address = addresses.get(0);
-			Log.d(TAG, "getLocality: Address: " + address.toString());
-			String locality = address.getLocality();
+            return null;
+		} else {
+            Log.d(TAG, "getLocality: Address List:" + addresses.toString());
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                Log.d(TAG, "getLocality: Address: " + address.toString());
+                String locality = address.getLocality();
 
-			return locality;
-		}
-		else {
-			return null;
-		}
+                return locality;
+            } else {
+                return null;
+            }
+        }
 	}
 
 	/**
