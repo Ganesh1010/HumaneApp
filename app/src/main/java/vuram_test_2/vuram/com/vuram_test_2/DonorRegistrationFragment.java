@@ -112,7 +112,6 @@ public class DonorRegistrationFragment extends Fragment {
 
     public void onSignupFailed() {
         Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
-
          registerButton.setEnabled(true);
     }
 
