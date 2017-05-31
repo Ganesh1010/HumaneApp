@@ -1,11 +1,15 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,12 +92,12 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
                                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
                         } else {
-                            HomeActivity.locationName = new GPSTracker(ChooseLocationActivity.this).getLocality(ChooseLocationActivity.this);
-                            finish();
+                            setCurrentLocation();
+                            //new FetchLocationDetailsTask().execute();
                         }
                     } else {
-                        HomeActivity.locationName = new GPSTracker(ChooseLocationActivity.this).getLocality(ChooseLocationActivity.this);
-                        finish();
+                        setCurrentLocation();
+                        //new FetchLocationDetailsTask().execute();
                     }
                 } else {
                     new GPSTracker(ChooseLocationActivity.this).showSettingsAlert();
@@ -105,6 +109,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
                 break;
         }
     }
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -126,5 +131,63 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         /* Displaying new queried list */
         displayCities(queriedCitiesList);
         return true;
+    }
+
+    private void setCurrentLocation() {
+        GPSTracker gpsTracker = new GPSTracker(ChooseLocationActivity.this);
+        String cityName = gpsTracker.getLocality(ChooseLocationActivity.this);
+        if (cityName != null) {
+            HomeActivity.locationName = cityName;
+            finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ChooseLocationActivity.this);
+            builder.setTitle("Alert !");
+            builder.setMessage("Unable to fetch location details");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
+    class FetchLocationDetailsTask extends AsyncTask {
+
+        String cityName;
+        ProgressDialog progressDialog;
+        GPSTracker gpsTracker;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(ChooseLocationActivity.this);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            gpsTracker = new GPSTracker(ChooseLocationActivity.this);
+            cityName = gpsTracker.getLocality(ChooseLocationActivity.this);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.cancel();
+            if (cityName != null) {
+                HomeActivity.locationName = cityName;
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ChooseLocationActivity.this);
+                builder.setTitle("Alert !");
+                builder.setMessage("Unable to fetch location details");
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+            finish();
+        }
     }
 }

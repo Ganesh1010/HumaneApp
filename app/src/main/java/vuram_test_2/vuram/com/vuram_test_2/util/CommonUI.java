@@ -44,14 +44,13 @@ public class CommonUI{
                             public void onClick(View v) {
                                 gps = new GPSTracker(context);
 
-                                if(gps.getIsGPSTrackingEnabled()){
+                                if(gps.getIsGPSTrackingEnabled()) {
                                     if(isNetworkAvailable()) {
 
                                         Intent intent = new Intent(context, MapActivity.class);
                                         context.startActivityForResult(intent, 2);
                                     }
-                                    else
-                                    {
+                                    else {
                                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
                                         alertDialog.setTitle("Internet settings");
                                         alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
@@ -72,7 +71,7 @@ public class CommonUI{
                                         // Showing Alert Message
                                         alertDialog.show();
                                     }
-                                }else{
+                                } else {
                                     gps.showSettingsAlert();
                                 }
                             }
