@@ -319,9 +319,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                             }, 1000);
                         }
                     });
-                    // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
-                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
-                    // RegistrationPage.this.finish();
+
+
                 }
 
             super.onPostExecute(o);
@@ -436,9 +435,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                             }, 2000);
                         }
                     });
-                    // Toast.makeText(RegistrationPage.this,"Registration Successful.Kindly Login to continue",Toast.LENGTH_LONG).show();
-                    // RegistrationPage.this.startActivity(new Intent(RegistrationPage.this,LoginPage.class));
-                    // RegistrationPage.this.finish();
                 }
 
             super.onPostExecute(o);
