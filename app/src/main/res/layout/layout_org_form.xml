@@ -54,6 +54,41 @@
 
             <ImageView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_email_black"
+                android:id="@+id/imageButton9"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorTextIcons" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/org_email_editText_org_form"
+                android:layout_weight="1"
+                android:hint="Email" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_organisation"
                 android:id="@+id/imageButton4"
@@ -127,41 +162,6 @@
                 android:backgroundTint="@color/colorPrimary"
                 android:elevation="1dp"
                 android:textColor="@color/colorTextIcons"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_email_black"
-                android:id="@+id/imageButton9"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorTextIcons" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:ems="10"
-                android:id="@+id/org_email_editText_org_form"
-                android:layout_weight="1"
-                android:hint="Email" />
         </LinearLayout>
     </LinearLayout>
 

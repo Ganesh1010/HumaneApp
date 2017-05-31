@@ -247,7 +247,7 @@ public class LoginPageFragment extends Fragment {
                     landingPage.finish();
                 }
                 if (getArguments().get(USER_KEY_TYPE) == "ORGANISATION") {
-                    Intent intent = new Intent(landingPage, HomeActivity.class);
+                    Intent intent = new Intent(landingPage, OrganisationLandingPage.class);
                     intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
                     Toast.makeText(landingPage, "Organisation", Toast.LENGTH_LONG).show();
                     startActivity(intent);

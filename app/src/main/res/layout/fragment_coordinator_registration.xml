@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_loing_page">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/app_icon"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    +<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"></LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_user_name" />
+
+            <EditText
+                android:id="@+id/email_coordinator_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Name"
+                android:inputType="text"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_user_email" />
+
+            <EditText
+                android:id="@+id/first_name_coordinator_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:fontFamily="sans-serif"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_user_phone" />
+
+            <EditText
+                android:id="@+id/mobile_coordinator_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:fontFamily="sans-serif"
+                android:hint="Phone"
+                android:inputType="textPersonName"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_password" />
+
+            <EditText
+                android:id="@+id/password_coordinator_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:fontFamily="sans-serif"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/home" />
+            <TextView
+                android:text="Country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                android:layout_weight="1"
+                android:letterSpacing="0.025"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp"
+                android:textColor="#c4bfbf"
+                android:paddingTop="20dp"
+                android:paddingStart="12dp" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/country_spinner_coordinator_register"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/country_option"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_coordinator_register"
+        android:text="Next"
+        android:textSize="16dp"
+        android:textColor="#fff"
+        android:textAlignment="center"
+        android:background="@drawable/border"
+        android:layout_gravity="center"
+        android:letterSpacing="0.025"
+        android:padding="10dp"
+        android:layout_marginTop="50dp" />
+
+
+</LinearLayout>
