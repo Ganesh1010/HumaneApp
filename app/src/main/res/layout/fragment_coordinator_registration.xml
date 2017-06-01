@@ -46,7 +46,7 @@
                 android:background="@drawable/ic_user_name" />
 
             <EditText
-                android:id="@+id/email_coordinator_register"
+                android:id="@+id/first_name_coordinator_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -84,7 +84,7 @@
                 android:background="@drawable/ic_user_email" />
 
             <EditText
-                android:id="@+id/first_name_coordinator_register"
+                android:id="@+id/email_coordinator_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -128,12 +128,12 @@
                 android:background="#00000000"
                 android:fontFamily="sans-serif"
                 android:hint="Phone"
-                android:inputType="textPersonName"
                 android:letterSpacing="0.025"
                 android:padding="12dp"
                 android:textColor="#fff"
                 android:textColorHint="#c4bfbf"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:inputType="number" />
 
 
         </LinearLayout>
