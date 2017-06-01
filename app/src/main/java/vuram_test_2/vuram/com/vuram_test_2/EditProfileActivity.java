@@ -178,11 +178,11 @@ public class EditProfileActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         RequestParams passwordParams = new RequestParams();
 
+        // Change User Details
         CountryCodePicker countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
-
         params.put("first_name", fullNameEditText.getText().toString());
         params.put("country", countryCodePicker.getSelectedCountryNameCode());
-        params.put("phone", phoneEditText.getText().toString());
+        params.put("mobile", phoneEditText.getText().toString());
         params.put("email", emailEditText.getText().toString());
 
         try {
@@ -195,6 +195,20 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        client.post(RestAPIURL.editUserDetails, params, new TextHttpResponseHandler() {
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                Log.d("Edit", "onFailure: "+responseString);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                Log.d("Edit", "onSuccess: "+responseString);
+            }
+        });
+
+        // Change Password
         if (changePasswordCheckBox.isChecked()) {
             passwordParams.put("current_password", currentPasswordEditText.getText().toString());
             passwordParams.put("new_password", newPasswordEditText.getText().toString());
@@ -210,19 +224,6 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             });
         }
-
-        client.post(RestAPIURL.register, params, new TextHttpResponseHandler() {
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
-                Log.d("Edit", "onFailure: "+responseString);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
-                Log.d("Edit", "onSuccess: "+responseString);
-            }
-        });
     }
 
 }
