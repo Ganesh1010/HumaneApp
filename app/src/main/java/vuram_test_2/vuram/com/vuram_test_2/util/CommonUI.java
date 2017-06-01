@@ -29,69 +29,69 @@ public class CommonUI{
     public static void displayCheckoutUI(View v, int itemsCount, final Activity context)
     {
         Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                //builder.setTitle("Confirm Donation");
+                CommonUI.context=context.getApplicationContext();
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                dialogView = inflater.inflate(R.layout.activity_general_user, null);
+                //  name= (EditText) dialogView.findViewById(R.id.name_general_user);
+                //address= (EditText) dialogView.findViewById(R.id.address_general_user);
+                getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
+                getLocation.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        //builder.setTitle("Confirm Donation");
-                        CommonUI.context=context.getApplicationContext();
-                        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        dialogView = inflater.inflate(R.layout.activity_general_user, null);
-                      //  name= (EditText) dialogView.findViewById(R.id.name_general_user);
-                        //address= (EditText) dialogView.findViewById(R.id.address_general_user);
-                        getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
-                        getLocation.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                gps = new GPSTracker(context);
+                        gps = new GPSTracker(context);
 
-                                if(gps.getIsGPSTrackingEnabled()) {
-                                    if(isNetworkAvailable()) {
+                        if(gps.getIsGPSTrackingEnabled()) {
+                            if(isNetworkAvailable()) {
 
-                                        Intent intent = new Intent(context, MapActivity.class);
-                                        context.startActivityForResult(intent, 2);
+                                Intent intent = new Intent(context, MapActivity.class);
+                                context.startActivityForResult(intent, 2);
+                            }
+                            else {
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                                alertDialog.setTitle("Internet settings");
+                                alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
+
+                                // On pressing Settings button
+                                alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Settings.ACTION_SETTINGS);
+                                        context.startActivity(intent);
                                     }
-                                    else {
-                                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                                        alertDialog.setTitle("Internet settings");
-                                        alertDialog.setMessage("Mobile data is not enabled. Do you want to go to settings menu?");
-
-                                        // On pressing Settings button
-                                        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                Intent intent = new Intent(Settings.ACTION_SETTINGS);
-                                                context.startActivity(intent);
-                                            }
-                                        });
-                                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        });
-
-                                        // Showing Alert Message
-                                        alertDialog.show();
+                                });
+                                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
                                     }
-                                } else {
-                                    gps.showSettingsAlert();
-                                }
-                            }
-                        });
-                        builder.setView(dialogView);
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                                });
 
+                                // Showing Alert Message
+                                alertDialog.show();
+                            }
+                        } else {
+                            gps.showSettingsAlert();
+                        }
                     }
-                }).show();
+                });
+                builder.setView(dialogView);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        }).show();
     }
 
     private static boolean isNetworkAvailable() {

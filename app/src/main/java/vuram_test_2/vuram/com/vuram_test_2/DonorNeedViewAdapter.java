@@ -89,6 +89,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        System.out.println("position : "+position);
         Log.d(TAG, "onBindViewHolder: Start @Need " + (position + 1));
         if (holder instanceof ViewHolder) {
             NeedDetails need = needDetails.get(position);
@@ -100,12 +101,19 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 }
             });
             ((ViewHolder)holder).orgName.setText(need.org.org_name);
-            ((ViewHolder)holder).orgAddress.setText("Address");
-            ((ViewHolder)holder).orgContactNo.setText("957851907");
+            ((ViewHolder)holder).orgAddress.setText(need.org.getAddress());
+            ((ViewHolder)holder).orgContactNo.setText(need.org.getMobile());
             ((ViewHolder)holder).orgLogo.setImageResource(R.drawable.ngo);
             int animationDuration = 1000; // 2500ms = 2,5s
-            ((ViewHolder)holder).overallSatisfiedBar.setProgressWithAnimation(80, animationDuration);
-            ((ViewHolder)holder).percentage.setText("80" + "%");
+            int totalQuantity=0;
+            int totalDonatedReceived=0;
+            for(int i=0;i<need.getItems().size();i++) {
+                totalQuantity += need.getItems().get(i).getQuantity();
+                totalDonatedReceived += need.getItems().get(i).getDonated_and_received_amount();
+            }
+            ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived/totalQuantity * 100, animationDuration);
+            ((ViewHolder) holder).percentage.setText(totalDonatedReceived/totalQuantity* 100 + "%");
+
             //Glide.with(context).load(needDetails.orgLogo).into(((ViewHolder)holder).orgLogo);
             ((ViewHolder)holder).needItems.removeAllViews();
             View itemView = null;
@@ -123,28 +131,40 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 TextView itemName = (TextView) itemView.findViewById(R.id.item_name_item_view);
                 ProgressBar satisfactionBar = (ProgressBar) itemView.findViewById(R.id.item_status_item_view);
                 switch (itemDetails.getItem_type_id()) {
-                    case 0:
+                    case 1:
                         itemIcon.setImageResource(R.drawable.ic_food_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Food");
                         satisfactionBar.setProgress(40);
                         break;
-                    case 1:
+                    case 2:
                         itemIcon.setImageResource(R.drawable.ic_cloth_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Cloth");
                         satisfactionBar.setProgress(40);
                         break;
-                    case 2:
+                    case 3:
+                        itemIcon.setImageResource(R.drawable.ic_blood_black);
+                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        itemName.setText("Blood");
+                        satisfactionBar.setProgress(40);
+                        break;
+                    case 4:
                         itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
-                        itemName.setText("Grocery");
+                        itemName.setText("Groceries");
+                        satisfactionBar.setProgress(40);
+                        break;
+                    case 5:
+                        itemIcon.setImageResource(R.drawable.ic_stationery_black);
+                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        itemName.setText("Stationeries");
                         satisfactionBar.setProgress(40);
                         break;
                     default:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
-                        itemName.setText("Stationery");
+                        itemName.setText("Others");
                         satisfactionBar.setProgress(40);
                         break;
                 }
@@ -173,8 +193,6 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
             progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
         }
     }
-
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 

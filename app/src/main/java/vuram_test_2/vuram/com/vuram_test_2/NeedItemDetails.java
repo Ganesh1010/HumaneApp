@@ -1,7 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import java.util.Date;
-
 public class  NeedItemDetails {
 
     int need_item_id;
