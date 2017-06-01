@@ -6,10 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -51,27 +49,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 onBackPressed();
             }
         });
-
-        /* Fetching User details */
-        // Creating a list of org details
-        orgDetailsList = new ArrayList<OrgDetails>();
-        randomNumberGenerator = new Random();
-        orgCount = randomNumberGenerator.nextInt(2) + 2;
-        Log.d(TAG, "onCreate: Org Count " + orgCount);
-        for (int i = 0; i < orgCount; i++) {
-            OrgDetails orgDetails = new OrgDetails();
-            orgDetails.orgRegNo = "CBE12345678";
-            orgDetails.orgName = "Aalayam Education And Charitable Trust";
-            orgDetails.orgLogo = "www.aalayam.com/img";
-            orgDetailsList.add(orgDetails);
-        }
-        Log.d(TAG, "onCreate: Org List Size " + orgDetailsList.size());
-
-        // Adapting the list to the Recycler View
-        OrgListAdapter orgListAdapter = new OrgListAdapter(this, orgDetailsList);
-        orgListView = (RecyclerView) findViewById(R.id.org_details_recyclerview_user_profile);
-        orgListView.setAdapter(orgListAdapter);
-        orgListView.setLayoutManager(new LinearLayoutManager(this));
 
         // Focusing up the page
         scrollView = ((ScrollView) findViewById(R.id.scrollview_user_profile));

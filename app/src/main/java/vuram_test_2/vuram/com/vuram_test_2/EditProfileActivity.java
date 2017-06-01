@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -26,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -33,19 +35,21 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import cz.msebera.android.httpclient.Header;
+
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "EditProfileActivity: ";
     Toolbar toolbar;
     FloatingActionButton changeImageButton;
     ImageButton saveButton;
-    EditText fullNameEditText, phoneEditText, emailEditText, oldPasswordEditText, newPasswordEditText, confirmPasswordEditText;
+    EditText fullNameEditText, phoneEditText, emailEditText, currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
     CheckBox changePasswordCheckBox;
     LinearLayout changePasswordLayout;
 
     String userImageFilePath;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int SELECT_PHOTO = 2;
-//    private final String postImageURL = "http://vuramdevdb.vuram.com:8000/api/photos/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
         fullNameEditText = (EditText) findViewById(R.id.user_name_edittext_edit_profile);
         phoneEditText = (EditText) findViewById(R.id.phone_edittext_edit_profile);
         emailEditText = (EditText) findViewById(R.id.email_edittext_edit_profile);
-        oldPasswordEditText = (EditText) findViewById(R.id.old_password_edittext_edit_profile);
+        currentPasswordEditText = (EditText) findViewById(R.id.current_password_edittext_edit_profile);
         newPasswordEditText = (EditText) findViewById(R.id.new_password_edittext_edit_profile);
         confirmPasswordEditText = (EditText) findViewById(R.id.confirm_password_edittext_edit_profile);
         changePasswordCheckBox = (CheckBox) findViewById(R.id.change_password_checkbox);
@@ -122,10 +126,25 @@ public class EditProfileActivity extends AppCompatActivity {
 
     class PostData extends AsyncTask {
 
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(EditProfileActivity.this);
+            progressDialog.show();
+        }
+
         @Override
         protected Object doInBackground(Object[] params) {
             postFile(userImageFilePath);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.cancel();
         }
     }
 
@@ -157,15 +176,14 @@ public class EditProfileActivity extends AppCompatActivity {
     private void postFile(String userImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
         RequestParams params = new RequestParams();
+        RequestParams passwordParams = new RequestParams();
+
+        CountryCodePicker countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
 
         params.put("first_name", fullNameEditText.getText().toString());
+        params.put("country", countryCodePicker.getSelectedCountryNameCode());
         params.put("phone", phoneEditText.getText().toString());
         params.put("email", emailEditText.getText().toString());
-        if (changePasswordCheckBox.isChecked()) {
-            params.put("old_password", oldPasswordEditText.getText().toString());
-            params.put("new_password", newPasswordEditText.getText().toString());
-            params.put("confirm_password", confirmPasswordEditText.getText().toString());
-        }
 
         try {
            if(userImageFilePath!=null)
@@ -175,6 +193,22 @@ public class EditProfileActivity extends AppCompatActivity {
                }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+
+        if (changePasswordCheckBox.isChecked()) {
+            passwordParams.put("current_password", currentPasswordEditText.getText().toString());
+            passwordParams.put("new_password", newPasswordEditText.getText().toString());
+            client.post(RestAPIURL.changePassword, passwordParams, new TextHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d(TAG, "onFailure: Could not post the password data");
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                    Log.d(TAG, "onFailure: Password data is posted successfully");
+                }
+            });
         }
 
         client.post(RestAPIURL.register, params, new TextHttpResponseHandler() {
