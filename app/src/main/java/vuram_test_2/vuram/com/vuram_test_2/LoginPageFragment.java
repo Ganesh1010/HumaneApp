@@ -45,7 +45,7 @@ public class LoginPageFragment extends Fragment {
     String user_selection;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    TextView registerLater;
+    TextView registerLater,linkLoginTextView;
 
     @Nullable
     @Override
@@ -57,6 +57,7 @@ public class LoginPageFragment extends Fragment {
         passwordEditText = (EditText) v.findViewById(R.id.password_login);
         loginButton = (Button) v.findViewById(R.id.btn_login);
         signupButton = (Button) v.findViewById(R.id.link_login);
+        linkLoginTextView = (TextView)v.findViewById(R.id.link_login_register);
         landingPage = (LandingPage) getActivity();
 //        registerLater=v.findViewById(R.id.register_later);
 //        registerLater.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +75,16 @@ public class LoginPageFragment extends Fragment {
             }
         });
 
+        linkLoginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment = new DonorRegistrationFragment();
+                fragmentManager = getActivity().getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
+            }
+        });
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +97,6 @@ public class LoginPageFragment extends Fragment {
                     landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 
-                    //  Intent intent = new Intent(landingPage, RegistrationPage.class);
                     // startActivityForResult(intent, REQUEST_SIGNUP);
                     //finish();
 
@@ -247,7 +257,7 @@ public class LoginPageFragment extends Fragment {
                     landingPage.finish();
                 }
                 if (getArguments().get(USER_KEY_TYPE) == "ORGANISATION") {
-                    Intent intent = new Intent(landingPage, HomeActivity.class);
+                    Intent intent = new Intent(landingPage, OrganisationLandingPage.class);
                     intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
                     Toast.makeText(landingPage, "Organisation", Toast.LENGTH_LONG).show();
                     startActivity(intent);

@@ -42,7 +42,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 public class SwipeCardForReceival extends AppCompatActivity {
 
     SwipeAdapter swipeAdapter;
-    ArrayList donorList;
+    ArrayList donorList,donorNameList;
     RecyclerView swipeCardRecyclerView;
     private boolean add = false;
     private Paint p = new Paint();
@@ -56,7 +56,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_card_for_receival);
 
-       swipeCardRecyclerView = (RecyclerView) findViewById(R.id.swipe_card_recycler_view);
+        swipeCardRecyclerView = (RecyclerView) findViewById(R.id.swipe_card_recycler_view);
 
         donorList = getDonorList();
         swipeAdapter = new SwipeAdapter(this, donorList);
@@ -142,14 +142,14 @@ public class SwipeCardForReceival extends AppCompatActivity {
       }*/
     private boolean initDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        alertDialog.setView(view);
+        // view = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        // alertDialog.setView(view);
         alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (add) {
                     add = false;
-                   // swipeAdapter.addItem(et_country.getText().toString());
+                    // swipeAdapter.addItem(et_country.getText().toString());
                     dialog.dismiss();
                 } else {
 //                    countries.set(edit_position, et_country.getText().toString());
@@ -159,12 +159,9 @@ public class SwipeCardForReceival extends AppCompatActivity {
 
             }
         });
-       // et_country = (EditText) view.findViewById(R.id.et_country);
+        // et_country = (EditText) view.findViewById(R.id.et_country);
         return true;
     }
-
-
-
 
 
 //         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -186,22 +183,24 @@ public class SwipeCardForReceival extends AppCompatActivity {
 //         alertDialog.show();
 //         return confirmation;
 
-    class SwipeCardData extends AsyncTask{
+    class SwipeCardData extends AsyncTask {
 
         HttpResponse response;
         HttpClient client;
+        DonationDetails name;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
+
         @Override
         protected Object doInBackground(Object[] objects) {
 
-            client =  new DefaultHttpClient();
-            response = Connectivity.makeGetRequest("",client,Connectivity.getAuthToken(SwipeCardForReceival.this,Connectivity.Donor_Token));
-            if(response != null){
-                if(response.getStatusLine().getStatusCode() == 201 || response.getStatusLine().getStatusCode() == 200){
+            client = new DefaultHttpClient();
+            response = Connectivity.makeGetRequest(RestAPIURL.donationList, client, Connectivity.getAuthToken(SwipeCardForReceival.this, Connectivity.Donor_Token));
+            if (response != null) {
+                if (response.getStatusLine().getStatusCode() == 201 || response.getStatusLine().getStatusCode() == 200) {
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
@@ -209,14 +208,16 @@ public class SwipeCardForReceival extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     try {
-                        JSONArray results = jsonObject.getJSONArray("results");
+                        name = new DonationDetails();
+                        name.setUser(jsonObject.getString("user"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     Gson gson = new Gson();
+
                     //   Log.d("123", "doInBackground: "+results.toString());
-                //    needItemResult = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
-                //    }.getType());
+                       donorNameList = gson.fromJson(name.toString(), new TypeToken<Class<DonationDetails>>() {
+                       }.getType());
                 }
             }
 
@@ -234,3 +235,4 @@ public class SwipeCardForReceival extends AppCompatActivity {
     }
 
 }
+

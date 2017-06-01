@@ -46,7 +46,7 @@
                 android:background="@drawable/ic_user_name" />
 
             <EditText
-                android:id="@+id/name_login"
+                android:id="@+id/first_name_coordinator_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -84,7 +84,7 @@
                 android:background="@drawable/ic_user_email" />
 
             <EditText
-                android:id="@+id/email_login"
+                android:id="@+id/email_coordinator_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -122,13 +122,50 @@
                 android:background="@drawable/ic_user_phone" />
 
             <EditText
-                android:id="@+id/mobile_register"
+                android:id="@+id/mobile_coordinator_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:fontFamily="sans-serif"
                 android:hint="Phone"
-                android:inputType="textPersonName"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp"
+                android:inputType="number" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_password" />
+
+            <EditText
+                android:id="@+id/password_coordinator_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:fontFamily="sans-serif"
+                android:hint="Password"
+                android:inputType="textPassword"
                 android:letterSpacing="0.025"
                 android:padding="12dp"
                 android:textColor="#fff"
@@ -156,38 +193,38 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/ic_password" />
-
-            <EditText
-                android:id="@+id/password_register"
-                android:layout_width="match_parent"
+                android:background="@drawable/home" />
+            <TextView
+                android:text="Country"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:fontFamily="sans-serif"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:id="@+id/textView2"
+                android:layout_weight="1"
                 android:letterSpacing="0.025"
-                android:padding="12dp"
-                android:textColor="#fff"
                 android:textColorHint="#c4bfbf"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textColor="#c4bfbf"
+                android:paddingTop="20dp"
+                android:paddingStart="12dp" />
 
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/country_spinner_coordinator_register"
+                android:drawSelectorOnTop="true"
+                android:entries="@array/country_option"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:background="#fff" />
     </LinearLayout>
 
     <Button
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:id="@+id/signup_register"
-        android:text="Sign Up"
+        android:id="@+id/signup_coordinator_register"
+        android:text="Next"
         android:textSize="16dp"
         android:textColor="#fff"
         android:textAlignment="center"
@@ -195,42 +232,7 @@
         android:layout_gravity="center"
         android:letterSpacing="0.025"
         android:padding="10dp"
-        android:layout_marginTop="30dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.025"
-            android:text="already have an account ? "
-            android:textColor="#fff"
-            android:id="@+id/link_login_register"
-            android:textSize="14dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="#00000000"
-            android:id="@+id/link_login_sign_in"
-            android:gravity="left|center_vertical"
-            android:letterSpacing="0.025"
-            android:padding="0dp"
-            android:text="Sign In"
-            android:textColor="#fff"
-            android:textSize="14dp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
+        android:layout_marginTop="50dp" />
 
 
 </LinearLayout>

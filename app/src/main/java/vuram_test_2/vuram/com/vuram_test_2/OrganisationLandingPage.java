@@ -1,13 +1,39 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 public class OrganisationLandingPage extends AppCompatActivity {
-
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organisation_landing_page);
+        Button myprofile=(Button)findViewById(R.id.myprofile);
+        myprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent=new Intent(OrganisationLandingPage.this,UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button orgdetails=(Button)findViewById(R.id.myorgdetails);
+        orgdetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent=new Intent(OrganisationLandingPage.this,OrgProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button donations=(Button)findViewById(R.id.donations);
+       /* donations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });*/
     }
 }

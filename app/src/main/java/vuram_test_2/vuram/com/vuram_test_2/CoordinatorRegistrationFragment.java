@@ -1,40 +1,19 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.util.ArrayList;
-
-import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
-
-import static android.app.Activity.RESULT_CANCELED;
-import static vuram_test_2.vuram.com.vuram_test_2.R.array.country_option;
 
 
 public class CoordinatorRegistrationFragment extends Fragment {
@@ -68,7 +47,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (view == null)
-            view = inflater.inflate(R.layout.coordinator_registration_fragment, container, false);
+            view = inflater.inflate(R.layout.fragment_coordinator_registration, container, false);
 
         //coordinatorLoginTextView = (TextView) view.findViewById(R.id.link_login_coordinator_register);
         emailEditText = (EditText) view.findViewById(R.id.email_coordinator_register);

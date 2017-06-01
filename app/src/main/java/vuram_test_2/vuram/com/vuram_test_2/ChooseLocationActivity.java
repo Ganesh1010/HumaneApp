@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -109,6 +110,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         }
     }
 
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return true;
@@ -136,14 +138,20 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         String cityName = gpsTracker.getLocality(ChooseLocationActivity.this);
         if (cityName != null) {
             HomeActivity.locationName = cityName;
+            finish();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(ChooseLocationActivity.this);
             builder.setTitle("Alert !");
             builder.setMessage("Unable to fetch location details");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
-        finish();
     }
 
     class FetchLocationDetailsTask extends AsyncTask {

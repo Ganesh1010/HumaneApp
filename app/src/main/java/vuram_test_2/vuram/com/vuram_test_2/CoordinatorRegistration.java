@@ -39,7 +39,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.coordinator_registration_fragment);
+        setContentView(R.layout.fragment_coordinator_registration);
 
      //   coordinatorLoginTextView = (TextView)findViewById(R.id.link_login_coordinator_register);
         emailEditText=(EditText)findViewById(R.id.email_coordinator_register);

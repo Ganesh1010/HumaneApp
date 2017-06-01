@@ -15,22 +15,20 @@
 
         <ImageView
             android:layout_width="80dp"
-            android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:background="@mipmap/app_icon"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_height="80dp" />
 
     </LinearLayout>
 
-    +<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="40dp"></LinearLayout>
-
+    +
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
 
         <LinearLayout
@@ -43,14 +41,14 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/ic_user_name" />
+                android:background="@drawable/orgname" />
 
             <EditText
-                android:id="@+id/name_login"
+                android:id="@+id/org_register_num_editText_org_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:hint="Name"
+                android:hint="Organisation Reg.No"
                 android:inputType="text"
                 android:letterSpacing="0.025"
                 android:padding="12dp"
@@ -84,7 +82,7 @@
                 android:background="@drawable/ic_user_email" />
 
             <EditText
-                android:id="@+id/email_login"
+                android:id="@+id/org_email_editText_org_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -96,6 +94,42 @@
                 android:textColor="#fff"
                 android:textColorHint="#c4bfbf"
                 android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/ic_user_name"
+                android:hint="Organisation Name" />
+
+            <EditText
+                android:id="@+id/org_name_editText_org_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:inputType="text"
+                android:letterSpacing="0.025"
+                android:padding="12dp"
+                android:textColor="#fff"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp"
+                android:hint="Organisation Name" />
 
 
         </LinearLayout>
@@ -122,13 +156,13 @@
                 android:background="@drawable/ic_user_phone" />
 
             <EditText
-                android:id="@+id/mobile_register"
+                android:id="@+id/org_phone_editText_org_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:fontFamily="sans-serif"
                 android:hint="Phone"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:letterSpacing="0.025"
                 android:padding="12dp"
                 android:textColor="#fff"
@@ -146,6 +180,68 @@
             android:background="#fff" />
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.41">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/mapmarker" />
+
+            <EditText
+                android:text="Address"
+                android:layout_height="wrap_content"
+                android:id="@+id/org_address_editText_org_form"
+                android:layout_weight="0.01"
+                android:letterSpacing="0.025"
+                android:textColorHint="#c4bfbf"
+                android:textSize="16dp"
+                android:textColor="#c4bfbf"
+                android:paddingTop="20dp"
+                android:paddingStart="12dp"
+                android:layout_width="130dp" />
+
+            <Button
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/map"
+                android:text="Choose Location"
+                android:textColor="#fff"
+                android:textAlignment="center"
+                android:background="@drawable/border"
+                android:layout_gravity="center"
+                android:letterSpacing="0.025" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.41">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/orgname" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/org_type_spinner_org_form"
+                android:layout_weight="1"
+                android:backgroundTint="@color/colorPrimary"
+                android:entries="@array/org_type"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -156,16 +252,16 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/ic_password" />
+                android:background="@drawable/orgname" />
 
             <EditText
-                android:id="@+id/password_register"
+                android:id="@+id/org_desc_editText_org_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:fontFamily="sans-serif"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:hint="Organisation Description"
+                android:inputType="textPersonName"
                 android:letterSpacing="0.025"
                 android:padding="12dp"
                 android:textColor="#fff"
@@ -183,11 +279,16 @@
             android:background="#fff" />
     </LinearLayout>
 
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="20dp"></LinearLayout>
+
+
     <Button
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:id="@+id/signup_register"
-        android:text="Sign Up"
+        android:id="@+id/submit_button_org_form"
+        android:text="Register"
         android:textSize="16dp"
         android:textColor="#fff"
         android:textAlignment="center"
@@ -195,42 +296,7 @@
         android:layout_gravity="center"
         android:letterSpacing="0.025"
         android:padding="10dp"
-        android:layout_marginTop="30dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.025"
-            android:text="already have an account ? "
-            android:textColor="#fff"
-            android:id="@+id/link_login_register"
-            android:textSize="14dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="#00000000"
-            android:id="@+id/link_login_sign_in"
-            android:gravity="left|center_vertical"
-            android:letterSpacing="0.025"
-            android:padding="0dp"
-            android:text="Sign In"
-            android:textColor="#fff"
-            android:textSize="14dp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
+        android:layout_marginTop="20dp" />
 
 
 </LinearLayout>

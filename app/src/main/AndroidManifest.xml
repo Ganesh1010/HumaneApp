@@ -35,8 +35,8 @@
         <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".DonationConfirmationActivity"
             android:theme="@style/AppTheme1"></activity>
-        <activity android:name=".ChooseLocationActivity" />
-
+        <activity android:name=".OrganisationLandingPage"/>
+         <activity android:name=".OrgProfileActivity"/>
         <activity android:name=".SplashScreenActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -19,8 +19,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
@@ -34,6 +38,9 @@ public class EditProfileActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton changeImageButton;
     ImageButton saveButton;
+    EditText fullNameEditText, phoneEditText, emailEditText, oldPasswordEditText, newPasswordEditText, confirmPasswordEditText;
+    CheckBox changePasswordCheckBox;
+    LinearLayout changePasswordLayout;
 
     String userImageFilePath;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -44,6 +51,15 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        fullNameEditText = (EditText) findViewById(R.id.user_name_edittext_edit_profile);
+        phoneEditText = (EditText) findViewById(R.id.phone_edittext_edit_profile);
+        emailEditText = (EditText) findViewById(R.id.email_edittext_edit_profile);
+        oldPasswordEditText = (EditText) findViewById(R.id.old_password_edittext_edit_profile);
+        newPasswordEditText = (EditText) findViewById(R.id.new_password_edittext_edit_profile);
+        confirmPasswordEditText = (EditText) findViewById(R.id.confirm_password_edittext_edit_profile);
+        changePasswordCheckBox = (CheckBox) findViewById(R.id.change_password_checkbox);
+        changePasswordLayout = (LinearLayout) findViewById(R.id.change_password_linear_layout_edit_profile);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
         setSupportActionBar(toolbar);
@@ -79,11 +95,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-                /*Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            }
+        });
 
-                startActivityForResult(i, RESULT_LOAD_IMAGE);*/
+        // Change password checkbox
+        changePasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    changePasswordLayout.setVisibility(View.VISIBLE);
+                } else {
+                    changePasswordLayout.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -134,28 +157,36 @@ public class EditProfileActivity extends AppCompatActivity {
     private void postFile(String userImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
         RequestParams params = new RequestParams();
-        params.put("address","a2323");
+
+        params.put("first_name", fullNameEditText.getText().toString());
+        params.put("phone", phoneEditText.getText().toString());
+        params.put("email", emailEditText.getText().toString());
+        if (changePasswordCheckBox.isChecked()) {
+            params.put("old_password", oldPasswordEditText.getText().toString());
+            params.put("new_password", newPasswordEditText.getText().toString());
+            params.put("confirm_password", confirmPasswordEditText.getText().toString());
+        }
+
         try {
            if(userImageFilePath!=null)
-               if(new File(userImageFilePath).exists())
-                    params.put("image", new File(userImageFilePath));
+               if(new File(userImageFilePath).exists()) {
+                   params.put("image", new File(userImageFilePath));
+                   params.put("imageType", 1);
+               }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        client.post(RestAPIURL.registerOrg, params,
-                new TextHttpResponseHandler() {
+
+        client.post(RestAPIURL.register, params, new TextHttpResponseHandler() {
+
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
-
                 Log.d("Edit", "onFailure: "+responseString);
-
             }
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
-
                 Log.d("Edit", "onSuccess: "+responseString);
-
             }
         });
     }
