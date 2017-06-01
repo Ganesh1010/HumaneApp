@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -47,7 +46,8 @@ public class NewNeedActivity extends AppCompatActivity {
 
     public Button submit;
     public FloatingActionButton fabAdd;
-    public EditText itemName;
+    public Spinner itemName;
+    //public EditText itemName;
     public EditText itemQuantity;
     public RadioGroup gender;
     public RadioButton radioSexButton;
@@ -62,11 +62,15 @@ public class NewNeedActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     public String category;
     public ArrayList<NeedItemDetails> needDetails;
-    boolean dataFilled=false;
-    static int id=-1;
+    public boolean dataFilled=false;
+    public static int id=-1;
     public Date datetime;
     public View hiddenPanel;
     public RelativeLayout toolbarSubmit;
+    public ArrayList<MainItemDetails> mainItemDetails;
+    public ArrayList<SubItemDetails> subItemDetails;
+    public DatabaseHelper db;
+
     public String categoryID[]={"Food","Clothes","Groceries","Stationeries"};
     Gson gson;
 
@@ -81,6 +85,10 @@ public class NewNeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_need);
         DetailsPopulator detailsPopulator =new DetailsPopulator(this);
         detailsPopulator.getCountryDetailsFromAPI();
+
+        db=new DatabaseHelper(NewNeedActivity.this);
+        mainItemDetails=db.getAllMainItemDetails();
+        subItemDetails=db.getAllSubItemDetails();
 
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -139,8 +147,8 @@ public class NewNeedActivity extends AppCompatActivity {
         bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
         bottomDown = AnimationUtils.loadAnimation(this, R.anim.bottom_down);
 
-        spinner = (Spinner)findViewById(R.id.spinner_needForm);
-        itemName= (EditText) findViewById(R.id.itemName_needForm);
+        spinner = (Spinner)findViewById(R.id.main_item_spinner_needForm);
+        itemName= (Spinner) findViewById(R.id.sub_item_spinner_needForm);
         itemQuantity= (EditText) findViewById(R.id.itemQuantity_needForm);
         gender= (RadioGroup) findViewById(R.id.gender_needForm);
         age= (RadioGroup) findViewById(R.id.age_needForm);
@@ -148,14 +156,34 @@ public class NewNeedActivity extends AppCompatActivity {
         post= (Button)findViewById(R.id.post_needForm);
         cancel= (Button) findViewById(R.id.cancel_needForm);
 
-        ArrayList<SpinnerItemData> list=new ArrayList<>();
-        list.add(new SpinnerItemData("Food",R.drawable.ic_food_black));
-        list.add(new SpinnerItemData("Clothes",R.drawable.ic_cloth_black));
-        list.add(new SpinnerItemData("Groceries",R.drawable.ic_grocery_cart_black));
-        list.add(new SpinnerItemData("Stationeries",R.drawable.ic_stationery_black));
+        ArrayList<MainSpinnerItemData> mainItemList=new ArrayList<>();
+        for (int i=0;i<mainItemDetails.size();i++) {
+            switch (mainItemDetails.get(i).getMainItemCode())
+            {
+                case 1:
+                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
+                    break;
+                case 2:
+                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
+                    break;
+                case 3:
+                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
+                    break;
+                case 4:
+                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
+                    break;
+                case 5:
+                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
+                    break;
+            }
+        }
 
-        CategorySpinnerAdapter adapter=new CategorySpinnerAdapter(this, R.layout.spinner_layout,R.id.txt_spinner_needForm,list);
+        CategorySpinnerAdapter adapter=new CategorySpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.txt_spinner_needForm,mainItemList);
         spinner.setAdapter(adapter);
+
+//        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.sub_item_spinner_layout, spinnerArray); //selected item will look like a spinner set from XML
+//        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(spinnerArrayAdapter);
 
         final RadioButton lastGenderRadioBtn = (RadioButton) findViewById(R.id.female);
         final RadioButton lastAgeRadioBtn = (RadioButton) findViewById(R.id.old);
@@ -166,8 +194,8 @@ public class NewNeedActivity extends AppCompatActivity {
                 String item  = ((TextView) findViewById(R.id.txt_spinner_needForm)).getText().toString();
                 category=item;
 
-                itemName.setText("");
-                itemName.setError(null);
+                //itemName.setText("");
+                //itemName.setError(null);
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();
@@ -198,12 +226,11 @@ public class NewNeedActivity extends AppCompatActivity {
                 int selectedIdAge = age.getCheckedRadioButtonId();
                 radioAgeButton = (RadioButton) findViewById(selectedIdAge);
 
-                if(itemName.getText().toString().equals("")) {
-                    dataFilled=false;
-                    itemName.setError("enter the item name");
-                }
-
-                else if(itemQuantity.getText().toString().isEmpty()) {
+//                if(itemName.getText().toString().equals("")) {
+//                    dataFilled=false;
+//                    itemName.setError("enter the item name");
+//                }
+                if(itemQuantity.getText().toString().isEmpty()) {
                     dataFilled=false;
                     itemQuantity.setError("enter the item Quantity");
                 }
@@ -282,8 +309,8 @@ public class NewNeedActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.VISIBLE);
                 }
 
-                itemName.setText("");
-                itemName.setError(null);
+//                itemName.setText("");
+//                itemName.setError(null);
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();

@@ -36,8 +36,8 @@ public class CommonUI{
                 CommonUI.context=context.getApplicationContext();
                 LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 dialogView = inflater.inflate(R.layout.activity_general_user, null);
-                //  name= (EditText) dialogView.findViewById(R.id.name_general_user);
-                //address= (EditText) dialogView.findViewById(R.id.address_general_user);
+                name= (EditText) dialogView.findViewById(R.id.name_general_user);
+                address= (EditText) dialogView.findViewById(R.id.address_general_user);
                 getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
                 getLocation.setOnClickListener(new View.OnClickListener() {
                     @Override

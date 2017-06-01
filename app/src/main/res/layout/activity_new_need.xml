@@ -25,7 +25,7 @@
         android:gravity="center"
         android:id="@+id/hiddenPanel_needForm"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="?attr/colorButtonNormal">
         <View
             android:layout_width="fill_parent"
@@ -53,7 +53,7 @@
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/spinner_needForm"
+                        android:id="@+id/main_item_spinner_needForm"
                         android:layout_weight="0.2"
                         style="@style/Widget.AppCompat.DropDownItem.Spinner">
                     </Spinner>
@@ -71,12 +71,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5" />
 
-                        <EditText
+                        <Spinner
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:id="@+id/itemName_needForm"
-                            android:layout_weight="0.5" />
+                            android:id="@+id/sub_item_spinner_needForm"
+                            android:layout_weight="0.5"
+                            style="@style/Widget.AppCompat.DropDownItem.Spinner">
+                        </Spinner>
+
                     </LinearLayout>
 
                     <LinearLayout
