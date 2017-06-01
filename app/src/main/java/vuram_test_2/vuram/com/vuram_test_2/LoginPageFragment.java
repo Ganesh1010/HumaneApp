@@ -161,8 +161,8 @@ public class LoginPageFragment extends Fragment {
            Toast.makeText(landingPage,"invalid user name",Toast.LENGTH_SHORT).show();
             emailEditText.setError("enter valid user name");
         }
-        if (password.isEmpty() || password.length() < 8) {
-            passwordEditText.setError("password should be at-least 8 characters");
+        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+            passwordEditText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
             passwordEditText.setError(null);

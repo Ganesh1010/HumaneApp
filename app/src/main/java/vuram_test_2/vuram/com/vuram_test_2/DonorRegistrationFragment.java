@@ -212,7 +212,7 @@ public class DonorRegistrationFragment extends Fragment {
 
             client = new DefaultHttpClient();
             details = new UserDetails();
-            registerDetails.setGender("Male");
+           // registerDetails.setGender("Male");
             registerDetails.setMobile(mobilenumber);
             registerDetails.setCountry(1);
             details.setFirstname(name);
@@ -253,6 +253,11 @@ public class DonorRegistrationFragment extends Fragment {
                     Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
                    // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
                     //landingPage.finish();
+
+                    fragment = new LoginPageFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+
                 }
             super.onPostExecute(o);
         }

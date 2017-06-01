@@ -150,7 +150,7 @@ public class CoordinatorRegistration extends AppCompatActivity {
              gson =  new Gson();
              httpClient = new DefaultHttpClient();
 
-             registerDetails.setGender(gender);
+           //  registerDetails.setGender(gender);
              registerDetails.setMobile(mobileNo);
              registerDetails.setCountry(1);
 
