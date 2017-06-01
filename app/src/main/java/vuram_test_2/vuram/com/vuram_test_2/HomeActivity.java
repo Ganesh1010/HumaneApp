@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         spinner.setAdapter(dataAdapter);
         intent = getIntent();
         Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
-      if (intent.getStringExtra(USER_KEY_TYPE).equals( "DONOR")) {
+      if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR")) {
           if (compareValue != null) {
               compareValue = "Donor";
               int spinnerPosition = dataAdapter.getPosition(compareValue);
@@ -132,7 +132,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
         currentLocationTextView.setOnClickListener(HomeActivity.this);
 
-        startAsyncTask();
+       // startAsyncTask();
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(HomeActivity.this);
 

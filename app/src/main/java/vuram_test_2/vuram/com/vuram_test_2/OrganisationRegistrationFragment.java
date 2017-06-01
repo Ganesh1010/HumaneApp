@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -23,14 +22,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
@@ -73,7 +68,7 @@ public class OrganisationRegistrationFragment extends Fragment {
             orgDetailsString=i.getString("COORDINATOR");
         }
          if(v==null)
-            v = inflater.inflate(R.layout.layout_org_form,container,false);
+            v = inflater.inflate(R.layout.fragment_organisation_register_page,container,false);
         landingPage = (LandingPage)getActivity();
         orgNoEditText = (EditText)v.findViewById(R.id.org_register_num_editText_org_form);
         orgNameEditText = (EditText)v.findViewById(R.id.org_name_editText_org_form);
@@ -82,9 +77,9 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgMobNoEditText = (EditText)v.findViewById(R.id.org_phone_editText_org_form);
         orgDescEditText = (EditText)v.findViewById(R.id.org_desc_editText_org_form);
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
-        orgRegisterButton = (Button)v.findViewById(R.id.register_button_org_form);
+        orgRegisterButton = (Button)v.findViewById(R.id.submit_button_org_form);
         chooseLocationButton = (Button)v.findViewById(R.id.map);
-        v.getRootView().setBackgroundColor(Color.WHITE);
+        //v.getRootView().setBackgroundColor(Color.WHITE);
 
         orgRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
