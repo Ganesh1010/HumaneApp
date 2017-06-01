@@ -27,15 +27,25 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
+import com.google.gson.JsonObject;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -43,6 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
     Toolbar toolbar;
     FloatingActionButton changeImageButton;
     ImageButton saveButton;
+    ImageView userpic;
     EditText fullNameEditText, phoneEditText, emailEditText, currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
     CheckBox changePasswordCheckBox;
     LinearLayout changePasswordLayout;
@@ -64,7 +75,7 @@ public class EditProfileActivity extends AppCompatActivity {
         confirmPasswordEditText = (EditText) findViewById(R.id.confirm_password_edittext_edit_profile);
         changePasswordCheckBox = (CheckBox) findViewById(R.id.change_password_checkbox);
         changePasswordLayout = (LinearLayout) findViewById(R.id.change_password_linear_layout_edit_profile);
-
+        userpic= (ImageView) findViewById(R.id.user_image_edit_profile);
         toolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -80,7 +91,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
+        Glide.with(this)
+                .load(getUrlWithHeaders(RestAPIURL.getUserProfilePic))
+                .into(userpic);
         // Change Image Button
         changeImageButton = (FloatingActionButton) findViewById(R.id.change_user_image_edit_profile);
         changeImageButton.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +145,7 @@ public class EditProfileActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(EditProfileActivity.this);
+            progressDialog.setMessage("Loading");
             progressDialog.show();
         }
 
@@ -176,15 +190,31 @@ public class EditProfileActivity extends AppCompatActivity {
     private void postFile(String userImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
         RequestParams params = new RequestParams();
-        RequestParams passwordParams = new RequestParams();
 
+        // Change User Details
+        // fetching country names & codes
+        int selectedCountryId = 1;
         CountryCodePicker countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
+        String selectedCountryName = countryCodePicker.getSelectedCountryName();
+        DatabaseHelper dbHelper = new DatabaseHelper(EditProfileActivity.this);
+        ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
+        for (int i = 0; i < countryLookUpTableDetailsList.size(); i++) {
+            CountryLookUpTableDetails countryLookUpTableDetails = countryLookUpTableDetailsList.get(i);
+            String countryName = countryLookUpTableDetails.getCountryName();
+            int countryId = countryLookUpTableDetails.getCountryId();
+            if (countryName.equals(selectedCountryName)) {
+                selectedCountryId = countryId;
+                break;
+            }
+        }
 
         params.put("first_name", fullNameEditText.getText().toString());
-        params.put("country", countryCodePicker.getSelectedCountryNameCode());
-        params.put("phone", phoneEditText.getText().toString());
+        params.put("country", selectedCountryId);
+        params.put("mobile", phoneEditText.getText().toString());
         params.put("email", emailEditText.getText().toString());
 
+        Log.d(TAG, "postFile: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
+                + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
         try {
            if(userImageFilePath!=null)
                if(new File(userImageFilePath).exists()) {
@@ -195,34 +225,47 @@ public class EditProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (changePasswordCheckBox.isChecked()) {
-            passwordParams.put("current_password", currentPasswordEditText.getText().toString());
-            passwordParams.put("new_password", newPasswordEditText.getText().toString());
-            client.post(RestAPIURL.changePassword, passwordParams, new TextHttpResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d(TAG, "onFailure: Could not post the password data");
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    Log.d(TAG, "onFailure: Password data is posted successfully");
-                }
-            });
-        }
-
-        client.post(RestAPIURL.register, params, new TextHttpResponseHandler() {
+        client.post(RestAPIURL.editUserDetails, params, new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
                 Log.d("Edit", "onFailure: "+responseString);
             }
-
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
                 Log.d("Edit", "onSuccess: "+responseString);
             }
         });
+
+        // Change Password
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        if (changePasswordCheckBox.isChecked()) {
+            JsonObject jsonObject=new JsonObject();
+            JSONObject obj = new JSONObject();
+            try {
+                obj.put("current_password", currentPasswordEditText.getText().toString());
+                obj.put("new_password", newPasswordEditText.getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "postFile: "+obj.toString());
+           HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, null);
+            if(httpResponse!=null)
+            {
+                if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201)
+                {
+                    Log.d(TAG, "postFile: "+Connectivity.getJosnFromResponse(httpResponse));
+                }
+                else
+                    Log.d(TAG, "postFile: "+httpResponse.getStatusLine().getReasonPhrase());
+            }
+        }
+    }
+
+    public GlideUrl getUrlWithHeaders(String url){
+        return new GlideUrl(url, new LazyHeaders.Builder()
+                .addHeader("Authorization","Token "+Connectivity.getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token))
+                .build());
     }
 
 }

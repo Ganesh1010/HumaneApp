@@ -31,7 +31,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:25.1.0'
-
     compile 'com.github.fiskurgit:SimpleViewPager:1.0.10'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.mikhaellopez:circularprogressbar:1.1.1'
@@ -52,4 +51,5 @@ dependencies {
     compile files('libs/android-viewbadger.jar')
     compile 'com.hbb20:ccp:1.7.6'
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
 }

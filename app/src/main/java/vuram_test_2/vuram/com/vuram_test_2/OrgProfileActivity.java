@@ -1,6 +1,5 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -57,6 +56,7 @@ public class OrgProfileActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(OrgProfileActivity.this);
+            progressDialog.setMessage("Loading");
             progressDialog.show();
 
         }

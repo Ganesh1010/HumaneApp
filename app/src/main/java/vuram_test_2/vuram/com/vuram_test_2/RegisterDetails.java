@@ -8,7 +8,7 @@ import java.util.Date;
  */
 
 public class RegisterDetails {
-   String mobile,gender;
+   String mobile;
     int country;
     Date dob;
     OrganisationDetails org;
@@ -27,14 +27,6 @@ public class RegisterDetails {
 
     public void setCountry(int country) {
         this.country = country;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getMobile() {
