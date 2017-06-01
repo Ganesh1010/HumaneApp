@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -44,7 +43,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
-public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements LoadNextDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private final int MENU_ITEM_ONE = 1;
     private final int MENU_ITEM_TWO = 2;
@@ -52,15 +51,15 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     private final int MENU_ITEM_FOUR = 4;
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
-    String compareValue;
+    public String compareValue;
     public static Set<String> appliedFilter;
-    public static String locationName = "Chennai";
-    protected Handler handler;
-    HttpResponse response;
-    private DonorNeedViewAdapter mAdapter;
-    Gson gson;
-    HttpClient client;
-    String nextUrl=RestAPIURL.needList;
+    public static String locationName = "Location";
+    public Handler handler;
+    public HttpResponse response;
+    public DonorNeedViewAdapter mAdapter;
+    public Gson gson;
+    public HttpClient client;
+    public String nextUrl;
     ProgressDialog progressDialog=null;
     ArrayList<NeedDetails> needitem=new ArrayList<>();
     ArrayList<NeedDetails> orgNeeds = new ArrayList<>();
@@ -75,7 +74,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
     private FloatingActionButton newNeedFloatingActionButton;
     JSONObject jsonObject;
     Spinner spinner;
-
     ImageButton menuButton;
 
     @Override
@@ -89,37 +87,37 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
         spinner.setOnItemSelectedListener(HomeActivity.this);
         gson = new Gson();
-        List<String> categories = new ArrayList<String>();
+        List<String> categories = new ArrayList<>();
         categories.add("Donor");
         categories.add("Organization");
-        progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
         intent = getIntent();
         Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
-      if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR")) {
+
+        if (intent.getStringExtra(USER_KEY_TYPE).equals( "DONOR"))
+        {
           if (compareValue != null) {
               compareValue = "Donor";
               int spinnerPosition = dataAdapter.getPosition(compareValue);
               spinner.setSelection(spinnerPosition);
               Log.d("hai", spinnerPosition + "");
           }
-      }
-        if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION"))
-
-        compareValue = "Organization";
-        if (compareValue != null) {
-            int spinnerPosition = dataAdapter.getPosition(compareValue);
-            spinner.setSelection(spinnerPosition);
-            Log.d("hai", spinnerPosition + "");
         }
 
+        if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION")) {
+            if (compareValue != null) {
+                compareValue = "Organization";
+                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinner.setSelection(spinnerPosition);
+                Log.d("hai", spinnerPosition + "");
+            }
+        }
+
+        getWidgets();
         handler = new Handler();
 
         /* Menu Button */
@@ -132,11 +130,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
         currentLocationTextView.setOnClickListener(HomeActivity.this);
 
-       // startAsyncTask();
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(HomeActivity.this);
 
-        getWidgets();
         newNeedFloatingActionButton = (FloatingActionButton) findViewById(R.id.new_need_home_page);
         newNeedFloatingActionButton.setOnClickListener(HomeActivity.this);
     }
@@ -153,31 +149,23 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
             while (i.hasNext()) {
                 System.out.println(i.next());
             }
-        } else if (requestCode == LOCATION_REQUEST) {
+        }
+        else if (requestCode == LOCATION_REQUEST) {
             TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
             currentLocationTextView.setText(locationName);
         }
     }
 
-    private void startAsyncTask(){
+    private void startNeedAsyncTask(){
         getNeedItemDetails = new GetNeedItemDetails();
         getNeedItemDetails.nextNeedDetails=this;
         getNeedItemDetails.execute();
     }
 
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (progressDialog.isShowing())
-                progressDialog.dismiss();
-        }
-    };
-
     @Override
     public void nextURL(String result) {
         if(result.equals("next"))
-            startAsyncTask();
+            startNeedAsyncTask();
         else
             getNeedItemDetails.cancel(true);
     }
@@ -229,104 +217,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
         }
     }
 
-    class GetNeedItemDetails extends AsyncTask {
-
-        public LoadNextNeedDetails nextNeedDetails;
-        @Override
-        protected Object doInBackground(Object[] params)
-        {
-            response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
-            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                try {
-                    jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                    JSONArray results = jsonObject.getJSONArray("results");
-                    nextUrl = jsonObject.getString("next");
-                    Gson gson = new Gson();
-                    tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                    if(count==0)
-                        needitem.addAll(tempneeditem);
-
-                    Log.d("Results", needitem.size() + "");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else
-                Log.d("CAll ", "Response null");
-            return null;
-        }
-        @Override
-        protected void onPreExecute() {
-            client= new DefaultHttpClient();
-            super.onPreExecute();
-        }
-
-
-        @Override
-        protected void onPostExecute(Object o) {
-            //mHandler.sendMessageDelayed(new Message(), 3000);
-            if (progressDialog.isShowing())
-                progressDialog.dismiss();
-            if(response!=null)
-                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
-                {
-                    if(count==0) {
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
-                        recyclerView.setAdapter(mAdapter);
-                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
-                        recyclerView.addItemDecoration(dividerItemDecoration);
-                    }
-                    if (needitem.isEmpty()) {
-                        recyclerView.setVisibility(View.GONE);
-                        tvEmptyView.setVisibility(View.VISIBLE);
-
-                    } else {
-                        recyclerView.setVisibility(View.VISIBLE);
-                        tvEmptyView.setVisibility(View.GONE);
-                    }
-
-                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-                        @Override
-                        public void onLoadMore() {
-                            //add null , so the adapter will check view_type and show progress bar at bottom
-                            needitem.add(null);
-                            mAdapter.notifyItemInserted(needitem.size() - 1);
-
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //   remove progress item
-                                    needitem.remove(needitem.size() - 1);
-                                    mAdapter.notifyItemRemoved(needitem.size());
-
-
-                                    if(!jsonObject.isNull("next")) {
-                                        nextNeedDetails.nextURL("next");
-                                        count++;
-                                        if(count>0) {
-                                            needitem.addAll(tempneeditem);
-                                            mAdapter.notifyDataSetChanged();
-                                            mAdapter.setLoaded();
-                                        }
-                                    }
-
-                                    else {
-                                        nextNeedDetails.nextURL("finished");
-                                        Toast.makeText(getApplicationContext(),"No more needs to load..",Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            }, 1000);
-                        }
-                    });
-
-
-                }
-
-            super.onPostExecute(o);
-        }
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         TextView userType = (TextView) parent.getChildAt(0);
@@ -339,9 +229,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
         if (authorType.equals("Donor")) {
             newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-            startAsyncTask();
-            //new GetNeedItemDetails().execute();
-            //  recyclerView.setAdapter(new DonorNeedViewAdapter(HomeActivity.this, needs));
+            nextUrl=RestAPIURL.needList;
+            startNeedAsyncTask();
+
         } else {
             newNeedFloatingActionButton.setVisibility(View.VISIBLE);
             //  recyclerView.setAdapter(new OrgNeedViewAdapter(HomeActivity.this, needs));
@@ -349,21 +239,27 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
         if(authorType.equals("Organization")) {
             Toast.makeText(parent.getContext(), " Testing Selected: " + authorType, Toast.LENGTH_LONG).show();
-
             new GetOrganisationNeedDetails().execute();
         }
 
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
-    class GetOrganisationNeedDetails extends AsyncTask{
-
+    class GetOrganisationNeedDetails extends AsyncTask
+    {
+        public LoadNextDetails nextOrgDetails;
         @Override
         protected void onPreExecute() {
-            client = new DefaultHttpClient();
             super.onPreExecute();
+            client = new DefaultHttpClient();
+            progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
         }
 
         @Override
@@ -390,8 +286,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
         @Override
         protected void onPostExecute(Object o) {
-
-            mHandler.sendMessageDelayed(new Message(), 3000);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
@@ -423,11 +319,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
                                     needitem.remove(needitem.size() - 1);
                                     mAdapter.notifyItemRemoved(needitem.size());
 
-                                    /*if(!jsonObject.isNull("next"))
-                                       nextNeedDetails.nextURL("next");
-
-                                    else
-                                      nextNeedDetails.nextURL("finished");*/
                                     needitem.addAll(tempneeditem);
                                     mAdapter.notifyDataSetChanged();
                                     mAdapter.setLoaded();
@@ -439,6 +330,109 @@ public class HomeActivity extends AppCompatActivity implements LoadNextNeedDetai
 
             super.onPostExecute(o);
         }
+    }
 
+    class GetNeedItemDetails extends AsyncTask {
+        public LoadNextDetails nextNeedDetails;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            client= new DefaultHttpClient();
+            progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params)
+        {
+            response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
+            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                try {
+                    jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    nextUrl = jsonObject.getString("next");
+                    Gson gson = new Gson();
+                    tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
+                    if(count==0)
+                        needitem.addAll(tempneeditem);
+
+                    Log.d("Results", needitem.size() + "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else
+                Log.d("CAll ", "Response null");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+
+            if(response!=null)
+            {
+                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201) {
+                    if (count == 0) {
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
+                        recyclerView.setAdapter(mAdapter);
+                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                        recyclerView.addItemDecoration(dividerItemDecoration);
+                    }
+                    if (needitem.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore() {
+                            //add null , so the adapter will check view_type and show progress bar at bottom
+                            needitem.add(null);
+                            mAdapter.notifyItemInserted(needitem.size() - 1);
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //   remove progress item
+                                    needitem.remove(needitem.size() - 1);
+                                    mAdapter.notifyItemRemoved(needitem.size());
+
+
+                                    if (!jsonObject.isNull("next")) {
+                                        try {
+                                            Log.d(TAG, "run: " + jsonObject.getString("next"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        nextNeedDetails.nextURL("next");
+                                        count++;
+                                        if (count > 0) {
+                                            needitem.addAll(tempneeditem);
+                                            mAdapter.notifyDataSetChanged();
+                                            mAdapter.setLoaded();
+                                        }
+                                    } else {
+                                        nextNeedDetails.nextURL("finished");
+                                        Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }, 1000);
+                        }
+                    });
+                }
+            }
+        }
     }
 }

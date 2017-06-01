@@ -111,8 +111,10 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 totalQuantity += need.getItems().get(i).getQuantity();
                 totalDonatedReceived += need.getItems().get(i).getDonated_and_received_amount();
             }
-            ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived/totalQuantity * 100, animationDuration);
-            ((ViewHolder) holder).percentage.setText(totalDonatedReceived/totalQuantity* 100 + "%");
+            System.out.println("quantity:"+totalQuantity);
+            System.out.println("total donated "+totalDonatedReceived);
+            ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived*100/totalQuantity, animationDuration);
+            ((ViewHolder) holder).percentage.setText(totalDonatedReceived* 100/totalQuantity  + "%");
 
             //Glide.with(context).load(needDetails.orgLogo).into(((ViewHolder)holder).orgLogo);
             ((ViewHolder)holder).needItems.removeAllViews();
@@ -135,25 +137,25 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                         itemIcon.setImageResource(R.drawable.ic_food_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Food");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 2:
                         itemIcon.setImageResource(R.drawable.ic_cloth_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Cloth");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 3:
                         itemIcon.setImageResource(R.drawable.ic_blood_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Blood");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 4:
                         itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Groceries");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 5:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
@@ -165,7 +167,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Others");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                 }
                 // Adding the item to the items layout(Horizontal Scolling Linear Layout)
