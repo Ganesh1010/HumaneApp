@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
@@ -42,7 +44,7 @@ public class OrganisationRegistrationFragment extends Fragment {
     EditText orgNoEditText,orgNameEditText,orgaddressEditText,orgEmailEditText,orgMobNoEditText,orgDescEditText;
     Spinner orgTypeFromSpinner;
     Button orgRegisterButton,chooseLocationButton;
-    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType,lastName;
+    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType;
     int latitude,longitude;
     Gson gson;
     ProgressDialog progressDialog;
@@ -55,6 +57,7 @@ public class OrganisationRegistrationFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
+    LinearLayout linearLayout;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,6 +88,8 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
         orgRegisterButton = (Button)v.findViewById(R.id.submit_button_org_form);
         chooseLocationButton = (Button)v.findViewById(R.id.map);
+        linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
+
         //v.getRootView().setBackgroundColor(Color.WHITE);
 
         orgRegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -160,12 +165,9 @@ public class OrganisationRegistrationFragment extends Fragment {
             return;
         }
 
-        progressDialog = new ProgressDialog(landingPage, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
-        progressDialog.show();
+        CommonUI.internetConnectionChecking(getActivity(),linearLayout,new OrganisationAccount());
 
-        gson = new Gson();
+
 
         new OrganisationAccount().execute();
 
@@ -208,6 +210,13 @@ public class OrganisationRegistrationFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
+            progressDialog = new ProgressDialog(landingPage, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Creating Account...");
+            progressDialog.show();
+
+            gson = new Gson();
+
             super.onPreExecute();
         }
 

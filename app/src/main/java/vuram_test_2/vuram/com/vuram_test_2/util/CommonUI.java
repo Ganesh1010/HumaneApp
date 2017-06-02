@@ -146,7 +146,7 @@ public class CommonUI{
         }
         else
         {
-            Log.e(TAG, "internetConnectionChecking: ",new Throwable("Null Value Input") );
+            Log.e(TAG, "internalValidation ",new Throwable("Null Value Input") );
         }
     }
 }
