@@ -102,7 +102,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
             });
             ((ViewHolder)holder).orgName.setText(need.org.org_name);
             ((ViewHolder)holder).orgAddress.setText(need.org.getAddress());
-            ((ViewHolder)holder).orgContactNo.setText(need.org.getMobile());
+            ((ViewHolder)holder).orgContactNo.setText(need.org.getPhone());
             ((ViewHolder)holder).orgLogo.setImageResource(R.drawable.ngo);
             int animationDuration = 1000; // 2500ms = 2,5s
             int totalQuantity=0;

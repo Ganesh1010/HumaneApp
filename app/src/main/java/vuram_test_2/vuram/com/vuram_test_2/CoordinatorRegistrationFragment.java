@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +125,6 @@ public class CoordinatorRegistrationFragment extends Fragment {
         if(validation()){
 
             registered = true;
-            //Toast.makeText(CoordinatorRegistration.this,"Country"+country,Toast.LENGTH_LONG).show();
             coordinatorNextButton.setEnabled(false);
             registerDetails = new RegisterDetails();
             userDetails = new UserDetails();
@@ -133,6 +133,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
             userDetails.setEmail(emailId);
             registerDetails.setCountry(1);
             registerDetails.setMobile(mobileNo);
+            Log.d("god",registerDetails.getMobile());
             userDetails.setProfile(registerDetails);
 
 
@@ -154,7 +155,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
         else {
             registered =false;
             coordinatorNextButton.setEnabled(true);
-            //   Toast.makeText(CoordinatorRegistration.this,"validation else part",Toast.LENGTH_LONG).show();
+
         }
         return registered;
     }
@@ -188,7 +189,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
         } else {
             passwordEditText.setError(null);
         }
-        //Toast.makeText(CoordinatorRegistration.this,"boolean"+validated,Toast.LENGTH_LONG).show();
+
         // Log.d("Boolean",validated.toString());
         return validated;
     }
@@ -257,15 +258,14 @@ public class CoordinatorRegistrationFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
 
-            //Toast.makeText(CoordinatorRegistration.this,"Registration Successful",Toast.LENGTH_LONG).show();
+
             if(progressDialog!=null)
                 progressDialog.dismiss();
             if(httpResponse!=null)
                 if(httpResponse.getStatusLine().getStatusCode()==200 || httpResponse.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(landingPage,"Registration Successful",Toast.LENGTH_LONG).show();
-                   // CoordinatorRegistration.this.startActivity(new Intent(CoordinatorRegistration.this,LoginPage.class));
-                    //CoordinatorRegistration.this.finish();
+
                 }
             Log.d("GSON",gson.toJson(userDetails).toString());
 

@@ -26,13 +26,13 @@
         </activity>
         <activity android:name=".ChooseLocationActivity" />
         <activity android:name=".HomeActivity" />
+        <activity android:name=".SwipeCardForReceival" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditProfileActivity" />
         <activity android:name=".NeedDetailsActivity" />
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".DetailsOfQuantitySelected" />
         <activity android:name=".FilterActivity" />
-        <activity android:name=".CoordinatorRegistration" />
         <activity android:name=".DonationConfirmationActivity" android:theme="@style/AppTheme1" />
         <activity android:name=".OrganisationLandingPage"/>
         <activity android:name=".OrgProfileActivity"/>
