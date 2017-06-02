@@ -1,17 +1,15 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 
-import java.util.Date;
-
 /**
  * Created by ganeshrajam on 17-04-2017.
  */
 
 public class RegisterDetails {
-   String mobile;
+    String mobile;
     int country;
-    Date dob;
     OrganisationDetails org;
+    boolean isCoordinator;
 
     public OrganisationDetails getOrg() {
         return org;
@@ -37,13 +35,12 @@ public class RegisterDetails {
         this.mobile = mobile;
     }
 
-    public Date getDob() {
-        return dob;
+    public boolean isCoordinator() {
+        return isCoordinator;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setCoordinator(boolean coordinator) {
+        isCoordinator = coordinator;
     }
-
 
 }

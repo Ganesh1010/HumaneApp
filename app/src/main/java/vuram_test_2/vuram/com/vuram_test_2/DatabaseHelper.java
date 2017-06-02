@@ -21,8 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final String ID = "ID";
     private static final String COUNTRY_TABLE_NAME = "COUNTRY_DETAILS";
-    private static final String COUNTRY_NAME = "COUNTRY_NAME";
     private static final String COUNTRY_ID = "COUNTRY_ID";
+    private static final String COUNTRY_NAME = "COUNTRY_NAME";
+    private static final String COUNTRY_CODE = "COUNTRY_CODE";
     private static final String MAIN_ITEM_TABLE_NAME = "MAIN_ITEM_DETAILS";
     private static final String MAIN_ITEM_CODE = "MAIN_ITEM_CODE";
     private static final String MAIN_ITEM_NAME = "MAIN_ITEM_NAME";
@@ -38,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "create table " + COUNTRY_TABLE_NAME +
-                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text)"
+                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text, " + COUNTRY_CODE + "integer)"
         );
         db.execSQL(
                 "create table " + MAIN_ITEM_TABLE_NAME +
@@ -77,8 +78,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+COUNTRY_TABLE_NAME);
         for(CountryLookUpTableDetails lookup:countryLookUpTableDetails){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COUNTRY_ID,lookup.getCountryId());
-            contentValues.put(COUNTRY_NAME,lookup.getCountryName());
+            contentValues.put(COUNTRY_ID, lookup.getCountryId());
+            contentValues.put(COUNTRY_NAME, lookup.getCountryName());
+            contentValues.put(COUNTRY_CODE, lookup.getCountry_code());
             db.insert(COUNTRY_TABLE_NAME,null,contentValues);
         }
         db.close();

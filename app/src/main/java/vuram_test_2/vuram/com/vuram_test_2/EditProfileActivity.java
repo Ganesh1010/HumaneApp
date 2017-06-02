@@ -30,13 +30,16 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.SyncHttpClient;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,8 +47,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+
+import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -55,12 +61,18 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageButton saveButton;
     ImageView userpic;
     EditText fullNameEditText, phoneEditText, emailEditText, currentPasswordEditText, newPasswordEditText, confirmPasswordEditText;
+    CountryCodePicker countryCodePicker;
     CheckBox changePasswordCheckBox;
     LinearLayout changePasswordLayout;
 
     String userImageFilePath;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int SELECT_PHOTO = 2;
+
+    String authToken;
+    HttpClient client;
+    HttpResponse response;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +82,7 @@ public class EditProfileActivity extends AppCompatActivity {
         fullNameEditText = (EditText) findViewById(R.id.user_name_edittext_edit_profile);
         phoneEditText = (EditText) findViewById(R.id.phone_edittext_edit_profile);
         emailEditText = (EditText) findViewById(R.id.email_edittext_edit_profile);
+        countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
         currentPasswordEditText = (EditText) findViewById(R.id.current_password_edittext_edit_profile);
         newPasswordEditText = (EditText) findViewById(R.id.new_password_edittext_edit_profile);
         confirmPasswordEditText = (EditText) findViewById(R.id.confirm_password_edittext_edit_profile);
@@ -132,9 +145,70 @@ public class EditProfileActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    new PostData().execute();
+                new PostData().execute();
             }
         });
+
+        // Populating the details
+        new PopulatingTask().execute();
+    }
+
+    class PopulatingTask extends AsyncTask {
+
+        String firstName;
+        String email;
+        RegisterDetails profile;
+        String mobile;
+        int countryCode;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            authToken = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Donor_Token);
+            client = new DefaultHttpClient();
+            String authToken = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Donor_Token);
+            response = Connectivity.makeGetRequest(RestAPIURL.getUserDetails, client, authToken);
+            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                Gson gson = new Gson();
+
+                List<UserDetails> userDetailsList = gson.fromJson(Connectivity.getJosnFromResponse(response), new TypeToken<List<UserDetails>>() {}.getType());
+                UserDetails userDetails = userDetailsList.get(0);
+                firstName = userDetails.getFirst_name();
+                email = userDetails.getEmail();
+                profile = userDetails.getProfile();
+                mobile = profile.getMobile();
+                int countryId = profile.getCountry();
+
+                // Finding the country
+                db = new DatabaseHelper(EditProfileActivity.this);
+                ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
+                for (int i = 0; i < countryDetailsList.size(); i++) {
+                    CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
+                    int tempCountryId = countryDetails.getCountryId();
+                    if (tempCountryId == countryId) {
+                        countryCode = countryDetails.getCountry_code();
+                        break;
+                    }
+                }
+
+            } else {
+                Log.d("CAll ", "Response null");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            fullNameEditText.setText(firstName);
+            emailEditText.setText(email);
+            phoneEditText.setText(mobile);
+            countryCodePicker.setCountryForPhoneCode(countryCode);
+        }
     }
 
     class PostData extends AsyncTask {
@@ -159,6 +233,11 @@ public class EditProfileActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             progressDialog.cancel();
+            /*
+            finish();
+            Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
+            startActivity(intent);
+            */
         }
     }
 
@@ -189,12 +268,13 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void postFile(String userImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
+        String token= getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token);
+        client.addHeader("Authorization","Token "+token);
         RequestParams params = new RequestParams();
 
         // Change User Details
         // fetching country names & codes
         int selectedCountryId = 1;
-        CountryCodePicker countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
         String selectedCountryName = countryCodePicker.getSelectedCountryName();
         DatabaseHelper dbHelper = new DatabaseHelper(EditProfileActivity.this);
         ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
@@ -208,10 +288,25 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         }
 
-        params.put("first_name", fullNameEditText.getText().toString());
+        String firstName = fullNameEditText.getText().toString();
+        if (firstName != null) {
+            if (!firstName.isEmpty()) {
+                params.put("first_name", firstName);
+            }
+        }
+        String email = emailEditText.getText().toString();
+        if (email != null) {
+            if (!email.isEmpty()) {
+                params.put("email", email);
+            }
+        }
+        String mobile = phoneEditText.getText().toString();
+        if (mobile != null) {
+            if (!mobile.isEmpty()) {
+                params.put("mobile", mobile);
+            }
+        }
         params.put("country", selectedCountryId);
-        params.put("mobile", phoneEditText.getText().toString());
-        params.put("email", emailEditText.getText().toString());
 
         Log.d(TAG, "postFile: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
                 + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
@@ -249,22 +344,22 @@ public class EditProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             Log.d(TAG, "postFile: "+obj.toString());
-           HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, null);
-            if(httpResponse!=null)
-            {
-                if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201)
-                {
+            HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, null);
+            if(httpResponse!=null) {
+                if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201) {
                     Log.d(TAG, "postFile: "+Connectivity.getJosnFromResponse(httpResponse));
                 }
-                else
-                    Log.d(TAG, "postFile: "+httpResponse.getStatusLine().getReasonPhrase());
+                else {
+                    Log.d(TAG, "postFile: " + httpResponse.getStatusLine().getReasonPhrase());
+                }
             }
         }
+
     }
 
     public GlideUrl getUrlWithHeaders(String url){
         return new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization","Token "+Connectivity.getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token))
+                .addHeader("Authorization","Token "+ getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token))
                 .build());
     }
 

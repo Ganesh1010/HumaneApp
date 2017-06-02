@@ -29,14 +29,14 @@ public class DetailsPopulator {
     }
 
     public void getCountryDetailsFromAPI() {
-        new Country().execute();
+        new CountryDetailsFetchingTask().execute();
     }
 
     public void getMainItemDetailsFromAPI() { new MainItemDetailsFetchingTask().execute(); }
 
     public void getSubItemDetailsFromAPI() { new SubItemDetailsFetchingTask().execute(); }
 
-    class Country extends AsyncTask {
+    class CountryDetailsFetchingTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
         public ArrayList<CountryLookUpTableDetails> countryDetails;
