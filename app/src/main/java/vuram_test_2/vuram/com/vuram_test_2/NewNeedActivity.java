@@ -43,6 +43,9 @@ import java.util.Locale;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
+
 public class NewNeedActivity extends AppCompatActivity {
 
     public Button submit;
@@ -69,14 +72,12 @@ public class NewNeedActivity extends AppCompatActivity {
     public ArrayList<MainItemDetails> mainItemDetails;
     public ArrayList<SubItemDetails> subItemDetails;
     public DatabaseHelper db;
-
-    Gson gson;
-
+    public Gson gson;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
     private static final String STATE_TEXTVIEW = "STATE_TEXTVIEW";
     private SwitchDateTimeDialogFragment dateTimeFragment;
-
     public Animation bottomUp,bottomDown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,7 +203,20 @@ public class NewNeedActivity extends AppCompatActivity {
                 SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(NewNeedActivity.this, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
                 subItemSpinner.setAdapter(subItemSpinnerAdapter);
 
-                if(item.equals("Clothes"))
+                subItemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String item  = ((TextView) findViewById(R.id.sub_item_txt_spinner_needForm)).getText().toString();
+                        subItem=item;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                if(mainItem.equals("Clothes"))
                     clothesLayout.setVisibility(View.VISIBLE);
                 else
                     clothesLayout.setVisibility(View.INVISIBLE);
@@ -213,6 +227,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
             }
         });
+
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,15 +238,18 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 if(itemQuantity.getText().toString().isEmpty()) {
                     dataFilled=false;
-                    itemQuantity.setError("enter the item Quantity");
+                    itemQuantity.setError("enter the Quantity");
                 }
                 else {
                     needItemDetails.setNeed_item_id(++NewNeedActivity.id);
-                    for(int i=1;i<=subItemDetails.size();i++)
-                        if(mainItem.equals(mainItemDetails.get(subItemDetails.get(i).getMainItemCode()).getMainItemName()))
-                        {
-                            needItemDetails.setItem_type_id(subItemDetails.get(i).getMainItemCode());
-                            needItemDetails.setSub_item_type_id(subItemDetails.get(i).getSubItemCode());
+                    for(int i=0;i<=subItemDetails.size();i++)
+                        if(!subItem.isEmpty() && mainItemDetails!=null && subItemDetails!=null) {
+                            if (subItem.equals(subItemDetails.get(i).getSubItemName()))
+                            {
+                                needItemDetails.setItem_type_id(subItemDetails.get(i).getMainItemCode());
+                                needItemDetails.setSub_item_type_id(subItemDetails.get(i).getSubItemCode());
+                                break;
+                            }
                         }
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
@@ -260,7 +278,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 if(dataFilled) {
                     needDetails.add(needItemDetails);
-                    recyclerView.setAdapter(new NewNeedsListAdapter(NewNeedActivity.this, needDetails));
+                    recyclerView.setAdapter(new NewNeedsListAdapter(NewNeedActivity.this, needDetails,mainItemDetails,subItemDetails));
                     recyclerView.setLayoutManager(new LinearLayoutManager(NewNeedActivity.this));
                     hiddenPanel.startAnimation(bottomDown);
                     hiddenPanel.setVisibility(View.GONE);
@@ -268,7 +286,8 @@ public class NewNeedActivity extends AppCompatActivity {
                     fabAdd.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.VISIBLE);
                 }
-            }
+
+          Toast.makeText(NewNeedActivity.this,"new need",Toast.LENGTH_SHORT).show();  }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -313,7 +332,7 @@ public class NewNeedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 gson= new Gson();
-                new CreateUserAccount().execute();
+                new PostItemDetails().execute();
             }
         });
     }
@@ -328,8 +347,7 @@ public class NewNeedActivity extends AppCompatActivity {
         return hiddenPanel.getVisibility() == View.VISIBLE;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    class CreateUserAccount extends AsyncTask {
+    class PostItemDetails extends AsyncTask {
 
         HttpResponse response;
         HttpClient client;
@@ -356,7 +374,6 @@ public class NewNeedActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 } else {
                     Log.d("Response", "Null");
                 }
@@ -375,9 +392,12 @@ public class NewNeedActivity extends AppCompatActivity {
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(NewNeedActivity.this,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
+                    //HomeActivity.countNeedDetails=0;
+                    //HomeActivity.countOrgNeedDetails=0;
+                    Intent intent=new Intent(NewNeedActivity.this,HomeActivity.class);
+                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                    startActivity(intent);
                     NewNeedActivity.this.finish();
-                    HomeActivity.countNeedDetails=0;
-                    startActivity(new Intent(NewNeedActivity.this,HomeActivity.class));
                 }
 
             super.onPostExecute(o);

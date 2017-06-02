@@ -2,6 +2,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 public class OrganisationRegistrationFragment extends Fragment {
 
@@ -45,10 +49,12 @@ public class OrganisationRegistrationFragment extends Fragment {
     LandingPage landingPage;
     //ArrayList coordinatorDetails;
     OrganisationDetails organisationDetails;
-    RegisterDetails coordinatorDetails;
     UserDetails userDetails;
     String orgDetailsString,mapAddress;
     GPSTracker gps;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
+    FrameLayout frameLayout;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -210,11 +216,10 @@ public class OrganisationRegistrationFragment extends Fragment {
 
             client = new DefaultHttpClient();
             organisationDetails = new OrganisationDetails();
-            coordinatorDetails = new RegisterDetails();
             userDetails = new UserDetails();
 
             organisationDetails.setEmail(orgMail);
-            organisationDetails.setMobile(orgMobile);
+            organisationDetails.setPhone(orgMobile);
             organisationDetails.setAddress(orgAddress);
             organisationDetails.setDescription(orgDesc);
             organisationDetails.setOrg_name(orgName);
@@ -223,13 +228,14 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setLatitude(12);
             organisationDetails.setLongitude(50);
 
-            coordinatorDetails.setOrg(organisationDetails);
-//          Bundle bundle = new Bundle();
+
+            Bundle bundle = new Bundle();
 //            coordinatorInfo = bundle.getString("COORDINATOR")
 //  Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
-            userDetails.setRegisterDetails(coordinatorDetails);
+            userDetails.getProfile().setOrg(organisationDetails);
+            Log.d("GAnesh", "doInBackground: "+ userDetails.getProfile().getMobile());
             //userDetails.setOrganisationDetails(gson.fromJson(coordinatorInfo Class<UserDetails>()));
 
             response = Connectivity.makePostRequest(RestAPIURL.registerOrgandProfile, gson.toJson(userDetails).toString(), client, null);
@@ -258,8 +264,12 @@ public class OrganisationRegistrationFragment extends Fragment {
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
-                    // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
-                    //landingPage.finish();
+                    fragment = new LoginPageFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                    fragment.setArguments(bundle);
                 }
 
             super.onPostExecute(o);

@@ -28,8 +28,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.fiskur.simpleviewpager.ImageResourceLoader;
-import eu.fiskur.simpleviewpager.SimpleViewPager;
 import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
@@ -93,25 +91,25 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
 
-        final SimpleViewPager simpleViewPager = (SimpleViewPager) findViewById(R.id.simple_view_pager_donor_org);
+      /*  final SimpleViewPager simpleViewPager = (SimpleViewPager) findViewById(R.id.simple_view_pager_donor_org);
         int[] resourceIds = new int[]{
                 R.drawable.ngo,
                 R.drawable.ngo,
                 R.drawable.ngo,
-                R.drawable.ngo };
+                R.drawable.ngo };*/
 
         layoutManager = new LinearLayoutManager(this);
 
-        simpleViewPager.setImageIds(resourceIds, new ImageResourceLoader() {
+/*        simpleViewPager.setImageIds(resourceIds, new ImageResourceLoader() {
             @Override
             public void loadImageResource(ImageView imageView, int i) {
                 imageView.setImageResource(i);
             }
-        });
+        });*/
 
         int indicatorColor = Color.parseColor("#ffffff");
         int selectedIndicatorColor = Color.parseColor("#8BC34A");
-        simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
+        //simpleViewPager.showIndicator(indicatorColor, selectedIndicatorColor);
     }
 
     public class GetParticularNeedDetails extends AsyncTask {
@@ -188,7 +186,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
            OrgName=orgdetails.org_name;
             Address=orgdetails.address;
-            Mobile=orgdetails.mobile;
+            Mobile=orgdetails.phone;
             EmailId=orgdetails.email;
             Organisationname.setText(OrgName);
             Organisationmobile.setText(Mobile);

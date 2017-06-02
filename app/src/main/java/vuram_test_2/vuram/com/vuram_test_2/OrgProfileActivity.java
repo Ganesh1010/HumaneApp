@@ -89,7 +89,7 @@ public class OrgProfileActivity extends AppCompatActivity {
 
             orgName.setText(organisationDetails.getOrg_name());
             orgCityName.setText(organisationDetails.getAddress());
-            orgMobileNo.setText(organisationDetails.getMobile());
+            orgMobileNo.setText(organisationDetails.getPhone());
             orgEmail.setText(organisationDetails.getEmail());
             orgType.setText(organisationDetails.getOrg_type());
             orgPeopleCount.setText(100 + "");
