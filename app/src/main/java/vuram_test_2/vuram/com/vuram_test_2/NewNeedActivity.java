@@ -47,7 +47,6 @@ public class NewNeedActivity extends AppCompatActivity {
     public Button submit;
     public FloatingActionButton fabAdd;
     public Spinner itemName;
-    //public EditText itemName;
     public EditText itemQuantity;
     public RadioGroup gender;
     public RadioButton radioSexButton;
@@ -59,7 +58,8 @@ public class NewNeedActivity extends AppCompatActivity {
     public ImageView dateImage;
     public TextView textView;
     public RecyclerView recyclerView;
-    public String category;
+    public String mainItem;
+    public String subItem;
     public ArrayList<NeedItemDetails> needDetails;
     public boolean dataFilled=false;
     public static int id=-1;
@@ -155,24 +155,24 @@ public class NewNeedActivity extends AppCompatActivity {
         post= (Button)findViewById(R.id.post_needForm);
         cancel= (Button) findViewById(R.id.cancel_needForm);
 
-        ArrayList<MainSpinnerItemData> mainItemList=new ArrayList<>();
+        ArrayList<ItemSpinnerData> mainItemList=new ArrayList<>();
         for (int i=0;i<mainItemDetails.size();i++) {
             switch (mainItemDetails.get(i).getMainItemCode())
             {
                 case 1:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
                     break;
                 case 2:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
                     break;
                 case 3:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
                     break;
                 case 4:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
                     break;
                 case 5:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
                     break;
             }
         }
@@ -180,17 +180,17 @@ public class NewNeedActivity extends AppCompatActivity {
         MainItemSpinnerAdapter mainItemSpinnerAdapter=new MainItemSpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,mainItemList);
         mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
 
-//        ArrayList<SubSpinnerItemData> mainItemList=new ArrayList<>();
-//        SubItemSpinnerAdapter subItemSpinnerAdapter=new MainItemSpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,subItemDetails);
-//        mainItemSpinner.setAdapter(subItemSpinnerAdapter);
-
+        ArrayList<ItemSpinnerData> subItemList=new ArrayList<>();
+        SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(this, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
+        mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
+        
         final RadioButton lastGenderRadioBtn = (RadioButton) findViewById(R.id.female);
 
         mainItemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item  = ((TextView) findViewById(R.id.txt_spinner_needForm)).getText().toString();
-                category=item;
+                String item  = ((TextView) findViewById(R.id.main_item_txt_spinner_needForm)).getText().toString();
+                mainItem=item;
 
                 //itemName.setText("");
                 //itemName.setError(null);
@@ -233,7 +233,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 }
                 else {
                     needItemDetails.setNeed_item_id(++NewNeedActivity.id);
-                    needItemDetails.setItem_type_id(Arrays.asList(categoryID).indexOf(category));
+                    needItemDetails.setItem_type_id(Arrays.asList(categoryID).indexOf(mainItem));
                     needItemDetails.setSub_item_type_id(1);
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
@@ -246,7 +246,7 @@ public class NewNeedActivity extends AppCompatActivity {
                     dataFilled=true;
                 }
 
-                if(category.equals("Clothes")) {
+                if(mainItem.equals("Clothes")) {
 
                     if(gender.getCheckedRadioButtonId()<=0) {
                         dataFilled=false;
