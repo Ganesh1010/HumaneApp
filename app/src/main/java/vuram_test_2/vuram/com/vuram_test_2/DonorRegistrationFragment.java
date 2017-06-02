@@ -226,6 +226,7 @@ public class DonorRegistrationFragment extends Fragment {
             Log.d("Request JSON", gson.toJson(details).toString());
             if (response != null) {
                 Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
+                System.out.println("good");
 
                 try {
                     Connectivity.getJosnFromResponse(response);
@@ -257,10 +258,14 @@ public class DonorRegistrationFragment extends Fragment {
                     //landingPage.finish();
 
                     fragment = new LoginPageFragment();
+                    System.out.println("good");
                     fragmentManager = getActivity().getFragmentManager();
+                    System.out.println("good");
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                    System.out.println("good");
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                    System.out.println("good");
                     fragment.setArguments(bundle);
 
                 }

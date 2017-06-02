@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +134,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
             userDetails.setEmail(emailId);
             registerDetails.setCountry(1);
             registerDetails.setMobile(mobileNo);
+            Log.d("god",registerDetails.getMobile());
             userDetails.setProfile(registerDetails);
 
 

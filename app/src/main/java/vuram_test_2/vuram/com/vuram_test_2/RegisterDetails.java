@@ -8,7 +8,15 @@ import java.util.Date;
  */
 
 public class RegisterDetails {
-   String mobile;
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    String mobile;
     int country;
     Date dob;
     OrganisationDetails org;
@@ -27,14 +35,6 @@ public class RegisterDetails {
 
     public void setCountry(int country) {
         this.country = country;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public Date getDob() {

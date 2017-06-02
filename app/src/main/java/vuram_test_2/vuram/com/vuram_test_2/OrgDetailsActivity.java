@@ -186,7 +186,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         public void DisplayOrgDetails(OrganisationDetails orgdetails) {
            OrgName=orgdetails.org_name;
             Address=orgdetails.address;
-            Mobile=orgdetails.mobile;
+            Mobile=orgdetails.phone;
             EmailId=orgdetails.email;
             Organisationname.setText(OrgName);
             Organisationmobile.setText(Mobile);
