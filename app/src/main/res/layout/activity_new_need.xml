@@ -155,29 +155,12 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.75"/>
-                            <RadioGroup
+                            <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/age_needForm"
-                                android:orientation="horizontal"
-                                android:layout_weight="0.25">
-
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Children"
-                                    android:id="@+id/children" />
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Adult"
-                                    android:id="@+id/adult" />
-                                <RadioButton
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Old"
-                                    android:id="@+id/old" />
-                            </RadioGroup>
+                                android:inputType="number"
+                                android:layout_weight="0.25"
+                                android:id="@+id/age_needForm"/>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -189,7 +172,7 @@
                         android:gravity="center_vertical"
                         android:layout_marginBottom="10dp">
                         <TextView
-                            android:text="Required @"
+                            android:text="Required at"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:layout_width="match_parent" />

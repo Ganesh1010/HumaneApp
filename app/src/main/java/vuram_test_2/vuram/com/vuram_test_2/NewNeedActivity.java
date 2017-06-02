@@ -51,9 +51,8 @@ public class NewNeedActivity extends AppCompatActivity {
     public EditText itemQuantity;
     public RadioGroup gender;
     public RadioButton radioSexButton;
-    public RadioButton radioAgeButton;
-    public RadioGroup age;
-    public Spinner spinner;
+    public EditText age;
+    public Spinner mainItemSpinner;
     public LinearLayout clothesLayout;
     public Button post;
     public Button cancel;
@@ -147,11 +146,11 @@ public class NewNeedActivity extends AppCompatActivity {
         bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
         bottomDown = AnimationUtils.loadAnimation(this, R.anim.bottom_down);
 
-        spinner = (Spinner)findViewById(R.id.main_item_spinner_needForm);
+        mainItemSpinner = (Spinner)findViewById(R.id.main_item_spinner_needForm);
         itemName= (Spinner) findViewById(R.id.sub_item_spinner_needForm);
         itemQuantity= (EditText) findViewById(R.id.itemQuantity_needForm);
         gender= (RadioGroup) findViewById(R.id.gender_needForm);
-        age= (RadioGroup) findViewById(R.id.age_needForm);
+        age= (EditText) findViewById(R.id.age_needForm);
         clothesLayout= (LinearLayout) findViewById(R.id.clothesLayout_needForm);
         post= (Button)findViewById(R.id.post_needForm);
         cancel= (Button) findViewById(R.id.cancel_needForm);
@@ -178,17 +177,16 @@ public class NewNeedActivity extends AppCompatActivity {
             }
         }
 
-        CategorySpinnerAdapter adapter=new CategorySpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.txt_spinner_needForm,mainItemList);
-        spinner.setAdapter(adapter);
+        MainItemSpinnerAdapter mainItemSpinnerAdapter=new MainItemSpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,mainItemList);
+        mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
 
-//        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this,R.layout.sub_item_spinner_layout, spinnerArray); //selected item will look like a spinner set from XML
-//        spinnerArrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(spinnerArrayAdapter);
+//        ArrayList<SubSpinnerItemData> mainItemList=new ArrayList<>();
+//        SubItemSpinnerAdapter subItemSpinnerAdapter=new MainItemSpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,subItemDetails);
+//        mainItemSpinner.setAdapter(subItemSpinnerAdapter);
 
         final RadioButton lastGenderRadioBtn = (RadioButton) findViewById(R.id.female);
-        final RadioButton lastAgeRadioBtn = (RadioButton) findViewById(R.id.old);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mainItemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item  = ((TextView) findViewById(R.id.txt_spinner_needForm)).getText().toString();
@@ -200,8 +198,8 @@ public class NewNeedActivity extends AppCompatActivity {
                 itemQuantity.setError(null);
                 gender.clearCheck();
                 lastGenderRadioBtn.setError(null);
-                age.clearCheck();
-                lastAgeRadioBtn.setError(null);
+                age.setText("");
+                age.setError(null);
 
                 if(item.equals("Clothes"))
                     clothesLayout.setVisibility(View.VISIBLE);
@@ -223,8 +221,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 int selectedIdGender = gender.getCheckedRadioButtonId();
                 radioSexButton = (RadioButton) findViewById(selectedIdGender);
 
-                int selectedIdAge = age.getCheckedRadioButtonId();
-                radioAgeButton = (RadioButton) findViewById(selectedIdAge);
+                int selectedIdAge = Integer.parseInt(age.getText().toString());
 
 //                if(itemName.getText().toString().equals("")) {
 //                    dataFilled=false;
@@ -255,14 +252,14 @@ public class NewNeedActivity extends AppCompatActivity {
                         dataFilled=false;
                         lastGenderRadioBtn.setError("select gender");
                     }
-                    if(age.getCheckedRadioButtonId()<=0) {
+                    if(age.getText().toString().isEmpty()) {
                         dataFilled=false;
-                        lastAgeRadioBtn.setError("select age");
+                        age.setError("enter the age");
                     }
 
                     else {
                         needItemDetails.setGender(radioSexButton.getText().toString());
-                        needItemDetails.setAge(radioAgeButton.getText().toString());
+                        needItemDetails.setAge(age.getText().toString());
                         dataFilled=true;
                     }
                 }
@@ -315,8 +312,8 @@ public class NewNeedActivity extends AppCompatActivity {
                 itemQuantity.setError(null);
                 gender.clearCheck();
                 lastGenderRadioBtn.setError(null);
-                age.clearCheck();
-                lastAgeRadioBtn.setError(null);
+                age.setText("");
+                age.setError(null);
             }
         });
 
