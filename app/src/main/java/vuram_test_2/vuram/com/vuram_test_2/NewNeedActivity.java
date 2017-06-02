@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,12 +47,11 @@ public class NewNeedActivity extends AppCompatActivity {
 
     public Button submit;
     public FloatingActionButton fabAdd;
-    public Spinner itemName;
     public EditText itemQuantity;
     public RadioGroup gender;
     public RadioButton radioSexButton;
     public EditText age;
-    public Spinner mainItemSpinner;
+    public Spinner mainItemSpinner,subItemSpinner;
     public LinearLayout clothesLayout;
     public Button post;
     public Button cancel;
@@ -70,7 +70,6 @@ public class NewNeedActivity extends AppCompatActivity {
     public ArrayList<SubItemDetails> subItemDetails;
     public DatabaseHelper db;
 
-    public String categoryID[]={"Food","Clothes","Groceries","Stationeries"};
     Gson gson;
 
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
@@ -147,7 +146,7 @@ public class NewNeedActivity extends AppCompatActivity {
         bottomDown = AnimationUtils.loadAnimation(this, R.anim.bottom_down);
 
         mainItemSpinner = (Spinner)findViewById(R.id.main_item_spinner_needForm);
-        itemName= (Spinner) findViewById(R.id.sub_item_spinner_needForm);
+        subItemSpinner= (Spinner) findViewById(R.id.sub_item_spinner_needForm);
         itemQuantity= (EditText) findViewById(R.id.itemQuantity_needForm);
         gender= (RadioGroup) findViewById(R.id.gender_needForm);
         age= (EditText) findViewById(R.id.age_needForm);
@@ -177,11 +176,7 @@ public class NewNeedActivity extends AppCompatActivity {
             }
         }
 
-        MainItemSpinnerAdapter mainItemSpinnerAdapter=new MainItemSpinnerAdapter(this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,mainItemList);
-        mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
-
-        ArrayList<ItemSpinnerData> subItemList=new ArrayList<>();
-        SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(this, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
+        MainItemSpinnerAdapter mainItemSpinnerAdapter=new MainItemSpinnerAdapter(NewNeedActivity.this, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,mainItemList);
         mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
         
         final RadioButton lastGenderRadioBtn = (RadioButton) findViewById(R.id.female);
@@ -192,14 +187,20 @@ public class NewNeedActivity extends AppCompatActivity {
                 String item  = ((TextView) findViewById(R.id.main_item_txt_spinner_needForm)).getText().toString();
                 mainItem=item;
 
-                //itemName.setText("");
-                //itemName.setError(null);
+                ArrayList<ItemSpinnerData> subItemList=new ArrayList<>();
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();
                 lastGenderRadioBtn.setError(null);
                 age.setText("");
                 age.setError(null);
+
+                for(int i=0;i<subItemDetails.size();i++)
+                    if(subItemDetails.get(i).getMainItemCode()==(id+1))
+                        subItemList.add(new ItemSpinnerData(subItemDetails.get(i).getSubItemName()));
+
+                SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(NewNeedActivity.this, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
+                subItemSpinner.setAdapter(subItemSpinnerAdapter);
 
                 if(item.equals("Clothes"))
                     clothesLayout.setVisibility(View.VISIBLE);
@@ -213,7 +214,6 @@ public class NewNeedActivity extends AppCompatActivity {
             }
         });
         post.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
             @Override
             public void onClick(View v) {
                 NeedItemDetails needItemDetails=new NeedItemDetails();
@@ -221,28 +221,22 @@ public class NewNeedActivity extends AppCompatActivity {
                 int selectedIdGender = gender.getCheckedRadioButtonId();
                 radioSexButton = (RadioButton) findViewById(selectedIdGender);
 
-                int selectedIdAge = Integer.parseInt(age.getText().toString());
-
-//                if(itemName.getText().toString().equals("")) {
-//                    dataFilled=false;
-//                    itemName.setError("enter the item name");
-//                }
                 if(itemQuantity.getText().toString().isEmpty()) {
                     dataFilled=false;
                     itemQuantity.setError("enter the item Quantity");
                 }
                 else {
                     needItemDetails.setNeed_item_id(++NewNeedActivity.id);
-                    needItemDetails.setItem_type_id(Arrays.asList(categoryID).indexOf(mainItem));
-                    needItemDetails.setSub_item_type_id(1);
+                    for(int i=1;i<=subItemDetails.size();i++)
+                        if(mainItem.equals(mainItemDetails.get(subItemDetails.get(i).getMainItemCode()).getMainItemName()))
+                        {
+                            needItemDetails.setItem_type_id(subItemDetails.get(i).getMainItemCode());
+                            needItemDetails.setSub_item_type_id(subItemDetails.get(i).getSubItemCode());
+                        }
                     needItemDetails.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-                    //sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-
                     needItemDetails.setDeadline(sdf.format(datetime));
-
-                    //needItemDetails.setDeadline(datetime);
                     dataFilled=true;
                 }
 
@@ -259,7 +253,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                     else {
                         needItemDetails.setGender(radioSexButton.getText().toString());
-                        needItemDetails.setAge(age.getText().toString());
+                        needItemDetails.setAge(Integer.parseInt(age.getText().toString()));
                         dataFilled=true;
                     }
                 }
@@ -306,8 +300,6 @@ public class NewNeedActivity extends AppCompatActivity {
                     recyclerView.setVisibility(View.VISIBLE);
                 }
 
-//                itemName.setText("");
-//                itemName.setError(null);
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();
@@ -383,10 +375,10 @@ public class NewNeedActivity extends AppCompatActivity {
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(NewNeedActivity.this,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
-                    //NewNeedActivity.this.startActivity(new Intent(NewNeedActivity.this,LoginPage.class));
                     NewNeedActivity.this.finish();
+                    HomeActivity.countNeedDetails=0;
+                    startActivity(new Intent(NewNeedActivity.this,HomeActivity.class));
                 }
-            //  Log.d("GSON",gson.toJson(registerDetails).toString());
 
             super.onPostExecute(o);
         }
@@ -401,4 +393,5 @@ public class NewNeedActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
-    }}
+    }
+}
