@@ -26,7 +26,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     Button myOrgButton;
 
     Random randomNumberGenerator = null;
-    ArrayList<OrgDetails> orgDetailsList = null;
+    ArrayList<OrganisationDetails> orgDetailsList = null;
     int orgCount = 0;
     public final String TAG = "UserProfileActivity";
 

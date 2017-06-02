@@ -7,15 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeCardHolder> {
 
     Context context;
-    ArrayList donorList;
+    ArrayList<DonationDetailsReadOnly> donorList;
+    SimpleDateFormat date;
+    String donatedDate;
 
-    public SwipeAdapter(Context context, ArrayList donorList) {
+    public SwipeAdapter(Context context, ArrayList<DonationDetailsReadOnly> donorList) {
         this.context = context;
         this.donorList = donorList;
 
@@ -30,9 +34,14 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeCardHol
 
     @Override
     public void onBindViewHolder(final SwipeCardHolder holder, int position) {
-        holder.donorName.setText("akshaya");
-        holder.donorMob.setText("9566343945");
-        holder.date.setText("18 jan 2017");
+
+        DonationDetailsReadOnly donationDetailsReadOnly = donorList.get(position);
+        date =new SimpleDateFormat("dd MMM yyyy");
+        donatedDate = date.format(donationDetailsReadOnly.getDonated_at());
+
+        holder.donorName.setText(donationDetailsReadOnly.getUser_name());
+        holder.donorMob.setText(donationDetailsReadOnly.getMobile());
+        holder.date.setText(donatedDate.toString());
 
     }
 
