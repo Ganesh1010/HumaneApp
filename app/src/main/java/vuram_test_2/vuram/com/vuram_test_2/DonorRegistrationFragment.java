@@ -26,6 +26,8 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static vuram_test_2.vuram.com.vuram_test_2.R.id.fragmentLayout;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 
 public class DonorRegistrationFragment extends Fragment {
 
@@ -73,10 +75,12 @@ public class DonorRegistrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                Bundle bundle = new Bundle();
+                bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                 fragment = new LoginPageFragment();
                 fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
+                fragment.setArguments(bundle);
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 
@@ -87,11 +91,9 @@ public class DonorRegistrationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 fragment = new LoginPageFragment();
                 fragmentManager = getActivity().getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
 
@@ -256,7 +258,10 @@ public class DonorRegistrationFragment extends Fragment {
 
                     fragment = new LoginPageFragment();
                     fragmentManager = getActivity().getFragmentManager();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                    fragment.setArguments(bundle);
 
                 }
             super.onPostExecute(o);
