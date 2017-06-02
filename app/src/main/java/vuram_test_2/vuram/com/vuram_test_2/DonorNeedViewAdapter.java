@@ -113,9 +113,15 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
             }
             System.out.println("quantity:"+totalQuantity);
             System.out.println("total donated "+totalDonatedReceived);
-            ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived*100/totalQuantity, animationDuration);
-            ((ViewHolder) holder).percentage.setText(totalDonatedReceived* 100/totalQuantity  + "%");
-
+            if(totalQuantity!=0 || totalDonatedReceived!=0) {
+                ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived * 100 / totalQuantity, animationDuration);
+                ((ViewHolder) holder).percentage.setText(totalDonatedReceived * 100 / totalQuantity + "%");
+            }
+            else
+            {
+                ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(50, animationDuration);
+                ((ViewHolder) holder).percentage.setText(50 + "%");
+            }
             //Glide.with(context).load(needDetails.orgLogo).into(((ViewHolder)holder).orgLogo);
             ((ViewHolder)holder).needItems.removeAllViews();
             View itemView = null;

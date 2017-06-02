@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +27,7 @@ public class CommonUI{
     static GPSTracker gps;
     static String mapAddress;
     static View dialogView;
-
+    public  static  String TAG="CommonUI.java";
     public static void displayCheckoutUI(View v, int itemsCount, final Activity context)
     {
         Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
@@ -45,7 +47,7 @@ public class CommonUI{
                         gps = new GPSTracker(context);
 
                         if(gps.getIsGPSTrackingEnabled()) {
-                            if(isNetworkAvailable()) {
+                            if(isNetworkAvailable(context)) {
 
                                 Intent intent = new Intent(context, MapActivity.class);
                                 context.startActivityForResult(intent, 2);
@@ -94,7 +96,7 @@ public class CommonUI{
         }).show();
     }
 
-    private static boolean isNetworkAvailable() {
+    private static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
@@ -106,6 +108,45 @@ public class CommonUI{
             address.setEnabled(true);
             mapAddress = data.getStringExtra("ADDRESS");
             address.setText(mapAddress);
+        }
+    }
+    public  static  void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask)
+    {
+        if(asyncTask != null && context !=null && v != null) {
+            if (isNetworkAvailable(context)) {
+                asyncTask.execute();
+            } else {
+                Snackbar.make(v, "Internet Connection not available.", Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        internetConnectionChecking(context, v, asyncTask);
+                    }
+                }).show();
+            }
+        }
+        else
+        {
+            Log.e(TAG, "internetConnectionChecking: ",new Throwable("Null Value Input") );
+        }
+    }
+
+    public  static  void internalValidation(final Context context, final View v, final String data)
+    {
+        if(data != null && context !=null && v != null) {
+            if (isNetworkAvailable(context)) {
+                //asyncTask.execute();
+                return;
+            } else {
+                Snackbar.make(v, data , Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                }).show();
+            }
+        }
+        else
+        {
+            Log.e(TAG, "internetConnectionChecking: ",new Throwable("Null Value Input") );
         }
     }
 }

@@ -44,7 +44,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
         if (categoryID[list.get(position).getItem_type_id()].equals("Clothes")) {
             holder.clothesViewLayout.setVisibility(View.VISIBLE);
             holder.genderView.setText(holder.genderView.getText() + list.get(position).getGender());
-            holder.ageView.setText(holder.ageView.getText() + list.get(position).getAge());
+            holder.ageView.setText(holder.ageView.getText() + "" + list.get(position).getAge() + "");
         }
         switch (categoryID[list.get(position).getItem_type_id()])
         {

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
@@ -46,7 +48,7 @@ public class LoginPageFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView registerLater,linkLoginTextView;
-
+    LinearLayout linearLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class LoginPageFragment extends Fragment {
         signupButton = (Button) v.findViewById(R.id.link_login);
         linkLoginTextView = (TextView)v.findViewById(R.id.link_login_register);
         landingPage = (LandingPage) getActivity();
+        linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
 //        registerLater=v.findViewById(R.id.register_later);
 //        registerLater.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -136,25 +139,16 @@ public class LoginPageFragment extends Fragment {
             onLoginFailed();
             return;
         }
-
-        loginButton.setEnabled(false);
-
-        progressDialog = new ProgressDialog(landingPage, R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
-        progressDialog.show();
         //DetailsPopulator populator=new DetailsPopulator(this);
         //populator.getCountryDetailsFromAPI();
-        new CheckUser().execute();
-
-
+        CommonUI.internetConnectionChecking(getActivity(),linearLayout,new CheckUser());
     }
 
     public boolean validate() {
 
         boolean valid = true;
 
-        email = emailEditText.getText().toString();//So far no  email validation
+        email = emailEditText.getText().toString();//So far no email validation
         password = passwordEditText.getText().toString();
 
         if(!Validation.validate(email)){
@@ -192,7 +186,6 @@ public class LoginPageFragment extends Fragment {
     }
 
     class CheckUser extends AsyncTask {
-
         int code;
         HttpResponse httpResponse;
         HttpClient httpClient;
@@ -220,13 +213,17 @@ public class LoginPageFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
+            loginButton.setEnabled(false);
 
+            progressDialog = new ProgressDialog(landingPage, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Authenticating...");
+            progressDialog.show();
             super.onPreExecute();
         }
 
         @Override
         protected void onPostExecute(Object o) {
-
             if (progressDialog != null)
                 progressDialog.dismiss();
             if (code == 200 || code == 201) {

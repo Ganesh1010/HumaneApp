@@ -19,11 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-
-/**
- * Created by ganeshrajam on 11-05-2017.
- */
-
 public class Connectivity {
     public static final String MyPREFERENCES = "Creds" ;
     public static final String Donor_Token = "DONOR_TOKEN";
