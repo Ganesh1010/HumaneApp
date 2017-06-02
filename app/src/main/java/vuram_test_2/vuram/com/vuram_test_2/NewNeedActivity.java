@@ -155,24 +155,24 @@ public class NewNeedActivity extends AppCompatActivity {
         post= (Button)findViewById(R.id.post_needForm);
         cancel= (Button) findViewById(R.id.cancel_needForm);
 
-        ArrayList<MainSpinnerItemData> mainItemList=new ArrayList<>();
+        ArrayList<MainItemSpinnerData> mainItemList=new ArrayList<>();
         for (int i=0;i<mainItemDetails.size();i++) {
             switch (mainItemDetails.get(i).getMainItemCode())
             {
                 case 1:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
+                    mainItemList.add(new MainItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
                     break;
                 case 2:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
+                    mainItemList.add(new MainItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
                     break;
                 case 3:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
+                    mainItemList.add(new MainItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
                     break;
                 case 4:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
+                    mainItemList.add(new MainItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
                     break;
                 case 5:
-                    mainItemList.add(new MainSpinnerItemData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
+                    mainItemList.add(new MainItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
                     break;
             }
         }
