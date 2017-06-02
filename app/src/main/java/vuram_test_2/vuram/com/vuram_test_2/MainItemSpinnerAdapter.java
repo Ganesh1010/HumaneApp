@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-class MainItemSpinnerAdapter extends ArrayAdapter<MainItemSpinnerData> {
+class MainItemSpinnerAdapter extends ArrayAdapter<ItemSpinnerData> {
     int groupid;
-    ArrayList<MainItemSpinnerData> list;
+    ArrayList<ItemSpinnerData> list;
     LayoutInflater inflater;
 
-    public MainItemSpinnerAdapter(Activity context, int groupid, int id, ArrayList<MainItemSpinnerData> list){
+    public MainItemSpinnerAdapter(Activity context, int groupid, int id, ArrayList<ItemSpinnerData> list){
         super(context,id,list);
         this.list=list;
         inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
