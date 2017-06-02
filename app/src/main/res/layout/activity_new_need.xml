@@ -25,7 +25,7 @@
         android:gravity="center"
         android:id="@+id/hiddenPanel_needForm"
         android:layout_alignParentBottom="true"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="?attr/colorButtonNormal">
         <View
             android:layout_width="fill_parent"
@@ -154,12 +154,13 @@
                                 android:text="Age"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.75"/>
+                                android:layout_weight="0.5"/>
                             <EditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number"
-                                android:layout_weight="0.25"
+                                android:layout_weight="0.5"
+                                android:ems="10"
                                 android:id="@+id/age_needForm"/>
                         </LinearLayout>
                     </LinearLayout>

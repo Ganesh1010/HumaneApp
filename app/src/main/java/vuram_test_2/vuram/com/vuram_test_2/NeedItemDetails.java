@@ -11,7 +11,7 @@ public class  NeedItemDetails {
     int sub_item_type_id;
     int quantity;
     String gender;
-    String age;
+    int age;
     String deadline;
 
     public NeedItemDetails() {
@@ -87,11 +87,11 @@ public class  NeedItemDetails {
         this.gender = gender;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
