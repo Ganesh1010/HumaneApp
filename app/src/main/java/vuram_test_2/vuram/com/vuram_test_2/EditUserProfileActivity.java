@@ -53,9 +53,9 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditUserProfileActivity extends AppCompatActivity {
 
-    private static final String TAG = "EditProfileActivity: ";
+    private static final String TAG = "EditUserProfileActivity: ";
     Toolbar toolbar;
     FloatingActionButton changeImageButton;
     ImageButton saveButton;
@@ -77,7 +77,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_edit_user_profile);
 
         fullNameEditText = (EditText) findViewById(R.id.user_name_edittext_edit_profile);
         phoneEditText = (EditText) findViewById(R.id.phone_edittext_edit_profile);
@@ -89,7 +89,7 @@ public class EditProfileActivity extends AppCompatActivity {
         changePasswordCheckBox = (CheckBox) findViewById(R.id.change_password_checkbox);
         changePasswordLayout = (LinearLayout) findViewById(R.id.change_password_linear_layout_edit_profile);
         userpic= (ImageView) findViewById(R.id.user_image_edit_profile);
-        toolbar = (Toolbar) findViewById(R.id.toolbar_edit_profile);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_edit_org_profile);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
@@ -113,10 +113,10 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= 23) {
-                    if (ContextCompat.checkSelfPermission(EditProfileActivity.this,
+                    if (ContextCompat.checkSelfPermission(EditUserProfileActivity.this,
                             Manifest.permission.READ_EXTERNAL_STORAGE) !=
                             PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(EditProfileActivity.this,
+                        ActivityCompat.requestPermissions(EditUserProfileActivity.this,
                                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                 MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
                     }
@@ -168,9 +168,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            authToken = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Donor_Token);
+            authToken = Connectivity.getAuthToken(EditUserProfileActivity.this, Connectivity.Donor_Token);
             client = new DefaultHttpClient();
-            String authToken = Connectivity.getAuthToken(EditProfileActivity.this, Connectivity.Donor_Token);
+            String authToken = Connectivity.getAuthToken(EditUserProfileActivity.this, Connectivity.Donor_Token);
             response = Connectivity.makeGetRequest(RestAPIURL.getUserDetails, client, authToken);
             if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                 Gson gson = new Gson();
@@ -184,7 +184,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 int countryId = profile.getCountry();
 
                 // Finding the country
-                db = new DatabaseHelper(EditProfileActivity.this);
+                db = new DatabaseHelper(EditUserProfileActivity.this);
                 ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
                 for (int i = 0; i < countryDetailsList.size(); i++) {
                     CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
@@ -218,7 +218,7 @@ public class EditProfileActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(EditProfileActivity.this);
+            progressDialog = new ProgressDialog(EditUserProfileActivity.this);
             progressDialog.setMessage("Loading");
             progressDialog.show();
         }
@@ -235,7 +235,7 @@ public class EditProfileActivity extends AppCompatActivity {
             progressDialog.cancel();
             /*
             finish();
-            Intent intent = new Intent(EditProfileActivity.this, UserProfileActivity.class);
+            Intent intent = new Intent(EditUserProfileActivity.this, UserProfileActivity.class);
             startActivity(intent);
             */
         }
@@ -268,7 +268,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void postFile(String userImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
-        String token= getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token);
+        String token= getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token);
         client.addHeader("Authorization","Token "+token);
         RequestParams params = new RequestParams();
 
@@ -276,7 +276,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // fetching country names & codes
         int selectedCountryId = 1;
         String selectedCountryName = countryCodePicker.getSelectedCountryName();
-        DatabaseHelper dbHelper = new DatabaseHelper(EditProfileActivity.this);
+        DatabaseHelper dbHelper = new DatabaseHelper(EditUserProfileActivity.this);
         ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
         for (int i = 0; i < countryLookUpTableDetailsList.size(); i++) {
             CountryLookUpTableDetails countryLookUpTableDetails = countryLookUpTableDetailsList.get(i);
@@ -359,7 +359,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     public GlideUrl getUrlWithHeaders(String url){
         return new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization","Token "+ getAuthToken(EditProfileActivity.this,Connectivity.Donor_Token))
+                .addHeader("Authorization","Token "+ getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token))
                 .build());
     }
 

@@ -163,7 +163,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         int viewId = v.getId();
         switch (viewId) {
             case R.id.edit_imagebutton_user_profile:
-                startActivity(new Intent(UserProfileActivity.this, EditProfileActivity.class));
+                startActivity(new Intent(UserProfileActivity.this, EditUserProfileActivity.class));
                 break;
             case R.id.my_org_button_edit_profile:
                 Intent intent = new Intent(UserProfileActivity.this, OrgProfileActivity.class);
