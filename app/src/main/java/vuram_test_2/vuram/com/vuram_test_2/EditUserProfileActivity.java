@@ -140,6 +140,9 @@ public class EditUserProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Populating the details
+        new PopulatingTask().execute();
+
         // Save Button
         saveButton = (ImageButton) findViewById(R.id.save_button_edit_profile);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -148,9 +151,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 new PostData().execute();
             }
         });
-
-        // Populating the details
-        new PopulatingTask().execute();
     }
 
     class PopulatingTask extends AsyncTask {

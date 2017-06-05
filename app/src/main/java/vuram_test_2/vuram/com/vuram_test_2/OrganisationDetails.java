@@ -7,10 +7,8 @@ package vuram_test_2.vuram.com.vuram_test_2;
 public class OrganisationDetails
 {
     String org_reg_no,org_name,address,email,description,phone,org_type;
+    int countryCode;
     double latitude,longitude;
-
-
-
 
     public String getOrg_reg_no() {
         return org_reg_no;
@@ -83,4 +81,13 @@ public class OrganisationDetails
     public void setOrg_type(String org_type) {
         this.org_type = org_type;
     }
+
+    public int getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(int countryCode) {
+        this.countryCode = countryCode;
+    }
+
 }

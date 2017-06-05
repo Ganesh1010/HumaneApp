@@ -10,204 +10,80 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="vuram_test_2.vuram.com.vuram_test_2.EditOrgProfileActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:theme="?attr/actionBarTheme"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/toolbar_edit_org_profile" />
-
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_tick_white"
-            android:layout_alignBottom="@+id/toolbar_edit_org_profile"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/save_button_edit_org_profile"
-            android:backgroundTint="@color/colorPrimary"
-            android:tint="@color/colorTextIcons" />
-    </RelativeLayout>
-
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:theme="?attr/actionBarTheme"
+                android:minHeight="?attr/actionBarSize"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/toolbar_edit_org_profile" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    app:srcCompat="@drawable/ic_user_black"
-                    android:id="@+id/org_image_edit_org_profile"
-                    android:layout_alignParentEnd="true"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/gradient"
-                    android:elevation="1dp" />
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_tick_white"
+                android:layout_alignBottom="@+id/toolbar_edit_org_profile"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/save_button_edit_org_profile"
+                android:backgroundTint="@color/colorPrimary"
+                android:tint="@color/colorTextIcons" />
+        </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:background="@drawable/gradient"/>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:clickable="true"
-                    app:fabSize="normal"
-                    app:srcCompat="@android:drawable/ic_menu_camera"
-                    android:layout_marginEnd="36dp"
-                    android:id="@+id/change_org_image_edit_org_profile"
-                    android:tint="@color/colorTextIcons"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="218dp" />
-            </RelativeLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingRight="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
-                <LinearLayout
-                    android:orientation="horizontal"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:orientation="horizontal"
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        app:srcCompat="@drawable/ic_user_black"
+                        android:id="@+id/org_image_edit_org_profile"
+                        android:layout_alignParentEnd="true"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/gradient"
+                        android:elevation="1dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        android:background="@drawable/gradient"/>
+
+                    <android.support.design.widget.FloatingActionButton
                         android:layout_width="50dp"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:srcCompat="@drawable/ic_user_black"
-                            android:id="@+id/imageButton"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/colorTextIcons" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="textPersonName"
-                            android:ems="10"
-                            android:id="@+id/user_name_edittext_edit_profile"
-                            android:layout_weight="1"
-                            android:hint="@string/full_name"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_phone_black"
-                            android:id="@+id/imageButton7"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/colorTextIcons" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-                        <com.hbb20.CountryCodePicker
-                            android:id="@+id/country_code_picker_editprofile"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:defaultNameCode="India"
-                            app:countryPreference="India,US,China" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="phone"
-                            android:ems="10"
-                            android:layout_weight="1"
-                            android:hint="Phone"
-                            android:id="@+id/phone_edittext_edit_profile"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_email_black"
-                            android:id="@+id/imageButton8"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/colorTextIcons" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:inputType="textEmailAddress"
-                            android:ems="10"
-                            android:id="@+id/email_edittext_edit_profile"
-                            android:layout_weight="1"
-                            android:hint="Email"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true" />
-                    </LinearLayout>
-                </LinearLayout>
+                        android:layout_height="50dp"
+                        android:clickable="true"
+                        android:src="@android:drawable/ic_menu_camera"
+                        android:layout_marginEnd="34dp"
+                        android:id="@+id/change_org_image_edit_org_profile"
+                        android:tint="@color/colorTextIcons"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="204dp" />
+                </RelativeLayout>
+                <include layout="@layout/layout_org_form" />
 
             </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
 </RelativeLayout>
