@@ -66,7 +66,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:text="Item Name"
+                            android:text="@string/item_name_display"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5" />
@@ -89,7 +89,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:text="Quantity"
+                            android:text="@string/item_quantity_display"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:layout_width="match_parent" />
@@ -118,7 +118,7 @@
                             android:layout_weight="0.5">
 
                             <TextView
-                                android:text="Gender"
+                                android:text="@string/gender_display"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.5" />
@@ -151,7 +151,7 @@
                             android:gravity="center_vertical">
 
                             <TextView
-                                android:text="Age"
+                                android:text="@string/age_display"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.5"/>
@@ -173,7 +173,7 @@
                         android:gravity="center_vertical"
                         android:layout_marginBottom="10dp">
                         <TextView
-                            android:text="Required at"
+                            android:text="@string/required_at_display"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:layout_width="match_parent" />

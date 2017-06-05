@@ -81,11 +81,11 @@
     <string name="choose_address">Choose Address</string>
 
     <string name="category_name_display">Category : </string>
-    <string name="item_name_display">Item Name  </string>
-    <string name="item_quantity_display">Quantity  </string>
-    <string name="gender_display">Gender-> </string>
-    <string name="age_display">Age-> </string>
-    <string name="required_at_display">Required at-> </string>
+    <string name="item_name_display">Item Name : </string>
+    <string name="item_quantity_display">Quantity : </string>
+    <string name="gender_display">Gender : </string>
+    <string name="age_display">Age : </string>
+    <string name="required_at_display">Required at : </string>
 
     <string name="apply_filter">Apply</string>
     <string name="clear_filter">Clear</string>

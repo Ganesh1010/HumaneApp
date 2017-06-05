@@ -37,7 +37,7 @@ public class CommonUI{
                 //builder.setTitle("Confirm Donation");
                 CommonUI.context=context.getApplicationContext();
                 LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                dialogView = inflater.inflate(R.layout.activity_general_user, null);
+                dialogView = inflater.inflate(R.layout.layout_general_user, null);
                 name= (EditText) dialogView.findViewById(R.id.name_general_user);
                 address= (EditText) dialogView.findViewById(R.id.address_general_user);
                 getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);

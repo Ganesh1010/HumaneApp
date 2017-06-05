@@ -16,19 +16,21 @@ import java.util.List;
 
 public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapter.ViewHolder> {
     List<NeedItemDetails> list;
+    ArrayList<SubItemDetails> subItemDetails;
+    ArrayList<MainItemDetails> mainItemDetails;
     Context context;
     AlertDialog.Builder alertDialogBuilder;
     AlertDialog alertDialog;
-    public String categoryID[]={"Food","Clothes","Groceries","Stationeries"};
 
-    public NewNeedsListAdapter(Context context, ArrayList<NeedItemDetails> list)
+    public NewNeedsListAdapter(Context context, ArrayList<NeedItemDetails> list,ArrayList<MainItemDetails>mainItemDetails,ArrayList<SubItemDetails>subItemDetails)
     {
         this.list=list;
         this.context=context;
+        this.subItemDetails=subItemDetails;
+        this.mainItemDetails=mainItemDetails;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            //ChangedBy Ganesh
         View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view_item, parent, false);
         return new ViewHolder(inflatedView);
     }
@@ -36,28 +38,37 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.clothesViewLayout.setVisibility(View.GONE);
-        holder.category.setText(holder.category.getText() + categoryID[list.get(position).getItem_type_id()]);
-        holder.itemViewName.setText(holder.itemViewName.getText() + (list.get(position).getSub_item_type_id()+""));
+        
+        for(int i=0;i<subItemDetails.size();i++)
+            if(list.get(position).getSub_item_type_id()==subItemDetails.get(i).getSubItemCode())
+            {
+                holder.category.setText(holder.category.getText() + mainItemDetails.get(subItemDetails.get(i).getMainItemCode()-1).getMainItemName());
+                holder.itemViewName.setText(holder.itemViewName.getText() + subItemDetails.get(i).getSubItemName());
+            }
+
         holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getQuantity() + "");
         holder.dateView.setText(holder.dateView.getText()+ (list.get(position).getDeadline()+""));
 
-        if (categoryID[list.get(position).getItem_type_id()].equals("Clothes")) {
+        if (list.get(position).getItem_type_id()==2) {
             holder.clothesViewLayout.setVisibility(View.VISIBLE);
             holder.genderView.setText(holder.genderView.getText() + list.get(position).getGender());
             holder.ageView.setText(holder.ageView.getText() + "" + list.get(position).getAge() + "");
         }
-        switch (categoryID[list.get(position).getItem_type_id()])
+        switch (list.get(position).getItem_type_id())
         {
-            case "Food":
+            case 1:
                 holder.categoryIcon.setImageResource(R.drawable.ic_food_black);
                 break;
-            case "Clothes":
+            case 2:
                 holder.categoryIcon.setImageResource(R.drawable.ic_cloth_black);
                 break;
-            case "Groceries":
+            case 3:
+                holder.categoryIcon.setImageResource(R.drawable.ic_blood_black);
+                break;
+            case 4:
                 holder.categoryIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                 break;
-            case "Stationeries":
+            case 5:
                 holder.categoryIcon.setImageResource(R.drawable.ic_stationery_black);
                 break;
         }
