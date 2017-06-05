@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -36,6 +37,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 public class OrganisationRegistrationFragment extends Fragment {
@@ -77,7 +79,9 @@ public class OrganisationRegistrationFragment extends Fragment {
             orgDetailsString=i.getString("COORDINATOR");
         }
          if(v==null)
-            v = inflater.inflate(R.layout.fragment_organisation_register_page,container,false);
+             v = inflater.inflate(R.layout.fragment_organisation_register_page,container,false);
+
+
         landingPage = (LandingPage)getActivity();
         orgNoEditText = (EditText)v.findViewById(R.id.org_register_num_editText_org_form);
         orgNameEditText = (EditText)v.findViewById(R.id.org_name_editText_org_form);
@@ -88,7 +92,8 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
         orgRegisterButton = (Button)v.findViewById(R.id.submit_button_org_form);
         chooseLocationButton = (Button)v.findViewById(R.id.map);
-        linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
+        linearLayout= (LinearLayout) v.findViewById(R.id.org_reg_linear_layout);
+
 
         //v.getRootView().setBackgroundColor(Color.WHITE);
 
@@ -166,10 +171,7 @@ public class OrganisationRegistrationFragment extends Fragment {
         }
 
         CommonUI.internetConnectionChecking(getActivity(),linearLayout,new OrganisationAccount());
-
-
-
-        new OrganisationAccount().execute();
+      //  new OrganisationAccount().execute();
 
     }
 
@@ -198,8 +200,8 @@ public class OrganisationRegistrationFragment extends Fragment {
     }
 
     public void onSignupFailed() {
-       // Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
-
+        Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
+        CommonUI.internalValidation(getActivity(),linearLayout,"Invalid Password");
         orgRegisterButton.setEnabled(true);
     }
 
@@ -272,23 +274,28 @@ public class OrganisationRegistrationFragment extends Fragment {
                 progressDialog.dismiss();
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
-                    fragment = new LoginPageFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-                    fragment.setArguments(bundle);
+                   // Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
+
+                    CommonUI.internalValidation(getActivity(),linearLayout,"Registration Successful");
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment = new LoginPageFragment();
+                            fragmentManager = getActivity().getFragmentManager();
+                            Bundle bundle = new Bundle();
+                            bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+                            fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                            fragment.setArguments(bundle);
+                        }
+                    }, 3000);
+
+
                 }
 
             super.onPostExecute(o);
         }
     }
-
-
-
-
-
 }
 
 
