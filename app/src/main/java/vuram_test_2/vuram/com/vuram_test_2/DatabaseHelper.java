@@ -21,14 +21,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final String ID = "ID";
     private static final String COUNTRY_TABLE_NAME = "COUNTRY_DETAILS";
-    private static final String COUNTRY_NAME = "COUNTRY_NAME";
     private static final String COUNTRY_ID = "COUNTRY_ID";
+    private static final String COUNTRY_NAME = "COUNTRY_NAME";
+    private static final String COUNTRY_CODE = "COUNTRY_CODE";
     private static final String MAIN_ITEM_TABLE_NAME = "MAIN_ITEM_DETAILS";
     private static final String MAIN_ITEM_CODE = "MAIN_ITEM_CODE";
     private static final String MAIN_ITEM_NAME = "MAIN_ITEM_NAME";
     private static final String SUB_ITEM_TABLE_NAME = "SUB_ITEM_DETAILS";
     private static final String SUB_ITEM_CODE = "SUB_ITEM_CODE";
     private static final String SUB_ITEM_NAME = "SUB_ITEM_NAME";
+    private static final String ORG_TYPE_TABLE_NAME = "ORG_TYPE_LOOK_UP_DETAILS";
+    private static final String ORG_TYPE_ID = "ORG_TYPE_ID";
+    private static final String ORG_TYPE_NAME = "ORG_TYPE_NAME";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "create table " + COUNTRY_TABLE_NAME +
-                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text)"
+                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text, " + COUNTRY_CODE + "integer)"
         );
         db.execSQL(
                 "create table " + MAIN_ITEM_TABLE_NAME +
@@ -77,8 +81,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+COUNTRY_TABLE_NAME);
         for(CountryLookUpTableDetails lookup:countryLookUpTableDetails){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(COUNTRY_ID,lookup.getCountryId());
-            contentValues.put(COUNTRY_NAME,lookup.getCountryName());
+            contentValues.put(COUNTRY_ID, lookup.getCountryId());
+            contentValues.put(COUNTRY_NAME, lookup.getCountryName());
+            contentValues.put(COUNTRY_CODE, lookup.getCountry_code());
             db.insert(COUNTRY_TABLE_NAME,null,contentValues);
         }
         db.close();
@@ -190,4 +195,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return countryName;
     }
+
+    /*public ArrayList<CountryLookUpTableDetails> getAllOrgTypeLookUpDetails() {
+        db = this.getReadableDatabase();
+        ArrayList<OrgTypeLookUpDetails> orgTypeLookUpDetailsList = new ArrayList<OrgTypeLookUpDetails>();
+        Cursor cursor = db.rawQuery("select * from " + ORG_TYPE_TABLE_NAME, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                OrgTypeLookUpDetails orgTypeLookUpDetails = new OrgTypeLookUpDetails();
+                int orgTypeId = cursor.getInt(cursor.getColumnIndex(ORG_TYPE_ID));
+                String orgTypeName = cursor.getString(cursor.getColumnIndex(MAIN_ITEM_NAME));
+                mainItemDetails.setMainItemCode(mainItemCode);
+                mainItemDetails.setMainItemName(mainItemName);
+                mainItemDetailsList.add(mainItemDetails);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return mainItemDetailsList;
+    }
+
+    public void insertIntoOrgTypeLookUpDetails(ArrayList<OrgTypeLookUpDetails> orgTypeLookUpDetailsList) {
+        db = this.getWritableDatabase();
+        db.execSQL("delete from " + MAIN_ITEM_TABLE_NAME);
+        for(MainItemDetails mainItemDetails : mainItemDetailsList){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MAIN_ITEM_CODE, mainItemDetails.getMainItemCode());
+            contentValues.put(MAIN_ITEM_NAME, mainItemDetails.getMainItemName());
+            db.insert(MAIN_ITEM_TABLE_NAME, null, contentValues);
+            Log.d(TAG, "insertIntoMainItemDetails: Item Code: " + mainItemDetails.getMainItemCode());
+            Log.d(TAG, "insertIntoMainItemDetails: Item Name: " + mainItemDetails.getMainItemName());
+        }
+        db.close();
+    }*/
 }

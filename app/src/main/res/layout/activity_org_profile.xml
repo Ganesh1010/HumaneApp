@@ -12,6 +12,14 @@
     tools:context="vuram_test_2.vuram.com.vuram_test_2.OrgProfileActivity"
     android:orientation="vertical">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar_org_profile" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,14 +44,31 @@
                     android:background="@drawable/gradient"/>
 
             </RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <Button
+                    android:text="Edit"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_button_org_profile"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:gravity="center" />
+            </LinearLayout>
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="@dimen/search_view_pad_top"
-                android:paddingBottom="@dimen/search_view_pad_bottom">
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp">
 
                 <LinearLayout
                     android:orientation="vertical"

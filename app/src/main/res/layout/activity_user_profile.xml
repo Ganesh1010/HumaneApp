@@ -112,7 +112,7 @@
                                         android:id="@+id/username_label_textview_user_profile" />
 
                                     <TextView
-                                        android:text="Sujith Velumayil"
+                                        android:text="@string/full_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:id="@+id/username_textview_user_profile"
@@ -145,10 +145,10 @@
                                             android:layout_weight="0.5" />
 
                                         <TextView
-                                            android:text="sujithborn4u@gmail.com"
+                                            android:text="@string/email"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:id="@+id/emailText"
+                                            android:id="@+id/email_textview_user_profile"
                                             android:textColor="@color/colorPrimary"
                                             android:elevation="@dimen/textElevation"
                                             android:layout_weight="0.5"
@@ -170,75 +170,15 @@
                                             android:layout_weight="0.5" />
 
                                         <TextView
-                                            android:text="8344052041"
+                                            android:text="@string/phone"
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
-                                            android:id="@+id/phoneText"
+                                            android:id="@+id/phone_textview_user_profile"
                                             android:textColor="@color/colorPrimary"
                                             android:elevation="@dimen/textElevation"
                                             android:layout_weight="0.5"
                                             android:textStyle="normal|bold" />
                                     </LinearLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:orientation="horizontal"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="0.2"
-                                    android:layout_marginTop="12dp">
-
-                                    <LinearLayout
-                                        android:orientation="vertical"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.5">
-
-                                        <TextView
-                                            android:text="@string/gender"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:id="@+id/gender_label_textview_user_profile"
-                                            android:textColor="@color/colorSecondaryText"
-                                            android:layout_weight="0.5" />
-
-                                        <TextView
-                                            android:text="Male"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:id="@+id/gender_textview_user_profile"
-                                            android:elevation="@dimen/textElevation"
-                                            android:layout_weight="0.5"
-                                            android:textColor="@color/colorPrimary"
-                                            android:textStyle="normal|bold" />
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:orientation="vertical"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_weight="0.5">
-
-                                        <TextView
-                                            android:text="@string/user_id"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:id="@+id/userIdLabel"
-                                            android:textColor="@color/colorSecondaryText"
-                                            android:layout_weight="0.5" />
-
-                                        <TextView
-                                            android:text="123456789"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:id="@+id/userIdText"
-                                            android:textColor="@color/colorPrimary"
-                                            android:elevation="@dimen/textElevation"
-                                            android:layout_weight="0.5"
-                                            android:textStyle="normal|bold" />
-
-                                    </LinearLayout>
-
                                 </LinearLayout>
 
                             </LinearLayout>

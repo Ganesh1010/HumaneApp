@@ -11,11 +11,12 @@ public class UserDetails {
     String password;
     RegisterDetails profile;
     OrganisationDetails org;
-    UserDetails()
-    {
+
+    UserDetails() {
         org=new OrganisationDetails();
         profile=new RegisterDetails();
     }
+
     public OrganisationDetails getOrganisationDetails() {
         return org;
     }
@@ -63,4 +64,5 @@ public class UserDetails {
     public void setProfile(RegisterDetails profile) {
         this.profile = profile;
     }
+
 }

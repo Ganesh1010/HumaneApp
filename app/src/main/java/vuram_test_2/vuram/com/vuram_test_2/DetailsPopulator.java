@@ -29,14 +29,14 @@ public class DetailsPopulator {
     }
 
     public void getCountryDetailsFromAPI() {
-        new Country().execute();
+        new CountryDetailsSyncTask().execute();
     }
 
-    public void getMainItemDetailsFromAPI() { new MainItemDetailsFetchingTask().execute(); }
+    public void getMainItemDetailsFromAPI() { new MainItemDetailsSyncTask().execute(); }
 
-    public void getSubItemDetailsFromAPI() { new SubItemDetailsFetchingTask().execute(); }
+    public void getSubItemDetailsFromAPI() { new SubItemDetailsSyncTask().execute(); }
 
-    class Country extends AsyncTask {
+    class CountryDetailsSyncTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
         public ArrayList<CountryLookUpTableDetails> countryDetails;
@@ -68,7 +68,7 @@ public class DetailsPopulator {
         }
     }
 
-    class MainItemDetailsFetchingTask extends AsyncTask {
+    class MainItemDetailsSyncTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
         public ArrayList<MainItemDetails> mainItemDetailsList;
@@ -100,7 +100,7 @@ public class DetailsPopulator {
         }
     }
 
-    class SubItemDetailsFetchingTask extends AsyncTask {
+    class SubItemDetailsSyncTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
         public ArrayList<SubItemDetails> subItemDetailsList;
@@ -142,4 +142,47 @@ public class DetailsPopulator {
             Log.d(TAG, "insertIntoMainItemDetails: Sub Items synced: " + subItemsCount);
         }
     }
+
+    /*class OrgTypeDetailsSyncTask extends AsyncTask {
+        HttpResponse response;
+        HttpClient client;
+        public ArrayList<String> orgTypeDetailsList;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            client = new DefaultHttpClient();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            response = Connectivity.makeGetRequest(RestAPIURL.subItemDetails, client, null);
+            if (response != null) {
+                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                    try {
+                        JSONArray jsonObject = new JSONArray(Connectivity.getJosnFromResponse(response));
+                        Gson gson = new Gson();
+                        orgTypeDetailsList = gson.fromJson(jsonObject.toString(), new TypeToken<List<SubItemDetails>>() {}.getType());
+                        DatabaseHelper db = new DatabaseHelper(context);
+                        db.insertIntoOrgTypeDetails(orgTypeDetailsList);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            // Verifying if all the items are synced
+            DatabaseHelper db = new DatabaseHelper(context);
+            int mainItemsCount = db.getAllMainItemDetails().size();
+            Log.d(TAG, "insertIntoMainItemDetails: Main Items synced: " + mainItemsCount);
+            int subItemsCount = db.getAllSubItemDetails().size();
+            Log.d(TAG, "insertIntoMainItemDetails: Sub Items synced: " + subItemsCount);
+        }
+    }*/
 }
