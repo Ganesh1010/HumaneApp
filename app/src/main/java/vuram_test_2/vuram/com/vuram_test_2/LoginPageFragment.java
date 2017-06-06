@@ -245,6 +245,8 @@ public class LoginPageFragment extends Fragment {
             DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
             detailsPopulator.getMainItemDetailsFromAPI();
             detailsPopulator.getSubItemDetailsFromAPI();
+            detailsPopulator.getCountryDetailsFromAPI();
+            detailsPopulator.getOrgTypeDetailsFromAPI();
             if(getArguments()!=null) {
                 if (getArguments().get(USER_KEY_TYPE) == "DONOR") {
                     Intent intent = new Intent(landingPage, HomeActivity.class);
