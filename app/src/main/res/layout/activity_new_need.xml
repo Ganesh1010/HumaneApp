@@ -25,7 +25,7 @@
         android:gravity="center"
         android:id="@+id/hiddenPanel_needForm"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="?attr/colorButtonNormal">
         <View
             android:layout_width="fill_parent"
