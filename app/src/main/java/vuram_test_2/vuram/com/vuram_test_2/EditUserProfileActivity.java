@@ -46,7 +46,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
@@ -55,7 +54,7 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken
 
 public class EditUserProfileActivity extends AppCompatActivity {
 
-    private static final String TAG = "EditUserProfileActivity: ";
+    private static final String TAG = "EditUserProfileActivity";
     Toolbar toolbar;
     FloatingActionButton changeImageButton;
     ImageButton saveButton;
@@ -181,20 +180,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 email = userDetails.getEmail();
                 profile = userDetails.getProfile();
                 mobile = profile.getMobile();
-                int countryId = profile.getCountry();
-
-                // Finding the country
-                db = new DatabaseHelper(EditUserProfileActivity.this);
-                ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
-                for (int i = 0; i < countryDetailsList.size(); i++) {
-                    CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
-                    int tempCountryId = countryDetails.getCountryId();
-                    if (tempCountryId == countryId) {
-                        countryCode = countryDetails.getCountry_code();
-                        break;
-                    }
-                }
-
+                countryCode = profile.getCountry();
             } else {
                 Log.d("CAll ", "Response null");
             }
@@ -274,19 +260,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
         // Change User Details
         // fetching country names & codes
-        int selectedCountryId = 1;
-        String selectedCountryName = countryCodePicker.getSelectedCountryName();
-        DatabaseHelper dbHelper = new DatabaseHelper(EditUserProfileActivity.this);
-        ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
-        for (int i = 0; i < countryLookUpTableDetailsList.size(); i++) {
-            CountryLookUpTableDetails countryLookUpTableDetails = countryLookUpTableDetailsList.get(i);
-            String countryName = countryLookUpTableDetails.getCountryName();
-            int countryId = countryLookUpTableDetails.getCountryId();
-            if (countryName.equals(selectedCountryName)) {
-                selectedCountryId = countryId;
-                break;
-            }
-        }
+        int selectedCountryId = Integer.parseInt(countryCodePicker.getSelectedCountryCode().substring(1));
 
         String firstName = fullNameEditText.getText().toString();
         if (firstName != null) {

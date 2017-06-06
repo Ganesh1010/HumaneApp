@@ -56,7 +56,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="230dp"
-                        app:srcCompat="@drawable/ic_user_black"
+                        android:src="@drawable/ic_user_black"
                         android:id="@+id/org_image_edit_org_profile"
                         android:layout_alignParentEnd="true"
                         android:scaleType="centerCrop"

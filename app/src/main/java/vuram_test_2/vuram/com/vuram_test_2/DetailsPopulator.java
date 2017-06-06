@@ -36,6 +36,8 @@ public class DetailsPopulator {
 
     public void getSubItemDetailsFromAPI() { new SubItemDetailsSyncTask().execute(); }
 
+    public void getOrgTypeDetailsFromAPI() { new OrgTypeDetailsSyncTask().execute(); }
+
     class CountryDetailsSyncTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
@@ -49,7 +51,7 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            response = Connectivity.makeGetRequest(RestAPIURL.code, client, null);
+            response = Connectivity.makeGetRequest(RestAPIURL.countryDetails, client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
@@ -65,6 +67,16 @@ public class DetailsPopulator {
                 }
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            // Verifying if all the items are synced
+            DatabaseHelper db = new DatabaseHelper(context);
+            int count = db.getAllCountryDetails().size();
+            Log.d(TAG, "Country details synced: " + count);
         }
     }
 
@@ -143,10 +155,10 @@ public class DetailsPopulator {
         }
     }
 
-    /*class OrgTypeDetailsSyncTask extends AsyncTask {
+    class OrgTypeDetailsSyncTask extends AsyncTask {
         HttpResponse response;
         HttpClient client;
-        public ArrayList<String> orgTypeDetailsList;
+        public ArrayList<OrgTypeLookUpDetails> orgTypeDetailsList;
 
         @Override
         protected void onPreExecute() {
@@ -156,13 +168,13 @@ public class DetailsPopulator {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            response = Connectivity.makeGetRequest(RestAPIURL.subItemDetails, client, null);
+            response = Connectivity.makeGetRequest(RestAPIURL.orgTypeDetails, client, null);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
                         JSONArray jsonObject = new JSONArray(Connectivity.getJosnFromResponse(response));
                         Gson gson = new Gson();
-                        orgTypeDetailsList = gson.fromJson(jsonObject.toString(), new TypeToken<List<SubItemDetails>>() {}.getType());
+                        orgTypeDetailsList = gson.fromJson(jsonObject.toString(), new TypeToken<List<OrgTypeLookUpDetails>>() {}.getType());
                         DatabaseHelper db = new DatabaseHelper(context);
                         db.insertIntoOrgTypeDetails(orgTypeDetailsList);
                     } catch (JSONException e) {
@@ -179,10 +191,8 @@ public class DetailsPopulator {
 
             // Verifying if all the items are synced
             DatabaseHelper db = new DatabaseHelper(context);
-            int mainItemsCount = db.getAllMainItemDetails().size();
-            Log.d(TAG, "insertIntoMainItemDetails: Main Items synced: " + mainItemsCount);
-            int subItemsCount = db.getAllSubItemDetails().size();
-            Log.d(TAG, "insertIntoMainItemDetails: Sub Items synced: " + subItemsCount);
+            int count = db.getAllOrgTypeDetails().size();
+            Log.d(TAG, "Org Types synced: " + count);
         }
-    }*/
+    }
 }
