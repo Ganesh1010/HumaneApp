@@ -21,14 +21,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;
     private static final String ID = "ID";
     private static final String COUNTRY_TABLE_NAME = "COUNTRY_DETAILS";
-    private static final String COUNTRY_NAME = "COUNTRY_NAME";
     private static final String COUNTRY_ID = "COUNTRY_ID";
+    private static final String COUNTRY_NAME = "COUNTRY_NAME";
+    private static final String COUNTRY_CODE = "COUNTRY_CODE";
     private static final String MAIN_ITEM_TABLE_NAME = "MAIN_ITEM_DETAILS";
     private static final String MAIN_ITEM_CODE = "MAIN_ITEM_CODE";
     private static final String MAIN_ITEM_NAME = "MAIN_ITEM_NAME";
     private static final String SUB_ITEM_TABLE_NAME = "SUB_ITEM_DETAILS";
     private static final String SUB_ITEM_CODE = "SUB_ITEM_CODE";
     private static final String SUB_ITEM_NAME = "SUB_ITEM_NAME";
+    private static final String ORG_TYPE_TABLE_NAME = "ORG_TYPE_LOOK_UP_DETAILS";
+    private static final String ORG_TYPE_ID = "ORG_TYPE_ID";
+    private static final String ORG_TYPE_NAME = "ORG_TYPE_NAME";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "create table " + COUNTRY_TABLE_NAME +
-                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text)"
+                        " (" + ID + " integer primary key autoincrement, " + COUNTRY_ID + " integer, " + COUNTRY_NAME + " text, " + COUNTRY_CODE + "integer)"
         );
         db.execSQL(
                 "create table " + MAIN_ITEM_TABLE_NAME +
@@ -55,35 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<CountryLookUpTableDetails> getAllCountryDetails() {
-        db = this.getReadableDatabase();
-        ArrayList<CountryLookUpTableDetails>  countryDetails=new ArrayList<CountryLookUpTableDetails>();
-        Cursor cursor = db.rawQuery("SELECT * from "+COUNTRY_TABLE_NAME,null);
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                CountryLookUpTableDetails lookUpTableDetails=new CountryLookUpTableDetails();
-                lookUpTableDetails.setCountryId(cursor.getInt(cursor.getColumnIndex(COUNTRY_ID)));
-                lookUpTableDetails.setCountryName(cursor.getString(cursor.getColumnIndex(COUNTRY_NAME)));
-                countryDetails.add(lookUpTableDetails);
-                cursor.moveToNext();
-            }
-        }
-        db.close();
-        return  countryDetails;
-    }
-
-    public void insertIntoCountryDetails(ArrayList<CountryLookUpTableDetails> countryLookUpTableDetails) {
-        db = this.getWritableDatabase();
-        db.execSQL("delete from "+COUNTRY_TABLE_NAME);
-        for(CountryLookUpTableDetails lookup:countryLookUpTableDetails){
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COUNTRY_ID,lookup.getCountryId());
-            contentValues.put(COUNTRY_NAME,lookup.getCountryName());
-            db.insert(COUNTRY_TABLE_NAME,null,contentValues);
-        }
-        db.close();
-    }
-
+    /* Main Item Details */
     public ArrayList<MainItemDetails> getAllMainItemDetails() {
         db = this.getReadableDatabase();
         ArrayList<MainItemDetails> mainItemDetailsList = new ArrayList<MainItemDetails>();
@@ -102,7 +78,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return mainItemDetailsList;
     }
-
     public void insertIntoMainItemDetails(ArrayList<MainItemDetails> mainItemDetailsList) {
         db = this.getWritableDatabase();
         db.execSQL("delete from " + MAIN_ITEM_TABLE_NAME);
@@ -117,6 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /* Sub Item Details */
     public ArrayList<SubItemDetails> getAllSubItemDetails() {
         db = this.getReadableDatabase();
         ArrayList<SubItemDetails> subItemDetailsList = new ArrayList<SubItemDetails>();
@@ -137,7 +113,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return subItemDetailsList;
     }
-
     public void insertIntoSubItemDetails(ArrayList<SubItemDetails> subItemDetailsList) {
         db = this.getWritableDatabase();
         db.execSQL("delete from " + SUB_ITEM_TABLE_NAME);
@@ -151,7 +126,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getItemNameFromLookUp(int itemCode){
+    /* Country Lookup Details */
+    public ArrayList<CountryLookUpTableDetails> getAllCountryDetails() {
+        db = this.getReadableDatabase();
+        ArrayList<CountryLookUpTableDetails>  countryDetails = new ArrayList<CountryLookUpTableDetails>();
+        Cursor cursor = db.rawQuery("SELECT * from " + COUNTRY_TABLE_NAME, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                CountryLookUpTableDetails countryLookUpTableDetails=new CountryLookUpTableDetails();
+                countryLookUpTableDetails.setCountryId(cursor.getInt(cursor.getColumnIndex(COUNTRY_ID)));
+                countryLookUpTableDetails.setCountryName(cursor.getString(cursor.getColumnIndex(COUNTRY_NAME)));
+                countryLookUpTableDetails.setCountry_code(cursor.getInt(cursor.getColumnIndex(COUNTRY_CODE)));
+                countryDetails.add(countryLookUpTableDetails);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return  countryDetails;
+    }
+    public void insertIntoCountryDetails(ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList) {
+        db = this.getWritableDatabase();
+        db.execSQL("delete from "+COUNTRY_TABLE_NAME);
+        for(CountryLookUpTableDetails lookup:countryLookUpTableDetailsList){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COUNTRY_ID, lookup.getCountryId());
+            contentValues.put(COUNTRY_NAME, lookup.getCountryName());
+            contentValues.put(COUNTRY_CODE, lookup.getCountry_code());
+            db.insert(COUNTRY_TABLE_NAME,null,contentValues);
+        }
+        db.close();
+    }
+
+    /* Org Type Details */
+    public ArrayList<OrgTypeLookUpDetails> getAllOrgTypeDetails() {
+        db = this.getReadableDatabase();
+        ArrayList<OrgTypeLookUpDetails>  orgTypeLookUpDetailsList = new ArrayList<OrgTypeLookUpDetails>();
+        Cursor cursor = db.rawQuery("SELECT * from " + ORG_TYPE_TABLE_NAME, null);
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                OrgTypeLookUpDetails orgTypeLookUpDetails = new OrgTypeLookUpDetails();
+                orgTypeLookUpDetails.setId(cursor.getInt(cursor.getColumnIndex(ORG_TYPE_ID)));
+                orgTypeLookUpDetails.setOrgTypeName(cursor.getString(cursor.getColumnIndex(ORG_TYPE_NAME)));
+                orgTypeLookUpDetailsList.add(orgTypeLookUpDetails);
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return orgTypeLookUpDetailsList;
+    }
+    public void insertIntoOrgTypeDetails(ArrayList<OrgTypeLookUpDetails> orgTypeLookUpDetailsList) {
+        db = this.getWritableDatabase();
+        db.execSQL("delete from " + ORG_TYPE_TABLE_NAME);
+        for(OrgTypeLookUpDetails lookup:orgTypeLookUpDetailsList){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ORG_TYPE_ID, lookup.getId());
+            contentValues.put(ORG_TYPE_NAME, lookup.getOrgTypeName());
+            db.insert(ORG_TYPE_TABLE_NAME,null,contentValues);
+        }
+        db.close();
+    }
+
+    /* Get one sub & main item using itemCode */
+    public String getMainItemNameFromLookUp(int itemCode){
 
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select"+MAIN_ITEM_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+MAIN_ITEM_CODE +"="+itemCode,null);
@@ -166,7 +202,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return itemName;
     }
-
     public String getSubItemNameFromLookUp(int subItemCode){
 
         db = this.getReadableDatabase();
@@ -179,15 +214,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return subItemName;
     }
 
-    public String getCountryNameFromLookUp(int countryCode){
-
-        db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select"+COUNTRY_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+MAIN_ITEM_CODE +"="+countryCode,null);
-
-        if(cursor!=null)
-            cursor.moveToFirst();
-        String countryName = cursor.getString(cursor.getColumnIndex(COUNTRY_NAME));
-        db.close();
-        return countryName;
-    }
 }

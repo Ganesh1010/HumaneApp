@@ -3,16 +3,20 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.widget.GridView;
 
 public class OrganisationLandingPage extends AppCompatActivity {
     Intent intent;
+    GridView gv;
+    String[] headings={"My Profile"," ","Organisation","","Received Items"};
+    int[] images={R.drawable.icona,0,R.drawable.icomsb,0,R.drawable.iconsc};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organisation_landing_page);
-        Button myprofile=(Button)findViewById(R.id.myprofile);
+        gv=(GridView) findViewById(R.id.details);
+        gv.setAdapter(new CustomAdapter(this, headings,images));
+       /* Button myprofile=(Button)findViewById(R.id.myprofile);
         myprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,7 +33,7 @@ public class OrganisationLandingPage extends AppCompatActivity {
             }
         });
         Button donations=(Button)findViewById(R.id.donations);
-       /* donations.setOnClickListener(new View.OnClickListener() {
+       donations.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

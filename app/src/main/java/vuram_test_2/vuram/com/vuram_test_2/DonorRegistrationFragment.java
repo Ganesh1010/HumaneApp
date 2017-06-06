@@ -3,8 +3,10 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
@@ -44,6 +48,7 @@ public class DonorRegistrationFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
+    LinearLayout linearLayout;
 
     @Nullable
     @Override
@@ -61,6 +66,7 @@ public class DonorRegistrationFragment extends Fragment {
         signInTextView = (TextView)v.findViewById(R.id.link_login_sign_in);
         landingPage = (LandingPage) getActivity();
         frameLayout = (FrameLayout) landingPage.findViewById(fragmentLayout);
+        linearLayout = (LinearLayout)v.findViewById(R.id.donor_reg_linear_layout);
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +136,7 @@ public class DonorRegistrationFragment extends Fragment {
 
     public void onSignupFailed() {
         Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
+        CommonUI.internalValidation(getActivity(),linearLayout,"Invalid Password");
          registerButton.setEnabled(true);
     }
 
@@ -253,22 +260,32 @@ public class DonorRegistrationFragment extends Fragment {
                 progressDialog.dismiss();
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
-                   // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
+                   // Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
+                    // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
                     //landingPage.finish();
+                    CommonUI.internalValidation(getActivity(),linearLayout,"Registration Successful");
 
-                    fragment = new LoginPageFragment();
-                    System.out.println("good");
-                    fragmentManager = getActivity().getFragmentManager();
-                    System.out.println("good");
-                    Bundle bundle = new Bundle();
-                    bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    System.out.println("good");
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-                    System.out.println("good");
-                    fragment.setArguments(bundle);
-
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment = new LoginPageFragment();
+                            System.out.println("good");
+                            fragmentManager = getActivity().getFragmentManager();
+                            System.out.println("good");
+                            Bundle bundle = new Bundle();
+                            bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                            System.out.println("good");
+                            fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                            System.out.println("good");
+                            fragment.setArguments(bundle);
+                        }
+                    }, 3000);
                 }
+
+
+
+
+
             super.onPostExecute(o);
         }
     }

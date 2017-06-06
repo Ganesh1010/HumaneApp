@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +49,8 @@ public class LoginPageFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView registerLater,linkLoginTextView;
-    LinearLayout linearLayout;
+    LinearLayout linearLayout;;
+    RelativeLayout homeActivityLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class LoginPageFragment extends Fragment {
         linkLoginTextView = (TextView)v.findViewById(R.id.link_login_register);
         landingPage = (LandingPage) getActivity();
         linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
+        homeActivityLayout = (RelativeLayout)getActivity().findViewById(R.id.activity_main);
 //        registerLater=v.findViewById(R.id.register_later);
 //        registerLater.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -81,10 +84,31 @@ public class LoginPageFragment extends Fragment {
         linkLoginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment = new DonorRegistrationFragment();
-                fragmentManager = getActivity().getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
+                if(LandingPage.user.equals("DONOR")) {
+                    fragment = new DonorRegistrationFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                    // startActivityForResult(intent, REQUEST_SIGNUP);
+                    //finish();
+
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                }
+
+                if(LandingPage.user.equals("COORDINATOR")){
+
+                    fragment = new CoordinatorRegistrationFragment();
+                    fragmentManager = getActivity().getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
+                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+
+
+                }
             }
         });
 
@@ -200,9 +224,11 @@ public class LoginPageFragment extends Fragment {
                 httpResponse = Connectivity.makePostRequest(RestAPIURL.login, obj.toString(), httpClient, null);
                 if (httpResponse != null) {
                     code = httpResponse.getStatusLine().getStatusCode();
-                    JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(httpResponse));
-                    String token = jsonObject.getString("auth_token");
-                    Connectivity.storeAuthToken(landingPage, token, Connectivity.Donor_Token);
+                    if(code== 200 || code==201) {
+                        JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(httpResponse));
+                        String token = jsonObject.getString("auth_token");
+                        Connectivity.storeAuthToken(landingPage, token, Connectivity.Donor_Token);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -230,6 +256,7 @@ public class LoginPageFragment extends Fragment {
                 Toast.makeText(landingPage, "Success", Toast.LENGTH_LONG).show();
                 onLoginSuccess();
             } else {
+              //  CommonUI.internalValidation(getActivity(),homeActivityLayout,"REGISTRATION SUCCESSFUL");
                 onLoginFailed();
             }
             super.onPostExecute(o);
@@ -245,6 +272,8 @@ public class LoginPageFragment extends Fragment {
             DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
             detailsPopulator.getMainItemDetailsFromAPI();
             detailsPopulator.getSubItemDetailsFromAPI();
+            detailsPopulator.getCountryDetailsFromAPI();
+            detailsPopulator.getOrgTypeDetailsFromAPI();
             if(getArguments()!=null) {
                 if (getArguments().get(USER_KEY_TYPE) == "DONOR") {
                     Intent intent = new Intent(landingPage, HomeActivity.class);
@@ -265,7 +294,7 @@ public class LoginPageFragment extends Fragment {
 
         public void onLoginFailed() {
             Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
-
+            CommonUI.internalValidation(getActivity(),linearLayout,"Invalid Password");
             loginButton.setEnabled(true);
         }
     }

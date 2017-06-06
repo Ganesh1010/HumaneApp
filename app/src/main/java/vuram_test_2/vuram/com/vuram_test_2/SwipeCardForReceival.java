@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -49,6 +50,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
     public boolean confirmation = false;
     AlertDialog alertDialog;
     View view;
+    int donationID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
 
     }
 
-    public ArrayList getDonorList() {
+  /*  public ArrayList getDonorList() {
         ArrayList temp = new ArrayList();
 
         for (int i = 0; i < 10; i++) {
@@ -72,7 +74,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
 
         }
         return temp;
-    }
+    }*/
 
     private void initSwipe() {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -87,8 +89,12 @@ public class SwipeCardForReceival extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    if (initDialog())
+                    if (initDialog()) {
                         swipeAdapter.removeItem(position);
+                        donationID = donorNameList.get(position).getDonation_id();
+                        Toast.makeText(getApplicationContext(), "donation Id", Toast.LENGTH_SHORT).show();
+                    }
+
                 } /*else {
                    // removeView();
                     //edit_position = position;
@@ -183,7 +189,6 @@ public class SwipeCardForReceival extends AppCompatActivity {
 
         HttpResponse response;
         HttpClient client;
-        ArrayList<DonationDetailsReadOnly> donorList;
         String donations;
         @Override
         protected void onPreExecute() {
@@ -194,14 +199,17 @@ public class SwipeCardForReceival extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
 
             client = new DefaultHttpClient();
+            donorNameList = new ArrayList<>();
             response = Connectivity.makeGetRequest(RestAPIURL.donationList, client, Connectivity.getAuthToken(SwipeCardForReceival.this, Connectivity.Donor_Token));
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 201 || response.getStatusLine().getStatusCode() == 200) {
                     donations = Connectivity.getJosnFromResponse(response);
                     Gson gson = new Gson();
-                    //   Log.d("123", "doInBackground: "+results.toString());
+                     Log.d("123", "doInBackground: "+donations.toString());
                     donorNameList = gson.fromJson(donations, new TypeToken<List<DonationDetailsReadOnly>>() {
                     }.getType());
+                    Log.d("123", "doInBackground: "+donorNameList.toString());
+
                 }
             }
 

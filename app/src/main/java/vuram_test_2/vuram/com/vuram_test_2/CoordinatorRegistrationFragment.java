@@ -169,6 +169,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
             firstNameEditText.setError(null);
         }
 
+
         if (emailId.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailId).matches()) {
             emailEditText.setError("Enter a valid email");
             validated = false;

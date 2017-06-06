@@ -3,19 +3,31 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +41,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     ArrayList<OrganisationDetails> orgDetailsList = null;
     int orgCount = 0;
     public final String TAG = "UserProfileActivity";
+
+    String authToken;
+    HttpClient client;
+    HttpResponse response;
+    DatabaseHelper db;
+
+    TextView fullNameTextView, emailTextView, phoneTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +85,77 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         // My Organisation Button
         myOrgButton = (Button) findViewById(R.id.my_org_button_edit_profile);
         myOrgButton.setOnClickListener(UserProfileActivity.this);
+
+        new PopulatingTask().execute();
+
+    }
+
+    class PopulatingTask extends AsyncTask {
+
+        String firstName;
+        String email;
+        RegisterDetails profile;
+        String mobile;
+        int countryCode;
+        boolean isCoordinator;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            fullNameTextView = (TextView) findViewById(R.id.username_textview_user_profile);
+            emailTextView = (TextView) findViewById(R.id.email_textview_user_profile);
+            phoneTextView = (TextView) findViewById(R.id.phone_textview_user_profile);
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            authToken = Connectivity.getAuthToken(UserProfileActivity.this, Connectivity.Donor_Token);
+            client = new DefaultHttpClient();
+            String authToken = Connectivity.getAuthToken(UserProfileActivity.this, Connectivity.Donor_Token);
+            response = Connectivity.makeGetRequest(RestAPIURL.getUserDetails, client, authToken);
+            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                Gson gson = new Gson();
+
+                List<UserDetails> userDetailsList = gson.fromJson(Connectivity.getJosnFromResponse(response), new TypeToken<List<UserDetails>>() {}.getType());
+                UserDetails userDetails = userDetailsList.get(0);
+                firstName = userDetails.getFirst_name();
+                email = userDetails.getEmail();
+                profile = userDetails.getProfile();
+                mobile = profile.getMobile();
+                int countryId = profile.getCountry();
+                isCoordinator = profile.isCoordinator();
+
+                // Finding the country
+                db = new DatabaseHelper(UserProfileActivity.this);
+                ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
+                for (int i = 0; i < countryDetailsList.size(); i++) {
+                    CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
+                    int tempCountryId = countryDetails.getCountryId();
+                    if (tempCountryId == countryId) {
+                        countryCode = countryDetails.getCountry_code();
+                        break;
+                    }
+                }
+
+            } else {
+                Log.d("CAll ", "Response null");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            fullNameTextView.setText(firstName);
+            emailTextView.setText(email);
+            phoneTextView.setText(mobile);
+            if (isCoordinator) {
+                ((Button)findViewById(R.id.my_org_button_edit_profile)).setVisibility(View.VISIBLE);
+            } else {
+                ((Button)findViewById(R.id.my_org_button_edit_profile)).setVisibility(View.GONE);
+            }
+        }
+
     }
 
     @Override
@@ -73,7 +163,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         int viewId = v.getId();
         switch (viewId) {
             case R.id.edit_imagebutton_user_profile:
-                startActivity(new Intent(UserProfileActivity.this, EditProfileActivity.class));
+                startActivity(new Intent(UserProfileActivity.this, EditUserProfileActivity.class));
                 break;
             case R.id.my_org_button_edit_profile:
                 Intent intent = new Intent(UserProfileActivity.this, OrgProfileActivity.class);

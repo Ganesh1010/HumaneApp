@@ -2,10 +2,17 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -24,11 +31,25 @@ public class OrgProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "OrgProfileActivity.java";
     TextView orgName, orgCityName, orgMobileNo, orgEmail, orgPeopleCount, orgType;
+    Button editButton;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_profile);
+
+        // Back Arrow
+        toolbar = (Toolbar) findViewById(R.id.toolbar_org_profile);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
+        upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // Embedding Map fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -93,6 +114,15 @@ public class OrgProfileActivity extends AppCompatActivity {
             orgEmail.setText(organisationDetails.getEmail());
             orgType.setText(organisationDetails.getOrg_type());
             orgPeopleCount.setText(100 + "");
+
+            editButton = (Button) findViewById(R.id.edit_button_org_profile);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(OrgProfileActivity.this, EditOrgProfileActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }
