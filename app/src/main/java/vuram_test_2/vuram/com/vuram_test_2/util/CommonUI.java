@@ -133,20 +133,11 @@ public class CommonUI{
     public  static  void internalValidation(final Context context, final View v, final String data)
     {
         if(data != null && context !=null && v != null) {
-            if (isNetworkAvailable(context)) {
-                //asyncTask.execute();
-                return;
-            } else {
-                Snackbar.make(v, data , Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                }).show();
-            }
-        }
+                Snackbar.make(v, data , Snackbar.LENGTH_LONG).show();
+           }
         else
         {
-            Log.e(TAG, "internetConnectionChecking: ",new Throwable("Null Value Input") );
+            Log.e(TAG, "internalValidation ",new Throwable("Null Value Input") );
         }
     }
 }
