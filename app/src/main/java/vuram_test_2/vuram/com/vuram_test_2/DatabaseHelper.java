@@ -189,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    /* Get one sub & main item using itemCode */
+    /* Get one record using primary key */
     public String getMainItemNameFromLookUp(int itemCode) {
 
         db = this.getReadableDatabase();
@@ -215,6 +215,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String subItemName = cursor.getString(cursor.getColumnIndex(SUB_ITEM_NAME));
         db.close();
         return subItemName;
+    }
+    public OrgTypeLookUpDetails getOrgTypeLookUpDetails(int orgTypeNo) {
+        OrgTypeLookUpDetails orgTypeLookUpDetails = new OrgTypeLookUpDetails();
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + ORG_TYPE_NAME + " from " + ORG_TYPE_TABLE_NAME + " where " + ORG_TYPE_NO + " = " + orgTypeNo, null);
+
+        if(cursor!=null)
+            cursor.moveToFirst();
+        orgTypeLookUpDetails.setOrgTypeNo(orgTypeNo);
+        orgTypeLookUpDetails.setOrgTypeName(cursor.getString(cursor.getColumnIndex(SUB_ITEM_NAME)));
+        db.close();
+        return orgTypeLookUpDetails;
+    }
+    public CountryLookUpTableDetails getCountryLookUpTableDetails(int countryCode) {
+        CountryLookUpTableDetails countryLookUpTableDetails = new CountryLookUpTableDetails();
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select " + COUNTRY_NAME + " from " + COUNTRY_TABLE_NAME + " where " + COUNTRY_CODE + " = " + countryCode, null);
+
+        if(cursor!=null)
+            cursor.moveToFirst();
+        countryLookUpTableDetails.setCountry_code(countryCode);
+        countryLookUpTableDetails.setCountryName(cursor.getString(cursor.getColumnIndex(COUNTRY_NAME)));
+        db.close();
+        return countryLookUpTableDetails;
     }
 
 }
