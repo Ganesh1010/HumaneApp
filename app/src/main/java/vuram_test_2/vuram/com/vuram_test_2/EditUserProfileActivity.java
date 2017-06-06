@@ -27,9 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
@@ -112,9 +109,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        Glide.with(this)
-                .load(getUrlWithHeaders(RestAPIURL.getUserProfilePic))
-                .into(userpic);
         // Change Image Button
         changeImageButton = (FloatingActionButton) findViewById(R.id.change_user_image_edit_profile);
         changeImageButton.setOnClickListener(new View.OnClickListener() {
@@ -386,10 +380,5 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    public GlideUrl getUrlWithHeaders(String url){
-        return new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization","Token "+ getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token))
-                .build());
-    }
 
 }

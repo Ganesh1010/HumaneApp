@@ -52,4 +52,7 @@ dependencies {
     compile 'com.hbb20:ccp:1.7.6'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
+    compile 'it.sephiroth.android.library.picasso:picasso:2.5.2.4b'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
 }
