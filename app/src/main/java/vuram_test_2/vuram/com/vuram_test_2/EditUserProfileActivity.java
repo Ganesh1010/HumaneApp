@@ -308,8 +308,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
         params.put("country", selectedCountryId);
 
-        Log.d(TAG, "postFile: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
-                + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
+       // Log.d(TAG, "postFile: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
+        //        + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
         try {
            if(userImageFilePath!=null)
                if(new File(userImageFilePath).exists()) {
@@ -343,14 +343,14 @@ public class EditUserProfileActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "postFile: "+obj.toString());
+           // Log.d(TAG, "postFile: "+obj.toString());
             HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, null);
             if(httpResponse!=null) {
                 if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201) {
-                    Log.d(TAG, "postFile: "+Connectivity.getJosnFromResponse(httpResponse));
+                    //Log.d(TAG, "postFile: "+Connectivity.getJosnFromResponse(httpResponse));
                 }
                 else {
-                    Log.d(TAG, "postFile: " + httpResponse.getStatusLine().getReasonPhrase());
+                   // Log.d(TAG, "postFile: " + httpResponse.getStatusLine().getReasonPhrase());
                 }
             }
         }

@@ -242,7 +242,7 @@ public class OrganisationRegistrationFragment extends Fragment {
 
             Bundle bundle = new Bundle();
 //            coordinatorInfo = bundle.getString("COORDINATOR")
-//  Type type = new TypeToken<Class<UserDetails>>() {}.getType();
+//            Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.getProfile().setOrg(organisationDetails);
