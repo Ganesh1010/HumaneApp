@@ -56,17 +56,15 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public HttpClient client;
     public String nextUrl;
     public ProgressDialog progressDialog=null;
-    public ArrayList<NeedDetails> needItem=new ArrayList<>();
+    public ArrayList<NeedDetails> needitem=new ArrayList<>();
     public ArrayList<NeedDetails> orgNeeds = new ArrayList<>();
-    public ArrayList<NeedDetails> tempNeedItem,tempOrgNeeds;
+    public ArrayList<NeedDetails> tempneeditem,tempOrgNeeds;
     public final String TAG = "HomeActivity.java";
-//    public static int countNeedDetails=0;
-//    public static int countOrgNeedDetails=0;
     public Intent intent;
     public RecyclerView recyclerView;
     public ImageButton filterImageButton;
     public TextView  tvEmptyView;
-    public GetneedItemDetails getneedItemDetails;
+    public GetNeedItemDetails getNeedItemDetails;
     public GetOrganisationNeedDetails getOrganisationNeedDetails;
     public FloatingActionButton newNeedFloatingActionButton;
     public JSONObject jsonObject;
@@ -87,10 +85,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         List<String> categories = new ArrayList<>();
         categories.add("Donor");
         categories.add("Organization");
-        if(needItem.size()>0)
-            needItem.clear();
-        if(orgNeeds.size()>0)
-            orgNeeds.clear();
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
@@ -100,13 +94,13 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
 
         if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR"))
         {
-          if (compareValue != null) {
-              compareValue = "Donor";
-              int spinnerPosition = dataAdapter.getPosition(compareValue);
-              spinner.setSelection(spinnerPosition);
-              Log.d("hai", spinnerPosition + "");
-              nextUrl=RestAPIURL.needList;
-          }
+            if (compareValue != null) {
+                compareValue = "Donor";
+                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinner.setSelection(spinnerPosition);
+                Log.d("hai", spinnerPosition + "");
+                nextUrl=RestAPIURL.needList;
+            }
         }
 
         if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION")) {
@@ -155,14 +149,14 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         }
     }
 
-    public void startNeedAsyncTask(){
-        getneedItemDetails = new GetneedItemDetails();
-        getneedItemDetails.nextNeedDetails=this;
-        getneedItemDetails.execute();
+    public void startNeedAsyncTask(boolean isFirstTime){
+        getNeedItemDetails = new GetNeedItemDetails(isFirstTime);
+        getNeedItemDetails.nextNeedDetails=this;
+        getNeedItemDetails.execute();
     }
 
-    public void startOrgAsyncTask(){
-        getOrganisationNeedDetails = new GetOrganisationNeedDetails();
+    public void startOrgAsyncTask(boolean isFirstTime){
+        getOrganisationNeedDetails = new GetOrganisationNeedDetails(isFirstTime);
         getOrganisationNeedDetails.nextOrgDetails=this;
         getOrganisationNeedDetails.execute();
     }
@@ -170,11 +164,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     @Override
     public void nextURL(String result) {
         if(result.equals("nextNeedDetails"))
-            startNeedAsyncTask();
+            startNeedAsyncTask(false);
         else if(result.equals("nextOrgDetails"))
-            startOrgAsyncTask();
+            startOrgAsyncTask(false);
         else if(result.equals("finishedNeedDetails"))
-            getneedItemDetails.cancel(true);
+            getNeedItemDetails.cancel(true);
         else
             getOrganisationNeedDetails.cancel(true);
     }
@@ -244,16 +238,16 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         if (authorType.equals("Donor")) {
             newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
             nextUrl=RestAPIURL.needList;
-            if(needItem.size()>0)
-                needItem.clear();
-            startNeedAsyncTask();
+            if(needitem.size()>0)
+                needitem.clear();
+            startNeedAsyncTask(true);
         }
         else if(authorType.equals("Organization")) {
             newNeedFloatingActionButton.setVisibility(View.VISIBLE);
             nextUrl=RestAPIURL.orgDetails;
             if(orgNeeds.size()>0)
                 orgNeeds.clear();
-            startOrgAsyncTask();
+            startOrgAsyncTask(true);
         }
     }
 
@@ -264,15 +258,22 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     class GetOrganisationNeedDetails extends AsyncTask
     {
         public LoadNextDetails nextOrgDetails;
+        public boolean isFirstTime;
+        public GetOrganisationNeedDetails(boolean isFirstTime)
+        {
+            this.isFirstTime=isFirstTime;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            client = new DefaultHttpClient();
-            progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Loading...");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            if(isFirstTime) {
+                client = new DefaultHttpClient();
+                progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Loading...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+            }
         }
 
         @Override
@@ -287,7 +288,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         nextUrl = jsonObject.getString("next");
                     Gson gson = new Gson();
                     tempOrgNeeds= gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                    //if(countNeedDetails==0)
+                    if(isFirstTime)
                         orgNeeds.addAll(tempOrgNeeds);
 
                     Log.d("Results", orgNeeds.size() + "");
@@ -320,6 +321,13 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         recyclerView.setVisibility(View.VISIBLE);
                         tvEmptyView.setVisibility(View.GONE);
                     }
+
+                    if(!isFirstTime) {
+                        orgNeeds.addAll(tempOrgNeeds);
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter.setLoaded();
+                    }
+
                     mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
@@ -341,18 +349,13 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                                     mAdapter.notifyItemRemoved(orgNeeds.size());
                                     if (!jsonObject.isNull("next")) {
                                         nextOrgDetails.nextURL("nextOrgDetails");
-                                        //countOrgNeedDetails++;
-                                        //if (countOrgNeedDetails > 0) {
-                                            orgNeeds.addAll(tempOrgNeeds);
-                                            mAdapter.notifyDataSetChanged();
-                                            mAdapter.setLoaded();
-                                        //}
+                                        mAdapter.notifyDataSetChanged();
                                     } else {
                                         nextOrgDetails.nextURL("finishedOrgDetails");
                                         Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }, 1000);
+                            }, 2000);
                         }
                     });
                 }
@@ -361,18 +364,24 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         }
     }
 
-    class GetneedItemDetails extends AsyncTask {
+    class GetNeedItemDetails extends AsyncTask {
         public LoadNextDetails nextNeedDetails;
-
+        public boolean isFirstTime;
+        public GetNeedItemDetails(boolean isFirstTime)
+        {
+            this.isFirstTime=isFirstTime;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            client= new DefaultHttpClient();
-            progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Loading...");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            if(isFirstTime) {
+                client = new DefaultHttpClient();
+                progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setMessage("Loading...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+            }
         }
 
         @Override
@@ -386,11 +395,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                     if (!jsonObject.isNull("next"))
                         nextUrl = jsonObject.getString("next");
                     Gson gson = new Gson();
-                    tempNeedItem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                    //if(countNeedDetails==0)
-                        needItem.addAll(tempNeedItem);
+                    tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
+                    if(isFirstTime)
+                        needitem.addAll(tempneeditem);
 
-                    Log.d("Results", needItem.size() + "");
+                    Log.d("Results", needitem.size() + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -408,15 +417,14 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             if(response!=null)
             {
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201) {
-                    //if (countNeedDetails == 0) {
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needItem, recyclerView);
+                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
                         recyclerView.setAdapter(mAdapter);
                         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
                         recyclerView.addItemDecoration(dividerItemDecoration);
-                    //}
-                    if (needItem.isEmpty()) {
+
+                    if (needitem.isEmpty()) {
                         recyclerView.setVisibility(View.GONE);
                         tvEmptyView.setVisibility(View.VISIBLE);
 
@@ -425,16 +433,21 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         tvEmptyView.setVisibility(View.GONE);
                     }
 
+                    if(!isFirstTime) {
+                        needitem.addAll(tempneeditem);
+                        mAdapter.notifyDataSetChanged();
+                        mAdapter.setLoaded();
+                    }
+
                     mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
                             //add null , so the adapter will check view_type and show progress bar at bottom
-                            needItem.add(null);
-
+                            needitem.add(null);
                             recyclerView.post(new Runnable() {
                                 public void run() {
                                     // There is no need to use notifyDataSetChanged()
-                                    mAdapter.notifyItemInserted(needItem.size() - 1);
+                                    mAdapter.notifyItemInserted(needitem.size() - 1);
                                 }
                             });
 
@@ -442,22 +455,18 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                                 @Override
                                 public void run() {
                                     //   remove progress item
-                                    needItem.remove(needItem.size() - 1);
-                                    mAdapter.notifyItemRemoved(needItem.size());
+                                    needitem.remove(needitem.size() - 1);
+                                    mAdapter.notifyItemRemoved(needitem.size());
+
                                     if (!jsonObject.isNull("next")) {
                                         nextNeedDetails.nextURL("nextNeedDetails");
-                                        //countNeedDetails++;
-                                        //if (countNeedDetails > 0) {
-                                            needItem.addAll(tempNeedItem);
-                                            mAdapter.notifyDataSetChanged();
-                                            mAdapter.setLoaded();
-                                        //}
+                                        mAdapter.notifyDataSetChanged();
                                     } else {
                                         nextNeedDetails.nextURL("finishedNeedDetails");
                                         Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }, 1000);
+                            },2000);
                         }
                     });
                 }
