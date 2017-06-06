@@ -91,7 +91,8 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         System.out.println("position : "+position);
         Log.d(TAG, "onBindViewHolder: Start @Need " + (position + 1));
-        if (holder instanceof ViewHolder) {
+        if (holder instanceof ViewHolder)
+        {
             NeedDetails need = needDetails.get(position);
             ((ViewHolder)holder).donorNeedView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -111,8 +112,6 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 totalQuantity += need.getItems().get(i).getQuantity();
                 totalDonatedReceived += need.getItems().get(i).getDonated_and_received_amount();
             }
-            System.out.println("quantity:"+totalQuantity);
-            System.out.println("total donated "+totalDonatedReceived);
             if(totalQuantity!=0 || totalDonatedReceived!=0) {
                 ((ViewHolder) holder).overallSatisfiedBar.setProgressWithAnimation(totalDonatedReceived * 100 / totalQuantity, animationDuration);
                 ((ViewHolder) holder).percentage.setText(totalDonatedReceived * 100 / totalQuantity + "%");
@@ -167,7 +166,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Stationeries");
-                        satisfactionBar.setProgress(40);
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     default:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);

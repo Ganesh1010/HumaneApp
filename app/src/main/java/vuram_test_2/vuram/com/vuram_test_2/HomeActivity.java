@@ -51,7 +51,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;
-    public DonorNeedViewAdapter mAdapter;
+    public DonorNeedViewAdapter donorAdapter;
+    public OrgNeedViewAdapter orgAdapter;
     public Gson gson;
     public HttpClient client;
     public String nextUrl;
@@ -309,8 +310,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 {
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                    mAdapter=new DonorNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
-                    recyclerView.setAdapter(mAdapter);
+                    orgAdapter=new OrgNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
+                    recyclerView.setAdapter(orgAdapter);
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
                     recyclerView.addItemDecoration(dividerItemDecoration);
                     if (orgNeeds.isEmpty()) {
@@ -324,11 +325,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
 
                     if(!isFirstTime) {
                         orgNeeds.addAll(tempOrgNeeds);
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter.setLoaded();
+                        orgAdapter.notifyDataSetChanged();
+                        orgAdapter.setLoaded();
                     }
 
-                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                    orgAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
                             //add null , so the adapter will check view_type and show progress bar at bottom
@@ -337,7 +338,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                             recyclerView.post(new Runnable() {
                                 public void run() {
                                     // There is no need to use notifyDataSetChanged()
-                                    mAdapter.notifyItemInserted(orgNeeds.size() - 1);
+                                    orgAdapter.notifyItemInserted(orgNeeds.size() - 1);
                                 }
                             });
 
@@ -346,10 +347,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                                 public void run() {
                                     //   remove progress item
                                     orgNeeds.remove(orgNeeds.size() - 1);
-                                    mAdapter.notifyItemRemoved(orgNeeds.size());
+                                    orgAdapter.notifyItemRemoved(orgNeeds.size());
                                     if (!jsonObject.isNull("next")) {
                                         nextOrgDetails.nextURL("nextOrgDetails");
-                                        mAdapter.notifyDataSetChanged();
                                     } else {
                                         nextOrgDetails.nextURL("finishedOrgDetails");
                                         Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();
@@ -359,7 +359,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         }
                     });
                 }
-
             super.onPostExecute(o);
         }
     }
@@ -419,8 +418,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201) {
                         recyclerView.setHasFixedSize(true);
                         recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                        mAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
-                        recyclerView.setAdapter(mAdapter);
+                        donorAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
+                        recyclerView.setAdapter(donorAdapter);
                         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
                         recyclerView.addItemDecoration(dividerItemDecoration);
 
@@ -435,11 +434,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
 
                     if(!isFirstTime) {
                         needitem.addAll(tempneeditem);
-                        mAdapter.notifyDataSetChanged();
-                        mAdapter.setLoaded();
+                        donorAdapter.notifyDataSetChanged();
+                        donorAdapter.setLoaded();
                     }
 
-                    mAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                    donorAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                         @Override
                         public void onLoadMore() {
                             //add null , so the adapter will check view_type and show progress bar at bottom
@@ -447,7 +446,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                             recyclerView.post(new Runnable() {
                                 public void run() {
                                     // There is no need to use notifyDataSetChanged()
-                                    mAdapter.notifyItemInserted(needitem.size() - 1);
+                                    donorAdapter.notifyItemInserted(needitem.size() - 1);
                                 }
                             });
 
@@ -456,11 +455,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                                 public void run() {
                                     //   remove progress item
                                     needitem.remove(needitem.size() - 1);
-                                    mAdapter.notifyItemRemoved(needitem.size());
-
+                                    donorAdapter.notifyItemRemoved(needitem.size());
                                     if (!jsonObject.isNull("next")) {
                                         nextNeedDetails.nextURL("nextNeedDetails");
-                                        mAdapter.notifyDataSetChanged();
                                     } else {
                                         nextNeedDetails.nextURL("finishedNeedDetails");
                                         Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();

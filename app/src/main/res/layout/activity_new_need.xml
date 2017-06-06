@@ -175,7 +175,7 @@
                         <TextView
                             android:text="@string/required_at_display"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.3"
                             android:layout_width="match_parent" />
 
                         <ImageView
@@ -183,13 +183,14 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:id="@+id/date_needForm"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.3"
                             android:src="@drawable/ic_time_black" />
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.3"
-                            android:id="@+id/textView"/>
+                            android:id="@+id/textView"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>
