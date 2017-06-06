@@ -169,7 +169,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
                 for (int i = 0; i < countryDetailsList.size(); i++) {
                     CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
-                    int tempCountryId = countryDetails.getCountryId();
+                    int tempCountryId = countryDetails.getCountry_code();
                     if (tempCountryId == countryId) {
                         countryCode = countryDetails.getCountry_code();
                         break;
@@ -228,19 +228,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
 
         // Change User Details
         // fetching country names & codes
-        int selectedCountryId = 1;
-        String selectedCountryName = countryCodePicker.getSelectedCountryName();
-        DatabaseHelper dbHelper = new DatabaseHelper(EditOrgProfileActivity.this);
-        ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
-        for (int i = 0; i < countryLookUpTableDetailsList.size(); i++) {
-            CountryLookUpTableDetails countryLookUpTableDetails = countryLookUpTableDetailsList.get(i);
-            String countryName = countryLookUpTableDetails.getCountryName();
-            int countryId = countryLookUpTableDetails.getCountryId();
-            if (countryName.equals(selectedCountryName)) {
-                selectedCountryId = countryId;
-                break;
-            }
-        }
+        int selectedCountryId = Integer.parseInt(countryCodePicker.getSelectedCountryCode().substring(1));
 
         String orgName = orgNameEditText.getText().toString();
         if (orgName != null) {
@@ -272,7 +260,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 params.put("org_type", orgType);
             }
         }
-        String orgDesc = orgTypeSpinner.getSelectedItem().toString();
+        String orgDesc = orgDescEditText.getText().toString();
         if (orgDesc != null) {
             if (!orgDesc.isEmpty()) {
                 params.put("description", orgDesc);

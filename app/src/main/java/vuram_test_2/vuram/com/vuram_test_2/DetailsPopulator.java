@@ -68,6 +68,16 @@ public class DetailsPopulator {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+
+            // Verifying if all the items are synced
+            DatabaseHelper db = new DatabaseHelper(context);
+            int count = db.getAllCountryDetails().size();
+            Log.d(TAG, "Country details synced: " + count);
+        }
     }
 
     class MainItemDetailsSyncTask extends AsyncTask {

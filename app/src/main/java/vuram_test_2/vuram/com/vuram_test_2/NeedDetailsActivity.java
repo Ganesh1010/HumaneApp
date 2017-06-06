@@ -172,12 +172,11 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
                                 needItemId = needItemDetails.getNeed_item_id();
                                 needQuantity = needItemDetails.getQuantity();
-                                mainItemName = databaseHelper.getItemNameFromLookUp(needItemId);
+                                mainItemName = databaseHelper.getMainItemNameFromLookUp(needItemId);
 
                                 Log.d("Need Item id", "doInBackground: " + needItemId);
                                 Log.d("Need Quantity", "doInBackground: " + needQuantity);
                                 Log.d("Main Item Name", "doInBackground: " + mainItemName);
-
 
                                 needItemsToDisplay = new NeedItemDetails(needItemId, needQuantity);
                                 needListData.add(needItemsToDisplay);
