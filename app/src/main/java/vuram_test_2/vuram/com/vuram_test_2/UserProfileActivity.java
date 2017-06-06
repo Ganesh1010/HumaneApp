@@ -122,20 +122,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 email = userDetails.getEmail();
                 profile = userDetails.getProfile();
                 mobile = profile.getMobile();
-                int countryId = profile.getCountry();
+                countryCode = profile.getCountry();
                 isCoordinator = profile.isCoordinator();
-
-                // Finding the country
-                db = new DatabaseHelper(UserProfileActivity.this);
-                ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
-                for (int i = 0; i < countryDetailsList.size(); i++) {
-                    CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
-                    int tempCountryId = countryDetails.getCountryId();
-                    if (tempCountryId == countryId) {
-                        countryCode = countryDetails.getCountry_code();
-                        break;
-                    }
-                }
 
             } else {
                 Log.d("CAll ", "Response null");

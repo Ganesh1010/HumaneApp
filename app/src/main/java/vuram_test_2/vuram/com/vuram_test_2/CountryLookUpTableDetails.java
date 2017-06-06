@@ -5,7 +5,6 @@ package vuram_test_2.vuram.com.vuram_test_2;
  */
 
 public class CountryLookUpTableDetails {
-    int id;
     String country_name;
     int country_code;
 
@@ -15,14 +14,6 @@ public class CountryLookUpTableDetails {
 
     public void setCountryName(String countryname) {
         this.country_name = countryname;
-    }
-
-    public int getCountryId() {
-        return id;
-    }
-
-    public void setCountryId(int countryid) {
-        this.id = countryid;
     }
 
     public int getCountry_code() {

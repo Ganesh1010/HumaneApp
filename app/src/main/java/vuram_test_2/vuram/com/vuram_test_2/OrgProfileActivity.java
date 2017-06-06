@@ -112,6 +112,10 @@ public class OrgProfileActivity extends AppCompatActivity {
             orgCityName.setText(organisationDetails.getAddress());
             orgMobileNo.setText(organisationDetails.getPhone());
             orgEmail.setText(organisationDetails.getEmail());
+
+            /*  */
+            String orgTypeName;
+
             orgType.setText(organisationDetails.getOrg_type());
             orgPeopleCount.setText(100 + "");
 

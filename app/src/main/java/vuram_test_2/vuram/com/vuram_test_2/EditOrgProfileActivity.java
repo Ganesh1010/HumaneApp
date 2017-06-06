@@ -136,7 +136,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         String address;
         String email;
         String mobile;
-        String orgType;
+        int orgType;
         String orgDesc;
         int countryCode;
 
@@ -162,19 +162,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 mobile = orgDetails.getPhone();
                 orgType = orgDetails.getOrg_type();
                 orgDesc = orgDetails.getDescription();
-                int countryId = orgDetails.getCountryCode();
-
-                // Finding the country
-                db = new DatabaseHelper(EditOrgProfileActivity.this);
-                ArrayList<CountryLookUpTableDetails> countryDetailsList = db.getAllCountryDetails();
-                for (int i = 0; i < countryDetailsList.size(); i++) {
-                    CountryLookUpTableDetails countryDetails = countryDetailsList.get(i);
-                    int tempCountryId = countryDetails.getCountryId();
-                    if (tempCountryId == countryId) {
-                        countryCode = countryDetails.getCountry_code();
-                        break;
-                    }
-                }
+                countryCode = orgDetails.getCountryCode();
 
             } else {
                 Log.d("CAll ", "Response null");
@@ -228,19 +216,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
 
         // Change User Details
         // fetching country names & codes
-        int selectedCountryId = 1;
-        String selectedCountryName = countryCodePicker.getSelectedCountryName();
-        DatabaseHelper dbHelper = new DatabaseHelper(EditOrgProfileActivity.this);
-        ArrayList<CountryLookUpTableDetails> countryLookUpTableDetailsList =  dbHelper.getAllCountryDetails();
-        for (int i = 0; i < countryLookUpTableDetailsList.size(); i++) {
-            CountryLookUpTableDetails countryLookUpTableDetails = countryLookUpTableDetailsList.get(i);
-            String countryName = countryLookUpTableDetails.getCountryName();
-            int countryId = countryLookUpTableDetails.getCountryId();
-            if (countryName.equals(selectedCountryName)) {
-                selectedCountryId = countryId;
-                break;
-            }
-        }
+        int selectedCountryId = Integer.parseInt(countryCodePicker.getSelectedCountryCode().substring(1));
 
         String orgName = orgNameEditText.getText().toString();
         if (orgName != null) {
@@ -269,10 +245,18 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         String orgType = orgTypeSpinner.getSelectedItem().toString();
         if (orgType != null) {
             if (!orgType.isEmpty()) {
-                params.put("org_type", orgType);
+                ArrayList<OrgTypeLookUpDetails> orgTypeLookUpDetailsList = new DatabaseHelper(this).getAllOrgTypeDetails();
+                int orgTypeNo;
+                for (int i = 0; i < orgTypeLookUpDetailsList.size(); i++) {
+                    OrgTypeLookUpDetails orgTypeLookUpDetails = orgTypeLookUpDetailsList.get(i);
+                    if (orgTypeLookUpDetails.getOrgTypeName().equals(orgType)) {
+                        orgTypeNo = orgTypeLookUpDetails.getOrgTypeNo();
+                        params.put("org_type", orgTypeNo);
+                    }
+                }
             }
         }
-        String orgDesc = orgTypeSpinner.getSelectedItem().toString();
+        String orgDesc = orgDescEditText.getText().toString();
         if (orgDesc != null) {
             if (!orgDesc.isEmpty()) {
                 params.put("description", orgDesc);
@@ -283,11 +267,12 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         Log.d(TAG, "postFile: " + orgNameEditText.getText().toString() + "\t" + selectedCountryId
                 + "\t" + mobileEditText.getText().toString() + emailEditText.getText().toString());
         try {
-            if(userImageFilePath != null)
-                if(new File(userImageFilePath).exists()) {
+            if(userImageFilePath != null) {
+                if (new File(userImageFilePath).exists()) {
                     params.put("image", new File(userImageFilePath));
                     params.put("imageType", 1);
                 }
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
