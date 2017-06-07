@@ -206,9 +206,8 @@
                                 android:ems="10"
                                 android:id="@+id/email_edittext_edit_profile"
                                 android:layout_weight="1"
-                                android:hint="Email"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true" />
+                                android:hint="Email" />
+
                         </LinearLayout>
                     </LinearLayout>
 
@@ -222,7 +221,7 @@
                         android:layout_marginRight="15dp">
 
                         <CheckBox
-                            android:text="CheckBox"
+                            android:text="Change password"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:id="@+id/change_password_checkbox"
@@ -242,7 +241,8 @@
                             android:inputType="textPassword"
                             android:ems="10"
                             android:id="@+id/current_password_edittext_edit_profile"
-                            android:hint="Old Password" />
+                            android:hint="Old Password"
+                            android:fontFamily="sans-serif" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -250,7 +250,8 @@
                             android:inputType="textPassword"
                             android:ems="10"
                             android:id="@+id/new_password_edittext_edit_profile"
-                            android:hint="New Password" />
+                            android:hint="New Password"
+                            android:fontFamily="sans-serif" />
 
                         <EditText
                             android:layout_width="match_parent"
@@ -258,7 +259,8 @@
                             android:inputType="textPassword"
                             android:ems="10"
                             android:id="@+id/confirm_password_edittext_edit_profile"
-                            android:hint="Confirm Password" />
+                            android:hint="Confirm Password"
+                            android:fontFamily="sans-serif" />
                     </LinearLayout>
 
                 </LinearLayout>

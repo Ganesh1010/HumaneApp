@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,6 +30,9 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+import vuram_test_2.vuram.com.vuram_test_2.util.CustomPicasso;
+
+import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken;
 
 public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -46,7 +51,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     HttpClient client;
     HttpResponse response;
     DatabaseHelper db;
-
+    CircleImageView userpic;
     TextView fullNameTextView, emailTextView, phoneTextView;
 
     @Override
@@ -86,10 +91,17 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         myOrgButton = (Button) findViewById(R.id.my_org_button_edit_profile);
         myOrgButton.setOnClickListener(UserProfileActivity.this);
 
+        userpic= (CircleImageView) findViewById(R.id.user_image_user_profile);
+        CustomPicasso.okhttp(this,userpic);
+
         new PopulatingTask().execute();
-
     }
-
+    public GlideUrl getUrlWithHeaders(String url){
+        Log.d(TAG, "getUrlWithHeaders: "+url);
+        return new GlideUrl(url, new LazyHeaders.Builder()
+                .addHeader("Authorization","Token "+ getAuthToken(UserProfileActivity.this,Connectivity.Donor_Token))
+                .build());
+    }
     class PopulatingTask extends AsyncTask {
 
         String firstName;

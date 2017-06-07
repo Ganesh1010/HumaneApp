@@ -37,7 +37,6 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
-import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 public class OrganisationRegistrationFragment extends Fragment {
@@ -46,7 +45,8 @@ public class OrganisationRegistrationFragment extends Fragment {
     EditText orgNoEditText,orgNameEditText,orgaddressEditText,orgEmailEditText,orgMobNoEditText,orgDescEditText;
     Spinner orgTypeFromSpinner;
     Button orgRegisterButton,chooseLocationButton;
-    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc,orgType;
+    String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc;
+    int orgType;
     int latitude,longitude;
     Gson gson;
     ProgressDialog progressDialog;
@@ -163,7 +163,8 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgMobile = orgMobNoEditText.getText().toString();
         orgAddress = orgaddressEditText.getText().toString();
         orgDesc = orgDescEditText.getText().toString();
-        orgType = orgTypeFromSpinner.getSelectedItem().toString();
+        String orgTypeName = orgTypeFromSpinner.getSelectedItem().toString();
+        orgType = Integer.parseInt(orgTypeName.substring(1));
 
         if(!validate()){
             onSignupFailed();
@@ -242,7 +243,7 @@ public class OrganisationRegistrationFragment extends Fragment {
 
             Bundle bundle = new Bundle();
 //            coordinatorInfo = bundle.getString("COORDINATOR")
-//  Type type = new TypeToken<Class<UserDetails>>() {}.getType();
+//            Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.getProfile().setOrg(organisationDetails);

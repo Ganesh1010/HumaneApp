@@ -6,7 +6,8 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 public class OrganisationDetails
 {
-    String org_reg_no,org_name,address,email,description,phone,org_type;
+    String org_reg_no,org_name,address,email,description,phone;
+    int org_type;
     int countryCode;
     double latitude,longitude;
 
@@ -74,11 +75,11 @@ public class OrganisationDetails
         this.phone = mobile;
     }
 
-    public String getOrg_type() {
+    public int getOrg_type() {
         return org_type;
     }
 
-    public void setOrg_type(String org_type) {
+    public void setOrg_type(int org_type) {
         this.org_type = org_type;
     }
 

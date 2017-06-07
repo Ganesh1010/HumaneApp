@@ -27,11 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
-import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.hbb20.CountryCodePicker;
 import com.loopj.android.http.RequestParams;
@@ -82,11 +78,21 @@ public class EditUserProfileActivity extends AppCompatActivity {
         phoneEditText = (EditText) findViewById(R.id.phone_edittext_edit_profile);
         emailEditText = (EditText) findViewById(R.id.email_edittext_edit_profile);
         countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_picker_editprofile);
+        /*
+        // checking the default details
+        Log.d(TAG, "onCreate: Code: " + countryCodePicker.getSelectedCountryCode());
+        Log.d(TAG, "onCreate: Plus: " + countryCodePicker.getSelectedCountryCodeWithPlus());
+        Log.d(TAG, "onCreate: Name: " + countryCodePicker.getSelectedCountryName());
+        Log.d(TAG, "onCreate: NameCode" + countryCodePicker.getSelectedCountryNameCode());
+        Log.d(TAG, "onCreate: CodeInt" + countryCodePicker.getSelectedCountryCodeAsInt());
+        Log.d(TAG, "onCreate: Setting new Country");
+        */
         currentPasswordEditText = (EditText) findViewById(R.id.current_password_edittext_edit_profile);
         newPasswordEditText = (EditText) findViewById(R.id.new_password_edittext_edit_profile);
         confirmPasswordEditText = (EditText) findViewById(R.id.confirm_password_edittext_edit_profile);
         changePasswordCheckBox = (CheckBox) findViewById(R.id.change_password_checkbox);
         changePasswordLayout = (LinearLayout) findViewById(R.id.change_password_linear_layout_edit_profile);
+        changePasswordLayout.setVisibility(View.GONE);
         userpic= (ImageView) findViewById(R.id.user_image_edit_profile);
         toolbar = (Toolbar) findViewById(R.id.toolbar_edit_org_profile);
         setSupportActionBar(toolbar);
@@ -103,9 +109,6 @@ public class EditUserProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        Glide.with(this)
-                .load(getUrlWithHeaders(RestAPIURL.getUserProfilePic))
-                .into(userpic);
         // Change Image Button
         changeImageButton = (FloatingActionButton) findViewById(R.id.change_user_image_edit_profile);
         changeImageButton.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +150,51 @@ public class EditUserProfileActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new PostData().execute();
+                if (isValidate()) {
+                    new UpdateData().execute();
+                }
             }
         });
+    }
+
+    private boolean isValidate() {
+        boolean isValid = true;
+        if (fullNameEditText.getText().toString().isEmpty()) {
+            fullNameEditText.setError("Invalid name");
+            isValid = false;
+        }
+        if (phoneEditText.getText().toString().isEmpty()) {
+            phoneEditText.setError("Invalid mobile no");
+            isValid = false;
+        }
+        if (emailEditText.getText().toString().isEmpty()) {
+            emailEditText.setError("Invalid email");
+            isValid = false;
+        }
+        if (changePasswordCheckBox.isChecked()) {
+            String currentPassword = currentPasswordEditText.getText().toString();
+            String newPassword = newPasswordEditText.getText().toString();
+            String confirmPassword = confirmPasswordEditText.getText().toString();
+
+            if (currentPassword.isEmpty()) {
+                currentPasswordEditText.setError("Enter current password");
+                isValid = false;
+            }
+            if (newPassword.isEmpty()) {
+                newPasswordEditText.setError("Enter new password");
+                isValid = false;
+            } else {
+                if (confirmPassword.isEmpty()) {
+                    confirmPasswordEditText.setError("Enter confirm password");
+                    isValid = false;
+                } else if (newPassword.equals(confirmPassword)) {
+                    confirmPasswordEditText.setError("Password mismatch");
+                    isValid = false;
+                }
+            }
+        }
+
+        return isValid;
     }
 
     class PopulatingTask extends AsyncTask {
@@ -197,13 +242,15 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    class PostData extends AsyncTask {
+    class UpdateData extends AsyncTask {
 
         ProgressDialog progressDialog;
+        RequestParams params;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            params = new RequestParams();
             progressDialog = new ProgressDialog(EditUserProfileActivity.this);
             progressDialog.setMessage("Loading");
             progressDialog.show();
@@ -211,7 +258,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            postFile(userImageFilePath);
+            postData(userImageFilePath);
+            postPassword();
             return null;
         }
 
@@ -219,11 +267,91 @@ public class EditUserProfileActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             progressDialog.cancel();
-            /*
-            finish();
             Intent intent = new Intent(EditUserProfileActivity.this, UserProfileActivity.class);
             startActivity(intent);
-            */
+            finish();
+        }
+
+        private void postData(String userImageFilePath) {
+            SyncHttpClient client = new SyncHttpClient();
+            String token= getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token);
+            client.addHeader("Authorization", "Token " + token);
+
+            /* Packing the user image */
+            try {
+                if(userImageFilePath != null)
+                    if(new File(userImageFilePath).exists()) {
+                        params.put("image", new File(userImageFilePath));
+                        params.put("imageType", 1);
+                    }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            /* Packing user details */
+            int selectedCountryId = countryCodePicker.getSelectedCountryCodeAsInt();
+            String firstName = fullNameEditText.getText().toString();
+            if (firstName != null) {
+                if (!firstName.isEmpty()) {
+                    params.put("first_name", firstName);
+                }
+            }
+            String email = emailEditText.getText().toString();
+            if (email != null) {
+                if (!email.isEmpty()) {
+                    params.put("email", email);
+                }
+            }
+            String mobile = phoneEditText.getText().toString();
+            if (mobile != null) {
+                if (!mobile.isEmpty()) {
+                    params.put("mobile", mobile);
+                }
+            }
+            params.put("country", selectedCountryId);
+
+            Log.d(TAG, "postData: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
+                    + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
+
+            /* Posting the data */
+            client.post(RestAPIURL.editUserDetails, params, new TextHttpResponseHandler() {
+
+                @Override
+                public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                    Log.d(TAG, "onFailure: " + responseString);
+                }
+                @Override
+                public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                    Log.d(TAG, "onSuccess: " + responseString);
+                }
+            });
+
+        }
+
+        private void postPassword() {
+            /* Change Password */
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            if (changePasswordCheckBox.isChecked()) {
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("current_password", currentPasswordEditText.getText().toString());
+                    obj.put("new_password", newPasswordEditText.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d(TAG, "postPassword:  "+obj.toString());
+                String authToken = Connectivity.getAuthToken(EditUserProfileActivity.this, Connectivity.Donor_Token);
+                HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, authToken);
+                if(httpResponse!=null) {
+                    if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201) {
+                        Log.d(TAG, "postPassword: "+Connectivity.getJosnFromResponse(httpResponse));
+                    }
+                    else {
+                        Log.d(TAG, "postPassword: " + httpResponse.getStatusLine().getReasonPhrase());
+                    }
+                }
+            }
+
         }
     }
 
@@ -252,89 +380,5 @@ public class EditUserProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void postFile(String userImageFilePath) {
-        SyncHttpClient client = new SyncHttpClient();
-        String token= getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token);
-        client.addHeader("Authorization","Token "+token);
-        RequestParams params = new RequestParams();
-
-        // Change User Details
-        // fetching country names & codes
-        int selectedCountryId = Integer.parseInt(countryCodePicker.getSelectedCountryCode().substring(1));
-
-        String firstName = fullNameEditText.getText().toString();
-        if (firstName != null) {
-            if (!firstName.isEmpty()) {
-                params.put("first_name", firstName);
-            }
-        }
-        String email = emailEditText.getText().toString();
-        if (email != null) {
-            if (!email.isEmpty()) {
-                params.put("email", email);
-            }
-        }
-        String mobile = phoneEditText.getText().toString();
-        if (mobile != null) {
-            if (!mobile.isEmpty()) {
-                params.put("mobile", mobile);
-            }
-        }
-        params.put("country", selectedCountryId);
-
-        Log.d(TAG, "postFile: " + fullNameEditText.getText().toString() + "\t" + selectedCountryId
-                + "\t" + phoneEditText.getText().toString() + emailEditText.getText().toString());
-        try {
-           if(userImageFilePath!=null)
-               if(new File(userImageFilePath).exists()) {
-                   params.put("image", new File(userImageFilePath));
-                   params.put("imageType", 1);
-               }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        client.post(RestAPIURL.editUserDetails, params, new TextHttpResponseHandler() {
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
-                Log.d("Edit", "onFailure: "+responseString);
-            }
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
-                Log.d("Edit", "onSuccess: "+responseString);
-            }
-        });
-
-        // Change Password
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        if (changePasswordCheckBox.isChecked()) {
-            JsonObject jsonObject=new JsonObject();
-            JSONObject obj = new JSONObject();
-            try {
-                obj.put("current_password", currentPasswordEditText.getText().toString());
-                obj.put("new_password", newPasswordEditText.getText().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d(TAG, "postFile: "+obj.toString());
-            HttpResponse httpResponse = Connectivity.makePostRequest(RestAPIURL.changePassword, obj.toString(), httpClient, null);
-            if(httpResponse!=null) {
-                if(httpResponse.getStatusLine().getStatusCode()==200 && httpResponse.getStatusLine().getStatusCode()==201) {
-                    Log.d(TAG, "postFile: "+Connectivity.getJosnFromResponse(httpResponse));
-                }
-                else {
-                    Log.d(TAG, "postFile: " + httpResponse.getStatusLine().getReasonPhrase());
-                }
-            }
-        }
-
-    }
-
-    public GlideUrl getUrlWithHeaders(String url){
-        return new GlideUrl(url, new LazyHeaders.Builder()
-                .addHeader("Authorization","Token "+ getAuthToken(EditUserProfileActivity.this,Connectivity.Donor_Token))
-                .build());
-    }
 
 }
