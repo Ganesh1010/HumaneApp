@@ -128,8 +128,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         /* Choose Location */
         ImageButton currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_home);
         currentLocationImageButton.setOnClickListener(HomeActivity.this);
-        TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
-        currentLocationTextView.setOnClickListener(HomeActivity.this);
 
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(HomeActivity.this);
@@ -248,7 +246,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             nextUrl=RestAPIURL.needList;
             if(needitem.size()>0)
                 needitem.clear();
-            //startNeedAsyncTask(true);
+            startNeedAsyncTask(true);
         }
         else if(authorType.equals("Organization")) {
             newNeedFloatingActionButton.setVisibility(View.VISIBLE);
@@ -260,8 +258,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     class GetOrganisationNeedDetails extends AsyncTask {
         public LoadNextDetails nextOrgDetails;
