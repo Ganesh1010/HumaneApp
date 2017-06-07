@@ -9,32 +9,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -257,7 +245,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
                 httpClient = new DefaultHttpClient();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", donationID);
-                httpResponse = Connectivity.makePostRequest(RestAPIURL.receivedURL, jsonObject.toString(), httpClient, null);
+                // httpResponse = Connectivity.makePostRequest(RestAPIURL.receivedURL, jsonObject.toString(), httpClient, null);
                 if (httpResponse != null) {
                     code = httpResponse.getStatusLine().getStatusCode();
                     Log.d("Swipe", "doInBackground:"+httpResponse.getStatusLine().getStatusCode());

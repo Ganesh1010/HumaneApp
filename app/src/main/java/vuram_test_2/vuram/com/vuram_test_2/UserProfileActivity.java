@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -96,12 +97,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         new PopulatingTask().execute();
     }
-    public GlideUrl getUrlWithHeaders(String url){
+
+    public GlideUrl getUrlWithHeaders(String url) {
         Log.d(TAG, "getUrlWithHeaders: "+url);
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization","Token "+ getAuthToken(UserProfileActivity.this,Connectivity.Donor_Token))
                 .build());
     }
+
     class PopulatingTask extends AsyncTask {
 
         String firstName;
@@ -111,9 +114,15 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         int countryCode;
         boolean isCoordinator;
 
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(UserProfileActivity.this);
+            progressDialog.setMessage("Loading Your details");
+            progressDialog.show();
+
             fullNameTextView = (TextView) findViewById(R.id.username_textview_user_profile);
             emailTextView = (TextView) findViewById(R.id.email_textview_user_profile);
             phoneTextView = (TextView) findViewById(R.id.phone_textview_user_profile);
@@ -154,6 +163,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             } else {
                 ((Button)findViewById(R.id.my_org_button_edit_profile)).setVisibility(View.GONE);
             }
+
+            progressDialog.cancel();
         }
 
     }

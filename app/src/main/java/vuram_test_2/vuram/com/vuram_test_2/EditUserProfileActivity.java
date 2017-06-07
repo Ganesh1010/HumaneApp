@@ -205,9 +205,14 @@ public class EditUserProfileActivity extends AppCompatActivity {
         String mobile;
         int countryCode;
 
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(EditUserProfileActivity.this);
+            progressDialog.setMessage("Loading Your details");
+            progressDialog.show();
         }
 
         @Override
@@ -239,6 +244,8 @@ public class EditUserProfileActivity extends AppCompatActivity {
             emailEditText.setText(email);
             phoneEditText.setText(mobile);
             countryCodePicker.setCountryForPhoneCode(countryCode);
+
+            progressDialog.cancel();
         }
     }
 

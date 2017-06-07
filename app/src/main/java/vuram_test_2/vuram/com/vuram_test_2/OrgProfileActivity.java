@@ -38,9 +38,12 @@ public class OrgProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_profile);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_org_profile);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
 
         // Back Arrow
-        toolbar = (Toolbar) findViewById(R.id.toolbar_org_profile);
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -63,10 +66,10 @@ public class OrgProfileActivity extends AppCompatActivity {
         orgPeopleCount = (TextView) findViewById(R.id.org_people_count_textview_org_profile);
         orgType = (TextView) findViewById(R.id.org_type_textview_org_profile);
 
-        new FetchOrgDetailsTask().execute();
+        new PopulatingTask().execute();
     }
 
-    class FetchOrgDetailsTask extends AsyncTask {
+    class PopulatingTask extends AsyncTask {
 
         ProgressDialog progressDialog;
         HttpClient httpClient;
@@ -77,7 +80,7 @@ public class OrgProfileActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(OrgProfileActivity.this);
-            progressDialog.setMessage("Loading");
+            progressDialog.setMessage("Loading Organisation details");
             progressDialog.show();
 
         }
@@ -106,18 +109,23 @@ public class OrgProfileActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            progressDialog.cancel();
 
             orgName.setText(organisationDetails.getOrg_name());
             orgCityName.setText(organisationDetails.getAddress());
             orgMobileNo.setText(organisationDetails.getPhone());
             orgEmail.setText(organisationDetails.getEmail());
 
-            /*  */
-            String orgTypeName;
+            /* loading org type details */
+            int orgTypeNo = organisationDetails.getOrg_type();
+            Log.d(TAG, "onPostExecute: Received Org Type No: " + orgTypeNo);
+            OrgTypeLookUpDetails orgTypeLookUpDetails = new DatabaseHelper(OrgProfileActivity.this).getOrgTypeLookUpDetails(orgTypeNo);
+            if (orgTypeLookUpDetails != null) {
+                orgType.setText(orgTypeLookUpDetails.getOrgTypeName());
+            } else {
+                orgType.setText("Unknown type");
+            }
 
-            orgType.setText(organisationDetails.getOrg_type());
-            orgPeopleCount.setText(100 + "");
+            orgPeopleCount.setText(Integer.toString(organisationDetails.getPeople_count()));
 
             editButton = (Button) findViewById(R.id.edit_button_org_profile);
             editButton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +135,8 @@ public class OrgProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            progressDialog.cancel();
         }
     }
 }

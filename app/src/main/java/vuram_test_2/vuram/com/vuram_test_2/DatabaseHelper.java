@@ -182,6 +182,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("delete from " + ORG_TYPE_TABLE_NAME);
         for(OrgTypeLookUpDetails lookup:orgTypeLookUpDetailsList){
             ContentValues contentValues = new ContentValues();
+            Log.d(TAG, "insertIntoOrgTypeDetails: Inserting " + lookup.getOrgTypeNo() + " - " + lookup.getOrgTypeName());
             contentValues.put(ORG_TYPE_NO, lookup.getOrgTypeNo());
             contentValues.put(ORG_TYPE_NAME, lookup.getOrgTypeName());
             db.insert(ORG_TYPE_TABLE_NAME,null,contentValues);
@@ -224,7 +225,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor!=null)
             cursor.moveToFirst();
         orgTypeLookUpDetails.setOrgTypeNo(orgTypeNo);
-        orgTypeLookUpDetails.setOrgTypeName(cursor.getString(cursor.getColumnIndex(SUB_ITEM_NAME)));
+        orgTypeLookUpDetails.setOrgTypeName(cursor.getString(cursor.getColumnIndex(ORG_TYPE_NAME)));
         db.close();
         return orgTypeLookUpDetails;
     }

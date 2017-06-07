@@ -5,22 +5,22 @@ package vuram_test_2.vuram.com.vuram_test_2;
  */
 
 public class OrgTypeLookUpDetails {
-    int orgTypeNo;
-    String orgTypeName;
+    int org_type_id;
+    String org_type_name;
 
     public int getOrgTypeNo() {
-        return orgTypeNo;
+        return org_type_id;
     }
 
     public void setOrgTypeNo(int orgTypeNo) {
-        this.orgTypeNo = orgTypeNo;
+        this.org_type_id = orgTypeNo;
     }
 
     public String getOrgTypeName() {
-        return orgTypeName;
+        return org_type_name;
     }
 
     public void setOrgTypeName(String orgTypeName) {
-        this.orgTypeName = orgTypeName;
+        this.org_type_name = orgTypeName;
     }
 }
