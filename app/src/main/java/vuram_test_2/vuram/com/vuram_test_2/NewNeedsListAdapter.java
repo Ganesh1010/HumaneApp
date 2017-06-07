@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapter.ViewHolder> {
@@ -47,7 +51,17 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
             }
 
         holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getQuantity() + "");
-        holder.dateView.setText(holder.dateView.getText()+ (list.get(position).getDeadline()+""));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
+        Date d = null;
+        try {
+            d = sdf.parse(list.get(position).getDeadline());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String formattedTime = output.format(d);
+        holder.dateView.setText(holder.dateView.getText()+ formattedTime);
 
         if (list.get(position).getItem_type_id()==2) {
             holder.clothesViewLayout.setVisibility(View.VISIBLE);
@@ -82,7 +96,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
     public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
         TextView category,itemViewName,itemViewQuantity,genderView,ageView,dateView;
         LinearLayout clothesViewLayout;
-        ImageView categoryIcon,edit,delete;
+        ImageView categoryIcon,delete;
 
         public ViewHolder(View v) {
             super(v);
@@ -93,17 +107,9 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
             itemViewQuantity= (TextView) v.findViewById(R.id.itemViewQuantity_needForm);
             genderView= (TextView) v.findViewById(R.id.genderView_needForm);
             ageView= (TextView) v.findViewById(R.id.ageView_needForm);
-            edit= (ImageView) v.findViewById(R.id.edit_needForm);
             delete= (ImageView) v.findViewById(R.id.delete_needForm);
             dateView= (TextView) v.findViewById(R.id.dateView_needForm);
             clothesViewLayout= (LinearLayout) v.findViewById(R.id.clothesViewLayout_needForm);
-
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,"edit",Toast.LENGTH_SHORT).show();
-                }
-            });
 
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -31,7 +31,7 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
-import vuram_test_2.vuram.com.vuram_test_2.util.CustomPicasso;
+//import vuram_test_2.vuram.com.vuram_test_2.util.CustomPicasso;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken;
 
@@ -93,7 +93,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         myOrgButton.setOnClickListener(UserProfileActivity.this);
 
         userpic= (CircleImageView) findViewById(R.id.user_image_user_profile);
-        CustomPicasso.okhttp(this,userpic);
+        //CustomPicasso.okhttp(this,userpic);
 
         new PopulatingTask().execute();
     }

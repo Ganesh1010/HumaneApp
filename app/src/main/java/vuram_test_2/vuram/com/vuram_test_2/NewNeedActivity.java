@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -73,6 +74,7 @@ public class NewNeedActivity extends AppCompatActivity {
     public ArrayList<SubItemDetails> subItemDetails;
     public DatabaseHelper db;
     public Gson gson;
+    public boolean isTimeFilled=false;
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
     private static final String STATE_TEXTVIEW = "STATE_TEXTVIEW";
     private SwitchDateTimeDialogFragment dateTimeFragment;
@@ -120,6 +122,8 @@ public class NewNeedActivity extends AppCompatActivity {
             public void onPositiveButtonClick(Date date) {
                 datetime=date;
                 textView.setText(myDateFormat.format(date)+ "  "+myTimeFormat.format(date));
+                textView.setTextColor(Color.BLACK);
+                isTimeFilled=true;
             }
             @Override
             public void onNegativeButtonClick(Date date) {
@@ -154,6 +158,9 @@ public class NewNeedActivity extends AppCompatActivity {
         clothesLayout= (LinearLayout) findViewById(R.id.clothesLayout_needForm);
         post= (Button)findViewById(R.id.post_needForm);
         cancel= (Button) findViewById(R.id.cancel_needForm);
+
+        toolbarSubmit.setVisibility(View.INVISIBLE);
+        fabAdd.setVisibility(View.INVISIBLE);
 
         ArrayList<ItemSpinnerData> mainItemList=new ArrayList<>();
         for (int i=0;i<mainItemDetails.size();i++) {
@@ -195,6 +202,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 lastGenderRadioBtn.setError(null);
                 age.setText("");
                 age.setError(null);
+                textView.setText("");
 
                 for(int i=0;i<subItemDetails.size();i++)
                     if(subItemDetails.get(i).getMainItemCode()==(id+1))
@@ -239,6 +247,11 @@ public class NewNeedActivity extends AppCompatActivity {
                 if(itemQuantity.getText().toString().isEmpty()) {
                     dataFilled=false;
                     itemQuantity.setError("enter the Quantity");
+                }
+                else if(!isTimeFilled) {
+                    dataFilled=false;
+                    textView.setText("Time Required");
+                    textView.setTextColor(Color.RED);
                 }
                 else {
                     needItemDetails.setNeed_item_id(++NewNeedActivity.id);
@@ -325,6 +338,8 @@ public class NewNeedActivity extends AppCompatActivity {
                 lastGenderRadioBtn.setError(null);
                 age.setText("");
                 age.setError(null);
+                textView.setText("");
+                textView.setError(null);
             }
         });
 
@@ -392,8 +407,6 @@ public class NewNeedActivity extends AppCompatActivity {
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(NewNeedActivity.this,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
-                    //HomeActivity.countNeedDetails=0;
-                    //HomeActivity.countOrgNeedDetails=0;
                     Intent intent=new Intent(NewNeedActivity.this,HomeActivity.class);
                     intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                     startActivity(intent);
