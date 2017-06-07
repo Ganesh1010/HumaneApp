@@ -55,4 +55,5 @@ dependencies {
     compile 'it.sephiroth.android.library.picasso:picasso:2.5.2.4b'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    compile 'com.github.dexafree:materiallist:3.2.1'
 }
