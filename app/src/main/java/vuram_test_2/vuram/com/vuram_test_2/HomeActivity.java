@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -241,7 +242,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             nextUrl=RestAPIURL.needList;
             if(needitem.size()>0)
                 needitem.clear();
-            startNeedAsyncTask(true);
+            //startNeedAsyncTask(true);
         }
         else if(authorType.equals("Organization")) {
             newNeedFloatingActionButton.setVisibility(View.VISIBLE);
@@ -309,7 +310,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    //recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
                     orgAdapter=new OrgNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
                     recyclerView.setAdapter(orgAdapter);
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
