@@ -114,7 +114,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     boolean isExists = false;
                     for (int i = 0; i < donatedItemDetails.size(); i++) {
                         item = donatedItemDetails.get(i);
-                            if (item.getNeeditem() == need.getItems().get(listPosition).getNeed_item_id()) {
+                            if (item.getneedItemId() == need.getItems().get(listPosition).getNeed_item_id()) {
                                 item.setQuantity(item.getQuantity() + 1);
                                 donatedItemDetails.set(i, item);
                                 isExists = true;
@@ -125,7 +125,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     }
                     if (!isExists) {
                         item = new DonatedItemDetails();
-                        item.setNeeditem(need.getItems().get(listPosition).getNeed_item_id());
+                        item.setneedItemId(need.getItems().get(listPosition).getNeed_item_id());
                         item.setQuantity(1);
                         donatedItemDetails.add(item);
                     }
@@ -144,7 +144,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     boolean isExists = false;
                     for (int i = 0; i < donatedItemDetails.size(); i++) {
                         item = donatedItemDetails.get(i);
-                        if (item.getNeeditem() == need.getItems().get(listPosition).getNeed_item_id()) {
+                        if (item.getneedItemId() == need.getItems().get(listPosition).getNeed_item_id()) {
                             item.setQuantity(item.getQuantity() - 1);
                             donatedItemDetails.set(i, item);
                             isExists = true;
@@ -154,7 +154,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     }
                     if (!isExists) {
                         item = new DonatedItemDetails();
-                        item.setNeeditem(need.getItems().get(listPosition).getNeed_item_id());
+                        item.setneedItemId(need.getItems().get(listPosition).getNeed_item_id());
                         item.setQuantity(1);
                         donatedItemDetails.add(item);
                     }

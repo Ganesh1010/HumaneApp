@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -40,10 +41,15 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_
 
 public class HomeActivity extends AppCompatActivity implements LoadNextDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
+    public final String TAG = "HomeActivity.java";
+    public final String myProfile = "My Profile";
+    public final String aboutUs = "About Us";
+    public final String logout = "Logout";
+
     public final int MENU_ITEM_ONE = 1;
     public final int MENU_ITEM_TWO = 2;
     public final int MENU_ITEM_THREE = 3;
-    public final int MENU_ITEM_FOUR = 4;
+
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
@@ -60,7 +66,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public ArrayList<NeedDetails> needitem=new ArrayList<>();
     public ArrayList<NeedDetails> orgNeeds = new ArrayList<>();
     public ArrayList<NeedDetails> tempneeditem,tempOrgNeeds;
-    public final String TAG = "HomeActivity.java";
     public Intent intent;
     public RecyclerView recyclerView;
     public ImageButton filterImageButton;
@@ -123,8 +128,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         /* Choose Location */
         ImageButton currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_home);
         currentLocationImageButton.setOnClickListener(HomeActivity.this);
-        TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
-        currentLocationTextView.setOnClickListener(HomeActivity.this);
 
         filterImageButton = (ImageButton) findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(HomeActivity.this);
@@ -145,18 +148,17 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             }
         }
         else if (requestCode == LOCATION_REQUEST) {
-            TextView currentLocationTextView = (TextView) findViewById(R.id.current_location_textview_home);
-            currentLocationTextView.setText(locationName);
+
         }
     }
 
-    public void startNeedAsyncTask(boolean isFirstTime){
+    public void startNeedAsyncTask(boolean isFirstTime) {
         getNeedItemDetails = new GetNeedItemDetails(isFirstTime);
         getNeedItemDetails.nextNeedDetails=this;
         getNeedItemDetails.execute();
     }
 
-    public void startOrgAsyncTask(boolean isFirstTime){
+    public void startOrgAsyncTask(boolean isFirstTime) {
         getOrganisationNeedDetails = new GetOrganisationNeedDetails(isFirstTime);
         getOrganisationNeedDetails.nextOrgDetails=this;
         getOrganisationNeedDetails.execute();
@@ -182,23 +184,26 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             case R.id.menu_imagebutton_donor_home:
                 PopupMenu popupMenu = new PopupMenu(HomeActivity.this, menuButton);
                 Menu menu = popupMenu.getMenu();
-                menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, "My Profile");
-                menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, "Settings");
-                menu.add(Menu.NONE, MENU_ITEM_THREE, Menu.NONE, "About Us");
-                if(Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token)!=null)
-                    menu.add(Menu.NONE, MENU_ITEM_FOUR, Menu.NONE, "Logout");
+                menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, aboutUs);
+
+                if(Connectivity.getAuthToken(HomeActivity.this,Connectivity.Donor_Token) != null) {
+                    menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, myProfile);
+                    menu.add(Menu.NONE, MENU_ITEM_THREE, Menu.NONE, logout);
+                }
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         Toast.makeText(HomeActivity.this,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
-                        if (item.getTitle().toString().equals("My Profile")) {
+                        String itemSelected = item.getTitle().toString();
+                        if (itemSelected.equals(myProfile)) {
                             startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
-                            HomeActivity.this.finish();
+                            //HomeActivity.this.finish();
                         }
-                        else if(item.getTitle().toString().equals("Logout"))
-                        {
+                        else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(HomeActivity.this,Connectivity.Donor_Token);
                             startActivity(new Intent(HomeActivity.this,LoginPageFragment.class));
-                            HomeActivity.this.finish();
+                            //HomeActivity.this.finish();
+                        } else if (itemSelected.equals(aboutUs)) {
+
                         }
                         return true;
                     }
@@ -210,18 +215,18 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             case R.id.current_location_textview_home:
                 Intent intent = new Intent(HomeActivity.this, ChooseLocationActivity.class);
                 startActivityForResult(intent, LOCATION_REQUEST);
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
 
             case R.id.filter_imagebutton_donor_home:
                 intent = new Intent(HomeActivity.this, FilterActivity.class);
                 startActivityForResult(intent, FILTER_REQUEST);
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
 
             case R.id.new_need_home_page:
                 startActivity(new Intent(HomeActivity.this, NewNeedActivity.class));
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
         }
     }
@@ -253,11 +258,9 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
-    class GetOrganisationNeedDetails extends AsyncTask
-    {
+    class GetOrganisationNeedDetails extends AsyncTask {
         public LoadNextDetails nextOrgDetails;
         public boolean isFirstTime;
         public GetOrganisationNeedDetails(boolean isFirstTime)
@@ -309,7 +312,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     recyclerView.setHasFixedSize(true);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    //recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                    recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
                     orgAdapter=new OrgNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
                     recyclerView.setAdapter(orgAdapter);
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);

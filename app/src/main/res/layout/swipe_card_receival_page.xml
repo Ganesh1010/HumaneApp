@@ -1,78 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.dexafree.materialList.card.CardLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical|center_horizontal|center"
-    android:orientation="vertical">
-
-
-
-
-
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/MainLayout">
 
     <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:elevation="4dp"
-        app:cardCornerRadius="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
-
-
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView"
+        style="@style/Material_Card_View"
+        card_view:cardCornerRadius="@dimen/card_corner_radius"
+        card_view:cardElevation="@dimen/card_elevation"
+        android:layout_height="101dp">
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="1dp">
-            <View
-                android:layout_width="3dp"
-                android:background="@color/colorSecondaryText"
-                android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/cast_expanded_controller_margin_between_seek_bar_and_control_buttons" />
-        </LinearLayout>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingLeft="20dp">
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/donor_name_swipe_card_textView"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textSize="15sp"
-                android:textAllCaps="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:minWidth="100dp"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:id="@+id/image"
+                card_view:srcCompat="@drawable/ic_user_black" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/donor_mob_swipe_card_text_view"
-                    android:layout_weight="1"
-                    android:paddingLeft="6dp" />
+                <include layout="@layout/headline_16dp"
+                    android:layout_height="66dp" />
 
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/date_swipe_Card_textView"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Notification"
-                    android:paddingEnd="7dp" />
+                <include layout="@layout/divider"/>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingLeft="8dp">
+
+                </LinearLayout>
+
             </LinearLayout>
-
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</com.dexafree.materialList.card.CardLayout>

@@ -7,6 +7,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 public class OrganisationDetails
 {
     String org_reg_no,org_name,address,email,description,phone;
+    int people_count;
     int org_type;
     int countryCode;
     double latitude,longitude;
@@ -73,6 +74,14 @@ public class OrganisationDetails
 
     public void setPhone(String mobile) {
         this.phone = mobile;
+    }
+
+    public int getPeople_count() {
+        return people_count;
+    }
+
+    public void setPeople_count(int people_count) {
+        this.people_count = people_count;
     }
 
     public int getOrg_type() {

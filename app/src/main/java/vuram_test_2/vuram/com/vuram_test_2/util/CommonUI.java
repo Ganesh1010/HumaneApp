@@ -28,8 +28,7 @@ public class CommonUI{
     static String mapAddress;
     static View dialogView;
     public  static  String TAG="CommonUI.java";
-    public static void displayCheckoutUI(View v, int itemsCount, final Activity context)
-    {
+    public static void displayCheckoutUI(View v, int itemsCount, final Activity context) {
         Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,8 +109,8 @@ public class CommonUI{
             address.setText(mapAddress);
         }
     }
-    public  static  void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask)
-    {
+
+    public  static  void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask) {
         if(asyncTask != null && context !=null && v != null) {
             if (isNetworkAvailable(context)) {
                 asyncTask.execute();
@@ -130,8 +129,7 @@ public class CommonUI{
         }
     }
 
-    public  static  void internalValidation(final Context context, final View v, final String data)
-    {
+    public  static  void internalValidation(final Context context, final View v, final String data) {
         if(data != null && context !=null && v != null) {
                 Snackbar.make(v, data , Snackbar.LENGTH_LONG).show();
            }

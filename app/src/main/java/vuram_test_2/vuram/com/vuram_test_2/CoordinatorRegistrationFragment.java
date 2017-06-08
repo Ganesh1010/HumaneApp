@@ -22,8 +22,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
     View view;
     EditText emailEditText,firstNameEditText,mobileEditText,passwordEditText;
     Spinner countryFromSpinner;
-    Button coordinatorRegisterButton,coordinatorNextButton;
-  //  TextView coordinatorLoginTextView;
+    Button coordinatorNextButton;
     String emailId;
     String firstName;
     String mobileNo;

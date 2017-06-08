@@ -257,7 +257,7 @@ public class SwipeCardForReceival extends AppCompatActivity {
                 httpClient = new DefaultHttpClient();
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", donationID);
-                httpResponse = Connectivity.makePostRequest(RestAPIURL.receivedURL, jsonObject.toString(), httpClient, null);
+                //httpResponse = Connectivity.makePostRequest(RestAPIURL.receivedURL, jsonObject.toString(), httpClient, null);
                 if (httpResponse != null) {
                     code = httpResponse.getStatusLine().getStatusCode();
                     Log.d("Swipe", "doInBackground:"+httpResponse.getStatusLine().getStatusCode());

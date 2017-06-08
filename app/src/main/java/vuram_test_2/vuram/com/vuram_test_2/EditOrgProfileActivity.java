@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,6 +73,11 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_org_profile);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar_edit_org_profile);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
         orgNameEditText = (EditText) findViewById(R.id.org_name_editText_org_form);
         orgAddressEditText = (EditText) findViewById(R.id.org_address_editText_org_form);
         emailEditText = (EditText) findViewById(R.id.org_email_editText_org_form);
@@ -100,7 +106,6 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         });
 
         // Back Arrow
-        toolbar = (Toolbar) findViewById(R.id.toolbar_edit_org_profile);
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -140,9 +145,14 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         String orgDesc;
         int countryCode;
 
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(EditOrgProfileActivity.this);
+            progressDialog.setMessage("Loading Organisation details");
+            progressDialog.show();
         }
 
         @Override
@@ -155,6 +165,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 Gson gson = new Gson();
 
                 List<OrganisationDetails> orgDetailsList = gson.fromJson(Connectivity.getJosnFromResponse(response), new TypeToken<List<OrganisationDetails>>() {}.getType());
+                Log.d(TAG, "doInBackground: Received org count: " + orgDetailsList.size());
                 OrganisationDetails orgDetails = orgDetailsList.get(0);
                 orgName = orgDetails.getOrg_name();
                 address = orgDetails.getAddress();
@@ -163,7 +174,8 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 orgType = orgDetails.getOrg_type();
                 orgDesc = orgDetails.getDescription();
                 countryCode = orgDetails.getCountryCode();
-
+                Log.d(TAG, "doInBackground: Received details: " + orgName + ", " + address + ", "
+                        + email + ", " + mobile + ", " + orgType + ", " + orgDesc + ", " + countryCode);
             } else {
                 Log.d("CAll ", "Response null");
             }
@@ -178,9 +190,29 @@ public class EditOrgProfileActivity extends AppCompatActivity {
             emailEditText.setText(email);
             countryCodePicker.setCountryForPhoneCode(countryCode);
             mobileEditText.setText(mobile);
-            orgTypeSpinner.setSelection(0);
             orgDescEditText.setText(orgDesc);
+
+            /* Loading org type spinner with static(synchronized) data */
+            db = new DatabaseHelper(EditOrgProfileActivity.this);
+            ArrayList<OrgTypeLookUpDetails> orgTypeDetailsList = db.getAllOrgTypeDetails();
+            ArrayList<String> orgTypesNameList = new ArrayList<String>();
+            for (OrgTypeLookUpDetails orgTypeDetails: orgTypeDetailsList) {
+                orgTypesNameList.add(orgTypeDetails.getOrgTypeName());
+            }
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(EditOrgProfileActivity.this,android.R.layout.simple_spinner_dropdown_item, orgTypesNameList);
+            orgTypeSpinner.setAdapter(spinnerArrayAdapter);
+
+            /* dynamically selecting the item corresponding to the received org type id */
+            OrgTypeLookUpDetails orgTypeLookUpDetails = new DatabaseHelper(EditOrgProfileActivity.this).getOrgTypeLookUpDetails(orgType);
+            if (orgTypeLookUpDetails != null) {
+                String orgTypesName = orgTypeLookUpDetails.getOrgTypeName();
+                int spinnerPosition = spinnerArrayAdapter.getPosition(orgTypesName);
+                orgTypeSpinner.setSelection(spinnerPosition);
+            }
+
+            progressDialog.cancel();
         }
+
     }
 
     class PostData extends AsyncTask {
@@ -277,7 +309,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        client.post(RestAPIURL.editUserDetails, params, new TextHttpResponseHandler() {
+        client.post(RestAPIURL.editOrgDetails, params, new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {

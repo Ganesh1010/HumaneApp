@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
@@ -110,7 +109,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ((ViewHolder)holder).donorCount.setText("+" + (new Random().nextInt(20) + 1));
+            ((ViewHolder)holder).donorCount.setText("+" + needDetails.getDonations().size());
 
             int animationDuration = 1000; // 2500ms = 2,5s
             int totalQuantity=0;
@@ -134,6 +133,13 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                 NeedItemDetails itemDetails = needDetails.getItems().get(i);
                 // Inflating a new Item View
                 itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_view, null);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, OrgDetailsActivity.class));
+                    }
+                });
                 ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);
                 TextView itemName = (TextView) itemView.findViewById(R.id.item_name_item_view);
                 ProgressBar satisfactionBar = (ProgressBar) itemView.findViewById(R.id.item_status_item_view);
