@@ -193,7 +193,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String getMainItemNameFromLookUp(int itemCode) {
 
         db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select"+MAIN_ITEM_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+MAIN_ITEM_CODE +"="+itemCode,null);
+        Cursor cursor = db.rawQuery("select " + MAIN_ITEM_NAME + " from " + MAIN_ITEM_TABLE_NAME + " where " + MAIN_ITEM_CODE + " = " + itemCode, null);
 
         if(itemCode == 1 || itemCode == 2) {
             if (cursor != null)
@@ -208,7 +208,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public String getSubItemNameFromLookUp(int subItemCode) {
 
         db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select"+SUB_ITEM_NAME +"from" +MAIN_ITEM_TABLE_NAME+"where"+SUB_ITEM_CODE +"="+subItemCode,null);
+        Cursor cursor = db.rawQuery("select " + SUB_ITEM_NAME + " from " + MAIN_ITEM_TABLE_NAME + " where " + SUB_ITEM_CODE + " = " + subItemCode, null);
 
         if(cursor!=null)
             cursor.moveToFirst();
