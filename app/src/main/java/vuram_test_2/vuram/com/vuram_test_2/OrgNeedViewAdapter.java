@@ -20,6 +20,8 @@ import android.widget.Toast;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import java.util.ArrayList;
 
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+
 public class OrgNeedViewAdapter extends RecyclerView.Adapter {
 
     private Context context;
@@ -30,6 +32,8 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
+    int need_id;
+    Intent intent;
 
     private final String TAG = "OrgNeedViewAdapter.java";
 
@@ -88,15 +92,20 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Start @Need " + (position + 1));
+        Log.d("position",position+"");
+
         if (holder instanceof ViewHolder)
         {
             NeedDetails needDetails = needs.get(position);
-
+            need_id=needDetails.getNeed_id();
             ((ViewHolder)holder).orgNeedView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Need Details Page will be opened", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, NeedDetailsActivity.class));
+                    intent=new Intent(context, NeedDetailsActivity.class);
+                    intent.putExtra(USER_KEY_TYPE,need_id);
+                    Log.d("ra",need_id+"");
+                    context.startActivity(intent);
                 }
             });
 

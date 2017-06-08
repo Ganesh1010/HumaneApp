@@ -89,7 +89,7 @@
                     android:textStyle="normal|bold"
                     android:textSize="22sp"
                     android:id="@+id/adapter1"
-                    android:layout_width="135dp"
+                    android:layout_width="wrap_content"
                     android:textColor="@color/colorPrimaryText"
                     android:layout_weight="0.20"
                     android:layout_marginStart="10dp"
