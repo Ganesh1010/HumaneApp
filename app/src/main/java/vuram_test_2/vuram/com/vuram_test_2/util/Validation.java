@@ -7,6 +7,7 @@ public class Validation {
 
     public static boolean validate(String userLogin) {
         if (userLogin != null) {
+            userLogin=userLogin.trim();
             if (android.util.Patterns.EMAIL_ADDRESS.matcher(userLogin).matches())
                 validate = true;
             else if (android.text.TextUtils.isDigitsOnly(userLogin)) {
@@ -23,6 +24,10 @@ public class Validation {
     }
 
     public static boolean validate_email(String email){
+        if(email!=null)
+        {
+           email=email.trim();
+        }
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             validate = false;
         }

@@ -220,6 +220,14 @@ public class OrganisationRegistrationFragment extends Fragment {
 
             gson = new Gson();
 
+            orgMail = orgMail.trim();
+            orgMobile = orgMobile.trim();
+            orgAddress = orgAddress.trim();
+            orgNo = orgNo.trim();
+            orgName = orgName.trim();
+            orgDesc = orgDesc.trim();
+
+
             super.onPreExecute();
         }
 
@@ -241,9 +249,6 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setLongitude(50);
 
 
-            Bundle bundle = new Bundle();
-//            coordinatorInfo = bundle.getString("COORDINATOR")
-//            Type type = new TypeToken<Class<UserDetails>>() {}.getType();
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.getProfile().setOrg(organisationDetails);
