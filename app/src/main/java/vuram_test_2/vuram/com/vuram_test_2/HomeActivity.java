@@ -196,12 +196,12 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         String itemSelected = item.getTitle().toString();
                         if (itemSelected.equals(myProfile)) {
                             startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
-                            HomeActivity.this.finish();
+                            //HomeActivity.this.finish();
                         }
                         else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(HomeActivity.this,Connectivity.Donor_Token);
                             startActivity(new Intent(HomeActivity.this,LoginPageFragment.class));
-                            HomeActivity.this.finish();
+                            //HomeActivity.this.finish();
                         } else if (itemSelected.equals(aboutUs)) {
 
                         }
@@ -215,18 +215,18 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             case R.id.current_location_textview_home:
                 Intent intent = new Intent(HomeActivity.this, ChooseLocationActivity.class);
                 startActivityForResult(intent, LOCATION_REQUEST);
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
 
             case R.id.filter_imagebutton_donor_home:
                 intent = new Intent(HomeActivity.this, FilterActivity.class);
                 startActivityForResult(intent, FILTER_REQUEST);
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
 
             case R.id.new_need_home_page:
                 startActivity(new Intent(HomeActivity.this, NewNeedActivity.class));
-                HomeActivity.this.finish();
+                //HomeActivity.this.finish();
                 break;
         }
     }
