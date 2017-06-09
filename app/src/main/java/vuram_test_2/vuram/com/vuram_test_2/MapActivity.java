@@ -56,6 +56,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public Marker mCurrLocationMarker;
     public Button setLocation;
     public ProgressDialog progressDialog;
+    public LocationAddress locationAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 latitude = latLng.latitude;
                 longitude = latLng.longitude;
                 location = new LatLng(latitude, longitude);
-                mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, latLng.longitude)).draggable(true).visible(true).title(getAaddress(latitude, longitude)));
+                mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitude, latLng.longitude)).draggable(true).visible(true).title(getAddress(latitude, longitude).getAddress()));
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
             }
         });
@@ -159,7 +160,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         longitude=cur_longitude;
 
         location = new LatLng(cur_latitude, cur_longitude);
-        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(cur_latitude, cur_longitude)));
+        mCurrLocationMarker = mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAddress(cur_latitude, cur_longitude).getAddress()));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 17));
 
         if (mGoogleApiClient != null) {
@@ -227,9 +228,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
-    public String getAaddress(double latitude, double longitude) {
+    public LocationAddress getAddress(double latitude, double longitude) {
         StringBuffer Address = new StringBuffer();
-
+        locationAddress=new LocationAddress();
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             if (addresses != null) {
@@ -256,18 +257,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (knownName != null && !knownName.equals(address))
                     Address.append(knownName);
 
+                locationAddress.setAddress(Address.toString());
+                locationAddress.setLatitude(latitude);
+                locationAddress.setLongitude(longitude);
+
                 //Address = address + "," + area + "," + city + "," + state + "," + postalCode + "," + country;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return Address.toString();
+        return locationAddress;
     }
 
     public void confirmAddress() throws IOException {
         Intent intent = new Intent();
-        intent.putExtra("ADDRESS", getAaddress(latitude, longitude));
+        intent.putExtra("ADDRESS", getAddress(latitude, longitude));
         setResult(2, intent);
         finish();//finishing activity
     }
@@ -323,7 +328,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             latitude=address.getLatitude();
             longitude=address.getLongitude();
             location=new LatLng(latitude,longitude);
-            mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(latitude,longitude)));
+            mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAddress(latitude,longitude).getAddress()));
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17));
 
         } catch (IOException e) {
@@ -341,7 +346,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         location = new LatLng(cur_latitude, cur_longitude);
         latitude=cur_latitude;
         longitude=cur_longitude;
-        mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAaddress(cur_latitude,cur_longitude)));
+        mCurrLocationMarker=mGoogleMap.addMarker(new MarkerOptions().position(location).title(getAddress(cur_latitude,cur_longitude).getAddress()));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17));
 
         return true;

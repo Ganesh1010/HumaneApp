@@ -5,28 +5,71 @@ import java.util.List;
 
 public class DonationDetails {
 
-    int donation_id;
-    List<DonatedItemDetails> donateditems;
-    String user;
-    DonatedItemDetails donatedItemDetails;
 
-    public DonationDetails(DonatedItemDetails donatedItemDetails, String user) {
-        this.donatedItemDetails = donatedItemDetails;
+    boolean is_registereduser;
+    boolean is_received;
+    String donated_at;
+    int donation_id;
+    List<DonatedItemDetails> donated_items;
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public DonatedItemDetails getDonatedItemDetails() {
+    String user;
 
-        return donatedItemDetails;
+    public int getNeed_id() {
+        return need_id;
     }
 
-    public void setDonatedItemDetails(DonatedItemDetails donatedItemDetails) {
-        this.donatedItemDetails = donatedItemDetails;
+    public void setNeed_id(int need_id) {
+        this.need_id = need_id;
     }
+
+    int need_id;
+
+    public String getdonated_at() {
+        return donated_at;
+    }
+
+    public void setdonated_at(String donated_at) {
+        this.donated_at = donated_at;
+    }
+
+    public boolean is_received() {
+        return is_received;
+    }
+
+    public void setReceived(boolean received) {
+        is_received = received;
+    }
+
+    public boolean is_registereduser() {
+        return is_registereduser;
+    }
+
+    public void setRegisteredUser(boolean registeredUser) {
+        is_registereduser = registeredUser;
+    }
+
+    public UnregisteredUser getUnregisteredUser() {
+        return unregisteredUser;
+    }
+
+    public void setUnregisteredUser(UnregisteredUser unregisteredUser) {
+        this.unregisteredUser = unregisteredUser;
+    }
+
+    UnregisteredUser unregisteredUser;
+
 
     public DonationDetails() {
 
-        donateditems = new ArrayList<>();
+        donated_items = new ArrayList<>();
     }
 
     public int getDonation_id() {
@@ -38,18 +81,10 @@ public class DonationDetails {
     }
 
     public List<DonatedItemDetails> getDonateditems() {
-        return donateditems;
+        return donated_items;
     }
 
     public void setDonateditems(List<DonatedItemDetails> donateditems) {
-        this.donateditems = donateditems;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
+        this.donated_items = donateditems;
     }
 }

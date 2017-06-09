@@ -37,7 +37,7 @@ public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapte
     public void onBindViewHolder(DonationCartAdapter.ViewHolder holder, int position) {
         for(int i=0;i<needDetails.getItems().size();i++) {
 
-            if(donationDetails.getDonateditems().get(position).getneedItemId()==needDetails.getItems().get(i).getNeed_item_id()) {
+            if(donationDetails.getDonateditems().get(position).getNeed_item_id()==needDetails.getItems().get(i).getNeed_item_id()) {
 
                 for(int j=0;j<mainItemDetailsList.size();j++)
                     if(mainItemDetailsList.get(j).getMainItemCode()==needDetails.getItems().get(i).getItem_type_id())

@@ -93,12 +93,14 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
         Log.d(TAG, "onBindViewHolder: Start @Need " + (position + 1));
         if (holder instanceof ViewHolder)
         {
-            NeedDetails need = needDetails.get(position);
+            final NeedDetails need = needDetails.get(position);
             ((ViewHolder)holder).donorNeedView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                    context.startActivity(new Intent(context, OrgDetailsActivity.class));
+                    Intent intent=new Intent(context, OrgDetailsActivity.class);
+                    intent.putExtra("Need",need.getNeed_id()+"");
+                    context.startActivity(intent);
                 }
             });
             ((ViewHolder)holder).orgName.setText(need.org.org_name);
@@ -131,7 +133,9 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, OrgDetailsActivity.class));
+                        Intent intent=new Intent(context, OrgDetailsActivity.class);
+                        intent.putExtra("Need",need.getNeed_id()+"");
+                        context.startActivity(intent);
                     }
                 });
                 ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);

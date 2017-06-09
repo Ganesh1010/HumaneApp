@@ -205,7 +205,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 }
 
                                 donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
-                                donationDetailsToDisplay = new DonationDetails(donatedItemDetailsTodisplay,donorName);
+                                //donationDetailsToDisplay = new DonationDetails(donatedItemList.get(0),donorName);
                               //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
 
                                 needCardData.add(donationDetailsToDisplay);

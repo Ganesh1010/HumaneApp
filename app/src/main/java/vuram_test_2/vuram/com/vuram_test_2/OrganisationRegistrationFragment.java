@@ -54,7 +54,8 @@ public class OrganisationRegistrationFragment extends Fragment {
     //ArrayList coordinatorDetails;
     OrganisationDetails organisationDetails;
     UserDetails userDetails;
-    String orgDetailsString,mapAddress;
+    String orgDetailsString;
+    LocationAddress mapAddress;
     GPSTracker gps;
     Fragment fragment = null;
     FragmentManager fragmentManager;
@@ -66,8 +67,8 @@ public class OrganisationRegistrationFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2 && !(resultCode==RESULT_CANCELED))
         {
-            mapAddress = data.getStringExtra("ADDRESS");
-            orgaddressEditText.setText(mapAddress);
+            mapAddress = (LocationAddress)data.getSerializableExtra("ADDRESS");
+            orgaddressEditText.setText(mapAddress.getAddress());
         }
     }
 
