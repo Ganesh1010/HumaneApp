@@ -152,7 +152,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                      //   Log.d("123", "doInBackground: "+results.toString());
                         needDetailsArrayList = gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>() {}.getType());
 
-                        needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
+//                        needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
                         Log.d("ju",needId+"");
                         for(NeedDetails needDetails:needDetailsArrayList)
                         {
