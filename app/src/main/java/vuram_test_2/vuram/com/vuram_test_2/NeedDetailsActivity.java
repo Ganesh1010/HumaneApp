@@ -78,16 +78,16 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
 
         needDetails = new NeedDetails();
-        needItemDetails =  new NeedItemDetails();
+        needItemDetails = new NeedItemDetails();
         needDetailsArrayList = new ArrayList<NeedDetails>();
         donatedDetailsList = new ArrayList<>();
         need = new NeedDetails();
         itemslist = new ArrayList();
 
-     //   needDetails.setNeed_id(8);
+        //   needDetails.setNeed_id(8);
 
-         needListData = new ArrayList();
-         needCardData = new ArrayList();
+        needListData = new ArrayList();
+        needCardData = new ArrayList();
         //needViewData();
         //needCardViewData();
 
@@ -106,26 +106,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
         new NeedAndDonatedDetails().execute();
 
-        // Toast.makeText(this,"after caardd adapter",Toast.LENGTH_LONG).show();
     }
-
-    /*   public void needViewData()
-       {
-           for(int i = 0;i<10;i++) {
-               NeedListViewItems needListViewItems = new NeedListViewItems("Clothes", "Male", "20");
-               needData.add(needListViewItems);
-           }
-
-       }
-
-       public void needCardViewData(){
-           for (int j=0;j<6;j++){
-               NeedListViewItems items = new NeedListViewItems("Clothes", "Male","20","Akshaya");
-               needCardData.add(items);
-
-           }
-
-       }*/
     class NeedAndDonatedDetails extends AsyncTask {
         HttpResponse response;
         HttpClient client;
@@ -150,29 +131,11 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
                         Log.d("Result ", "doInBackground: "+results.toString());
-                     //   Log.d("123", "doInBackground: "+results.toString());
                         needDetailsArrayList = gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>() {}.getType());
-
                         needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
                         Log.d("ju",needId+"");
-                        for(NeedDetails needDetails:needDetailsArrayList)
-                        {
-                            Log.d("All need Id", "doInBackground: "+needDetails.getNeed_id());
-                            if(needDetails.getNeed_id()==needId)
-                            {
-                                need = needDetails;
-                                break;
-                            }
-                        }
-
-                        //need = needItemResult.get(needItemResult.indexOf(8));
-
-                       // for(int k=0;k<needItemResult.size();k++) {
-                          // need = needItemResult.get(need.getNeed_id());
                         Log.d("output for need id 3", need + "");
 
-                        // needId=need.getNeed_id();
-                       // }
 
                         if (need != null) {
                             Log.d("Need Id", "doInBackground: "+need.getNeed_id());
@@ -203,8 +166,6 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                     }
 
                                     donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
-                                    //donationDetailsToDisplay = new DonationDetails(donatedItemDetailsTodisplay, donorName);
-                                    //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
 
                                     needCardData.add(donationDetailsToDisplay);
                                 }
@@ -225,7 +186,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
 
-            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needListData,needDetailsArrayList,needId);
+            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needDetailsArrayList,needId);
             needrecyclerView.setAdapter(needListViewAdapter);
             needrecyclerView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
             needListLayout.setVisibility(View.GONE);
@@ -234,8 +195,10 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
 
             // Toast.makeText(this,"after list adapter",Toast.LENGTH_LONG).show();
-            needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,needCardData);
+            needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,needCardData,needId,needDetailsArrayList);
+            System.out.println("Hai");
             receivalCardView.setAdapter(needReceivalCard);
+            System.out.println("Hai");
             receivalCardView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
 
             divider1 = findViewById(R.id.divider1);
