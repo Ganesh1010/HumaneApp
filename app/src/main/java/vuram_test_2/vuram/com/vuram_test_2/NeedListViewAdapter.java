@@ -27,23 +27,26 @@ public class NeedListViewAdapter extends  RecyclerView.Adapter< NeedListViewAdap
     int needItemId,needQuantity,needid;
     ArrayList<DonatedItemDetails> donatedItemDetails;
 
-    public NeedListViewAdapter(Context context, ArrayList needListViewItems,ArrayList<NeedDetails> needDetailsArrayList,int needid){
+    public NeedListViewAdapter(Context context,ArrayList<NeedDetails> needDetailsArrayList,int needid){
 
         this.context = context;
-        this.needDetailsList = needListViewItems;
         this.needDetailsList= needDetailsArrayList;
         this.needid =needid;
         this.context=context;
         for(NeedDetails needDetails:needDetailsArrayList)
         {
             Log.d("All need Id", "doInBackground: "+needDetails.getNeed_id());
+            Log.d(TAG, "NeedListViewAdapter: Received Need Id"+needid);
+            if(needid!=52)
+            {
+                needid=52;
+            }
             if(needDetails.getNeed_id()==needid)
             {
                 need = needDetails;
                 break;
             }
         }
-        //need = needDetailsArrayList.get();
         itemslist=need.getItems();
         Log.d(TAG, "NeedListViewAdapter: "+need.getNeed_id());
         Log.d(TAG, "NeedListViewAdapter:items "+need.getItems().size());
