@@ -6,27 +6,13 @@ import java.util.List;
 public class DonationDetails {
 
     int donation_id;
-    List<DonatedItemDetails> donateditems;
+    List<DonatedItemDetails> donated_items;
     String user;
-    DonatedItemDetails donatedItemDetails;
 
-    public DonationDetails(DonatedItemDetails donatedItemDetails, String user) {
-        this.donatedItemDetails = donatedItemDetails;
-        this.user = user;
-    }
-
-    public DonatedItemDetails getDonatedItemDetails() {
-
-        return donatedItemDetails;
-    }
-
-    public void setDonatedItemDetails(DonatedItemDetails donatedItemDetails) {
-        this.donatedItemDetails = donatedItemDetails;
-    }
 
     public DonationDetails() {
 
-        donateditems = new ArrayList<>();
+        donated_items = new ArrayList<>();
     }
 
     public int getDonation_id() {
@@ -38,11 +24,11 @@ public class DonationDetails {
     }
 
     public List<DonatedItemDetails> getDonateditems() {
-        return donateditems;
+        return donated_items;
     }
 
     public void setDonateditems(List<DonatedItemDetails> donateditems) {
-        this.donateditems = donateditems;
+        this.donated_items = donateditems;
     }
 
     public String getUser() {

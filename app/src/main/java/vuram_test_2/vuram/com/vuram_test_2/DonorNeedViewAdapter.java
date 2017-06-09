@@ -46,7 +46,6 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
                 if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
