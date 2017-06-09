@@ -62,14 +62,16 @@ public class CustomAdapter extends BaseAdapter{
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(position==0)
-                {
+                if(position==0) {
                     intent=new Intent(context,UserProfileActivity.class);
                     context.startActivity(intent);
                 }
-                if(position==2)
-                {
+                if(position==2) {
                     intent=new Intent(context,OrgProfileActivity.class);
+                    context.startActivity(intent);
+                }
+                if (position == 4) {
+                    Intent intent = new Intent(context, DonationListActivity.class);
                     context.startActivity(intent);
                 }
             }

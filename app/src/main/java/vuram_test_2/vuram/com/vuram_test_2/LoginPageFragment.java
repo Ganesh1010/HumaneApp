@@ -46,6 +46,7 @@ public class LoginPageFragment extends Fragment {
     String email,password;
     Bundle key;
     String user_selection;
+    Boolean isCoordiantor=false;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView registerLater,linkLoginTextView;
@@ -80,7 +81,14 @@ public class LoginPageFragment extends Fragment {
                 login();
             }
         });
-
+        if(getArguments().get(USER_KEY_TYPE) == USER_TYPE_SELECTION_DONOR)
+        {
+            isCoordiantor=false;
+        }
+        else if(getArguments().get(USER_KEY_TYPE) == USER_TYPE_SELECTION_ORG)
+        {
+            isCoordiantor=true;
+        }
         linkLoginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -227,7 +235,13 @@ public class LoginPageFragment extends Fragment {
                     if(code== 200 || code==201) {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(httpResponse));
                         String token = jsonObject.getString("auth_token");
-                        Connectivity.storeAuthToken(landingPage, token, Connectivity.Donor_Token);
+                        if(isCoordiantor) {
+                            Connectivity.storeAuthToken(landingPage, token, Connectivity.Coordinator_Token);
+                        }
+                        else if(!isCoordiantor)
+                        {
+
+                        } Connectivity.storeAuthToken(landingPage, token, Connectivity.Donor_Token);
                     }
                 }
             } catch (Exception e) {
@@ -245,6 +259,7 @@ public class LoginPageFragment extends Fragment {
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Authenticating...");
             progressDialog.show();
+            email = email.trim();
             super.onPreExecute();
         }
 
@@ -276,8 +291,20 @@ public class LoginPageFragment extends Fragment {
             detailsPopulator.getOrgTypeDetailsFromAPI();
             if(getArguments()!=null) {
                 if (getArguments().get(USER_KEY_TYPE) == "DONOR") {
-                    Intent intent = new Intent(landingPage, HomeActivity.class);
-                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                   // Intent intent = new Intent(landingPage, HomeActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("USER", getArguments().get(USER_KEY_TYPE).toString());
+                   // set Fragmentclass Arguments
+//                    DonorHomeFragment fragment = new DonorHomeFragment();
+//                    fragment.setArguments(bundle);
+//                    fragmentManager = getActivity().getFragmentManager();
+//                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+
+
+
+                    Intent intent = new Intent(landingPage,HomeActivity.class);
+
+                   intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                     Toast.makeText(landingPage, "Donor", Toast.LENGTH_LONG).show();
                     startActivity(intent);
                     landingPage.finish();

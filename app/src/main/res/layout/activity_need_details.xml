@@ -151,7 +151,7 @@
                         android:layout_height="match_parent"
                         android:paddingLeft="@dimen/list_heading_left_padding"
                         android:layout_weight="1"
-                        android:paddingTop="15dp">
+                        android:paddingTop="30dp">
 
                         <TextView
                             android:text="@string/list_heading_itemName"

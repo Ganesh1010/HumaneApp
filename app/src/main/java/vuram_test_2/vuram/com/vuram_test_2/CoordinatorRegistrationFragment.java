@@ -22,12 +22,11 @@ public class CoordinatorRegistrationFragment extends Fragment {
     View view;
     EditText emailEditText,firstNameEditText,mobileEditText,passwordEditText;
     Spinner countryFromSpinner;
-    Button coordinatorRegisterButton,coordinatorNextButton;
-  //  TextView coordinatorLoginTextView;
+    Button coordinatorNextButton;
     String emailId;
     String firstName;
     String mobileNo;
-    String password,orgAddress;
+    String password;
     int country;
     Boolean validated,registered;
     ProgressDialog progressDialog;
@@ -112,7 +111,6 @@ public class CoordinatorRegistrationFragment extends Fragment {
         firstName = firstNameEditText.getText().toString();
         mobileNo = mobileEditText.getText().toString();
         password = passwordEditText.getText().toString();
-       //gender = genderFromSpinner.getSelectedItem().toString();
         country = countryFromSpinner.getSelectedItemPosition();
 
        /* Toast.makeText(landingPage,"email ID"+emailId,Toast.LENGTH_LONG).show();
@@ -123,6 +121,10 @@ public class CoordinatorRegistrationFragment extends Fragment {
 
 
         if(validation()){
+
+            emailId = emailId.trim();
+            firstName = firstName.trim();
+            mobileNo = mobileNo.trim();
 
             registered = true;
             coordinatorNextButton.setEnabled(false);

@@ -54,6 +54,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".EditOrgProfileActivity"></activity>
+        <activity android:name=".DonationListActivity"></activity>
     </application>
 
 </manifest>

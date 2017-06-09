@@ -43,7 +43,7 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeCardHol
 
         holder.donorName.setText(donationDetailsReadOnly.getUser_name());
         holder.donorMob.setText(donationDetailsReadOnly.getMobile());
-        holder.date.setText(donatedDate.toString());
+//        holder.date.setText(donatedDate.toString());
 
     }
 
@@ -68,9 +68,9 @@ public class SwipeAdapter extends RecyclerView.Adapter<SwipeAdapter.SwipeCardHol
 
         public SwipeCardHolder(View itemView) {
             super(itemView);
-            donorName = (TextView)itemView.findViewById(R.id.donor_name_swipe_card_textView);
-            donorMob = (TextView)itemView.findViewById(R.id.donor_mob_swipe_card_text_view);
-            date = (TextView)itemView.findViewById(R.id.date_swipe_Card_textView);
+            donorName = (TextView)itemView.findViewById(R.id.title);
+            donorMob = (TextView)itemView.findViewById(R.id.subtitle);
+           // date = (TextView)itemView.findViewById(R.id.date_swipe_Card_textView);
                 }
 
     }

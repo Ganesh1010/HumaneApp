@@ -32,156 +32,171 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
+                    android:id="@+id/imageView9"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
-                    app:srcCompat="@drawable/org"
-                    android:id="@+id/imageView9" />
+                    app:srcCompat="@drawable/org" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
-                    android:background="@drawable/gradient"/>
+                    android:background="@drawable/gradient" />
 
             </RelativeLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right">
+                android:gravity="right"
+                android:orientation="horizontal">
 
                 <Button
-                    android:text="Edit"
-                    android:layout_height="wrap_content"
                     android:id="@+id/edit_button_org_profile"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:textColor="@color/colorPrimary"
                     android:layout_width="wrap_content"
-                    android:gravity="center" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Edit"
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="0dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp">
+                android:paddingTop="0dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/search_view_pad_top"
-                    android:paddingBottom="@dimen/search_view_pad_bottom">
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/search_view_pad_bottom"
+                    android:paddingTop="@dimen/search_view_pad_top">
 
                     <TextView
-                        android:text="Vuram Technology Solutions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/org_name_textview_org_profile"
-                        android:textSize="24sp"
-                        android:textColor="@color/colorSecondaryText"
-                        android:fontFamily="sans-serif"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
                         android:layout_marginTop="2dp"
-                        android:layout_marginBottom="2dp" />
+                        android:fontFamily="sans-serif"
+                        android:text="Vuram Technology Solutions"
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="24sp" />
 
                     <TextView
-                        android:text="Chennai - 600 001"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/org_city_name_testview_org_profile"
-                        android:textSize="18sp"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="2dp" />
-
-                    <TextView
-                        android:text="+91 9876543210"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="Chennai - 600 001"
+                        android:textSize="18sp" />
+
+                    <TextView
                         android:id="@+id/org_mobile_no_textview_org_profile"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="2dp" />
-
-                    <TextView
-                        android:text="venkatesh@vuram.com"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/org_email_textview_org_profile"
                         android:layout_marginBottom="2dp"
-                        android:layout_marginTop="2dp" />
+                        android:layout_marginTop="2dp"
+                        android:text="+91 9876543210" />
+
+                    <TextView
+                        android:id="@+id/org_email_textview_org_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="venkatesh@vuram.com" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingTop="@dimen/search_view_pad_top"
-                    android:paddingBottom="@dimen/search_view_pad_bottom">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/search_view_pad_bottom"
+                    android:paddingTop="@dimen/search_view_pad_top">
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:text="People Count"
+                            android:id="@+id/textView23"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView23"
                             android:gravity="center"
+                            android:text="People Count"
                             android:textColor="@color/colorPrimaryText" />
 
                         <TextView
-                            android:text="256"
+                            android:id="@+id/org_people_count_textview_org_profile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/org_people_count_textview_org_profile"
                             android:gravity="center"
+                            android:text="256"
                             android:textColor="@color/colorSecondaryText" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:text="Organisation Type"
+                            android:id="@+id/textView22"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/textView22"
                             android:gravity="center"
+                            android:text="Organisation Type"
                             android:textColor="@color/colorPrimaryText" />
 
                         <TextView
-                            android:text="Child"
+                            android:id="@+id/org_type_textview_org_profile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/org_type_textview_org_profile"
                             android:gravity="center"
+                            android:text="Child"
                             android:textColor="@color/colorSecondaryText" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/map_holder_linear_layout_org_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/map_holder_linear_layout_org_profile">
+                android:orientation="vertical"
+                android:visibility="visible">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Organisation Address"
+                    android:textStyle="bold" />
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/mapFragment"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    tools:layout="@layout/activity_map" />
             </LinearLayout>
 
         </LinearLayout>

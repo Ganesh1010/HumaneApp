@@ -1,20 +1,28 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,26 +35,30 @@ import java.util.List;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
-public class OrgProfileActivity extends AppCompatActivity {
+import static vuram_test_2.vuram.com.vuram_test_2.MapActivity.latitude;
+import static vuram_test_2.vuram.com.vuram_test_2.MapActivity.longitude;
+
+public class OrgProfileActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "OrgProfileActivity.java";
     TextView orgName, orgCityName, orgMobileNo, orgEmail, orgPeopleCount, orgType;
     Button editButton;
     Toolbar toolbar;
+    private GoogleMap gMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_profile);
         toolbar = (Toolbar) findViewById(R.id.toolbar_org_profile);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("");
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setTitle("");
 
         // Back Arrow
         final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material);
         upArrow.setColorFilter(ContextCompat.getColor(this, R.color.colorTextIcons), PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        //getSupportActionBar().setHomeAsUpIndicator(upArrow);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,9 +67,9 @@ public class OrgProfileActivity extends AppCompatActivity {
         });
 
         // Embedding Map fragment
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-       // fragmentTransaction.add(R.id.map_holder_linear_layout_org_profile, myMapFragment).commit();
-
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapFragment);
+        mapFragment.getMapAsync(this);
         // Defining the objects to the views
         orgName = (TextView) findViewById(R.id.org_name_textview_org_profile);
         orgCityName = (TextView) findViewById(R.id.org_city_name_testview_org_profile);
@@ -65,8 +77,38 @@ public class OrgProfileActivity extends AppCompatActivity {
         orgEmail = (TextView) findViewById(R.id.org_email_textview_org_profile);
         orgPeopleCount = (TextView) findViewById(R.id.org_people_count_textview_org_profile);
         orgType = (TextView) findViewById(R.id.org_type_textview_org_profile);
+        MapView mapView;
+//        mapView = (MapView) findViewById(R.id.mapImageView);
+        Log.d(TAG, "onMapReady : On Create");
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        //      mapView.getMapAsync(this);
 
         new PopulatingTask().execute();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap Map) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Map.setMyLocationEnabled(true);
+        // For dropping a marker at a point on the Map
+        latitude = 26.78;
+        longitude = 72.56;
+        Log.d(TAG, "onMapReady: "+latitude);
+        Map.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude)).title("My Home")
+                .snippet("Home Address"));
+        // For zooming automatically to the Dropped PIN Location
+        Map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+                latitude, longitude), 12.0f));
     }
 
     class PopulatingTask extends AsyncTask {
@@ -82,7 +124,6 @@ public class OrgProfileActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(OrgProfileActivity.this);
             progressDialog.setMessage("Loading Organisation details");
             progressDialog.show();
-
         }
 
         @Override

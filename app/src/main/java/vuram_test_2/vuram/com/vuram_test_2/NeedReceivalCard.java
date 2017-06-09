@@ -22,6 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.NeedCardHolder> {
 
     Context context;
+    ArrayList<NeedItemDetails> needListData;
     ArrayList donatedCardDetails;
     ArrayList<NeedItemDetails> needItems;
     NeedListViewAdapter adapter;
@@ -118,7 +119,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
            // Toast.makeText(context,"receival card holdder",Toast.LENGTH_LONG).show();
              //adapter = new NeedListViewAdapter(context,donatedCardDetails);
-            adapter = new NeedListViewAdapter(context,needItems);
+            //adapter = new NeedListViewAdapter(context,needListData,needItemDetails);
 
             layout = (LinearLayout) itemView.findViewById(R.id.cardrecyclerViewLinearLayout_ReceivalPage);
             cardListHeading = (LinearLayout)itemView.findViewById(R.id.cardDonatedListHeadingLinearLayout_ReceivalPage);

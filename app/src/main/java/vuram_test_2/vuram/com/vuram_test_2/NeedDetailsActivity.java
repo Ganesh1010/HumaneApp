@@ -29,12 +29,14 @@ import java.util.List;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+
 public class NeedDetailsActivity extends AppCompatActivity {
 
     ArrayList<NeedItemDetails> needListData;
     ArrayList<DonationDetails> needCardData;
     ArrayList<DonationDetails> donatedDetailsList;
-    ArrayList<NeedDetails> needItemResult;
+    ArrayList<NeedDetails> needDetailsArrayList;
     List  donatedItemList,itemslist;
     int donatedItemId,needItemId,needQuantity,donatedQuantity,needId;
     String donorName,mainItemName;
@@ -76,7 +78,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
         needDetails = new NeedDetails();
         needItemDetails =  new NeedItemDetails();
-        needItemResult = new ArrayList<>();
+        needDetailsArrayList = new ArrayList<NeedDetails>();
         donatedDetailsList = new ArrayList<>();
         need = new NeedDetails();
         itemslist = new ArrayList();
@@ -139,20 +141,28 @@ public class NeedDetailsActivity extends AppCompatActivity {
             client = new DefaultHttpClient();
             databaseHelper = new DatabaseHelper(NeedDetailsActivity.this);
 
-            response = Connectivity.makeGetRequest(RestAPIURL.mainItemDetails, client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
+            response = Connectivity.makeGetRequest(RestAPIURL.orgDetails, client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                     try {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
+                        Log.d("Result ", "doInBackground: "+results.toString());
                      //   Log.d("123", "doInBackground: "+results.toString());
-                        needItemResult = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
-                        }.getType());
+                        needDetailsArrayList = gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>() {}.getType());
 
-                        Log.d("output", needItemResult + "");
-                        needId = 1;
-                        need = needItemResult.get(needId);
+                        needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
+                        Log.d("ju",needId+"");
+                        for(NeedDetails needDetails:needDetailsArrayList)
+                        {
+                            Log.d("All need Id", "doInBackground: "+needDetails.getNeed_id());
+                            if(needDetails.getNeed_id()==needId)
+                            {
+                                need = needDetails;
+                                break;
+                            }
+                        }
 
                         //need = needItemResult.get(needItemResult.indexOf(8));
 
@@ -163,65 +173,54 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         // needId=need.getNeed_id();
                        // }
 
-                        if (need != null) {
-
+                        if (need != null)
+                        {
+                            Log.d("Need Id", "doInBackground: "+need.getNeed_id());
                             itemslist = need.getItems();
-                            Log.d("ItemsList", "doInBackground: "+itemslist);
+                            Log.d("ItemsList", "doInBackground: " + itemslist);
 
-                            for (int i = 0; i < itemslist.size(); i++) {
-                                NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
-                                needItemId = needItemDetails.getNeed_item_id();
-                                needQuantity = needItemDetails.getQuantity();
-                                mainItemName = databaseHelper.getMainItemNameFromLookUp(needItemId);
-
-                                Log.d("Need Item id", "doInBackground: " + needItemId);
-                                Log.d("Need Quantity", "doInBackground: " + needQuantity);
-                                Log.d("Main Item Name", "doInBackground: " + mainItemName);
-
-                                needItemsToDisplay = new NeedItemDetails(needItemId, needQuantity);
-                                needListData.add(needItemsToDisplay);
-
-                            }
+                            if (itemslist != null)
+                            {
 
 
-                            donatedDetailsList= (ArrayList<DonationDetails>) need.getDonations();
+                                donatedDetailsList = (ArrayList<DonationDetails>) need.getDonations();
 
-                            for (int i = 0; i < donatedDetailsList.size(); i++) {
-                                DonationDetails donationDetails = donatedDetailsList.get(i);
+                                for (int i = 0; i < donatedDetailsList.size(); i++) {
+                                    DonationDetails donationDetails = donatedDetailsList.get(i);
 
-                                donatedItemList = donationDetails.getDonateditems();
-                                 donorName = donationDetails.getUser();
-                                Log.d("donor Name", "doInBackground: " + donorName);
+                                    donatedItemList = donationDetails.getDonateditems();
+                                    donorName = donationDetails.getUser();
+                                    Log.d("donor Name", "doInBackground: " + donorName);
 
 
-                                for (int j = 0; j < donatedItemList.size(); j++) {
-                                    DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
+                                    for (int j = 0; j < donatedItemList.size(); j++) {
+                                        DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
 
-                                    donatedItemId = donatedItemDetails.getDonated_item_id();
-                                    donatedQuantity = donatedItemDetails.getQuantity();
+                                        donatedItemId = donatedItemDetails.getDonated_item_id();
+                                        donatedQuantity = donatedItemDetails.getQuantity();
 
-                                    Log.d("donated Item", "doInBackground: " + donatedItemId);
-                                    Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
+                                        Log.d("donated Item", "doInBackground: " + donatedItemId);
+                                        Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
+                                    }
+
+                                    donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
+                                    //donationDetailsToDisplay = new DonationDetails(donatedItemDetailsTodisplay, donorName);
+                                    //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
+
+                                    needCardData.add(donationDetailsToDisplay);
                                 }
-
+                            } else
+                                Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
                                 donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
                                 //donationDetailsToDisplay = new DonationDetails(donatedItemList.get(0),donorName);
                               //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
 
                                 needCardData.add(donationDetailsToDisplay);
-                            }
-                        }
-                        else
-                            Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
 
-
-
-                    } catch (JSONException e) {
+                    }
+                } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
-                    // return null;
                 }
             }
             return null;
@@ -229,7 +228,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
 
-            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needListData);
+            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needListData,needDetailsArrayList,needId);
             needrecyclerView.setAdapter(needListViewAdapter);
             needrecyclerView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
             needListLayout.setVisibility(View.GONE);

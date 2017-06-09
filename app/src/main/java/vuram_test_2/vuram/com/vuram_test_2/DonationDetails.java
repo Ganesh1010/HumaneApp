@@ -20,8 +20,6 @@ public class DonationDetails {
         this.user = user;
     }
 
-    String user;
-
     public int getNeed_id() {
         return need_id;
     }
@@ -39,6 +37,8 @@ public class DonationDetails {
     public void setdonated_at(String donated_at) {
         this.donated_at = donated_at;
     }
+
+    String user;
 
     public boolean is_received() {
         return is_received;
@@ -86,5 +86,7 @@ public class DonationDetails {
 
     public void setDonateditems(List<DonatedItemDetails> donateditems) {
         this.donated_items = donateditems;
+
     }
+
 }
