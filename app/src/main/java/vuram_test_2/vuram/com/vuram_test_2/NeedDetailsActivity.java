@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -205,7 +206,8 @@ public class NeedDetailsActivity extends AppCompatActivity {
             showlistButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    startActivity(new Intent(NeedDetailsActivity.this, DonationListActivity.class));
+                    /*
                     if (needListLayout.getVisibility() == View.GONE) {
                         needListLayout.setVisibility(View.VISIBLE);
                         headingLayout.setVisibility(View.VISIBLE);
@@ -217,7 +219,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         divider1.setVisibility(View.GONE);
                         showlistButton.setText("Show Need List");
                     }
-
+                    */
                 }
             });
 
