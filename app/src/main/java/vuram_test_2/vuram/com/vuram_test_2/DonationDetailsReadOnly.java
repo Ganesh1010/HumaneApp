@@ -7,9 +7,11 @@ import java.util.List;
 public class DonationDetailsReadOnly {
     int donation_id;
     List<DonatedItemDetails> donateditems;
-    String user,user_name,mobile;
+    int user;
+    String user_name,mobile;
     boolean is_registereduser;
     Date donated_at;
+    int need;
 
     public int getDonation_id() {
         return donation_id;
@@ -27,11 +29,11 @@ public class DonationDetailsReadOnly {
         this.donateditems = donateditems;
     }
 
-    public String getUser() {
+    public int getUserId() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUserId(int user) {
         this.user = user;
     }
 
@@ -77,9 +79,17 @@ public class DonationDetailsReadOnly {
 
     DonatedItemDetails donatedItemDetails;
 
-    public DonationDetailsReadOnly(DonatedItemDetails donatedItemDetails, String user) {
+    public DonationDetailsReadOnly(DonatedItemDetails donatedItemDetails, int user) {
         this.donatedItemDetails = donatedItemDetails;
         this.user = user;
+    }
+
+    public int getNeed() {
+        return need;
+    }
+
+    public void setNeed(int need) {
+        this.need = need;
     }
 
 }

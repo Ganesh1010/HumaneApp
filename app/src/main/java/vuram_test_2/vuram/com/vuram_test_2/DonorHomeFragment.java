@@ -119,7 +119,40 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         /* Spinner */
         spinner = (Spinner) v.findViewById(R.id.author_spinner_donor_home);
         tvEmptyView = (TextView) v.findViewById(R.id.empty_view);
-        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) landingPage);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView userType = (TextView) adapterView.getChildAt(0);
+                if (userType != null) {
+                    userType.setTextColor(Color.WHITE);
+                }
+
+                String authorType = adapterView.getItemAtPosition(i).toString();
+                Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
+
+                if (authorType.equals("Donor")) {
+                    newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
+                    nextUrl=RestAPIURL.needList;
+                    if(needitem.size()>0)
+                        needitem.clear();
+                    startNeedAsyncTask(true);
+                }
+                else if(authorType.equals("Organization")) {
+                    newNeedFloatingActionButton.setVisibility(View.VISIBLE);
+                    nextUrl=RestAPIURL.orgDetails;
+                    if(orgNeeds.size()>0)
+                        orgNeeds.clear();
+                    startOrgAsyncTask(true);
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         gson = new Gson();
         List<String> categories = new ArrayList<>();
         categories.add("Donor");
@@ -129,10 +162,11 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
         intent = landingPage.getIntent();
-        String strtext = getArguments().getString("edttext");
-        Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
+        String user = getArguments().getString(USER_KEY_TYPE);
+     //   Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
 
-        if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR"))
+       // if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR"))
+        if(user.equals("DONOR"))
         {
             if (compareValue != null) {
                 compareValue = "Donor";
@@ -143,7 +177,8 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
             }
         }
 
-        if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION")) {
+     //   if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION")) {
+        if(user.equals("ORGANISATION")){
             if (compareValue != null) {
                 compareValue = "Organization";
                 int spinnerPosition = dataAdapter.getPosition(compareValue);
@@ -190,39 +225,6 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
 
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        TextView userType = (TextView) adapterView.getChildAt(0);
-        if (userType != null) {
-            userType.setTextColor(Color.WHITE);
-        }
-
-        String authorType = adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
-
-        if (authorType.equals("Donor")) {
-            newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
-            nextUrl=RestAPIURL.needList;
-            if(needitem.size()>0)
-                needitem.clear();
-            startNeedAsyncTask(true);
-        }
-        else if(authorType.equals("Organization")) {
-            newNeedFloatingActionButton.setVisibility(View.VISIBLE);
-            nextUrl=RestAPIURL.orgDetails;
-            if(orgNeeds.size()>0)
-                orgNeeds.clear();
-            startOrgAsyncTask(true);
-        }
-
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @Override
     public void onClick(View view) {
 
     }
@@ -231,6 +233,17 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
     public void nextURL(String result) {
 
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
 
     class GetOrganisationNeedDetails extends AsyncTask {
         public LoadNextDetails nextOrgDetails;
