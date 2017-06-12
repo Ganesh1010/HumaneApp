@@ -295,20 +295,20 @@ public class LoginPageFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE, getArguments().get(USER_KEY_TYPE).toString());
                    // set Fragmentclass Arguments
-                    DonorHomeFragment fragment = new DonorHomeFragment();
-                    fragment.setArguments(bundle);
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+//                    DonorHomeFragment fragment = new DonorHomeFragment();
+//                    fragment.setArguments(bundle);
+//                    fragmentManager = getActivity().getFragmentManager();
+//                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
 
 //                    Intent intent = new Intent(landingPage,HomeActivity.class);
 
-                   /* Intent intent = new Intent(landingPage,HomeActivity.class);
+                    Intent intent = new Intent(landingPage,HomeActivity.class);
 
                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                     Toast.makeText(landingPage, "Donor", Toast.LENGTH_LONG).show();
                     startActivity(intent);
-                    landingPage.finish();*/
+                    landingPage.finish();
                 }
                 if (getArguments().get(USER_KEY_TYPE) == "ORGANISATION") {
                     Intent intent = new Intent(landingPage, OrganisationLandingPage.class);

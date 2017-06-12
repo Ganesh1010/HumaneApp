@@ -33,14 +33,22 @@
         <activity android:name=".NeedDetailsActivity" />
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".DetailsOfQuantitySelected" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".test"/>
-        <activity
-            android:name=".DonationConfirmationActivity"
-            android:theme="@style/AppTheme1" />
         <activity android:name=".OrganisationLandingPage" />
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />
+        <activity android:name=".EditOrgProfileActivity"/>
+        <activity android:name=".DonationListActivity"/>
+        <activity android:name=".test"/>
+
+        <activity
+            android:name=".DonationConfirmationActivity"
+            android:theme="@style/AppTheme1"
+            android:label="@string/app_name"/>
+
+        <activity android:name=".FilterActivity"
+            android:theme="@style/AppTheme1"
+            android:label="@string/app_name"/>
+
         <activity
             android:name=".MapActivity"
             android:label="@string/app_name"
@@ -53,9 +61,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".EditOrgProfileActivity"></activity>
-        <activity android:name=".DonationListActivity"></activity>
     </application>
 
 </manifest>
