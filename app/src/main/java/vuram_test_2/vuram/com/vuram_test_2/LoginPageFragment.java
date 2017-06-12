@@ -50,7 +50,7 @@ public class LoginPageFragment extends Fragment {
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView registerLater,linkLoginTextView;
-    LinearLayout linearLayout;;
+    LinearLayout linearLayout,landingPageLayout;
     RelativeLayout homeActivityLayout;
     @Nullable
     @Override
@@ -66,6 +66,7 @@ public class LoginPageFragment extends Fragment {
         landingPage = (LandingPage) getActivity();
         linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
         homeActivityLayout = (RelativeLayout)getActivity().findViewById(R.id.activity_main);
+
 //        registerLater=v.findViewById(R.id.register_later);
 //        registerLater.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -298,6 +299,7 @@ public class LoginPageFragment extends Fragment {
                     DonorHomeFragment fragment = new DonorHomeFragment();
                     fragment.setArguments(bundle);
                     fragmentManager = getActivity().getFragmentManager();
+
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
 
