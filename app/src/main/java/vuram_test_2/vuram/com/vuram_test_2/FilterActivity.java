@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-
 import java.util.ArrayList;
+import java.util.Map;
 
 public class FilterActivity extends AppCompatActivity {
 
@@ -23,49 +23,7 @@ public class FilterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
 
-        /*
-        item=new FilterItemCategoryList();
-        itemName=new ArrayList();
-        itemName.add("Breakfast");
-        itemName.add("Lunch");
-        itemName.add("Dinner");
-        itemName.add("Snacks");
-        item.setItemCategory("Food");
-        item.setItemName(itemName);
-        filterItems.add(item);
-
-        item=new FilterItemCategoryList();
-        itemName=new ArrayList();
-        itemName.add("Male");
-        itemName.add("Female");
-        item.setItemCategory("Clothes");
-        item.setItemName(itemName);
-        filterItems.add(item);
-
-        item=new FilterItemCategoryList();
-        itemName=new ArrayList();
-        itemName.add("wheat");
-        itemName.add("rice");
-        itemName.add("cereals");
-        itemName.add("sugar");
-        item.setItemCategory("Groceries");
-        item.setItemName(itemName);
-        filterItems.add(item);
-
-        item=new FilterItemCategoryList();
-        itemName=new ArrayList();
-        itemName.add("Pen");
-        itemName.add("Pencil");
-        itemName.add("Eraser");
-        itemName.add("Books");
-        item.setItemCategory("Stationeries");
-        item.setItemName(itemName);
-        filterItems.add(item);
-        */
-
-        //
         new FilterPreparationTask().execute();
-        //
 
     }
     class FilterPreparationTask extends AsyncTask {
@@ -112,12 +70,20 @@ public class FilterActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-            recyclerView.setAdapter(new FilterRecycleAdapter(FilterActivity.this,filterItems));
+            recyclerView.setAdapter(new FilterRecycleAdapter(FilterActivity.this,filterItems,mainItemDetailsList,subItemDetailsList));
             recyclerView.setLayoutManager(new GridLayoutManager(FilterActivity.this,1));
 
             findViewById(R.id.apply).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    System.out.println("here in apply");
+                    Map<Integer,ArrayList<Integer>> map = HomeActivity.filterItems;
+                    for (Map.Entry<Integer,ArrayList<Integer>> entry : map.entrySet())
+                    {
+                        for(int i=0;i<entry.getValue().size();i++)
+                            System.out.println(entry.getKey() + "/" + entry.getValue().get(i));
+                    }
+
                     Intent intent=new Intent();
                     setResult(HomeActivity.FILTER_REQUEST,intent);
                     finish();
@@ -127,10 +93,9 @@ public class FilterActivity extends AppCompatActivity {
             findViewById(R.id.clear).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     for(int i = 0; i< FilterRecycleAdapter.allCheckBoxes.size(); i++)
                         FilterRecycleAdapter.allCheckBoxes.get(i).setChecked(false);
-                    HomeActivity.appliedFilter.clear();
+                    HomeActivity.filterItems.clear();
                 }
             });
             progressDialog.cancel();

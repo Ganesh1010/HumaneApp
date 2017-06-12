@@ -32,10 +32,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
@@ -53,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
-    public static Set<String> appliedFilter;
+    public static Map<Integer,ArrayList<Integer>> filterItems;
     public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;
@@ -81,7 +80,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        appliedFilter = new TreeSet<>();
+        //appliedFilter = new TreeSet<>();
+        filterItems=new HashMap<>();
 
         /* Spinner */
         spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
@@ -142,10 +142,11 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == FILTER_REQUEST) {
-            Iterator i=appliedFilter.iterator();
-            while (i.hasNext()) {
-                System.out.println(i.next());
-            }
+
+//            Iterator i=appliedFilter.iterator();
+//            while (i.hasNext()) {
+//                System.out.println(i.next());
+//            }
         }
         else if (requestCode == LOCATION_REQUEST) {
 
