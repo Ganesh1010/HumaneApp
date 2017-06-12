@@ -309,7 +309,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        client.post(RestAPIURL.editOrgDetails, params, new TextHttpResponseHandler() {
+        client.post("", params, new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {

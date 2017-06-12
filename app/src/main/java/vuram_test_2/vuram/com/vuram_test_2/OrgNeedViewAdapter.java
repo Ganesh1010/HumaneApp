@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
+import com.readystatesoftware.viewbadger.BadgeView;
 import java.util.ArrayList;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
@@ -109,7 +110,8 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ((ViewHolder)holder).donorCount.setText("+" + needDetails.getDonations().size());
+            ((ViewHolder)holder).donorCount.setText(needDetails.getDonations().size()+"");
+
 
             int animationDuration = 1000; // 2500ms = 2,5s
             int totalQuantity=0;
@@ -137,7 +139,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, OrgDetailsActivity.class));
+                        context.startActivity(new Intent(context, NeedDetailsActivity.class));
                     }
                 });
                 ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);

@@ -108,28 +108,28 @@ public class DonationCart extends Fragment {
         donatedItemDetails=new DonatedItemDetails();
         donatedItemDetails.setDonation_id(1);
         donatedItemDetails.setDonated_item_id(1);
-        donatedItemDetails.setneedItemId(3);
+        donatedItemDetails.setNeed_item_id(3);
         donatedItemDetails.setQuantity(10);
         donatedItems.add(donatedItemDetails);
 
         donatedItemDetails=new DonatedItemDetails();
         donatedItemDetails.setDonation_id(1);
         donatedItemDetails.setDonated_item_id(2);
-        donatedItemDetails.setneedItemId(1);
+        donatedItemDetails.setNeed_item_id(1);
         donatedItemDetails.setQuantity(20);
         donatedItems.add(donatedItemDetails);
 
         donatedItemDetails=new DonatedItemDetails();
         donatedItemDetails.setDonation_id(1);
         donatedItemDetails.setDonated_item_id(3);
-        donatedItemDetails.setneedItemId(4);
+        donatedItemDetails.setNeed_item_id(4);
         donatedItemDetails.setQuantity(30);
         donatedItems.add(donatedItemDetails);
 
         donatedItemDetails=new DonatedItemDetails();
         donatedItemDetails.setDonation_id(1);
         donatedItemDetails.setDonated_item_id(4);
-        donatedItemDetails.setneedItemId(2);
+        donatedItemDetails.setNeed_item_id(2);
         donatedItemDetails.setQuantity(40);
         donatedItems.add(donatedItemDetails);
 

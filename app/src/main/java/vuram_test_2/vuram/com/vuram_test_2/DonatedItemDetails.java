@@ -2,7 +2,19 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 public class DonatedItemDetails {
 
-    int donated_item_id,quantity,needItemId,donation_id;
+    int donated_item_id;
+    int quantity;
+    int donation_id;
+
+    public int getNeed_item_id() {
+        return need_item_id;
+    }
+
+    public void setNeed_item_id(int need_item_id) {
+        this.need_item_id = need_item_id;
+    }
+
+    int need_item_id;
 
     public DonatedItemDetails() {}
 
@@ -25,14 +37,6 @@ public class DonatedItemDetails {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public int getneedItemId() {
-        return needItemId;
-    }
-
-    public void setneedItemId(int needItemId) {
-        this.needItemId = needItemId;
     }
 
     public int getDonation_id() {

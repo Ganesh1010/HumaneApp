@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import vuram_test_2.vuram.com.vuram_test_2.DonationDetails;
 import vuram_test_2.vuram.com.vuram_test_2.GPSTracker;
+import vuram_test_2.vuram.com.vuram_test_2.LocationAddress;
 import vuram_test_2.vuram.com.vuram_test_2.MapActivity;
 import vuram_test_2.vuram.com.vuram_test_2.R;
 import static android.app.Activity.RESULT_CANCELED;
@@ -25,10 +27,11 @@ public class CommonUI{
     static Context context;
     static EditText address,name;
     static GPSTracker gps;
-    static String mapAddress;
+    static LocationAddress mapAddress;
     static View dialogView;
     public  static  String TAG="CommonUI.java";
-    public static void displayCheckoutUI(View v, int itemsCount, final Activity context) {
+    public static void displayCheckoutUI(View v, int itemsCount, final Activity context, DonationDetails donationDetails)
+    {
         Snackbar.make(v, itemsCount+" Item(s) added", Snackbar.LENGTH_LONG).setAction("Donate", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,12 +108,12 @@ public class CommonUI{
 
         if (requestCode == 2 || !(resultCode == RESULT_CANCELED)) {
             address.setEnabled(true);
-            mapAddress = data.getStringExtra("ADDRESS");
-            address.setText(mapAddress);
+            mapAddress = (LocationAddress)data.getSerializableExtra("ADDRESS");
+            address.setText(mapAddress.getAddress());
         }
     }
-
-    public  static  void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask) {
+    public  static  void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask)
+    {
         if(asyncTask != null && context !=null && v != null) {
             if (isNetworkAvailable(context)) {
                 asyncTask.execute();
@@ -129,10 +132,11 @@ public class CommonUI{
         }
     }
 
-    public  static  void internalValidation(final Context context, final View v, final String data) {
+    public  static  void internalValidation(final Context context, final View v, final String data)
+    {
         if(data != null && context !=null && v != null) {
-                Snackbar.make(v, data , Snackbar.LENGTH_LONG).show();
-           }
+            Snackbar.make(v, data , Snackbar.LENGTH_LONG).show();
+        }
         else
         {
             Log.e(TAG, "internalValidation ",new Throwable("Null Value Input") );

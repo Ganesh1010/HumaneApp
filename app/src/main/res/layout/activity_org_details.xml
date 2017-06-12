@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
      <android.support.v7.widget.Toolbar
      android:layout_width="match_parent"
@@ -41,7 +41,7 @@
     <LinearLayout
     android:id="@+id/activity_donor_org_details"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
     tools:context="com.example.gokulrajk.vuram2.donor_org_details"
     android:orientation="vertical"
@@ -55,176 +55,42 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:srcCompat="@drawable/supportbanner"
                 android:id="@+id/imageView12" />
         </LinearLayout>
-
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:src="@drawable/ngo"
-                android:id="@+id/adapter2"
-                android:textStyle="bold|italic"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:weightSum="1">
-                <TextView
-                    android:layout_height="30dp"
-                    android:textStyle="normal|bold"
-                    android:textSize="22sp"
-                    android:id="@+id/adapter1"
-                    android:layout_width="wrap_content"
-                    android:textColor="@color/colorPrimaryText"
-                    android:layout_weight="0.20"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView15"
-                android:textSize="14sp"
-                android:textColor="@color/colorSecondaryText"
-                android:layout_marginStart="10dp"
-                android:text="Contact" />
-
-            <TextView
-                android:textSize="14sp"
-                android:id="@+id/adapter5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView16"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:text="Address" />
-
-            <TextView
-                android:id="@+id/address1"
-                android:gravity="left"
-                android:layout_width="wrap_content"
-                android:maxLines="4"
-                android:lines="4"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_height="40dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView17"
-                android:layout_weight="1"
-                android:layout_marginStart="10dp"
-                android:text="Email" />
-
-            <TextView
-                android:textSize="14sp"
-                android:id="@+id/adapter3"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginStart="10dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="@string/Need"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView14"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorPrimaryText"
-                android:textStyle="normal|bold"
-                android:layout_marginTop="10dp" />
-        </LinearLayout>
-
-    </LinearLayout>
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_content"
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view_donor_org"
+
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical"
-                android:background="#F1F1F2" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="Need Details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:textStyle="normal|bold"
+                    android:textSize="20sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/my_recycler_view_donor_org"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:background="#F1F1F2" />
+            </LinearLayout>
 
         </android.support.design.widget.CoordinatorLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="right">
-
-        </LinearLayout>
-        </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>
 </LinearLayout>

@@ -137,12 +137,14 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         Log.d("output for need id 3", need + "");
 
 
-                        if (need != null) {
+                        if (need != null)
+                        {
                             Log.d("Need Id", "doInBackground: "+need.getNeed_id());
                             itemslist = need.getItems();
                             Log.d("ItemsList", "doInBackground: " + itemslist);
 
-                            if (itemslist != null) {
+                            if (itemslist != null)
+                            {
 
 
                                 donatedDetailsList = (ArrayList<DonationDetails>) need.getDonations();
@@ -171,14 +173,16 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 }
                             } else
                                 Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
+                                donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
+                                //donationDetailsToDisplay = new DonationDetails(donatedItemList.get(0),donorName);
+                              //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
 
-                        }
-                    } catch (JSONException e) {
+                                needCardData.add(donationDetailsToDisplay);
+
+                    }
+                } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
-                    // return null;
                 }
             }
             return null;

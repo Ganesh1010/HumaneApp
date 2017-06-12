@@ -34,6 +34,7 @@
         <activity android:name=".OrgDetailsActivity" />
         <activity android:name=".DetailsOfQuantitySelected" />
         <activity android:name=".FilterActivity" />
+        <activity android:name=".test"/>
         <activity
             android:name=".DonationConfirmationActivity"
             android:theme="@style/AppTheme1" />

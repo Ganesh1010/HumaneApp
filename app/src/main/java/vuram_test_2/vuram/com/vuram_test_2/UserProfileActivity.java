@@ -132,7 +132,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         protected Object doInBackground(Object[] params) {
             authToken = Connectivity.getAuthToken(UserProfileActivity.this, Connectivity.Donor_Token);
             client = new DefaultHttpClient();
-            String authToken = Connectivity.getAuthToken(UserProfileActivity.this, Connectivity.Donor_Token);
             response = Connectivity.makeGetRequest(RestAPIURL.getUserDetails, client, authToken);
             if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
                 Gson gson = new Gson();
@@ -159,9 +158,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             emailTextView.setText(email);
             phoneTextView.setText(mobile);
             if (isCoordinator) {
-                ((Button)findViewById(R.id.my_org_button_edit_profile)).setVisibility(View.VISIBLE);
+                findViewById(R.id.my_org_button_edit_profile).setVisibility(View.VISIBLE);
             } else {
-                ((Button)findViewById(R.id.my_org_button_edit_profile)).setVisibility(View.GONE);
+                findViewById(R.id.my_org_button_edit_profile).setVisibility(View.GONE);
             }
 
             progressDialog.cancel();
