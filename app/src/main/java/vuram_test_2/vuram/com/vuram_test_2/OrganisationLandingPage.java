@@ -14,8 +14,8 @@ public class OrganisationLandingPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organisation_landing_page);
-        gv=(GridView) findViewById(R.id.details);
-        gv.setAdapter(new CustomAdapter(this, headings,images));
+
+        //gv.setAdapter(new CustomAdapter(this, headings,images));
        /* Button myprofile=(Button)findViewById(R.id.myprofile);
         myprofile.setOnClickListener(new View.OnClickListener() {
             @Override
