@@ -26,29 +26,18 @@ public class LandingPage extends AppCompatActivity {
 
 
     FrameLayout frameLayout;
-    Button donor,org;
-    View viewLine;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    static String user;
-
-
-/*    @Bind(R.id.fragmentLayout)FrameLayout frameLayout;
-    @Bind(R.id.donarActivity) Button donor;
-    @Bind(R.id.orgActivity) Button org;
-    @Bind(R.id.viewLine) View viewLine;*/
-
-
+    //static String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
-       // ButterKnife.bind(this);
         frameLayout = (FrameLayout)findViewById(R.id.fragmentLayout);
-        donor = (Button)findViewById(R.id.donarActivity);
-        org = (Button)findViewById(R.id.orgActivity);
-        viewLine = findViewById(R.id.viewLine);
+        fragment = new LandingPageFragment();
+        fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
 
 
@@ -78,54 +67,6 @@ public class LandingPage extends AppCompatActivity {
             }
         });
         // Use bounce interpolator with amplitude 0.2 and frequency 20
-        donor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               // Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
-
-               // v.startAnimation(myAnim);
-                user = "DONOR";
-
-                org.setVisibility(View.INVISIBLE);
-                donor.setVisibility(View.INVISIBLE);
-                viewLine.setVisibility(View.INVISIBLE);
-
-                Bundle bundle = new Bundle();
-                bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-
-                fragment = new  LoginPageFragment();
-                fragment.setArguments(bundle);
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
-                Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
-            }
-        });
-
-        org.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              //  view.setAnimation(myAnim);
-
-                user = "COORDINATOR";
-                org.setVisibility(View.INVISIBLE);
-                donor.setVisibility(View.INVISIBLE);
-                viewLine.setVisibility(View.INVISIBLE);
-
-                Bundle bundle = new Bundle();
-                bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
-
-                fragment = new LoginPageFragment();
-                fragment.setArguments(bundle);
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
-                Toast.makeText(LandingPage.this,"Organisation Clicked",Toast.LENGTH_LONG).show();
-            }
-        });
-
-
     }
 
 }

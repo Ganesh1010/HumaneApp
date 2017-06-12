@@ -12,9 +12,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,7 +53,7 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE
  * Created by akshayagr on 08-06-2017.
  */
 
-public class DonorHomeFragment extends Fragment implements LoadNextDetails, View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class DonorHomeFragment extends Fragment implements LoadNextDetails{
 
     View v;
     public final String TAG = "HomeActivity.java";
@@ -89,6 +92,7 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
     public Spinner spinner;
     public ImageButton menuButton;
     LandingPage landingPage;
+    String user;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -104,9 +108,6 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         }
     }
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,6 +115,7 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
             v = inflater.inflate(R.layout.activity_home_page,container,false);
 
         landingPage = (LandingPage)getActivity();
+
         appliedFilter = new TreeSet<>();
 
         /* Spinner */
@@ -145,7 +147,6 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
                     startOrgAsyncTask(true);
                 }
 
-
             }
 
             @Override
@@ -161,23 +162,19 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(landingPage, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
-        intent = landingPage.getIntent();
-        String user = getArguments().getString(USER_KEY_TYPE);
-     //   Log.d("hai", intent.getStringExtra(USER_KEY_TYPE));
 
-       // if (intent.getStringExtra(USER_KEY_TYPE).equals("DONOR"))
-        if(user.equals("DONOR"))
-        {
+        user = getArguments().getString(USER_KEY_TYPE);
+
+        if (user.equals("DONOR")) {
             if (compareValue != null) {
                 compareValue = "Donor";
                 int spinnerPosition = dataAdapter.getPosition(compareValue);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
-                nextUrl=RestAPIURL.needList;
+                nextUrl = RestAPIURL.needList;
             }
         }
 
-     //   if (intent.getStringExtra(USER_KEY_TYPE).equals("ORGANISATION")) {
         if(user.equals("ORGANISATION")){
             if (compareValue != null) {
                 compareValue = "Organization";
@@ -191,24 +188,75 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         handler = new Handler();
 
         /* Menu Button */
-        menuButton = (ImageButton)v. findViewById(R.id.menu_imagebutton_donor_home);
-        menuButton.setOnClickListener((View.OnClickListener) this);
+        menuButton = (ImageButton)v.findViewById(R.id.menu_imagebutton_donor_home);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(landingPage, menuButton);
+                Menu menu = popupMenu.getMenu();
+                menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, aboutUs);
+
+                if(Connectivity.getAuthToken(landingPage,Connectivity.Donor_Token) != null) {
+                    menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, myProfile);
+                    menu.add(Menu.NONE, MENU_ITEM_THREE, Menu.NONE, logout);
+                }
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(landingPage,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+                        String itemSelected = item.getTitle().toString();
+                        if (itemSelected.equals(myProfile)) {
+                            startActivity(new Intent(landingPage, UserProfileActivity.class));
+                        }
+                        else if(itemSelected.equals(logout)) {
+                            Connectivity.deleteAuthToken(landingPage,Connectivity.Donor_Token);
+                            startActivity(new Intent(landingPage,LoginPageFragment.class));
+
+                        } else if (itemSelected.equals(aboutUs)) {
+
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+
+            }
+        });
 
         /* Choose Location */
         ImageButton currentLocationImageButton = (ImageButton)v.findViewById(R.id.current_location_imagebutton_home);
-        currentLocationImageButton.setOnClickListener((View.OnClickListener)this);
+        currentLocationImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(landingPage, ChooseLocationActivity.class);
+                startActivityForResult(intent, LOCATION_REQUEST);
+
+            }
+        });
 
         filterImageButton = (ImageButton)v.findViewById(R.id.filter_imagebutton_donor_home);
-        filterImageButton.setOnClickListener((View.OnClickListener)this);
+        filterImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent = new Intent(landingPage, FilterActivity.class);
+                startActivityForResult(intent, FILTER_REQUEST);
+            }
+        });
 
         newNeedFloatingActionButton = (FloatingActionButton)v.findViewById(R.id.new_need_home_page);
-        newNeedFloatingActionButton.setOnClickListener((View.OnClickListener)this);
+        newNeedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(landingPage, NewNeedActivity.class));
+            }
+        });
 
         recyclerView = (RecyclerView)v.findViewById(R.id.needs_recyclerview_home_page);
 
 
         return v;
     }
+
     public void startNeedAsyncTask(boolean isFirstTime) {
         getNeedItemDetails = new GetNeedItemDetails(isFirstTime);
         getNeedItemDetails.nextNeedDetails= (LoadNextDetails) this;
@@ -220,30 +268,75 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails, View
         getOrganisationNeedDetails.nextOrgDetails= (LoadNextDetails) this;
         getOrganisationNeedDetails.execute();
     }
-
-
-
-
-    @Override
+   /* @Override
     public void onClick(View view) {
+        int viewId = v.getId();
+        Log.d(TAG, "onClick: Item Clicked"+viewId);
+        switch (viewId) {
+            case R.id.menu_imagebutton_donor_home:
+                PopupMenu popupMenu = new PopupMenu(landingPage, menuButton);
+                Menu menu = popupMenu.getMenu();
+                menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, aboutUs);
 
-    }
+                if(Connectivity.getAuthToken(landingPage,Connectivity.Donor_Token) != null) {
+                    menu.add(Menu.NONE, MENU_ITEM_ONE, Menu.NONE, myProfile);
+                    menu.add(Menu.NONE, MENU_ITEM_THREE, Menu.NONE, logout);
+                }
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(landingPage,"You Clicked : " + item.getTitle(),Toast.LENGTH_SHORT).show();
+                        String itemSelected = item.getTitle().toString();
+                        if (itemSelected.equals(myProfile)) {
+                            startActivity(new Intent(landingPage, UserProfileActivity.class));
+                            //HomeActivity.this.finish();
+                        }
+                        else if(itemSelected.equals(logout)) {
+                            Connectivity.deleteAuthToken(landingPage,Connectivity.Donor_Token);
+                            startActivity(new Intent(landingPage,LoginPageFragment.class));
+                            //HomeActivity.this.finish();
+                        } else if (itemSelected.equals(aboutUs)) {
+
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+                break;
+
+            case R.id.current_location_imagebutton_home:
+            case R.id.current_location_textview_home:
+              //  Intent intent = new Intent(landingPage, ChooseLocationActivity.class);
+                //startActivityForResult(intent, LOCATION_REQUEST);
+                //HomeActivity.this.finish();
+                break;
+
+            case R.id.filter_imagebutton_donor_home:
+                intent = new Intent(landingPage, FilterActivity.class);
+                startActivityForResult(intent, FILTER_REQUEST);
+                //HomeActivity.this.finish();
+                break;
+
+            case R.id.new_need_home_page:
+                startActivity(new Intent(landingPage, NewNeedActivity.class));
+                //HomeActivity.this.finish();
+                break;
+        }
+
+
+    }*/
 
     @Override
     public void nextURL(String result) {
-
+        if(result.equals("nextNeedDetails"))
+            startNeedAsyncTask(false);
+        else if(result.equals("nextOrgDetails"))
+            startOrgAsyncTask(false);
+        else if(result.equals("finishedNeedDetails"))
+            getNeedItemDetails.cancel(true);
+        else
+            getOrganisationNeedDetails.cancel(true);
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
+    
 
     class GetOrganisationNeedDetails extends AsyncTask {
         public LoadNextDetails nextOrgDetails;

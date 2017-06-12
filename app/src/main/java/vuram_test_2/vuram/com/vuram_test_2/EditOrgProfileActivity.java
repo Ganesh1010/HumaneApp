@@ -39,8 +39,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
     ImageButton saveButton;
     FloatingActionButton changeImageButton;
     LinearLayout orgRegNoLayout, addButtonLayout;
-    EditText orgNameEditText, orgAddressEditText, emailEditText, mobileEditText, orgDescEditText;
+    EditText orgNameEditText, orgAddressEditText, emailEditText, mobileEditText, orgDescEditText, peopleCountEditText;
     CountryCodePicker countryCodePicker;
     Spinner orgTypeSpinner;
 
@@ -85,6 +83,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         countryCodePicker = (CountryCodePicker) findViewById(R.id.country_code_org_form);
         orgDescEditText = (EditText) findViewById(R.id.org_desc_editText_org_form);
         orgTypeSpinner = (Spinner) findViewById(R.id.org_type_spinner_org_form);
+        peopleCountEditText = (EditText) findViewById(R.id.people_count_editText_org_form);
         changeImageButton = (FloatingActionButton) findViewById(R.id.change_org_image_edit_org_profile);
         changeImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +143,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         int orgType;
         String orgDesc;
         int countryCode;
+        int peopleCount;
 
         ProgressDialog progressDialog;
 
@@ -174,6 +174,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 orgType = orgDetails.getOrg_type();
                 orgDesc = orgDetails.getDescription();
                 countryCode = orgDetails.getCountryCode();
+                peopleCount = orgDetails.getPeople_count();
                 Log.d(TAG, "doInBackground: Received details: " + orgName + ", " + address + ", "
                         + email + ", " + mobile + ", " + orgType + ", " + orgDesc + ", " + countryCode);
             } else {
@@ -191,6 +192,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
             countryCodePicker.setCountryForPhoneCode(countryCode);
             mobileEditText.setText(mobile);
             orgDescEditText.setText(orgDesc);
+            peopleCountEditText.setText(Integer.toString(peopleCount));
 
             /* Loading org type spinner with static(synchronized) data */
             db = new DatabaseHelper(EditOrgProfileActivity.this);
@@ -240,13 +242,13 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void postFile(String userImageFilePath) {
+    private void postFile(String orgImageFilePath) {
         SyncHttpClient client = new SyncHttpClient();
         String token= getAuthToken(EditOrgProfileActivity.this,Connectivity.Donor_Token);
         client.addHeader("Authorization","Token "+token);
         RequestParams params = new RequestParams();
 
-        // Change User Details
+        // Change Org Details
         // fetching country names & codes
         int selectedCountryId = Integer.parseInt(countryCodePicker.getSelectedCountryCode().substring(1));
 
@@ -294,26 +296,33 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 params.put("description", orgDesc);
             }
         }
-        params.put("country", selectedCountryId);
+        params.put("org_country", selectedCountryId);
 
-        Log.d(TAG, "postFile: " + orgNameEditText.getText().toString() + "\t" + selectedCountryId
-                + "\t" + mobileEditText.getText().toString() + emailEditText.getText().toString());
+        Log.d(TAG, "postFile: " + orgNameEditText.getText().toString()
+                + "\t" + mobileEditText.getText().toString()
+                + "\t" + emailEditText.getText().toString()
+                + "\t" + orgAddressEditText.getText().toString()
+                + "\t" + orgDescEditText.getText().toString()
+                + "\t" + orgTypeSpinner.getSelectedItem().toString()
+                + "\t" + countryCodePicker.getSelectedCountryCode()
+                + "\t" + selectedCountryId);
+        /*
         try {
-            if(userImageFilePath != null) {
-                if (new File(userImageFilePath).exists()) {
-                    params.put("image", new File(userImageFilePath));
+            if(orgImageFilePath != null) {
+                if (new File(orgImageFilePath).exists()) {
+                    params.put("image", new File(orgImageFilePath));
                     params.put("imageType", 1);
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        client.post("", params, new TextHttpResponseHandler() {
+        */
+        client.post(RestAPIURL.editOrgDetails, params, new TextHttpResponseHandler() {
 
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
-                Log.d("Edit", "onFailure: "+responseString);
+                Log.d("Edit", "onFailure: "+statusCode);
             }
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
@@ -339,7 +348,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 String picturePath = cursor.getString(columnIndex);
                 cursor.close();
 
-                ImageView imageView = (ImageView) findViewById(R.id.user_image_edit_profile);
+                ImageView imageView = (ImageView) findViewById(R.id.org_image_edit_org_profile);
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 orgImageFilePath = picturePath;
             } catch (Exception e) {

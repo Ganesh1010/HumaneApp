@@ -277,7 +277,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         finish();//finishing activity
     }
 
-    @Override
+   @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater mi = getMenuInflater();
         mi.inflate(R.menu.menu_map, menu);
