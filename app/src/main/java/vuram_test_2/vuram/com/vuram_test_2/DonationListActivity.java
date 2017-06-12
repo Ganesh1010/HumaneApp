@@ -2,8 +2,8 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -54,29 +54,24 @@ public class DonationListActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] params) {
             httpClient = new DefaultHttpClient();
             String coordinatorToken = Connectivity.getAuthToken(DonationListActivity.this, Connectivity.Donor_Token);
-            httpResponse = Connectivity.makeGetRequest(RestAPIURL.donationList,httpClient,coordinatorToken);
-            String JSONString = Connectivity.getJosnFromResponse(httpResponse);
-            Log.d(TAG, "doInBackground: " + JSONString);
-            Gson gson = new Gson();
-            donationDetailsReadOnlyList = gson.fromJson(JSONString, new TypeToken<List<DonationDetailsReadOnly>>() {}.getType());
-            if (donationDetailsReadOnlyList != null) {
-                if (donationDetailsReadOnlyList.size() > 0) {
-                    donationDetailsReadOnly = donationDetailsReadOnlyList.get(0);
-                } else {
-                    Log.e(TAG, "doInBackground: Organisation list is empty", new ArrayIndexOutOfBoundsException());
-                }
-            } else {
-                Log.e(TAG, "doInBackground: Organisation data not found", new NullPointerException());
+            httpResponse = Connectivity.makeGetRequest(RestAPIURL.donationList, httpClient, coordinatorToken);
+            if (httpResponse == null) {
+                Log.d(TAG, "doInBackground: httpResponse is null");
             }
-            return donationDetailsReadOnlyList;
+            return null;
         }
 
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+            String JSONString = Connectivity.getJosnFromResponse(httpResponse);
+            Log.d(TAG, "doInBackground: " + JSONString);
+            Gson gson = new Gson();
+            donationDetailsReadOnlyList = gson.fromJson(JSONString, new TypeToken<List<DonationDetailsReadOnly>>() {}.getType());
             donationListAdapter = new DonationListAdapter(DonationListActivity.this, donationDetailsReadOnlyList);
             donationListRecyclerView.setAdapter(donationListAdapter);
             progressDialog.cancel();
         }
     }
+
 }
