@@ -36,21 +36,22 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     public ImageButton imageButton;
     public static Context context;
     public ArrayList<NeedItemDetails> itemList;
-    private static RecyclerView.Adapter adapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private static RecyclerView recyclerView;
-    static View.OnClickListener myOnClickListener;
+    private  RecyclerView recyclerView;
+    public static View.OnClickListener myOnClickListener;
     public HttpClient client;
     public NeedItemDetails needItemDetails;
     public NeedDetails need;
     public ImageView donationCart;
     public String needId;
-    CommonUI commonUI=new CommonUI();
+    ItemDetailsAdapter itemDetailsAdapter=new ItemDetailsAdapter();
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2 && !(resultCode==RESULT_CANCELED))
-            commonUI.onActivityResult(requestCode,resultCode,data);
+            itemDetailsAdapter.onActivityResult(requestCode,resultCode,data);
     }
 
     @Override

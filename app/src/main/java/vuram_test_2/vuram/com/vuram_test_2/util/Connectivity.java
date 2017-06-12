@@ -58,7 +58,7 @@ public class Connectivity {
         }
         return null;
     }
-    public static HttpResponse makeGetRequest(String uri, HttpClient client,String token) {
+    public static HttpResponse makeGetRequest(String uri, HttpClient client, String token) {
         try {
             HttpGet httpGet = new HttpGet(uri);
            // Log.d("T",token);
@@ -69,11 +69,14 @@ public class Connectivity {
             //Log.d("Header",httpGet.("Authorization").toString());
             return client.execute(httpGet);
         } catch (UnsupportedEncodingException e) {
+            Log.e("Exception", "makeGetRequest: ",e);
             e.printStackTrace();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
+            Log.e("Exception", "makeGetRequest: ",e);
         } catch (IOException e) {
             e.printStackTrace();
+            Log.e("Exception", "makeGetRequest: ",e);
         }
         return null;
     }
