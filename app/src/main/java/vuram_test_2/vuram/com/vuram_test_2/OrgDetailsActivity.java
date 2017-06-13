@@ -1,5 +1,6 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -85,6 +86,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;
         ArrayList<NeedDetails> needDetails;
+        ProgressDialog progressDialog;
 
         @Override
         protected Object doInBackground(Object[] objects) {
@@ -110,10 +112,15 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            progressDialog = new ProgressDialog(OrgDetailsActivity.this);
+            progressDialog.setMessage("Loading the need details");
+            progressDialog.show();
         }
 
         @Override
         protected void onPostExecute(Object o) {
+            if(progressDialog.isShowing())
+                progressDialog.cancel();
             for (int j = 0; j < needDetails.size(); j++)
                 if (needDetails.get(j).getNeed_id() == Integer.parseInt(needId))
                 {

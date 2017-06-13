@@ -52,7 +52,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public DatabaseHelper db;
     View target;
     BadgeView badge;
-    CommonUI commonUI=new CommonUI();
     public ImageView getLocation;
     public static Context context;
     public static Activity activity;
@@ -62,7 +61,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public GPSTracker gps;
     public static LocationAddress mapAddress;
     public View dialogView;
-    public UnregisteredUser unregisteredUser;
+    public DonatingUserDetails donatingUserDetails;
     public static String TAG="CommonUI.java";
     public String donor_token;
     public Gson gson;
@@ -70,7 +69,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public HttpResponse response;
     public boolean isDataFilled=false;
     public static boolean isLocationSelected=false;
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -335,6 +333,14 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
+                        donatingUserDetails =new DonatingUserDetails();
+                        donatingUserDetails.setAddress(address.getText().toString());
+                        donatingUserDetails.setLatitude(mapAddress.getLatitude());
+                        donatingUserDetails.setLongitude(mapAddress.getLongitude());
+                        donatingUserDetails.setMobile(mobileNumber.getText().toString());
+                        donatingUserDetails.setName(name.getText().toString());
+                        donationDetails.setDonatingUserDetails(donatingUserDetails);
+
                         new PostItemDetails().execute(donationDetails);
                         //dialog.dismiss();
                     }
@@ -349,12 +355,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 if(donor_token==null)
                 {
                     dialog.show();
-                    unregisteredUser=new UnregisteredUser();
-                    unregisteredUser.setAddress(address.getText().toString());
-                    unregisteredUser.setLatitude(mapAddress.getLatitude());
-                    unregisteredUser.setLongitude(mapAddress.getLongitude());
-                    unregisteredUser.setMobile(mobileNumber.getText().toString());
-                    donationDetails.setUnregisteredUser(unregisteredUser);
                     donationDetails.setRegisteredUser(false);
                 }
                 else {
@@ -363,7 +363,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     PopulatingTask populatingTask=new PopulatingTask(dialog);
                     populatingTask.execute();
                 }
-
             }
         }).show();
     }
