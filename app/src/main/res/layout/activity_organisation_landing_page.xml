@@ -12,6 +12,7 @@
         tools:context="vuram_test_2.vuram.com.vuram_test_2.OrganisationLandingPage"
         android:background="@drawable/gradient_loing_page"
     android:orientation="vertical">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -117,30 +118,52 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_weight="0"
-            android:elevation="5dp"
-            android:background="@color/colorPrimary">
-            </RelativeLayout>
-</LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="400dp"
-    android:padding="20dp"
-    android:id="@+id/grid">
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
 
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            android:id="@+id/details"
-            android:numColumns="3"
-            />
     </LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        android:minHeight="?attr/actionBarSize"
+        android:id="@+id/toolbar2"
+        android:gravity="bottom|end"
+        android:layout_gravity="bottom" >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/user"
+            android:id="@+id/imageView10" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/iconsc"
+            android:id="@+id/imageView11" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView12"
+            app:srcCompat="@drawable/list" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView13"
+            app:srcCompat="@drawable/receiveddonations" />
+    </LinearLayout>
+
+  </android.support.v7.widget.Toolbar>
 
 </LinearLayout>

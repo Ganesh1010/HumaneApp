@@ -94,7 +94,7 @@ public class LoginPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(LandingPage.user.equals("DONOR")) {
+                if(LandingPageFragment.user.equals("DONOR")) {
                     fragment = new DonorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
@@ -108,7 +108,7 @@ public class LoginPageFragment extends Fragment {
                     landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
 
-                if(LandingPage.user.equals("COORDINATOR")){
+                if(LandingPageFragment.user.equals("COORDINATOR")){
 
                     fragment = new CoordinatorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();
@@ -125,7 +125,7 @@ public class LoginPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(LandingPage.user.equals("DONOR")) {
+                if(LandingPageFragment.user.equals("DONOR")) {
                     fragment = new DonorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
@@ -139,7 +139,7 @@ public class LoginPageFragment extends Fragment {
                     landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
 
-                if(LandingPage.user.equals("COORDINATOR")){
+                if(LandingPageFragment.user.equals("COORDINATOR")){
 
                     fragment = new CoordinatorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();

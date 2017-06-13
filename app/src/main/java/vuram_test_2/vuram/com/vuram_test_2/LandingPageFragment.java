@@ -29,7 +29,7 @@ public class LandingPageFragment extends Fragment {
     Button donor,org;
     Fragment fragment =null;
 
-    String user;
+    static String user;
 
     @Nullable
     @Override

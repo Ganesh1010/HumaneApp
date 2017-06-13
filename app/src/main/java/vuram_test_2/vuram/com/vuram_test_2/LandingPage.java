@@ -28,7 +28,7 @@ public class LandingPage extends AppCompatActivity {
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    static String user;
+    //static String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

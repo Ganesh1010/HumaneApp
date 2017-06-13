@@ -39,6 +39,7 @@
     </string-array>
     <string name="location">Location</string>
     <string name="org_description">Org Description</string>
+    <string name="org_people_count">People Count</string>
 
     <string name="username">UserName</string>
     <string name="password">Password</string>
