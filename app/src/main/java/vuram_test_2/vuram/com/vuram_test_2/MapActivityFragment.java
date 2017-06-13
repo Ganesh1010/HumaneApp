@@ -1,7 +1,9 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -68,7 +70,7 @@ public class MapActivityFragment extends Fragment implements OnMapReadyCallback,
     public ProgressDialog progressDialog;
     public LocationAddress locationAddress;
     View view;
-    LandingPage landingPage;
+    Activity landingPage;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
 
@@ -79,12 +81,13 @@ public class MapActivityFragment extends Fragment implements OnMapReadyCallback,
         if(view == null)
             view = inflater.inflate(R.layout.activity_map,container,false);
         //    this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //landingPage =
+        landingPage =getActivity();
 
         progressDialog=new ProgressDialog(getActivity());
 
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
-        mapFrag = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
+        FragmentManager fm = getChildFragmentManager();
+        mapFrag = (MapFragment)fm.findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
         setLocation= (Button)view.findViewById(R.id.setLocation);
         setLocation.setOnClickListener(new View.OnClickListener() {
@@ -337,33 +340,34 @@ public class MapActivityFragment extends Fragment implements OnMapReadyCallback,
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             if (addresses != null) {
-                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                String area = addresses.get(0).getSubLocality();
-                String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalCode = addresses.get(0).getPostalCode();
-                String knownName = addresses.get(0).getFeatureName();// Only if available else return NULL
+                if(addresses.size()>0) {
+                    String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                    String area = addresses.get(0).getSubLocality();
+                    String city = addresses.get(0).getLocality();
+                    String state = addresses.get(0).getAdminArea();
+                    String country = addresses.get(0).getCountryName();
+                    String postalCode = addresses.get(0).getPostalCode();
+                    String knownName = addresses.get(0).getFeatureName();// Only if available else return NULL
 
-                if (address != null)
-                    Address.append(address + ",");
-                if (area != null)
-                    Address.append(area + ",");
-                if (city != null)
-                    Address.append(city + ",");
-                if (state != null)
-                    Address.append(state + ",");
-                if (postalCode != null)
-                    Address.append(postalCode + ",");
-                if (country != null)
-                    Address.append(country + ",");
-                if (knownName != null && !knownName.equals(address))
-                    Address.append(knownName);
+                    if (address != null)
+                        Address.append(address + ",");
+                    if (area != null)
+                        Address.append(area + ",");
+                    if (city != null)
+                        Address.append(city + ",");
+                    if (state != null)
+                        Address.append(state + ",");
+                    if (postalCode != null)
+                        Address.append(postalCode + ",");
+                    if (country != null)
+                        Address.append(country + ",");
+                    if (knownName != null && !knownName.equals(address))
+                        Address.append(knownName);
 
-                locationAddress.setAddress(Address.toString());
-                locationAddress.setLatitude(latitude);
-                locationAddress.setLongitude(longitude);
-
+                    locationAddress.setAddress(Address.toString());
+                    locationAddress.setLatitude(latitude);
+                    locationAddress.setLongitude(longitude);
+                }
                 //Address = address + "," + area + "," + city + "," + state + "," + postalCode + "," + country;
             }
         } catch (IOException e) {
