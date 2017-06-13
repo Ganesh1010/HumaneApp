@@ -1,10 +1,14 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-/**
- * Created by rahulk on 6/8/2017.
- */
+public class DonatingUserDetails {
 
-public class UnregisteredUser {
+    String address;
+    double latitude;
+    double longitude;
+    String mobile;
+    int donation_id;
+    String name;
+
     public String getAddress() {
         return address;
     }
@@ -37,8 +41,20 @@ public class UnregisteredUser {
         this.mobile = mobile;
     }
 
-    String address;
-    double latitude;
-    double longitude;
-    String mobile;
+    public int getDonation_id() {
+        return donation_id;
+    }
+
+    public void setDonation_id(int donation_id) {
+        this.donation_id = donation_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

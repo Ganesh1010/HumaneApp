@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
@@ -52,7 +54,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
-    public static Map<Integer,ArrayList<Integer>> filterItems=new HashMap<>();
+    public static ConcurrentHashMap<Integer,ArrayList<Integer>> filterItems=new ConcurrentHashMap<>();
     public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;

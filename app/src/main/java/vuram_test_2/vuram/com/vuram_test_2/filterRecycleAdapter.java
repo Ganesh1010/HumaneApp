@@ -3,6 +3,7 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
+
 public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdapter.ViewHolder> {
 
     List<FilterItemCategoryList> list;
@@ -24,8 +27,8 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
     ArrayList<MainItemDetails> mainItemDetails;
     ArrayList<SubItemDetails> subItemDetails;
     public static ArrayList<CheckBox> allCheckBoxes=new ArrayList<>();
-    public int mainItemCode;
-    public ArrayList<Integer> subItemCode;
+    public int selectedMainItemCode,selectedSubItemCode;
+    public ArrayList<Integer> subItemCodeArrayList;
 
     public FilterRecycleAdapter(Context context, ArrayList<FilterItemCategoryList> list,ArrayList<MainItemDetails> mainItemDetails,ArrayList<SubItemDetails> subItemDetails) {
         this.list=list;
@@ -75,35 +78,19 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
             itemName.setText(list.get(position).getItemName().get(i) + "");
 
             Iterator it = HomeActivity.filterItems.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<Integer,ArrayList<Integer>> pair = (Map.Entry)it.next();
+            while (it.hasNext())
+            {
+                Map.Entry<Integer,ArrayList<Integer>> filter = (Map.Entry)it.next();
 
-                subItemCode=pair.getValue();
-                for(int j=0;j<subItemCode.size();j++)
+                subItemCodeArrayList=filter.getValue();
+                for(int j=0;j<subItemCodeArrayList.size();j++)
                     for (int k = 0; k < subItemDetails.size(); k++)
-                        if (subItemCode.get(j) == subItemDetails.get(k).getSubItemCode())
+                        if (subItemCodeArrayList.get(j) == subItemDetails.get(k).getSubItemCode())
                             if (subItemDetails.get(k).getSubItemName().equals(itemName.getText().toString())) {
                                 itemName.setChecked(true);
                                 break;
                             }
-                //System.out.println(pair.getKey() + " = " + pair.getValue());
-                it.remove(); // avoids a ConcurrentModificationException
             }
-
-
-//            Map<Integer,ArrayList<Integer>> map =HomeActivity.filterItems;
-//            for (Map.Entry<Integer,ArrayList<Integer>> items : map.entrySet())
-//            {
-//                subItemCode=items.getValue();
-//                for(int j=0;j<subItemCode.size();j++)
-//                    for (int k = 0; k < subItemDetails.size(); k++)
-//                        if (subItemCode.get(j) == subItemDetails.get(k).getSubItemCode())
-//                            if (subItemDetails.get(k).getSubItemName().equals(itemName.getText().toString())) {
-//                                itemName.setChecked(true);
-//                                break;
-//                            }
-//
-//            }
 
             if(itemName.getText().toString().equals("Male"))
             {
@@ -133,69 +120,57 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
             itemName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String subItemName = itemName.getText().toString();
-                    if (isChecked)
-                    {
-                        // Finding subItemCode & mainItemCode of this checked item
-                        for (int i = 0; i < subItemDetails.size(); i++)
-                            if (subItemDetails.get(i).getSubItemName().equals(subItemName))
-                            {
-                                System.out.println("here in checkbox");
-                                Map<Integer, ArrayList<Integer>> filter = HomeActivity.filterItems;
-                                mainItemCode = subItemDetails.get(i).getMainItemCode();
-                                if(HomeActivity.filterItems.size()==0)
-                                {
-                                    System.out.println("new entry");
-                                    subItemCode = new ArrayList<>();
-                                    subItemCode.add(subItemDetails.get(i).getSubItemCode());
-                                    HomeActivity.filterItems.put(mainItemCode, subItemCode);
-                                }
-                                else {
-
-
-                                    Iterator it = HomeActivity.filterItems.entrySet().iterator();
-                                    while (it.hasNext())
-                                    {
-                                        Map.Entry<Integer,ArrayList<Integer>> pair = (Map.Entry)it.next();
-
-                                    //for (Map.Entry<Integer, ArrayList<Integer>> items : filter.entrySet()) {
-                                        if (pair.getKey() == subItemDetails.get(i).getMainItemCode()) {
-                                            System.out.println("update entry");
-                                            subItemCode = pair.getValue();
-                                            subItemCode.add(subItemDetails.get(i).getSubItemCode());
-                                            HomeActivity.filterItems.put(mainItemCode, subItemCode);
-                                        } else {
-                                            System.out.println("new entry");
-                                            subItemCode = new ArrayList<>();
-                                            subItemCode.add(subItemDetails.get(i).getSubItemCode());
-                                            HomeActivity.filterItems.put(mainItemCode, subItemCode);
+                    String selectedSubItemName = itemName.getText().toString();
+                    if (isChecked) {
+                        // Finding subItemCodeArrayList & mainItemCode of this checked item
+                        for (SubItemDetails singleSubItemDetails : subItemDetails) {
+                            if (singleSubItemDetails != null) {
+                                if (singleSubItemDetails.getSubItemName().equals(selectedSubItemName)) {
+                                    selectedMainItemCode = singleSubItemDetails.getMainItemCode();
+                                    selectedSubItemCode = singleSubItemDetails.getSubItemCode();
+                                    if (HomeActivity.filterItems.size() == 0) {
+                                        System.out.println("new entry");
+                                        subItemCodeArrayList = new ArrayList<>();
+                                    } else {
+                                        boolean isNewItem = true;
+                                        for (Iterator<Map.Entry<Integer, ArrayList<Integer>>> it = HomeActivity.filterItems.entrySet().iterator(); it.hasNext(); ) {
+                                            Map.Entry<Integer, ArrayList<Integer>> filter = (Map.Entry) it.next();
+                                            if (filter.getKey() == selectedMainItemCode) {
+                                                isNewItem = false;
+                                                System.out.println("update entry");
+                                                subItemCodeArrayList = filter.getValue();
+                                                Log.d(TAG, "onCheckedChanged: ArrayList Main Item Code" + filter.getKey() + " Value " + filter.getValue().size());
+                                            }
                                         }
-                                        it.remove();
+                                        if (isNewItem) {
+                                            System.out.println("new entry");
+                                            subItemCodeArrayList = new ArrayList<>();
+                                        }
                                     }
+                                    subItemCodeArrayList.add(selectedSubItemCode);
+                                    HomeActivity.filterItems.put(selectedMainItemCode, subItemCodeArrayList);
                                 }
                             }
+                        }
                     }
                     else
                     {
-                        for (int i = 0; i < subItemDetails.size(); i++)
-                            if (subItemDetails.get(i).getSubItemName().equals(subItemName))
-                            {
-                                //Map<Integer, ArrayList<Integer>> filter = HomeActivity.filterItems;
-                                mainItemCode = subItemDetails.get(i).getMainItemCode();
-                                Iterator it = HomeActivity.filterItems.entrySet().iterator();
-                                while (it.hasNext())
-                                {
-                                    Map.Entry<Integer, ArrayList<Integer>> pair = (Map.Entry) it.next();
-
-                                    //for (Map.Entry<Integer, ArrayList<Integer>> items : pair.entrySet()) {
-                                        if (pair.getKey() == subItemDetails.get(i).getMainItemCode()) {
-                                            subItemCode = pair.getValue();
-                                            subItemCode.remove(new Integer(subItemDetails.get(i).getSubItemCode()));
-                                            HomeActivity.filterItems.put(mainItemCode, subItemCode);
+                        for (SubItemDetails singleSubItemDetails : subItemDetails) {
+                            if(singleSubItemDetails!=null) {
+                                if (singleSubItemDetails.getSubItemName().equals(selectedSubItemName)) {
+                                    selectedMainItemCode = singleSubItemDetails.getMainItemCode();
+                                    selectedSubItemCode = singleSubItemDetails.getSubItemCode();
+                                    for (Iterator<Map.Entry<Integer, ArrayList<Integer>>> it = HomeActivity.filterItems.entrySet().iterator(); it.hasNext(); ) {
+                                        Map.Entry<Integer, ArrayList<Integer>> filter = (Map.Entry) it.next();
+                                        if (filter.getKey() == selectedMainItemCode) {
+                                            subItemCodeArrayList = filter.getValue();
+                                            subItemCodeArrayList.remove(new Integer(selectedSubItemCode));
+                                            HomeActivity.filterItems.put(selectedMainItemCode, subItemCodeArrayList);
                                         }
-                                    it.remove();
+                                    }
                                 }
                             }
+                        }
                     }
                 }
             });
