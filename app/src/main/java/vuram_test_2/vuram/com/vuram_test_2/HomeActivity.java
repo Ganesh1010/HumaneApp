@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
-    public static Map<Integer,ArrayList<Integer>> filterItems;
+    public static Map<Integer,ArrayList<Integer>> filterItems=new HashMap<>();
     public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;
@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         //appliedFilter = new TreeSet<>();
-        filterItems=new HashMap<>();
+        //filterItems=new HashMap<>();
 
         /* Spinner */
         spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
