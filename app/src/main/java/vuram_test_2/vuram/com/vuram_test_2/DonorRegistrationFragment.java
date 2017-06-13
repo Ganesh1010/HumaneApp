@@ -3,7 +3,6 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -128,7 +127,6 @@ public class DonorRegistrationFragment extends Fragment {
         registerDetails.setCountry(1);
         new CreateUserAccount().execute();
     }
-
 
     public void onSignupSuccess() {
         registerButton.setEnabled(true);

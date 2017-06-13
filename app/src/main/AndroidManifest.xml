@@ -19,11 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LandingPage">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity android:name=".ChooseLocationActivity" />
@@ -38,7 +34,13 @@
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />
         <activity android:name=".EditOrgProfileActivity"/>
-        <activity android:name=".DonationListActivity"/>
+        <activity android:name=".DonationListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".test"/>
 
         <activity
