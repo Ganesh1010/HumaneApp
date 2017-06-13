@@ -28,7 +28,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
     private final String TAG = "DonorNeedViewAdapter";
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
-    private int visibleThreshold = 5;
+    private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
@@ -48,9 +48,13 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 super.onScrolled(recyclerView, dx, dy);
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                    if (onLoadMoreListener != null)
+                Log.d(TAG, "onScrolled: total Count"+totalItemCount);
+                Log.d(TAG, "onScrolled: lastvisible "+lastVisibleItem);
+                Log.d(TAG, "onScrolled: loading"+loading);
+                if (!loading && (totalItemCount <= (lastVisibleItem + visibleThreshold))) {
+                    if (onLoadMoreListener != null) {
                         onLoadMoreListener.onLoadMore();
+                    }
                     loading = true;
                 }
             }
@@ -192,7 +196,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return needDetails.size();
+        return needDetails==null?0:needDetails.size();
     }
 
     public static class ProgressViewHolder extends RecyclerView.ViewHolder {
