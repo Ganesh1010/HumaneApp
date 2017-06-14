@@ -113,11 +113,11 @@ public class OrganisationRegistrationFragment extends Fragment {
                 // check if GPS enabled
                 if(gps.getIsGPSTrackingEnabled()){
                     if(isNetworkAvailable()) {
-                        fragment = new MapActivityFragment();
+                     /*   fragment = new MapActivityFragment();
                         fragmentManager = getActivity().getFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-                        // Intent intent = new Intent(landingPage, MapActivityFragment.class);
-                      //  startActivityForResult(intent, 2);
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();*/
+                         Intent intent = new Intent(landingPage, MapActivity.class);
+                         startActivityForResult(intent, 2);
                     }
                     else
                     {

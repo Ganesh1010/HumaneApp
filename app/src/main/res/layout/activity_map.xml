@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:id="@+id/map"
         tools:context=".MapLocationActivity"
-        android:name="com.google.android.gms.maps.MapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_marginBottom="0dp">
     </fragment>
     <Button
