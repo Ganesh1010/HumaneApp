@@ -118,6 +118,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 int spinnerPosition = dataAdapter.getPosition(compareValue);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
+                System.out.println("spinner position");
                 nextUrl=RestAPIURL.orgDetails;
             }
         }
