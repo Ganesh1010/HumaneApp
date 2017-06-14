@@ -136,7 +136,7 @@ public class LoginPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(user_selection.equals("DONOR")) {
+                if(user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
                     fragment = new DonorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
@@ -145,10 +145,10 @@ public class LoginPageFragment extends Fragment {
                     // startActivityForResult(intent, REQUEST_SIGNUP);
                     //finish();
 
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                  //  landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
 
-                if(user_selection.equals("COORDINATOR")){
+                if(user_selection.equals(USER_TYPE_SELECTION_ORG)){
 
                     fragment = new CoordinatorRegistrationFragment();
                     fragmentManager = getActivity().getFragmentManager();

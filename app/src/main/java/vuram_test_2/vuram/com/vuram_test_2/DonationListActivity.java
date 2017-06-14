@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -47,7 +49,6 @@ public class DonationListActivity extends AppCompatActivity {
             progressDialog = new ProgressDialog(DonationListActivity.this);
             progressDialog.setMessage("Loading Donation details");
             progressDialog.show();
-            donationListRecyclerView = (RecyclerView) findViewById(R.id.donation_details_recycler_view_donation_list);
         }
 
         @Override
@@ -55,20 +56,22 @@ public class DonationListActivity extends AppCompatActivity {
             httpClient = new DefaultHttpClient();
             String coordinatorToken = Connectivity.getAuthToken(DonationListActivity.this, Connectivity.Donor_Token);
             httpResponse = Connectivity.makeGetRequest(RestAPIURL.donationList, httpClient, coordinatorToken);
-            if (httpResponse == null) {
-                Log.d(TAG, "doInBackground: httpResponse is null");
-            }
+            String JSONString = Connectivity.getJosnFromResponse(httpResponse);
+            Log.d(TAG, "doInBackground: " + JSONString);
+            Gson gson = new Gson();
+            donationDetailsReadOnlyList = gson.fromJson(JSONString, new TypeToken<List<DonationDetailsReadOnly>>() {}.getType());
             return null;
         }
 
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
-            String JSONString = Connectivity.getJosnFromResponse(httpResponse);
-            Log.d(TAG, "doInBackground: " + JSONString);
-            Gson gson = new Gson();
-            donationDetailsReadOnlyList = gson.fromJson(JSONString, new TypeToken<List<DonationDetailsReadOnly>>() {}.getType());
+            Log.d(TAG, "onPostExecute: List size: " + donationDetailsReadOnlyList.size());
             donationListAdapter = new DonationListAdapter(DonationListActivity.this, donationDetailsReadOnlyList);
+            donationListRecyclerView = (RecyclerView) findViewById(R.id.donation_details_recycler_view_donation_list);
+            donationListRecyclerView.setHasFixedSize(true);
+            donationListRecyclerView.setLayoutManager(new LinearLayoutManager(DonationListActivity.this));
+            donationListRecyclerView.setItemAnimator(new DefaultItemAnimator());
             donationListRecyclerView.setAdapter(donationListAdapter);
             progressDialog.cancel();
         }

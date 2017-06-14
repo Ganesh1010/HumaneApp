@@ -4,7 +4,13 @@ public class DonatedItemDetails {
 
     int donated_item_id;
     int quantity;
+    int needitem;
     int donation_id;
+
+    public DonatedItemDetails(int donated_item_id, int quantity) {
+        this.donated_item_id = donated_item_id;
+        this.quantity = quantity;
+    }
 
     public int getNeed_item_id() {
         return need_item_id;
@@ -22,11 +28,6 @@ public class DonatedItemDetails {
         return donated_item_id;
     }
 
-    public DonatedItemDetails(int donated_item_id, int quantity) {
-        this.donated_item_id = donated_item_id;
-        this.quantity = quantity;
-    }
-
     public void setDonated_item_id(int donated_item_id) {
         this.donated_item_id = donated_item_id;
     }
@@ -37,6 +38,14 @@ public class DonatedItemDetails {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getNeeditem() {
+        return needitem;
+    }
+
+    public void setNeeditem(int needitem) {
+        this.needitem = needitem;
     }
 
     public int getDonation_id() {

@@ -39,7 +39,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -334,6 +333,7 @@ public class MapActivityFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
+
     public LocationAddress getAddress(double latitude, double longitude) {
         StringBuffer Address = new StringBuffer();
         locationAddress=new LocationAddress();
@@ -377,9 +377,7 @@ public class MapActivityFragment extends Fragment implements OnMapReadyCallback,
         return locationAddress;
     }
 
-
-    class getLocation extends AsyncTask
-    {
+    class getLocation extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] params) {
