@@ -72,6 +72,7 @@ public class DonationListActivity extends AppCompatActivity {
             donationListRecyclerView.setHasFixedSize(true);
             donationListRecyclerView.setLayoutManager(new LinearLayoutManager(DonationListActivity.this));
             donationListRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
             donationListRecyclerView.setAdapter(donationListAdapter);
             progressDialog.cancel();
         }

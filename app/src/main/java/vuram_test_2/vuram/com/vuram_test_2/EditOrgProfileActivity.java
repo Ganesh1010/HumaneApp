@@ -39,6 +39,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -306,7 +308,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
                 + "\t" + orgTypeSpinner.getSelectedItem().toString()
                 + "\t" + countryCodePicker.getSelectedCountryCode()
                 + "\t" + selectedCountryId);
-        /*
+
         try {
             if(orgImageFilePath != null) {
                 if (new File(orgImageFilePath).exists()) {
@@ -317,7 +319,7 @@ public class EditOrgProfileActivity extends AppCompatActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        */
+
         client.post(RestAPIURL.editOrgDetails, params, new TextHttpResponseHandler() {
 
             @Override

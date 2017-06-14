@@ -37,8 +37,9 @@
         <activity android:name=".OrganisationLandingPage" />
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".EditOrgProfileActivity"/>
-        <activity android:name=".DonationListActivity">
+        <activity android:name=".EditOrgProfileActivity" >
+        </activity>
+        <activity android:name=".DonationListActivity" >
         </activity>
         <activity android:name=".test"/>
 

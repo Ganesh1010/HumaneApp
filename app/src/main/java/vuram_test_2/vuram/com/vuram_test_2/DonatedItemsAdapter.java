@@ -29,6 +29,7 @@ public class DonatedItemsAdapter extends RecyclerView.Adapter {
     public static final int SUB_ITEM = 1;
 
     public DonatedItemsAdapter(Context context, List<DonatedItemDetails> donatedItemDetailsList, int itemViewType) {
+        Log.d(TAG, "DonatedItemsAdapter: ");
         this.context = context;
         this.donatedItemDetailsList = donatedItemDetailsList;
         this.itemViewType = itemViewType;
@@ -102,7 +103,7 @@ public class DonatedItemsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return donatedItemDetailsList.size();
     }
 
     class MainItemViewHolder extends RecyclerView.ViewHolder {

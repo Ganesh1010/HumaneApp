@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +15,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
 
@@ -33,6 +41,8 @@ public class DonationListAdapter extends RecyclerView.Adapter implements View.On
     DonationDetailsReadOnly donationDetailsReadOnly;
     DonationDetailViewHolder holder;
     boolean isDisplayingDonatedItemsList;
+
+    private final int DONATION_ID = 0;
 
     public DonationListAdapter(Activity activity, ArrayList<DonationDetailsReadOnly> donationDetailsReadOnlyList) {
         Log.d(TAG, "DonationListAdapter: ");
@@ -65,6 +75,7 @@ public class DonationListAdapter extends RecyclerView.Adapter implements View.On
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
         String dateFormat = simpleDateFormat.format(donatedDate);
         int donorId = donationDetailsReadOnly.getUserId();
+        int donationId = donationDetailsReadOnly.getDonation_id();
         donatedItemDetailsList = donationDetailsReadOnly.getDonateditems();
 
         holder.donorNameTextView.setText(donorName);
@@ -73,6 +84,7 @@ public class DonationListAdapter extends RecyclerView.Adapter implements View.On
         loadDonatedItemListFragment();
 
         holder.viewItemsButton.setOnClickListener(DonationListAdapter.this);
+        holder.receivedButton.setTag(position);
         holder.receivedButton.setOnClickListener(DonationListAdapter.this);
     }
 
@@ -98,8 +110,13 @@ public class DonationListAdapter extends RecyclerView.Adapter implements View.On
                 }
                 break;
             case R.id.received_button_donation_details:
-                int donationId = donationDetailsReadOnly.getDonation_id();
-                /* post the donation id */
+                int position = (int) v.getTag();
+                int donationId = donationDetailsReadOnlyList.get(position).getDonation_id();
+                new MarkAsReceived().execute(donationId);
+                donationDetailsReadOnlyList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, donationDetailsReadOnlyList.size());
+                /* remove this card */
                 break;
         }
     }
@@ -137,4 +154,45 @@ public class DonationListAdapter extends RecyclerView.Adapter implements View.On
             receivedButton = (Button) itemView.findViewById(R.id.received_button_donation_details);
         }
     }
+
+    class MarkAsReceived extends AsyncTask {
+
+        HttpResponse httpResponse;
+        HttpClient httpClient;
+        int code;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+                int donationId = (int) objects[0];
+
+                httpClient = new DefaultHttpClient();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", donationId);
+                httpResponse = Connectivity.makePostRequest(RestAPIURL.receivedURL, jsonObject.toString(), httpClient, null);
+                if (httpResponse != null) {
+                    code = httpResponse.getStatusLine().getStatusCode();
+                    Log.d("DonationListAdapter: ", "doInBackground:" + httpResponse.getStatusLine().getStatusCode());
+                    Log.d("DonationListAdapter: ", "doInBackground:" + jsonObject.toString());
+                    Log.d("DonationListAdapter: ", "doInBackground: " + httpResponse.getStatusLine().getReasonPhrase());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
+
+    }
+
 }
