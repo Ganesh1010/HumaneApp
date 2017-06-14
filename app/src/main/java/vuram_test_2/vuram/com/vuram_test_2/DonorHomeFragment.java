@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -47,6 +48,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 /**
@@ -56,7 +58,7 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE
 public class DonorHomeFragment extends Fragment implements LoadNextDetails{
 
     View v;
-    public final String TAG = "HomeActivity.java";
+    public final String TAG = "HomeActivityFragment.java";
     public final String myProfile = "My Profile";
     public final String aboutUs = "About Us";
     public final String logout = "Logout";
@@ -69,7 +71,7 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
     public static Set<String> appliedFilter;
-    public static String locationName = "Location";
+    //public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;
     public DonorNeedViewAdapter donorAdapter;
@@ -92,7 +94,9 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
     public Spinner spinner;
     public ImageButton menuButton;
     LandingPage landingPage;
-    String user;
+    String userType;
+    Fragment fragment = null;
+    android.app.FragmentManager fragmentManager;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,8 +119,13 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
             v = inflater.inflate(R.layout.activity_home_page,container,false);
 
         landingPage = (LandingPage)getActivity();
-
+        recyclerView = (RecyclerView)v.findViewById(R.id.needs_recyclerview_home_page);
         appliedFilter = new TreeSet<>();
+        gson = new Gson();
+
+        List<String> categories = new ArrayList<>();
+        categories.add(USER_TYPE_SELECTION_DONOR);
+        categories.add(USER_TYPE_SELECTION_ORG);
 
         /* Spinner */
         spinner = (Spinner) v.findViewById(R.id.author_spinner_donor_home);
@@ -132,19 +141,30 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
                 String authorType = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
 
-                if (authorType.equals("Donor")) {
+                if (authorType.equals(USER_TYPE_SELECTION_DONOR)) {
                     newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
                     nextUrl=RestAPIURL.needList;
                     if(needitem.size()>0)
                         needitem.clear();
                     startNeedAsyncTask(true);
                 }
-                else if(authorType.equals("Organization")) {
-                    newNeedFloatingActionButton.setVisibility(View.VISIBLE);
-                    nextUrl=RestAPIURL.orgDetails;
-                    if(orgNeeds.size()>0)
-                        orgNeeds.clear();
-                    startOrgAsyncTask(true);
+                else if(authorType.equals(USER_TYPE_SELECTION_ORG)) {
+                    Log.d("onItemSelected: ","inside organisation");
+                    /*if(Connectivity.getAuthToken(getActivity(),Connectivity.Coordinator_Token)!= null) {
+                        fragment = new LoginPageFragment();
+                        fragmentManager = getFragmentManager();
+                        Bundle bundle = new Bundle();
+                        bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+                        fragment.setArguments(bundle);
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                    }
+                    else {*/
+                        newNeedFloatingActionButton.setVisibility(View.VISIBLE);
+                        nextUrl = RestAPIURL.orgDetails;
+                        if (orgNeeds.size() > 0)
+                            orgNeeds.clear();
+                        startOrgAsyncTask(true);
+                   // }
                 }
 
             }
@@ -154,18 +174,16 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
 
             }
         });
-        gson = new Gson();
-        List<String> categories = new ArrayList<>();
-        categories.add("Donor");
-        categories.add("Organization");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(landingPage, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
 
-        user = getArguments().getString(USER_KEY_TYPE);
+         Bundle bundle = getArguments();
+         userType = bundle.getString(USER_KEY_TYPE).toString();
+         Log.d("Donor Home Fragment",userType);
 
-        if (user.equals("DONOR")) {
+        if (userType.equals(USER_TYPE_SELECTION_DONOR)) {
             if (compareValue != null) {
                 compareValue = "Donor";
                 int spinnerPosition = dataAdapter.getPosition(compareValue);
@@ -175,9 +193,9 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
             }
         }
 
-        if(user.equals("ORGANISATION")){
+        if(userType.equals(USER_TYPE_SELECTION_ORG)){
             if (compareValue != null) {
-                compareValue = "Organization";
+                compareValue = "Organisation";
                 int spinnerPosition = dataAdapter.getPosition(compareValue);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
@@ -209,7 +227,10 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
                         }
                         else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(landingPage,Connectivity.Donor_Token);
-                            startActivity(new Intent(landingPage,LoginPageFragment.class));
+                           // startActivity(new Intent(landingPage,LoginPageFragment.class));
+                            fragment = new LoginPageFragment();
+                            fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
                         } else if (itemSelected.equals(aboutUs)) {
 
@@ -234,6 +255,7 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
             }
         });
 
+        /* filter */
         filterImageButton = (ImageButton)v.findViewById(R.id.filter_imagebutton_donor_home);
         filterImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -243,16 +265,19 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
             }
         });
 
+        /* New need button*/
+
         newNeedFloatingActionButton = (FloatingActionButton)v.findViewById(R.id.new_need_home_page);
         newNeedFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(landingPage, NewNeedActivity.class));
+
+                fragment = new NewNeedActivityFragment();
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                // startActivity(new Intent(landingPage, NewNeedActivityFragment.class));
             }
         });
-
-        recyclerView = (RecyclerView)v.findViewById(R.id.needs_recyclerview_home_page);
-
 
         return v;
     }
@@ -320,9 +345,6 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
                 startActivity(new Intent(landingPage, NewNeedActivity.class));
                 //HomeActivity.this.finish();
                 break;
-        }
-
-
     }*/
 
     @Override
@@ -345,6 +367,7 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
         {
             this.isFirstTime=isFirstTime;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/login_page_linearlayout"
     android:background="@drawable/gradient_loing_page">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,9 +22,9 @@
 
     </LinearLayout>
 
-    +<LinearLayout
+    <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="100dp"></LinearLayout>
+    android:layout_height="70dp"></LinearLayout>
 
 
     <LinearLayout
@@ -131,38 +130,57 @@
         android:layout_marginTop="60dp" />
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
+        android:gravity="center_horizontal"
+        android:paddingTop="15dp">
 
         <TextView
+            android:text="SKIP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:letterSpacing="0.025"
-            android:id="@+id/link_login_register"
-            android:text="Don't have an account ? "
             android:textColor="#fff"
-            android:textSize="14dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:background="#00000000"
-            android:id="@+id/link_login"
-            android:gravity="left|center_vertical"
             android:letterSpacing="0.025"
-            android:padding="0dp"
-            android:text="Sign up"
-            android:textColor="#fff"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:id="@+id/skip_textview_loginPage"
+            android:textAllCaps="true"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.025"
+                android:id="@+id/link_login_register"
+                android:text="Don't have an account ? "
+                android:textColor="#fff"
+                android:textSize="14dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="#00000000"
+                android:id="@+id/link_login"
+                android:gravity="left|center_vertical"
+                android:letterSpacing="0.025"
+                android:padding="0dp"
+                android:text="Sign up"
+                android:textColor="#fff"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
 
