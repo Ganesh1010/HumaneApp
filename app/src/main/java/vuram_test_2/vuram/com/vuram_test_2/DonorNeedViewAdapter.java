@@ -149,37 +149,37 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                         itemIcon.setImageResource(R.drawable.ic_food_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Food");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 2:
                         itemIcon.setImageResource(R.drawable.ic_cloth_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Cloth");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 3:
                         itemIcon.setImageResource(R.drawable.ic_blood_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Blood");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 4:
                         itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Groceries");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     case 5:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Stationeries");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                     default:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Others");
-                        satisfactionBar.setProgress((need.getItems().get(i).getDonated_and_received_amount()*100)/need.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress(need.getItems().get(i).getDonated_and_received_amount());
                         break;
                 }
                 // Adding the item to the items layout(Horizontal Scolling Linear Layout)
