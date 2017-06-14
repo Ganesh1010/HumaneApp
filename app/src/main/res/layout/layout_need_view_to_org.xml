@@ -68,7 +68,18 @@
                     android:orientation="horizontal"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:gravity="center">
+                    android:gravity="right|center">
+
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/requested_on"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:textStyle="normal|bold" />
 
                     <include layout="@layout/layout_progress_bar_with_percentage"
                         android:layout_width="wrap_content"

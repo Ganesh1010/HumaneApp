@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -44,7 +46,8 @@ public class OrganisationRegistrationFragment extends Fragment {
     View v;
     EditText orgNoEditText,orgNameEditText,orgaddressEditText,orgEmailEditText,orgMobNoEditText,orgDescEditText;
     Spinner orgTypeFromSpinner;
-    Button orgRegisterButton,chooseLocationButton;
+    Button orgRegisterButton;
+    ImageView chooseLocationButton;
     String orgNo,orgName,orgAddress,orgMail,orgMobile,orgDesc;
     int orgType;
     int latitude,longitude;
@@ -69,6 +72,7 @@ public class OrganisationRegistrationFragment extends Fragment {
         {
             mapAddress = (LocationAddress)data.getSerializableExtra("ADDRESS");
             orgaddressEditText.setText(mapAddress.getAddress());
+            orgaddressEditText.setTextColor(Color.WHITE);
         }
     }
 
@@ -92,7 +96,7 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgDescEditText = (EditText)v.findViewById(R.id.org_desc_editText_org_form);
         orgTypeFromSpinner = (Spinner)v.findViewById(R.id.org_type_spinner_org_form);
         orgRegisterButton = (Button)v.findViewById(R.id.submit_button_org_form);
-        chooseLocationButton = (Button)v.findViewById(R.id.map);
+        chooseLocationButton = (ImageView) v.findViewById(R.id.map);
         linearLayout= (LinearLayout) v.findViewById(R.id.org_reg_linear_layout);
 
 

@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapter.ViewHolder> {
     List<NeedItemDetails> list;
@@ -52,12 +54,20 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
 
         holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getQuantity() + "");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy hh:mm a");
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault());
+        sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
+        sdf2.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy hh:mm a",Locale.getDefault());
         Date d = null;
         try {
-            d = sdf.parse(list.get(position).getDeadline());
+            d = sdf1.parse(list.get(position).getDeadline());
         } catch (ParseException e) {
+            try {
+                d= sdf2.parse(list.get(position).getDeadline());
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
             e.printStackTrace();
         }
         String formattedTime = output.format(d);

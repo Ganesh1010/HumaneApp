@@ -19,7 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.readystatesoftware.viewbadger.BadgeView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
@@ -29,7 +35,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
     private ArrayList<NeedDetails> needs;
     private final int VIEW_ITEM = 1;
     private final int VIEW_PROG = 0;
-    private int visibleThreshold = 5;
+    private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
     private OnLoadMoreListener onLoadMoreListener;
@@ -54,7 +60,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
 
                 totalItemCount = linearLayoutManager.getItemCount();
                 lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                if (!loading && (totalItemCount <= (lastVisibleItem + visibleThreshold))) {
                     if (onLoadMoreListener != null)
                         onLoadMoreListener.onLoadMore();
                     loading = true;
@@ -111,7 +117,24 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
             });
 
             ((ViewHolder)holder).donorCount.setText(needDetails.getDonations().size()+"");
-
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault());
+            sdf1.setTimeZone(TimeZone.getTimeZone("GMT"));
+            sdf2.setTimeZone(TimeZone.getTimeZone("GMT"));
+            SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault());
+            Date d = null;
+            try {
+                d = sdf1.parse(needDetails.getNeed_posted_date());
+            } catch (ParseException e) {
+                try {
+                    d= sdf2.parse(needDetails.getNeed_posted_date());
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+                e.printStackTrace();
+            }
+            String formattedTime = output.format(d);
+            ((ViewHolder)holder).requestedOn.setText(formattedTime);
 
             int animationDuration = 1000; // 2500ms = 2,5s
             int totalQuantity=0;
@@ -152,37 +175,37 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                         itemIcon.setImageResource(R.drawable.ic_food_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Food");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                     case 2:
                         itemIcon.setImageResource(R.drawable.ic_cloth_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Cloth");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                     case 3:
                         itemIcon.setImageResource(R.drawable.ic_blood_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Blood");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                     case 4:
                         itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Groceries");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                     case 5:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Stationeries");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                     default:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
                         //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Others");
-                        satisfactionBar.setProgress(needDetails.getItems().get(i).getDonated_and_received_amount());
+                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
                         break;
                 }
                 
@@ -210,6 +233,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
         public CircularProgressBar overallSatisfiedPercentageBar;
         public TextView satisfiedPercentage;
         public TextView donorCount;
+        public TextView requestedOn;
         public LinearLayout needItems;
 
         public ViewHolder(View itemView) {
@@ -218,6 +242,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
             overallSatisfiedPercentageBar = (CircularProgressBar) itemView.findViewById(R.id.circularProgressBar);
             satisfiedPercentage = (TextView) itemView.findViewById(R.id.circularProgressPercentage);
             donorCount = (TextView) itemView.findViewById(R.id.donor_count_org_need_view);
+            requestedOn= (TextView) itemView.findViewById(R.id.requested_on);
             if (donorCount == null) {
                 Log.d(TAG, "ViewHolder: Donor Count TextView returns null");
             }

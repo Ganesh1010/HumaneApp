@@ -184,43 +184,56 @@
             android:background="#fff" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.41">
+            android:layout_weight="0.41"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="0dp"
                 android:background="@drawable/mapmarker" />
 
             <EditText
-                android:text="Address"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:ellipsize="end"
+                android:scrollbars="vertical"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:inputType="textMultiLine"
+                android:hint="Address"
+                android:ems="10"
+                android:maxLines="6"
                 android:id="@+id/org_address_editText_org_form"
-                android:layout_weight="0.01"
+                android:layout_weight="0.5"
                 android:letterSpacing="0.025"
                 android:textColorHint="#c4bfbf"
-                android:textSize="16dp"
                 android:textColor="#c4bfbf"
-                android:paddingTop="20dp"
+                android:paddingTop="0dp"
                 android:paddingStart="12dp"
-                android:layout_width="130dp" />
+                android:background="#00000000"
+                android:fontFamily="sans-serif"
+                android:textSize="16dp"/>
 
-            <Button
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
+            <ImageView
                 android:id="@+id/map"
-                android:text="Choose Location"
-                android:textColor="#fff"
-                android:textAlignment="center"
-                android:background="@drawable/border"
-                android:layout_gravity="center"
-                android:letterSpacing="0.025" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_marker_white"
+                android:gravity="center"
+                android:layout_weight="0.25"
+                android:layout_marginRight="50dp" />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -245,6 +258,12 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="12dp" />
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="#fff" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

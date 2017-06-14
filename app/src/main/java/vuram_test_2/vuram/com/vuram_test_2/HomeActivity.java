@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -311,6 +309,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
 
         @Override
         protected void onPostExecute(final Object o) {
+            super.onPostExecute(o);
             if (progressDialog.isShowing())
                 progressDialog.dismiss();
             if(response!=null)
@@ -318,7 +317,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 {
                     recyclerView.setHasFixedSize(true);
                     //recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
-                    recyclerView.setLayoutManager(new GridLayoutManager(HomeActivity.this,2));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
                     orgAdapter=new OrgNeedViewAdapter(HomeActivity.this,orgNeeds,recyclerView);
                     recyclerView.setAdapter(orgAdapter);
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
@@ -368,7 +367,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         }
                     });
                 }
-            super.onPostExecute(o);
         }
     }
 
@@ -465,7 +463,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                         if(!noMoredatatoload)
                             donorAdapter.setLoaded();
                     }
-
                 }
             }
         }

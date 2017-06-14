@@ -86,7 +86,7 @@ public class LoginPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                fragment = new DonorHomeFragment();
+                fragment = new HomeFragment();
                 fragmentManager = getFragmentManager();
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
@@ -304,7 +304,7 @@ public class LoginPageFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
                    // set Fragmentclass Arguments
-                    fragment = new DonorHomeFragment();
+                    fragment = new HomeFragment();
                     fragment.setArguments(bundle);
                     fragmentManager = getActivity().getFragmentManager();
 

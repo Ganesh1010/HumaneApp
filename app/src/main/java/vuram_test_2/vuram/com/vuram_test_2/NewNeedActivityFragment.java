@@ -424,7 +424,7 @@ public class NewNeedActivityFragment extends Fragment {
 
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    fragment = new DonorHomeFragment();
+                    fragment = new HomeFragment();
                     fragmentManager = getActivity().getFragmentManager();
                     fragment.setArguments(bundle);
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();

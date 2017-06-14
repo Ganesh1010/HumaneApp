@@ -10,6 +10,15 @@ public class NeedDetails {
     List<NeedItemDetails> items;
     List<DonationDetails> donations;
     OrganisationDetails org;
+    String need_posted_date;
+
+    public String getNeed_posted_date() {
+        return need_posted_date;
+    }
+
+    public void setNeed_posted_date(String need_posted_date) {
+        this.need_posted_date = need_posted_date;
+    }
 
     NeedDetails() {
         items = new ArrayList<>();
