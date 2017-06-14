@@ -54,7 +54,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
         */
 
         DonationDetails items = (DonationDetails) donatedCardDetails.get(position);
-        holder.donorName.setText(items.getUser());
+       // holder.donorName.setText(items.getUser());
         Toast.makeText(context,"donor Name"+items.getUser(),Toast.LENGTH_LONG).show();
         /*donatedItem = items.getDonateditems().get(1 );
 
@@ -73,6 +73,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
 
 //        holder.itemName.setText(donatedItem.getDonated_item_id());
 //        holder.quantity.setText(donatedItem.getQuantity());
+        holder.donorName.setText("abc");
 
         holder.itemName.setText("1"+"");
         holder.quantity.setText("123"+"");

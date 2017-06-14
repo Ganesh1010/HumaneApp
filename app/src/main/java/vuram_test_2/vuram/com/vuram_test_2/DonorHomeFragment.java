@@ -228,8 +228,11 @@ public class DonorHomeFragment extends Fragment implements LoadNextDetails{
                         else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(landingPage,Connectivity.Donor_Token);
                            // startActivity(new Intent(landingPage,LoginPageFragment.class));
+                            Bundle bundle = new Bundle();
+                            bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
                             fragment = new LoginPageFragment();
                             fragmentManager = getFragmentManager();
+                            fragment.setArguments(bundle);
                             fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
                         } else if (itemSelected.equals(aboutUs)) {
