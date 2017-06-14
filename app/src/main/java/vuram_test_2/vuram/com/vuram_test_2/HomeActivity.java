@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -36,6 +35,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
@@ -53,9 +54,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
     public String compareValue;
-    boolean noMoredatatoload;
-    LinearLayoutManager mLinearLayoutManager;
-    public static Map<Integer,ArrayList<Integer>> filterItems=new HashMap<>();
+    public static ConcurrentHashMap<Integer,ArrayList<Integer>> filterItems=new ConcurrentHashMap<>();
     public static String locationName = "Location";
     public Handler handler;
     public HttpResponse response;
@@ -83,18 +82,16 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        //appliedFilter = new TreeSet<>();
-        //filterItems=new HashMap<>();
 
         /* Spinner */
         spinner = (Spinner) findViewById(R.id.author_spinner_donor_home);
         tvEmptyView = (TextView) findViewById(R.id.empty_view);
-        //spinner.setOnItemSelectedListener(HomeActivity.this);
+        spinner.setOnItemSelectedListener(HomeActivity.this);
         gson = new Gson();
         List<String> categories = new ArrayList<>();
         categories.add("Donor");
         categories.add("Organization");
-        mLinearLayoutManager=new LinearLayoutManager(this);
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_checked);
         spinner.setAdapter(dataAdapter);
@@ -124,8 +121,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         }
 
         handler = new Handler();
-        nextUrl=RestAPIURL.needList;
-        startNeedAsyncTask(true);
+
         /* Menu Button */
         menuButton = (ImageButton) findViewById(R.id.menu_imagebutton_donor_home);
         menuButton.setOnClickListener(HomeActivity.this);
@@ -148,10 +144,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == FILTER_REQUEST) {
 
-//            Iterator i=appliedFilter.iterator();
-//            while (i.hasNext()) {
-//                System.out.println(i.next());
-//            }
         }
         else if (requestCode == LOCATION_REQUEST) {
 
@@ -383,8 +375,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            if(tempneeditem!=null)
-                tempneeditem.clear();
             if(isFirstTime) {
                 client = new DefaultHttpClient();
                 progressDialog = new ProgressDialog(HomeActivity.this, R.style.AppTheme_Dark_Dialog);
@@ -398,31 +388,24 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         @Override
         protected Object doInBackground(Object[] params)
         {
-            if(nextUrl!=null) {
-                response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
-                        jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        if (!jsonObject.isNull("next"))
-                            nextUrl = jsonObject.getString("next");
-                        else {
-                            nextUrl = null;
-                            noMoredatatoload=true;
-                        }
-                        Gson gson = new Gson();
-                        tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
-                        }.getType());
-                        Log.d(TAG, "doInBackground: Temp Item" + tempneeditem.size());
-                        if (isFirstTime)
-                            needitem.addAll(tempneeditem);
-                        Log.d("Results", needitem.size() + "");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Log.d("CAll ", "Response null");
-            }
+            response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(HomeActivity.this, Connectivity.Donor_Token));
+            if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                try {
+                    jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                    JSONArray results = jsonObject.getJSONArray("results");
+                    if (!jsonObject.isNull("next"))
+                        nextUrl = jsonObject.getString("next");
+                    Gson gson = new Gson();
+                    tempneeditem = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
+                    if(isFirstTime)
+                        needitem.addAll(tempneeditem);
+
+                    Log.d("Results", needitem.size() + "");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else
+                Log.d("CAll ", "Response null");
             return null;
         }
 
@@ -435,38 +418,56 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
             if(response!=null)
             {
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201) {
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(HomeActivity.this));
+                        donorAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
+                        recyclerView.setAdapter(donorAdapter);
+                        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
+                        recyclerView.addItemDecoration(dividerItemDecoration);
 
-                        if(isFirstTime)
-                        {
-                            recyclerView.setLayoutManager(mLinearLayoutManager);
-                            donorAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
-                            donorAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-                                @Override
-                                public void onLoadMore() {
-                                    Handler handler = new Handler();
-                                    Log.d(TAG, "onLoadMore: Callled");
-                                    final Runnable r = new Runnable() {
-                                        public void run() {
-                                            needitem.add(null);
-                                            donorAdapter.notifyItemInserted(needitem.size() - 1);
-                                            startNeedAsyncTask(false);
-                                            Log.d(TAG, "run: Loaded Data");
-                                        }
-                                    };
-                                    handler.post(r);
+                    if (needitem.isEmpty()) {
+                        recyclerView.setVisibility(View.GONE);
+                        tvEmptyView.setVisibility(View.VISIBLE);
+
+                    } else {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        tvEmptyView.setVisibility(View.GONE);
+                    }
+
+                    if(!isFirstTime) {
+                        needitem.addAll(tempneeditem);
+                        donorAdapter.notifyDataSetChanged();
+                        donorAdapter.setLoaded();
+                    }
+
+                    donorAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+                        @Override
+                        public void onLoadMore() {
+                            //add null , so the adapter will check view_type and show progress bar at bottom
+                            needitem.add(null);
+                            recyclerView.post(new Runnable() {
+                                public void run() {
+                                    // There is no need to use notifyDataSetChanged()
+                                    donorAdapter.notifyItemInserted(needitem.size() - 1);
                                 }
                             });
-                            recyclerView.setAdapter(donorAdapter);
-                        }
-                        else
-                        {
-                            needitem.remove(needitem.size()-1);
-                            needitem.addAll(tempneeditem);
-                            donorAdapter.notifyItemInserted(needitem.size());
-                            if(!noMoredatatoload)
-                            donorAdapter.setLoaded();
-                        }
 
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //   remove progress item
+                                    needitem.remove(needitem.size() - 1);
+                                    donorAdapter.notifyItemRemoved(needitem.size());
+                                    if (!jsonObject.isNull("next")) {
+                                        nextNeedDetails.nextURL("nextNeedDetails");
+                                    } else {
+                                        nextNeedDetails.nextURL("finishedNeedDetails");
+                                        Toast.makeText(getApplicationContext(), "No more needs to load..", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            },2000);
+                        }
+                    });
                 }
             }
         }

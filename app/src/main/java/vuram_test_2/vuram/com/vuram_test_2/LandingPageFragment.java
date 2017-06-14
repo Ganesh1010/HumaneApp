@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
@@ -29,14 +28,14 @@ public class LandingPageFragment extends Fragment {
     Button donor,org;
     Fragment fragment =null;
 
-    static String user;
+  //  static String user;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if(v==null)
-            v=inflater.inflate(R.layout.landing_page_fragment,container,false);
+            v=inflater.inflate(R.layout.fragment_landing_page,container,false);
 
         frameLayout = (FrameLayout)v.findViewById(R.id.fragmentLayout);
         donor = (Button)v.findViewById(R.id.donarActivity);
@@ -47,15 +46,7 @@ public class LandingPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                // Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
-                // v.startAnimation(myAnim);
-
-                user = "DONOR";
-
-                org.setVisibility(View.INVISIBLE);
-                donor.setVisibility(View.INVISIBLE);
-                viewLine.setVisibility(View.INVISIBLE);
-
+            // sets the user type as donor & login page is loaded
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
 
@@ -71,13 +62,9 @@ public class LandingPageFragment extends Fragment {
         org.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //  view.setAnimation(myAnim);
-                user = "COORDINATOR";
-
-                org.setVisibility(View.INVISIBLE);
-                donor.setVisibility(View.INVISIBLE);
-                viewLine.setVisibility(View.INVISIBLE);
-
+                /*sets the user type as organisation & login page is loaded */
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
 

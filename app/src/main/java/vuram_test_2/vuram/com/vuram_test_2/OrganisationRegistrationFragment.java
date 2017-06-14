@@ -109,18 +109,15 @@ public class OrganisationRegistrationFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
                 // create class object
-
-                fragment = new MapActivityFragment();
-                fragmentManager = getActivity().getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
                 gps = new GPSTracker(landingPage);
-
                 // check if GPS enabled
                 if(gps.getIsGPSTrackingEnabled()){
                     if(isNetworkAvailable()) {
-
-                        Intent intent = new Intent(landingPage, MapActivityFragment.class);
-                        startActivityForResult(intent, 2);
+                        fragment = new MapActivityFragment();
+                        fragmentManager = getActivity().getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                        // Intent intent = new Intent(landingPage, MapActivityFragment.class);
+                      //  startActivityForResult(intent, 2);
                     }
                     else
                     {

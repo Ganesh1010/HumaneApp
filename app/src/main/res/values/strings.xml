@@ -45,7 +45,7 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="setLocation">Set Location</string>
-    <string name="google_maps_key">AIzaSyClUk8siahSbOOh5uVhAd8NgOF4RfPguNo</string>
+    <string name="google_maps_key">AIzaSyBREErigqYKvlUcWfcl8iXWudpiUKkr7Ro</string>
     <string name="not_an_account">No account yet? Create one</string>
     <string name="reenter_password">Re-enter Password</string>
     <string name="add_an_organisation">Add an Organisation</string>

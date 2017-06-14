@@ -6,7 +6,6 @@ public class  NeedItemDetails {
     int donated_amount;
     int donated_and_received_amount;
     boolean is_fulfilled;
-
     int item_type_id;
     int sub_item_type_id;
     int quantity;
