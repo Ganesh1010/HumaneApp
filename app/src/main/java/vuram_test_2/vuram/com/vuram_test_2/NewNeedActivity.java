@@ -408,9 +408,9 @@ public class NewNeedActivity extends AppCompatActivity {
             super.onPostExecute(o);
         }
     }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem)
-    {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -419,4 +419,5 @@ public class NewNeedActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(menuItem);
         }
     }
+
 }
