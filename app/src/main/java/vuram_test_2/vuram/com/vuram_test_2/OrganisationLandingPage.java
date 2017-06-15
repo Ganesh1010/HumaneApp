@@ -62,6 +62,8 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.action_home:
+                this.finish();
+                intent = new Intent(OrganisationLandingPage.this, OrganisationLandingPage.class);
                 break;
             case R.id.action_donations:
                 intent = new Intent(OrganisationLandingPage.this, DonationListActivity.class);
@@ -82,7 +84,7 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
         int viewId = v.getId();
 
         switch (viewId) {
-            case R.id.menu_imagebutton_donor_home:
+            case R.id.menu_imagebutton_org_landing_page:
                 PopupMenu popupMenu = new PopupMenu(OrganisationLandingPage.this, menuButton);
                 Menu menu = popupMenu.getMenu();
                 menu.add(Menu.NONE, MENU_ITEM_TWO, Menu.NONE, aboutUs);
@@ -110,12 +112,12 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
                 popupMenu.show();
                 break;
 
-            case R.id.current_location_imagebutton_home:
+            case R.id.current_location_imagebutton_org_landing_page:
                 Intent intent = new Intent(OrganisationLandingPage.this, ChooseLocationActivity.class);
                 startActivityForResult(intent, LOCATION_REQUEST);
                 break;
 
-            case R.id.filter_imagebutton_donor_home:
+            case R.id.filter_imagebutton_org_landing_page:
                 intent = new Intent(OrganisationLandingPage.this, FilterActivity.class);
                 startActivityForResult(intent, FILTER_REQUEST);
                 break;
@@ -125,4 +127,5 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
                 break;
         }
     }
+
 }

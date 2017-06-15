@@ -145,10 +145,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
                             if (itemslist != null)
                             {
-
-
                                 donatedDetailsList = (ArrayList<DonationDetails>) need.getDonations();
-
                                 for (int i = 0; i < donatedDetailsList.size(); i++) {
                                     DonationDetails donationDetails = donatedDetailsList.get(i);
 
@@ -200,9 +197,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
 
             // Toast.makeText(this,"after list adapter",Toast.LENGTH_LONG).show();
             needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,needCardData,needId,needDetailsArrayList);
-            System.out.println("Hai");
             receivalCardView.setAdapter(needReceivalCard);
-            System.out.println("Hai");
             receivalCardView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
 
             divider1 = findViewById(R.id.divider1);
