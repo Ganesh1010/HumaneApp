@@ -42,6 +42,9 @@
         <activity android:name=".DonationListActivity" >
         </activity>
         <activity android:name=".test"/>
+        <activity android:name=".AndroidGPSTrackingActivity">
+
+        </activity>
 
         <activity
             android:name=".DonationConfirmationActivity"

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -222,6 +224,15 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             address.setText(mapAddress.getAddress());
             isLocationSelected=true;
         }
+
+        if(requestCode == 1){
+            address.setEnabled(true);
+            String receivedAddress = data.getStringExtra("Location");
+            Log.d("Inside Item Details Adater",receivedAddress);
+            address.setText(receivedAddress);
+            isLocationSelected=true;
+
+        }
     }
 
     class PostItemDetails extends AsyncTask {
@@ -290,6 +301,9 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = new Date();
                 donationDetails.setdonated_at(dateFormat.format(date)+"");
+                //Intent i = new Intent(context,AndroidGPSTrackingActivity.class);
+                //activity.startActivityForResult(i,1);
+
 
                 getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
                 getLocation.setOnClickListener(new View.OnClickListener() {
@@ -374,6 +388,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
     class PopulatingTask extends AsyncTask {
 
+        AndroidGPSTrackingActivity androidGPSTrackingActivity=new AndroidGPSTrackingActivity(activity);
         String firstName;
         RegisterDetails profile;
         String mobile;
@@ -406,7 +421,12 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 profile = userDetails.getProfile();
                 mobile = profile.getMobile();
                 countryCode = profile.getCountry();
-
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapAddress=androidGPSTrackingActivity.getAddress();
+                    }
+                });
             } else {
                 Log.d("CAll ", "Response null");
             }
@@ -419,7 +439,11 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 progressDialog.cancel();
             name.setText(firstName);
             mobileNumber.setText(mobile);
-            postItemAlertDialog.show();
+            if(mapAddress!=null) {
+                address.setText(mapAddress.getAddress());
+                address.setEnabled(true);
+                postItemAlertDialog.show();
+            }
         }
     }
 }
