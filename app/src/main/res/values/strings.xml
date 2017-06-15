@@ -184,4 +184,9 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="menu">Menu</string>
+    <string name="donations">Donations</string>
+    <string name="org_profile">Org Profile</string>
+    <string name="user_profile">User Profile</string>
+    <string name="home">Home</string>
 </resources>

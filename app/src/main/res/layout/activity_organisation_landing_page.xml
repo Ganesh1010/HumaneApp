@@ -1,169 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/activity_organisation_landing_page"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="vuram_test_2.vuram.com.vuram_test_2.OrganisationLandingPage"
-        android:background="@drawable/gradient_loing_page"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_organisation_landing_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="vuram_test_2.vuram.com.vuram_test_2.OrganisationLandingPage"
+    android:background="@drawable/gradient_loing_page"
     android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:weightSum="1">
 
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/toolbar_home_page"
-        android:layout_weight="0"
-        android:elevation="5dp">
-        <LinearLayout
-            android:orientation="horizontal"
+        <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize"
+            android:id="@+id/toolbar_org_landing_page"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:elevation="5dp">
 
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:elevation="0dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/current_location_textview_home"
-                    android:layout_weight="1"
-                    android:text="@string/location"
-                    android:textColor="@color/colorTextIcons"
-                    android:gravity="center_vertical"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignBottom="@+id/menu_imagebutton_donor_home" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:elevation="0dp">
 
-                <TextView
-                    android:text="@string/app_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/appTitle"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                    android:textColor="@color/colorTextIcons"
-                    android:textSize="30sp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center"
-                    android:layout_weight="8.46"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_current_location_white"
+                        android:id="@+id/current_location_imagebutton_org_landing_page"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@+id/appTitle" />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_menu_white_48px"
-                    android:id="@+id/menu_imagebutton_donor_home"
-                    android:layout_weight="0"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true" />
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/menu_imagebutton_donor_org_landing_page"
+                        android:layout_weight="0"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        app:srcCompat="@drawable/ic_menu2_white" />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_current_location_white"
-                    android:id="@+id/current_location_imagebutton_home"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/appTitle" />
-            </RelativeLayout>
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/author_spinner_donor_org_landing_page"
+                        android:backgroundTint="@color/colorTextIcons"
+                        android:foregroundTint="@color/colorTextIcons"
+                        android:gravity="center_vertical|start"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/current_location_imagebutton_org_landing_page" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_filter_white"
+                        android:id="@+id/filter_imagebutton_donor_org_landing_page"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@+id/menu_imagebutton_donor_org_landing_page" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fragment_holder_org_landing_page"
+            android:layout_weight="1">
 
         </LinearLayout>
-    </android.support.v7.widget.Toolbar>
-        <RelativeLayout
+
+        <android.support.design.widget.BottomNavigationView
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_weight="0"
-            android:elevation="5dp"
-            android:background="@color/colorPrimary">
-
-            <Spinner
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                android:id="@+id/author_spinner_donor_home"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorTextIcons"
-                android:foregroundTint="@color/colorTextIcons"
-                android:gravity="center_vertical|start"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="7dp" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_filter_white"
-                android:id="@+id/filter_imagebutton_donor_home"
-                android:layout_weight="1"
-                android:backgroundTint="@color/colorPrimary"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="450dp">
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNavigationView_org_landing_page"
+            android:layout_alignParentBottom="true"
+            style="@style/BottomNavigation"
+            app:menu="@menu/menu_bottom_navigation_org_landing_page" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar2"
-        android:gravity="bottom|end"
-        android:layout_gravity="bottom" >
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="55dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/user"
-            android:id="@+id/imageView10" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/iconsc"
-            android:id="@+id/imageView11" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView12"
-            app:srcCompat="@drawable/list" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView13"
-            app:srcCompat="@drawable/receiveddonations" />
-    </LinearLayout>
-
-  </android.support.v7.widget.Toolbar>
 
 </LinearLayout>
