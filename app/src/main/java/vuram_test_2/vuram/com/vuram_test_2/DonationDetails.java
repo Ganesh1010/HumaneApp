@@ -11,7 +11,7 @@ public class DonationDetails {
     String donated_at;
     int need_id;
     String user;
-    List<DonatedItemDetails> donated_items;
+    List<DonatedItemDetails> donateditems;
     DonatingUserDetails donatingUserDetails;
 
     public String getUser() {
@@ -64,15 +64,15 @@ public class DonationDetails {
 
     public DonationDetails() {
 
-        donated_items = new ArrayList<>();
+        donateditems = new ArrayList<>();
     }
 
     public List<DonatedItemDetails> getDonateditems() {
-        return donated_items;
+        return donateditems;
     }
 
     public void setDonateditems(List<DonatedItemDetails> donateditems) {
-        this.donated_items = donateditems;
+        this.donateditems = donateditems;
 
     }
 
