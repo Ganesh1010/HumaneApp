@@ -138,6 +138,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         String cityName = gpsTracker.getLocality(ChooseLocationActivity.this);
         if (cityName != null) {
             HomeActivity.locationName = cityName;
+            OrganisationLandingPage.locationName = cityName;
             finish();
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(ChooseLocationActivity.this);
