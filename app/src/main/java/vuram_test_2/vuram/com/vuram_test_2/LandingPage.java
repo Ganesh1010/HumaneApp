@@ -14,20 +14,24 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+import vuram_test_2.vuram.com.vuram_test_2.util.NeedDetailsInterface;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
-public class LandingPage extends AppCompatActivity {
+public class LandingPage extends AppCompatActivity implements NeedDetailsInterface {
 
 
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
+    ArrayList<NeedDetails> needDetails;
     //static String user;
 
     @Override
@@ -69,4 +73,18 @@ public class LandingPage extends AppCompatActivity {
         // Use bounce interpolator with amplitude 0.2 and frequency 20
     }
 
+    @Override
+    public void setNeedDetailsinActivity(ArrayList<NeedDetails> needDetails) {
+        this.needDetails=needDetails;
+
+    }
+
+    @Override
+    public void printNeedDetails() {
+    }
+
+    @Override
+    public ArrayList<NeedDetails> getNeedItemFromActivity() {
+        return needDetails;
+    }
 }
