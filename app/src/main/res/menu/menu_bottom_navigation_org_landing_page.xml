@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_black"
+        android:title="@string/home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_donations"
+        android:enabled="true"
+        android:icon="@drawable/ic_donor_black"
+        android:title="@string/donations"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_org_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_organisation"
+        android:title="@string/org_profile"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_user_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_user_black"
+        android:title="@string/user_profile"
+        app:showAsAction="ifRoom" />
+
+</menu>

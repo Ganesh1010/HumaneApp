@@ -4,28 +4,37 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.google.android.gms.internal.zzt.TAG;
 
 
 public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.NeedCardHolder> {
 
     Context context;
+    ArrayList<DonationDetails> donatedDetailsList;
     ArrayList donatedCardDetails;
     ArrayList<NeedItemDetails> needItems;
     NeedListViewAdapter adapter;
     DonatedItemDetails donatedItem;
     int needId,needQuantity;
+    ArrayList<DonatedItemDetails> donatedItemList;
+    NeedDetails need;
+    int donatedItemId,donatedQuantity;
+    DonatedItemDetails donatedItemDetailsTodisplay;
+    ArrayList<DonatedItemDetails> needCardData;
+    DonationDetails donationDetailsToDisplay;
+    String donorName;
     NeedItemDetails needItemDetails;
     ArrayList<NeedDetails> needDetailsArrayList;
 
@@ -47,61 +56,49 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
     @Override
     public void onBindViewHolder(final NeedCardHolder holder, int position) {
 
-        /*DonationDetails items = (DonationDetails) donatedCardDetails.get(position);
-        holder.itemName.setText(items.getItemName());
-        holder.donorName.setText(items.getDonorName());
-        holder.quantity.setText(items.getQuantity());
-        */
 
-        DonationDetails items = (DonationDetails) donatedCardDetails.get(position);
-       // holder.donorName.setText(items.getUser());
-        Toast.makeText(context,"donor Name"+items.getUser(),Toast.LENGTH_LONG).show();
-        /*donatedItem = items.getDonateditems().get(1 );
-
-          needId = donatedItem.getDonated_item_id();
-          needQuantity = donatedItem.getQuantity();
-
-          needItemDetails = new NeedItemDetails(needId,needQuantity);
-          needItems = new ArrayList<>();
-          needItems.add(needItemDetails);*/
-         Toast.makeText(context,"size"+needItems.size(),Toast.LENGTH_LONG).show();
-         // needItemDetails.setNeed_item_id(needId);
-          //needItemDetails.setQuantity(needQuantity);
-          ///needItemDetails = new DonatedItemDetails(2,100);
-          //needItems = new ArrayList();
-         //  needItems.add(needItemDetails);
-
-//        holder.itemName.setText(donatedItem.getDonated_item_id());
-//        holder.quantity.setText(donatedItem.getQuantity());
-        holder.donorName.setText("abc");
-
-        holder.itemName.setText("1"+"");
-        holder.quantity.setText("123"+"");
-
-       // Toast.makeText(context,"Quantity"+donatedItem.getQuantity(),Toast.LENGTH_LONG).show();
-
-
-        //holder.donatedItemDetails.setAdapter(adapter);
-        //Toast.makeText(context,"after adapter",Toast.LENGTH_LONG).show();
-        //holder.donatedItemDetails.setLayoutManager(new LinearLayoutManager(context));
-
-      //  Toast.makeText(context,"donor NAme"+items.getItemName(),Toast.LENGTH_LONG).show();*/
-
-       /* holder.listImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             //   Toast.makeText(context," list image",Toast.LENGTH_LONG).show();
-                if (holder.layout.getVisibility() == View.GONE) {
-                    holder.layout.setVisibility(View.VISIBLE);
-                    holder.cardListHeading.setVisibility(View.VISIBLE);
-                } else {
-                    holder.layout.setVisibility(View.GONE);
-                    holder.cardListHeading.setVisibility(View.GONE);
-                }
+        for (NeedDetails needDetails : needDetailsArrayList) {
+            Log.d("All need Id in donate", "doInBackground: " + needDetails.getNeed_id());
+            Log.d(TAG, "NeedListViewAdapter: Received Need Id" + needId);
+            if (needId != 52) {
+                needId = 52;
             }
-        });*/
-    }
+            if (needDetails.getNeed_id() == needId) {
+                need = needDetails;
+                break;
+            }
+        }
+            donatedDetailsList = (ArrayList<DonationDetails>) need.getDonations();
+            for (int i = 0; i < donatedDetailsList.size(); i++) {
+                DonationDetails donationDetails = donatedDetailsList.get(i);
 
+                donatedItemList = (ArrayList<DonatedItemDetails>) donationDetails.getDonateditems();
+                donorName = donationDetails.getUser();
+                Log.d("donor Name", "doInBackground: " + donorName);
+                Log.d("size", "doInBackground: " + donatedItemList.size());
+
+                holder.donorName.setText("abc");
+                holder.itemName.setText("1" + "");
+                holder.quantity.setText("123" + "");
+
+                for (int j = 0; j < donatedItemList.size(); j++) {
+                    DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
+
+                    donatedItemId = donatedItemDetails.getDonated_item_id();
+                    donatedQuantity = donatedItemDetails.getQuantity();
+
+                    Log.d("donated Item", "doInBackground: " + donatedItemId);
+                    Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
+
+                }
+
+                donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
+                needCardData.add(donatedItemDetailsTodisplay);
+                DonationDetailsAdapter donationDetailsAdapter=new DonationDetailsAdapter(needCardData);
+                holder.donatedItemDetails.setAdapter(donationDetailsAdapter);
+
+        }
+    }
     @Override
     public int getItemCount() {
         return donatedCardDetails.size();
@@ -128,7 +125,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
             //layout.setVisibility(View.GONE);
            // cardListHeading.setVisibility(View.GONE);
 
-            //donatedItemDetails = (RecyclerView)itemView.findViewById(R.id.donatedItemListRecyclerView_ReceivalPage);
+            donatedItemDetails = (RecyclerView)itemView.findViewById(R.id.donatedItemListRecyclerView_ReceivalPage);
 
             donorImg = (CircleImageView)itemView.findViewById(R.id.donorImgView_ReceivalPage);
             listImg = (ImageView)itemView.findViewById(R.id.listViewImgView_ReceivalPage);
