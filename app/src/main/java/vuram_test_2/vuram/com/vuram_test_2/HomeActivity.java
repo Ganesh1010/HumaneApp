@@ -435,7 +435,7 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                     if(isFirstTime)
                     {
                         recyclerView.setLayoutManager(mLinearLayoutManager);
-                        donorAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView);
+                        donorAdapter = new DonorNeedViewAdapter(HomeActivity.this, needitem, recyclerView,HomeActivity.this);
                         donorAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                             @Override
                             public void onLoadMore() {

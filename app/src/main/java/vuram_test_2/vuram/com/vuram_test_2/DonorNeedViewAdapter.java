@@ -1,8 +1,11 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,11 +34,15 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
     private int visibleThreshold = 1;
     private int lastVisibleItem, totalItemCount;
     private boolean loading;
+    Activity activity;
     private OnLoadMoreListener onLoadMoreListener;
+    Fragment fragment=null;
+    android.app.FragmentManager fragmentManager;
 
-    public DonorNeedViewAdapter(Context context, ArrayList<NeedDetails> needs, RecyclerView recyclerView) {
+    public DonorNeedViewAdapter(Context context, ArrayList<NeedDetails> needs, RecyclerView recyclerView,Activity activity) {
         this.context = context;
         this.needDetails = needs;
+        this.activity=activity;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -51,7 +58,7 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 Log.d(TAG, "onScrolled: total Count"+totalItemCount);
                 Log.d(TAG, "onScrolled: lastvisible "+lastVisibleItem);
                 Log.d(TAG, "onScrolled: loading"+loading);
-                if (!loading && (totalItemCount <= (lastVisibleItem + visibleThreshold))) {
+                if (!loading && (totalItemCount <= (lastVisibleItem + visibleThreshold)) && lastVisibleItem!=-1) {
                     if (onLoadMoreListener != null) {
                         onLoadMoreListener.onLoadMore();
                     }
@@ -101,9 +108,12 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(context, OrgDetailsActivity.class);
-                    intent.putExtra("Need",need.getNeed_id()+"");
-                    context.startActivity(intent);
+                    fragment = new DonationForNeedFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("NEED", String.valueOf(need.getNeed_id()));
+                    fragment.setArguments(bundle);
+                    fragmentManager = activity.getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack("tag").commit();
                 }
             });
             ((ViewHolder)holder).orgName.setText(need.org.org_name);
@@ -136,9 +146,16 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(context, OrgDetailsActivity.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("NEED", String.valueOf(need.getNeed_id()));
+                        fragment = new DonationForNeedFragment();
+                        fragment.setArguments(bundle);
+                        fragmentManager = activity.getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack("tag").commit();
+                       /* Intent intent=new Intent(context, OrgDetailsActivity.class);
                         intent.putExtra("Need",need.getNeed_id()+"");
-                        context.startActivity(intent);
+                        context.startActivity(intent);*/
                     }
                 });
                 ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);

@@ -46,18 +46,22 @@
     tools:context="com.example.gokulrajk.vuram2.donor_org_details"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="@color/colorTextIcons">
+    android:background="@color/colorTextIcons"
+        android:layout_margin="5dp">
 
         <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:srcCompat="@drawable/supportbanner"
-                android:id="@+id/imageView12" />
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:id="@+id/imageView12"
+                android:cropToPadding="false" />
         </LinearLayout>
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_content"

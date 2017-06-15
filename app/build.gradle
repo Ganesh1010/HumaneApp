@@ -11,6 +11,7 @@ android {
         multiDexEnabled true
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        
     }
     buildTypes {
         release {
@@ -42,6 +43,7 @@ dependencies {
     compile 'com.hbb20:ccp:1.7.6'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
     compile 'com.github.dexafree:materiallist:3.2.1'
+    compile 'ru.egslava:blurredview:1.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'

@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
@@ -25,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ChooseLocationActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".SwipeCardForReceival" />
@@ -37,24 +35,17 @@
         <activity android:name=".OrganisationLandingPage" />
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />
-        <activity android:name=".EditOrgProfileActivity" >
-        </activity>
-        <activity android:name=".DonationListActivity" >
-        </activity>
-        <activity android:name=".test"/>
-        <activity android:name=".AndroidGPSTrackingActivity">
-
-        </activity>
-
+        <activity android:name=".EditOrgProfileActivity"></activity>
+        <activity android:name=".DonationListActivity"></activity>
+        <activity android:name=".test" />
         <activity
             android:name=".DonationConfirmationActivity"
-            android:theme="@style/AppTheme1"
-            android:label="@string/app_name"/>
-
-        <activity android:name=".FilterActivity"
-            android:theme="@style/AppTheme1"
-            android:label="@string/app_name"/>
-
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".FilterActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme1" />
         <activity
             android:name=".MapActivity"
             android:label="@string/app_name"
@@ -67,6 +58,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyArP4ZNEEuKHFvqJW7WlclB0LggjRLQv90" />
+
+        <activity android:name=".ProfilePictureActivity"></activity>
     </application>
 
 </manifest>
