@@ -378,6 +378,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                     }
                 }
             }
+
         }
     }
 
@@ -477,7 +478,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                         if(!noMoreDataToLoad)
                             donorAdapter.setLoaded();
                     }
-
+                    LandingPage landingPage= (LandingPage) getActivity();
+                    if(landingPage!=null)
+                        landingPage.setNeedDetailsinActivity(donorNeeds);
                 }
             }
         }

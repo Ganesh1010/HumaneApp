@@ -50,4 +50,11 @@
         <item name="android:textColorPrimary">@color/colorTextIcons</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
+    <style name="BottomNavigation">
+        <item name="android:background">@color/colorTextIcons</item>
+        <item name="itemIconTint">@color/colorPrimaryText</item>
+        <item name="itemTextColor">@color/colorDivider</item>
+        <item name="paddingStart">20dp</item>
+        <item name="paddingEnd">20dp</item>
+    </style>
 </resources>
