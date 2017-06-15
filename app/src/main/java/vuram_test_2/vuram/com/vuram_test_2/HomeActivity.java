@@ -215,7 +215,6 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
                 break;
 
             case R.id.current_location_imagebutton_home:
-            case R.id.current_location_textview_home:
                 Intent intent = new Intent(HomeActivity.this, ChooseLocationActivity.class);
                 startActivityForResult(intent, LOCATION_REQUEST);
                 //HomeActivity.this.finish();
