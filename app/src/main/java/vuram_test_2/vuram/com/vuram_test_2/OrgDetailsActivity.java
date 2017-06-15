@@ -46,15 +46,7 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     public NeedDetails need;
     public ImageView donationCart;
     public String needId;
-    ItemDetailsAdapter itemDetailsAdapter=new ItemDetailsAdapter();
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==2 && !(resultCode==RESULT_CANCELED))
-            itemDetailsAdapter.onActivityResult(requestCode,resultCode,data);
-    }
-
+    LandingPage landingPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,7 +54,6 @@ public class OrgDetailsActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_org_details);
 
         needId = getIntent().getStringExtra("Need");
-
         imageButton=(ImageButton)findViewById(R.id.back_home);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override

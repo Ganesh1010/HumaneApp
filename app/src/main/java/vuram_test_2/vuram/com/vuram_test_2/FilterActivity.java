@@ -36,7 +36,10 @@ public class FilterActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(FilterActivity.this);
+            progressDialog = new ProgressDialog(FilterActivity.this, R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading filter details...");
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
 

@@ -105,14 +105,15 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
+        Log.d(TAG, "onCreateView: Create View of fragment called");
         if(v==null)
             v = inflater.inflate(R.layout.activity_home_page,container,false);
 
         recyclerView = (RecyclerView)v.findViewById(R.id.needs_recyclerview_home_page);
         appliedFilter = new TreeSet<>();
         gson = new Gson();
+        recyclerView.getRecycledViewPool().clear();
         mLinearLayoutManager=new LinearLayoutManager(getActivity());
-
         List<String> categories = new ArrayList<>();
         categories.add(USER_TYPE_SELECTION_DONOR);
         categories.add(USER_TYPE_SELECTION_ORG);
@@ -407,6 +408,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
         @Override
         protected Object doInBackground(Object[] params)
         {
+            Log.d(TAG, "doInBackground: "+(isFirstTime?"Firstime":"Secondtme")+nextUrl);
             if(nextUrl!=null) {
                 response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(getActivity(), Connectivity.Donor_Token));
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
@@ -447,11 +449,10 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                     if(isFirstTime)
                     {
                         recyclerView.setLayoutManager(mLinearLayoutManager);
-                        donorAdapter = new DonorNeedViewAdapter(getActivity(), donorNeeds, recyclerView);
-
+                        donorAdapter = new DonorNeedViewAdapter(getActivity(), donorNeeds, recyclerView,HomeFragment.this.getActivity());
                         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL);
                         recyclerView.addItemDecoration(dividerItemDecoration);
-
+                        recyclerView.setAdapter(donorAdapter);
                         donorAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
                             @Override
                             public void onLoadMore() {
@@ -468,7 +469,6 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                                 handler.post(r);
                             }
                         });
-                        recyclerView.setAdapter(donorAdapter);
                     }
                     else
                     {

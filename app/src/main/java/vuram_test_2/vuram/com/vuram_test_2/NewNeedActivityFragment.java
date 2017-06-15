@@ -429,7 +429,7 @@ public class NewNeedActivityFragment extends Fragment {
                     fragment.setArguments(bundle);
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
-                  // Intent intent=new Intent(landingPage,DonorHomeFragment.class);
+                  // Intent intent=new Intent(landingPage,HomeFragment.class);
                    // intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                    // startActivity(intent);
                     //NewNeedActivity.this.finish();
