@@ -8,106 +8,127 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@color/colorTextIcons"
-        card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="2dp"
-        card_view:cardUseCompatPadding="true"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        app:cardBackgroundColor="@color/colorTextIcons"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_weight="1"
-                    android:layout_height="50dp"
                     android:layout_width="100dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1" />
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="10dp"
-                    android:gravity="center">
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/title"
-                            android:layout_weight="0.5"
                             android:layout_marginTop="5dp"
+                            android:layout_weight="0.5"
+                            android:text="Main Item"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp" />
 
                         <TextView
+                            android:id="@+id/requested_amount"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/requested_amount"
                             android:layout_weight="0.5"
-                            android:textSize="15sp"
-                            android:textColor="@color/colorPrimary"/>
+                            android:text="100"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/promisedamount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:text="100"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:gravity="center|end"
-                        android:layout_marginTop="5dp">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/requested"
-                            android:layout_height="wrap_content"
-                            android:textSize="18sp"
-                            android:textColor="@color/colorSecondaryText"
                             android:layout_width="match_parent"
-                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp" />
+                            android:layout_weight="1"
+                            android:text="Requeted: 10 "
+                            android:textColor="@color/colorSecondaryText"
+                            android:textSize="18sp" />
 
                         <ImageView
-                            app:srcCompat="@drawable/minus"
                             android:id="@+id/decrement_custom"
+                            android:layout_width="40dp"
                             android:layout_height="30dp"
-                            android:layout_width="40dp" />
+                            app:srcCompat="@drawable/minus" />
 
-                        <TextView android:id="@+id/number_custom"
+                        <TextView
+                            android:id="@+id/number_custom"
+                            android:layout_width="20dp"
+                            android:layout_height="30dp"
                             android:layout_alignBottom="@+id/button1"
                             android:layout_toRightOf="@+id/button1"
                             android:gravity="center"
                             android:paddingBottom="5dp"
-                            android:layout_height="30dp"
-                            android:layout_width="20dp" />
+                            android:text="0" />
 
                         <ImageView
-                            app:srcCompat="@drawable/plus"
                             android:id="@+id/increment_custom"
+                            android:layout_width="40dp"
                             android:layout_height="30dp"
-                            android:layout_width="40dp" />
+                            app:srcCompat="@drawable/plus" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
                     </LinearLayout>
 
                 </LinearLayout>

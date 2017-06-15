@@ -77,7 +77,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         ImageView increment;
         ImageView decrement;
         TextView value;
-        TextView requestedQuantity;
+        TextView requestedQuantity,promisedAmount;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -88,6 +88,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             this.decrement=(ImageView) itemView.findViewById(R.id.decrement_custom);
             this.value=(TextView) itemView.findViewById(R.id.number_custom);
             this.requestedQuantity= (TextView) itemView.findViewById(R.id.requested_amount);
+            this.promisedAmount= (TextView) itemView.findViewById(R.id.promisedamount);
 
         }
     }
@@ -129,8 +130,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
             if(subItemDetails.get(i).getSubItemCode()==particularNeedItemDetails.getSub_item_type_id())
                 holder.requested.setText(subItemDetails.get(i).getSubItemName());
 
-        holder.requestedQuantity.setText("Requested : "+particularNeedItemDetails.getQuantity()+"");
-
+        holder.requestedQuantity.setText("Requested: "+particularNeedItemDetails.getQuantity()+"");
+        holder.promisedAmount.setText("Promised Amount: "+particularNeedItemDetails.getDonated_amount());
         if(quantityEachNeed==0)
             holder.decrement.setVisibility(View.INVISIBLE);
         holder.increment.setOnClickListener(new View.OnClickListener() {

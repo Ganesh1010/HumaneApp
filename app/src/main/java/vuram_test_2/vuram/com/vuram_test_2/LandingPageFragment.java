@@ -53,7 +53,7 @@ public class LandingPageFragment extends Fragment {
                 fragment = new  LoginPageFragment();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack( "tag" ).commit();
 
                 //Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
             }
@@ -71,7 +71,7 @@ public class LandingPageFragment extends Fragment {
                 fragment = new LoginPageFragment();
                 fragment.setArguments(bundle);
                 fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack( "tag" ).commit();
 
                // Toast.makeText(LandingPage.this,"Organisation Clicked",Toast.LENGTH_LONG).show();
             }

@@ -121,8 +121,8 @@ public class HomeActivity extends AppCompatActivity implements LoadNextDetails, 
         }
 
         handler = new Handler();
-        nextUrl=RestAPIURL.needList;
-        startNeedAsyncTask(true);
+       // nextUrl=RestAPIURL.needList;
+       // startNeedAsyncTask(true);
         /* Menu Button */
         menuButton = (ImageButton) findViewById(R.id.menu_imagebutton_donor_home);
         menuButton.setOnClickListener(HomeActivity.this);
