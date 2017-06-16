@@ -44,16 +44,15 @@ import java.util.Locale;
 
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
+import static com.google.android.gms.internal.zzt.TAG;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 
-/**
- * Created by akshayagr on 13-06-2017.
- */
 
 public class NewNeedActivityFragment extends Fragment {
+
     View view;
-    public Button submit;
+    public Button submit, post, cancel;
     public FloatingActionButton fabAdd;
     public EditText itemQuantity;
     public RadioGroup gender;
@@ -61,13 +60,10 @@ public class NewNeedActivityFragment extends Fragment {
     public EditText age;
     public Spinner mainItemSpinner,subItemSpinner;
     public LinearLayout clothesLayout;
-    public Button post;
-    public Button cancel;
     public ImageView dateImage;
     public TextView textView;
     public RecyclerView recyclerView;
-    public String mainItem;
-    public String subItem;
+    public String mainItem, subItem;
     public ArrayList<NeedItemDetails> needDetails;
     public boolean dataFilled=false;
     public static int id=-1;
@@ -87,7 +83,7 @@ public class NewNeedActivityFragment extends Fragment {
     Fragment fragment = null;
     android.app.FragmentManager fragmentManager;
 
-    @Override
+  @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putCharSequence(STATE_TEXTVIEW, textView.getText());
@@ -97,21 +93,31 @@ public class NewNeedActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        if(view==null)
-         view = inflater.inflate(R.layout.activity_new_need,container,false);
+        if (view == null)
+            view = inflater.inflate(R.layout.activity_new_need, container, false);
 
-        landingPage = (LandingPage)getActivity();
-        DetailsPopulator detailsPopulator =new DetailsPopulator(landingPage);
+        landingPage = (LandingPage) getActivity();
+
+        if(landingPage != null){
+
+        DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
         detailsPopulator.getCountryDetailsFromAPI();
 
-        db=new DatabaseHelper(landingPage);
-        mainItemDetails=db.getAllMainItemDetails();
-        subItemDetails=db.getAllSubItemDetails();
+        db = new DatabaseHelper(landingPage);
 
-       // landingPage.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dateTimeFragment = (SwitchDateTimeDialogFragment)landingPage.getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
-        if(dateTimeFragment == null) {
+        if(db!=null){
+        mainItemDetails = db.getAllMainItemDetails();
+        subItemDetails = db.getAllSubItemDetails();}
+
+        else {
+            Log.e(TAG, "Main Item and Sub Item Details fetched from the database is null", new NullPointerException());
+
+        }
+            // landingPage.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        dateTimeFragment = (SwitchDateTimeDialogFragment) landingPage.getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
+        if (dateTimeFragment == null) {
             dateTimeFragment = SwitchDateTimeDialogFragment.newInstance(
                     getString(R.string.label_datetime_dialog),
                     getString(R.string.positive_button_datetime_picker),
@@ -119,8 +125,8 @@ public class NewNeedActivityFragment extends Fragment {
             );
         }
         Calendar now = Calendar.getInstance();
-        hiddenPanel= view.findViewById(R.id.hiddenPanel_needForm);
-        toolbarSubmit= (RelativeLayout)view.findViewById(R.id.toolbarSubmit);
+        hiddenPanel = view.findViewById(R.id.hiddenPanel_needForm);
+        toolbarSubmit = (RelativeLayout) view.findViewById(R.id.toolbarSubmit);
 
         final SimpleDateFormat myDateFormat = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
         final SimpleDateFormat myTimeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
@@ -128,7 +134,7 @@ public class NewNeedActivityFragment extends Fragment {
         dateTimeFragment.set24HoursMode(false);
         dateTimeFragment.setMinimumDateTime(new GregorianCalendar(2015, Calendar.JANUARY, 1).getTime());
         dateTimeFragment.setMaximumDateTime(new GregorianCalendar(2025, Calendar.DECEMBER, 31).getTime());
-        dateTimeFragment.setDefaultDateTime(new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH),now.get(Calendar.HOUR) ,now.get(Calendar.MINUTE),now.get(Calendar.HOUR_OF_DAY)>12?(now.get(Calendar.PM)):(now.get(Calendar.AM))).getTime());
+        dateTimeFragment.setDefaultDateTime(new GregorianCalendar(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH), now.get(Calendar.HOUR), now.get(Calendar.MINUTE), now.get(Calendar.HOUR_OF_DAY) > 12 ? (now.get(Calendar.PM)) : (now.get(Calendar.AM))).getTime());
         try {
             dateTimeFragment.setSimpleDateMonthAndDayFormat(new SimpleDateFormat("MMMM dd", Locale.getDefault()));
         } catch (SwitchDateTimeDialogFragment.SimpleDateMonthAndDayFormatException e) {
@@ -137,11 +143,12 @@ public class NewNeedActivityFragment extends Fragment {
         dateTimeFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Date date) {
-                datetime=date;
-                textView.setText(myDateFormat.format(date)+ "  "+myTimeFormat.format(date));
+                datetime = date;
+                textView.setText(myDateFormat.format(date) + "  " + myTimeFormat.format(date));
                 textView.setTextColor(Color.BLACK);
-                isTimeFilled=true;
+                isTimeFilled = true;
             }
+
             @Override
             public void onNegativeButtonClick(Date date) {
                 textView.setText("");
@@ -160,59 +167,59 @@ public class NewNeedActivityFragment extends Fragment {
         if (savedInstanceState != null)
             textView.setText(savedInstanceState.getCharSequence(STATE_TEXTVIEW));
 
-        recyclerView= (RecyclerView) view.findViewById(R.id.recyclerView_needForm);
-        submit= (Button)view.findViewById(R.id.submit_needForm);
-        fabAdd= (FloatingActionButton)view.findViewById(R.id.fabAdd_needForm);
-        needDetails= new ArrayList<>();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_needForm);
+        submit = (Button) view.findViewById(R.id.submit_needForm);
+        fabAdd = (FloatingActionButton) view.findViewById(R.id.fabAdd_needForm);
+        needDetails = new ArrayList<>();
         bottomUp = AnimationUtils.loadAnimation(landingPage, R.anim.bottom_up);
         bottomDown = AnimationUtils.loadAnimation(landingPage, R.anim.bottom_down);
 
-        mainItemSpinner = (Spinner)view.findViewById(R.id.main_item_spinner_needForm);
-        subItemSpinner= (Spinner)view.findViewById(R.id.sub_item_spinner_needForm);
-        itemQuantity= (EditText) view.findViewById(R.id.itemQuantity_needForm);
-        gender= (RadioGroup)view.findViewById(R.id.gender_needForm);
-        age= (EditText) view.findViewById(R.id.age_needForm);
-        clothesLayout= (LinearLayout) view.findViewById(R.id.clothesLayout_needForm);
-        post= (Button)view.findViewById(R.id.post_needForm);
-        cancel= (Button)view.findViewById(R.id.cancel_needForm);
+        mainItemSpinner = (Spinner) view.findViewById(R.id.main_item_spinner_needForm);
+        subItemSpinner = (Spinner) view.findViewById(R.id.sub_item_spinner_needForm);
+        itemQuantity = (EditText) view.findViewById(R.id.itemQuantity_needForm);
+        gender = (RadioGroup) view.findViewById(R.id.gender_needForm);
+        age = (EditText) view.findViewById(R.id.age_needForm);
+        clothesLayout = (LinearLayout) view.findViewById(R.id.clothesLayout_needForm);
+        post = (Button) view.findViewById(R.id.post_needForm);
+        cancel = (Button) view.findViewById(R.id.cancel_needForm);
 
         toolbarSubmit.setVisibility(View.INVISIBLE);
         fabAdd.setVisibility(View.INVISIBLE);
 
-        ArrayList<ItemSpinnerData> mainItemList=new ArrayList<>();
-        for (int i=0;i<mainItemDetails.size();i++) {
-            switch (mainItemDetails.get(i).getMainItemCode())
-            {
+        ArrayList<ItemSpinnerData> mainItemList = new ArrayList<>();
+        for (int i = 0; i < mainItemDetails.size(); i++) {
+
+            switch (mainItemDetails.get(i).getMainItemCode()) {
                 case 1:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_food_black));
                     break;
                 case 2:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_cloth_black));
                     break;
                 case 3:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_blood_black));
                     break;
                 case 4:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_grocery_cart_black));
                     break;
                 case 5:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
+                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_stationery_black));
                     break;
             }
         }
 
-        MainItemSpinnerAdapter mainItemSpinnerAdapter=new MainItemSpinnerAdapter(landingPage, R.layout.main_item_spinner_layout,R.id.main_item_txt_spinner_needForm,mainItemList);
+        MainItemSpinnerAdapter mainItemSpinnerAdapter = new MainItemSpinnerAdapter(landingPage, R.layout.main_item_spinner_layout, R.id.main_item_txt_spinner_needForm, mainItemList);
         mainItemSpinner.setAdapter(mainItemSpinnerAdapter);
 
-        final RadioButton lastGenderRadioBtn = (RadioButton)view.findViewById(R.id.female);
+        final RadioButton lastGenderRadioBtn = (RadioButton) view.findViewById(R.id.female);
 
         mainItemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item  = ((TextView)view.findViewById(R.id.main_item_txt_spinner_needForm)).getText().toString();
-                mainItem=item;
+                String item = ((TextView) view.findViewById(R.id.main_item_txt_spinner_needForm)).getText().toString();
+                mainItem = item;
 
-                ArrayList<ItemSpinnerData> subItemList=new ArrayList<>();
+                ArrayList<ItemSpinnerData> subItemList = new ArrayList<>();
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();
@@ -221,18 +228,18 @@ public class NewNeedActivityFragment extends Fragment {
                 age.setError(null);
                 textView.setText("");
 
-                for(int i=0;i<subItemDetails.size();i++)
-                    if(subItemDetails.get(i).getMainItemCode()==(id+1))
+                for (int i = 0; i < subItemDetails.size(); i++)
+                    if (subItemDetails.get(i).getMainItemCode() == (id + 1))
                         subItemList.add(new ItemSpinnerData(subItemDetails.get(i).getSubItemName()));
 
-                SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(landingPage, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
+                SubItemSpinnerAdapter subItemSpinnerAdapter = new SubItemSpinnerAdapter(landingPage, R.layout.sub_item_spinner_layout, R.id.sub_item_txt_spinner_needForm, subItemList);
                 subItemSpinner.setAdapter(subItemSpinnerAdapter);
 
                 subItemSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String item  = ((TextView)view.findViewById(R.id.sub_item_txt_spinner_needForm)).getText().toString();
-                        subItem=item;
+                        String item = ((TextView) view.findViewById(R.id.sub_item_txt_spinner_needForm)).getText().toString();
+                        subItem = item;
                     }
 
                     @Override
@@ -241,7 +248,7 @@ public class NewNeedActivityFragment extends Fragment {
                     }
                 });
 
-                if(mainItem.equals("Clothes"))
+                if (mainItem.equals("Clothes"))
                     clothesLayout.setVisibility(View.VISIBLE);
                 else
                     clothesLayout.setVisibility(View.INVISIBLE);
@@ -256,26 +263,23 @@ public class NewNeedActivityFragment extends Fragment {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NeedItemDetails needItemDetails=new NeedItemDetails();
+                NeedItemDetails needItemDetails = new NeedItemDetails();
 
                 int selectedIdGender = gender.getCheckedRadioButtonId();
-                radioSexButton = (RadioButton)view.findViewById(selectedIdGender);
+                radioSexButton = (RadioButton) view.findViewById(selectedIdGender);
 
-                if(itemQuantity.getText().toString().isEmpty()) {
-                    dataFilled=false;
+                if (itemQuantity.getText().toString().isEmpty()) {
+                    dataFilled = false;
                     itemQuantity.setError("enter the Quantity");
-                }
-                else if(!isTimeFilled) {
-                    dataFilled=false;
+                } else if (!isTimeFilled) {
+                    dataFilled = false;
                     textView.setText("Time Required");
                     textView.setTextColor(Color.RED);
-                }
-                else {
+                } else {
                     needItemDetails.setNeed_item_id(++NewNeedActivity.id);
-                    for(int i=0;i<=subItemDetails.size();i++)
-                        if(!subItem.isEmpty() && mainItemDetails!=null && subItemDetails!=null) {
-                            if (subItem.equals(subItemDetails.get(i).getSubItemName()))
-                            {
+                    for (int i = 0; i <= subItemDetails.size(); i++)
+                        if (!subItem.isEmpty() && mainItemDetails != null && subItemDetails != null) {
+                            if (subItem.equals(subItemDetails.get(i).getSubItemName())) {
                                 needItemDetails.setItem_type_id(subItemDetails.get(i).getMainItemCode());
                                 needItemDetails.setSub_item_type_id(subItemDetails.get(i).getSubItemCode());
                                 break;
@@ -285,30 +289,28 @@ public class NewNeedActivityFragment extends Fragment {
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
                     needItemDetails.setDeadline(sdf.format(datetime));
-                    dataFilled=true;
+                    dataFilled = true;
                 }
 
-                if(mainItem.equals("Clothes")) {
+                if (mainItem.equals("Clothes")) {
 
-                    if(gender.getCheckedRadioButtonId()<=0) {
-                        dataFilled=false;
+                    if (gender.getCheckedRadioButtonId() <= 0) {
+                        dataFilled = false;
                         lastGenderRadioBtn.setError("select gender");
                     }
-                    if(age.getText().toString().isEmpty()) {
-                        dataFilled=false;
+                    if (age.getText().toString().isEmpty()) {
+                        dataFilled = false;
                         age.setError("enter the age");
-                    }
-
-                    else {
+                    } else {
                         needItemDetails.setGender(radioSexButton.getText().toString());
                         needItemDetails.setAge(Integer.parseInt(age.getText().toString()));
-                        dataFilled=true;
+                        dataFilled = true;
                     }
                 }
 
-                if(dataFilled) {
+                if (dataFilled) {
                     needDetails.add(needItemDetails);
-                    recyclerView.setAdapter(new NewNeedsListAdapter(landingPage, needDetails,mainItemDetails,subItemDetails));
+                    recyclerView.setAdapter(new NewNeedsListAdapter(landingPage, needDetails, mainItemDetails, subItemDetails));
                     recyclerView.setLayoutManager(new LinearLayoutManager(landingPage));
                     hiddenPanel.startAnimation(bottomDown);
                     hiddenPanel.setVisibility(View.GONE);
@@ -317,7 +319,8 @@ public class NewNeedActivityFragment extends Fragment {
                     recyclerView.setVisibility(View.VISIBLE);
                 }
 
-                Toast.makeText(landingPage,"new need",Toast.LENGTH_SHORT).show();  }
+                Toast.makeText(landingPage, "new need", Toast.LENGTH_SHORT).show();
+            }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -340,8 +343,7 @@ public class NewNeedActivityFragment extends Fragment {
                     toolbarSubmit.setVisibility(View.GONE);
                     fabAdd.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     hiddenPanel.startAnimation(bottomDown);
                     hiddenPanel.setVisibility(View.GONE);
                     toolbarSubmit.setVisibility(View.VISIBLE);
@@ -363,12 +365,17 @@ public class NewNeedActivityFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gson= new Gson();
+                gson = new Gson();
+                Log.d(TAG, "onClick: Clcked");
                 new PostItemDetails().execute();
             }
         });
 
+        }
+        else {
+            Log.e(TAG, "Activity is null", new NullPointerException());
 
+        }
         return view;
     }
     private boolean isPanelShown() {
@@ -396,7 +403,7 @@ public class NewNeedActivityFragment extends Fragment {
             response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details,NeedDetails.class), client, donor_token);
             Log.d("Request JSON", gson.toJson(need_details,NeedDetails.class));
             if (response != null) {
-                Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
+                Log.d(" ", response.getStatusLine().getStatusCode() + "");
 
                 try {
                     Connectivity.getJosnFromResponse(response);
@@ -423,11 +430,18 @@ public class NewNeedActivityFragment extends Fragment {
                     Toast.makeText(landingPage,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
-                    bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    fragment = new HomeFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+
+                  //  if(bundle==null) {
+                        bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                        fragment = new HomeFragment();
+                        fragmentManager = landingPage.getFragmentManager();
+                        fragment.setArguments(bundle);
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    //}
+                  /*  else {
+                        Log.e(TAG, "Bundle in New Need Activity fragment is null", new NullPointerException());
+
+                    }*/
 
                   // Intent intent=new Intent(landingPage,HomeFragment.class);
                    // intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);

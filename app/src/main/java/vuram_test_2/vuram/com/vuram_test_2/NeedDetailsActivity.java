@@ -169,7 +169,6 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
                                 donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
                                 //donationDetailsToDisplay = new DonationDetails(donatedItemList.get(0),donorName);
-                              //  needListViewItems = new NeedListViewItems(donatedItemId, donorName, donatedQuantity);
 
                                 needCardData.add(donationDetailsToDisplay);
 

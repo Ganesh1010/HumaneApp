@@ -48,6 +48,7 @@ public class DonorRegistrationFragment extends Fragment {
     FragmentManager fragmentManager;
     FrameLayout frameLayout;
     LinearLayout linearLayout;
+    final String TAG = "DonorRegistrationFragment";
 
     @Nullable
     @Override
@@ -133,7 +134,7 @@ public class DonorRegistrationFragment extends Fragment {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "Login Failed");
         CommonUI.internalValidation(getActivity(),linearLayout,"Invalid Password");
          registerButton.setEnabled(true);
     }
@@ -147,18 +148,12 @@ public class DonorRegistrationFragment extends Fragment {
         password = passwordEditText.getText().toString();
         mobilenumber = mobileEditText.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
+        if (name.isEmpty() || name.length() < 2) {
             nameEditText.setError("at least 3 characters");
             valid = false;
         } else {
             nameEditText.setError(null);
         }
-      /*  if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            emailEditText.setError(null);
-        }*/
 
         if(!Validation.validate_email(email)){
             emailEditText.setError("enter valid mail id");
@@ -184,31 +179,6 @@ public class DonorRegistrationFragment extends Fragment {
         return valid;
     }
 
-   /* @Override
-    public void onClick(View view) {
-        if (view == org_details) {
-            //     item = (LinearLayout) findViewById(R.id.org_det);
-            final View child = getLayoutInflater().inflate(R.layout.layout_org_details, null);
-
-            chooseLocationButton = (Button) child.findViewById(R.id.btn_map);
-            chooseLocationButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            item.addView(child);
-            img = (ImageView) child.findViewById(R.id.imageView_details);
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    item.removeView(child);
-                }
-            });
-        }
-    }*/
-
     class CreateUserAccount extends AsyncTask {
 
         HttpResponse response;
@@ -219,19 +189,22 @@ public class DonorRegistrationFragment extends Fragment {
 
             client = new DefaultHttpClient();
             details = new UserDetails();
-           // registerDetails.setGender("Male");
-            registerDetails.setMobile(mobilenumber);
-            registerDetails.setCountry(1);
-            details.setFirstname(name);
-            details.setPassword(password);
-            details.setEmail(email);
-            details.setRegisterDetails(registerDetails);
+
+            if(registerDetails != null) {
+                registerDetails.setMobile(mobilenumber);
+                registerDetails.setCountry(1);
+                details.setFirstname(name);
+                details.setPassword(password);
+                details.setEmail(email);
+                details.setRegisterDetails(registerDetails);
+            }
+            else
+                Log.e(TAG,"User and register details are null",new NullPointerException());
 
             response = Connectivity.makePostRequest(RestAPIURL.register, gson.toJson(details).toString(), client, null);
             Log.d("Request JSON", gson.toJson(details).toString());
             if (response != null) {
                 Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
-                System.out.println("good");
 
                 try {
                     Connectivity.getJosnFromResponse(response);
@@ -240,7 +213,8 @@ public class DonorRegistrationFragment extends Fragment {
                 }
 
             } else {
-                Log.d("Response", "Null");
+                Log.e(TAG,"Response from donor Registration API is null",new NullPointerException());
+
             }
 
             return null;
@@ -258,31 +232,20 @@ public class DonorRegistrationFragment extends Fragment {
                 progressDialog.dismiss();
             if (response != null)
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                   // Toast.makeText(landingPage, "Registration Successful.Kindly Login to continue", Toast.LENGTH_LONG).show();
-                    // landingPage.startActivity(new Intent(landingPage, LoginPage.class));
-                    //landingPage.finish();
                     CommonUI.internalValidation(getActivity(),linearLayout,"Registration Successful");
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             fragment = new LoginPageFragment();
-                            System.out.println("good");
                             fragmentManager = getActivity().getFragmentManager();
-                            System.out.println("good");
                             Bundle bundle = new Bundle();
                             bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                            System.out.println("good");
                             fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-                            System.out.println("good");
                             fragment.setArguments(bundle);
                         }
                     }, 3000);
                 }
-
-
-
-
 
             super.onPostExecute(o);
         }

@@ -106,8 +106,8 @@ public class LoginPageFragment extends Fragment {
                 if (user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
 
                     fragment = new DonorRegistrationFragment();
-                    if (getActivity() != null) {
-                        fragmentManager = getActivity().getFragmentManager();
+                    if (landingPage != null) {
+                        fragmentManager = landingPage.getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
                         landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -201,7 +201,6 @@ public class LoginPageFragment extends Fragment {
     }
 
     public void login() {
-        // Log.d(TAG, "Login");
 
         if (!validate()) {
             onLoginFailed();
