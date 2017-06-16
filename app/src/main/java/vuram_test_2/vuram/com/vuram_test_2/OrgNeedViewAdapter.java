@@ -254,7 +254,7 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
 
         public ProgressViewHolder(View v) {
             super(v);
-            progressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
+            progressBar = (ProgressBar) v.findViewById(R.id.progress_bar);
         }
     }
 }

@@ -7,14 +7,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
-        android:label="@string/app_name"
+        android:label=  "@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LandingPage">
@@ -30,7 +29,7 @@
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".EditUserProfileActivity" />
         <activity android:name=".NeedDetailsActivity" />
-        <activity android:name=".OrgDetailsActivity" />
+        <activity android:name=".DetailsOfQuantitySelected" />
         <activity android:name=".OrganisationLandingPage" />
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />

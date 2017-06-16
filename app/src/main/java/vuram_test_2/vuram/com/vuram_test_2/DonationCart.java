@@ -30,7 +30,8 @@ public class DonationCart extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context=OrgDetailsActivity.context;
+        //see this
+        //this.context=OrgDetailsActivity.context;
     }
 
     @Override

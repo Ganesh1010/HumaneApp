@@ -1,5 +1,8 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import layout.UserProfileFragment;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 public class OrganisationLandingPage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
@@ -62,21 +66,25 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.action_home:
-                this.finish();
-                intent = new Intent(OrganisationLandingPage.this, OrganisationLandingPage.class);
                 break;
             case R.id.action_donations:
-                intent = new Intent(OrganisationLandingPage.this, DonationListActivity.class);
+                loadFragment(new DonationListFragment());
                 break;
             case R.id.action_org_profile:
-                intent = new Intent(OrganisationLandingPage.this, OrgProfileActivity.class);
+                loadFragment(new OrgProfileFragment());
                 break;
             case R.id.action_user_profile:
-                intent = new Intent(OrganisationLandingPage.this, UserProfileActivity.class);
+                loadFragment(new UserProfileFragment());
                 break;
         }
-        startActivity(intent);
         return true;
+    }
+
+    private void loadFragment(Fragment fragment) {
+        FragmentManager fragmentManager = this.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_holder_org_landing_page, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
