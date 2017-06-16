@@ -93,8 +93,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
                 }
 
                 donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
-                needCardData.add(donatedItemDetailsTodisplay);
-                DonationDetailsAdapter donationDetailsAdapter=new DonationDetailsAdapter(needCardData);
+                needCardData.add(donatedItemDetailsTodisplay); DonationDetailsAdapter donationDetailsAdapter=new DonationDetailsAdapter(needCardData);
                 holder.donatedItemDetails.setAdapter(donationDetailsAdapter);
 
         }
