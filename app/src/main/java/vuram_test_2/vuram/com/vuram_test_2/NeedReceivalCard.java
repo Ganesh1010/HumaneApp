@@ -24,18 +24,14 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
     Context context;
     ArrayList<DonationDetails> donatedDetailsList;
     ArrayList donatedCardDetails;
-    ArrayList<NeedItemDetails> needItems;
     NeedListViewAdapter adapter;
-    DonatedItemDetails donatedItem;
-    int needId,needQuantity;
+    int needId;
     ArrayList<DonatedItemDetails> donatedItemList;
     NeedDetails need;
     int donatedItemId,donatedQuantity;
     DonatedItemDetails donatedItemDetailsTodisplay;
     ArrayList<DonatedItemDetails> needCardData;
-    DonationDetails donationDetailsToDisplay;
     String donorName;
-    NeedItemDetails needItemDetails;
     ArrayList<NeedDetails> needDetailsArrayList;
 
 
@@ -93,7 +89,9 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
                 }
 
                 donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
-                needCardData.add(donatedItemDetailsTodisplay); DonationDetailsAdapter donationDetailsAdapter=new DonationDetailsAdapter(needCardData);
+                needCardData =new ArrayList<>();
+                needCardData.add(donatedItemDetailsTodisplay);
+                DonationDetailsAdapter donationDetailsAdapter=new DonationDetailsAdapter(needCardData);
                 holder.donatedItemDetails.setAdapter(donationDetailsAdapter);
 
         }

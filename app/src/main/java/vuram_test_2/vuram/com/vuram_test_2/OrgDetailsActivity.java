@@ -3,7 +3,6 @@ package vuram_test_2.vuram.com.vuram_test_2;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -22,7 +20,6 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.io.SocketOutputBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,8 +27,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+
+import static com.google.android.gms.internal.zzt.TAG;
 
 public class OrgDetailsActivity extends AppCompatActivity  {
     public ImageButton imageButton;
@@ -46,33 +44,39 @@ public class OrgDetailsActivity extends AppCompatActivity  {
     public NeedDetails need;
     public ImageView donationCart;
     public String needId;
-    LandingPage landingPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_org_details);
-
-        needId = getIntent().getStringExtra("Need");
-        imageButton=(ImageButton)findViewById(R.id.back_home);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        donationCart= (ImageView) findViewById(R.id.cart);
-        donationCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(OrgDetailsActivity.this,test.class));
-            }
-        });
-        context = getBaseContext();
-        new GetParticularNeedDetails().execute();
-        needItemDetails =  new NeedItemDetails();
-        layoutManager = new LinearLayoutManager(this);
+        Intent homeactivity = getIntent();
+        if (homeactivity  != null) {
+            needId = homeactivity.getStringExtra("Need");
+            imageButton = (ImageButton) findViewById(R.id.back_home);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            donationCart = (ImageView) findViewById(R.id.cart);
+            donationCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(OrgDetailsActivity.this, test.class));
+                }
+            });
+            context = getBaseContext();
+            new GetParticularNeedDetails().execute();
+            needItemDetails = new NeedItemDetails();
+            layoutManager = new LinearLayoutManager(this);
+        }
+        else
+        {
+            Log.e(TAG, "Intent  is null", new NullPointerException());
+        }
     }
+
 
     public class GetParticularNeedDetails extends AsyncTask {
         HttpResponse response;

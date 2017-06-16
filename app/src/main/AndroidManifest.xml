@@ -31,7 +31,6 @@
         <activity android:name=".EditUserProfileActivity" />
         <activity android:name=".NeedDetailsActivity" />
         <activity android:name=".OrgDetailsActivity" />
-        <activity android:name=".DetailsOfQuantitySelected" />
         <activity android:name=".OrganisationLandingPage" />
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />

@@ -39,8 +39,8 @@ public class NeedDetailsActivity extends AppCompatActivity {
     ArrayList<DonationDetails> donatedDetailsList;
     ArrayList<NeedDetails> needDetailsArrayList;
     List  donatedItemList,itemslist;
-    int donatedItemId,needItemId,needQuantity,donatedQuantity,needId;
-    String donorName,mainItemName;
+    int donatedItemId,donatedQuantity,needId;
+    String donorName;
     RecyclerView needrecyclerView, receivalCardView;
     NeedListViewAdapter needListViewAdapter;
     NeedReceivalCard needReceivalCard;
@@ -50,10 +50,8 @@ public class NeedDetailsActivity extends AppCompatActivity {
     TextView percentage;
     View divider1;
     Toolbar toolbar;
-    NeedItemDetails needItemsToDisplay;
     NeedDetails needDetails,need;
     NeedItemDetails needItemDetails;
-    //NeedDetails need;
      DonationDetails donationDetailsToDisplay;
      DonatedItemDetails donatedItemDetailsTodisplay;
      DatabaseHelper databaseHelper;
@@ -110,7 +108,6 @@ public class NeedDetailsActivity extends AppCompatActivity {
     class NeedAndDonatedDetails extends AsyncTask {
         HttpResponse response;
         HttpClient client;
-        NeedListViewItems needListViewItems;
 
         @Override
         protected void onPreExecute() {
@@ -194,8 +191,6 @@ public class NeedDetailsActivity extends AppCompatActivity {
             headingLayout.setVisibility(View.GONE);
 
 
-
-            // Toast.makeText(this,"after list adapter",Toast.LENGTH_LONG).show();
             needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,needCardData,needId,needDetailsArrayList);
             receivalCardView.setAdapter(needReceivalCard);
             receivalCardView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));

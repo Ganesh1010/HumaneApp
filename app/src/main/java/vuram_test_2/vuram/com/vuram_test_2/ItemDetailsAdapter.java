@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
@@ -94,9 +93,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
         }
     }
-
-    public ItemDetailsAdapter()
-    {}
     public ItemDetailsAdapter(ArrayList<NeedItemDetails>needItemDetails,Context context,Activity activity,String needId) {
         this.needItemDetails=needItemDetails;
         this.context=context;
@@ -229,7 +225,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         if(requestCode == 1){
             address.setEnabled(true);
             String receivedAddress = data.getStringExtra("Location");
-            Log.d("Inside Item Details Adater",receivedAddress);
             address.setText(receivedAddress);
             isLocationSelected=true;
 

@@ -56,8 +56,12 @@ public class NeedListViewAdapter extends  RecyclerView.Adapter< NeedListViewAdap
         Log.d("ItemListsize", String.valueOf(itemslist.size()));
 
         DatabaseHelper db = new DatabaseHelper(context);
-        mainItemDetailsList = db.getAllMainItemDetails();
-
+        if(db!=null) {
+            mainItemDetailsList = db.getAllMainItemDetails();
+        }
+        else{
+            Log.e(TAG, "Database  is null", new NullPointerException());
+        }
         donatedItemDetails = new ArrayList<>();
     }
 
