@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,12 +21,12 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/itemIcon" />
+                android:id="@+id/filter_main_item_icon" />
             <TextView
             android:paddingLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/itemCategory"
+            android:id="@+id/filter_main_item_name"
             android:layout_marginBottom="0dp"
             android:textSize="20dp"
             android:textColor="@color/colorPrimaryText"/>
@@ -39,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_arrow_up_black"
-                android:id="@+id/indicationIcon" />
+                android:id="@+id/filter_item_indication_icon" />
         </RelativeLayout>
         </LinearLayout>
         <View

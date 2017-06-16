@@ -43,17 +43,17 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 
 public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.MyViewHolder> {
-    int quantityEachNeed=0,needId;
-    int countDonatedItems=0;
-    ArrayList<NeedItemDetails>needItemDetails;
-    ArrayList<DonatedItemDetails> donatedItemDetailsList;
-    public ArrayList<MainItemDetails> mainItemDetails;
-    public ArrayList<SubItemDetails> subItemDetails;
+    public int quantityEachNeed=0,needId;
+    public int countDonatedItems=0;
+    public ArrayList<NeedItemDetails>needItemDetailsList;
+    public ArrayList<DonatedItemDetails> donatedItemDetailsList;
+    public ArrayList<MainItemDetails> mainItemDetailsList;
+    public ArrayList<SubItemDetails> subItemDetailsList;
     public DonationDetails donationDetails=new DonationDetails();
     public DonatedItemDetails donatedItemDetails;
     public DatabaseHelper db;
-    View target;
-    BadgeView badge;
+    public View target;
+    public BadgeView badge;
     public ImageView getLocation;
     public static Context context;
     public static Activity activity;
@@ -73,47 +73,48 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public static boolean isLocationSelected=false;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView requested;
-        ImageView imageView;
+        TextView mainIteName;
+        TextView subItemName;
+        ImageView mainItemIcon;
         ImageView increment;
         ImageView decrement;
-        TextView value;
-        TextView requestedQuantity,promisedAmount;
+        EditText value;
+        TextView requestedQuantity;
+        TextView deliveredAmount;
+        TextView promisedAmount;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.imageView=(ImageView)itemView.findViewById(R.id.imageView);
-            this.title = (TextView) itemView.findViewById(R.id.title);
-            this.requested=(TextView) itemView.findViewById(R.id.requested);
+            this.mainItemIcon=(ImageView)itemView.findViewById(R.id.main_item_icon);
+            this.mainIteName = (TextView) itemView.findViewById(R.id.main_item_name);
+            this.subItemName=(TextView) itemView.findViewById(R.id.sub_item_name);
+            this.deliveredAmount= (TextView) itemView.findViewById(R.id.delivered_amount);
             this.increment=(ImageView) itemView.findViewById(R.id.increment_custom);
             this.decrement=(ImageView) itemView.findViewById(R.id.decrement_custom);
-            this.value=(TextView) itemView.findViewById(R.id.number_custom);
+            this.value= (EditText) itemView.findViewById(R.id.number_custom);
             this.requestedQuantity= (TextView) itemView.findViewById(R.id.requested_amount);
-            this.promisedAmount= (TextView) itemView.findViewById(R.id.promisedamount);
-
+            this.promisedAmount= (TextView) itemView.findViewById(R.id.promised_amount);
         }
     }
 
     public ItemDetailsAdapter()
     {}
-    public ItemDetailsAdapter(ArrayList<NeedItemDetails>needItemDetails,Context context,Activity activity,String needId) {
-        this.needItemDetails=needItemDetails;
+    public ItemDetailsAdapter(ArrayList<NeedItemDetails>needItemDetailsList,Context context,Activity activity,String needId) {
+        this.needItemDetailsList=needItemDetailsList;
         this.context=context;
         this.activity=activity;
         this.needId=Integer.parseInt(needId);
         db=new DatabaseHelper(this.activity);
-        mainItemDetails=db.getAllMainItemDetails();
-        subItemDetails=db.getAllSubItemDetails();
+        mainItemDetailsList=db.getAllMainItemDetails();
+        subItemDetailsList=db.getAllSubItemDetails();
         donatedItemDetailsList = new ArrayList<>();
-        target = activity.findViewById(R.id.cart);
+        target = activity.findViewById(R.id.donation_cart);
         badge = new BadgeView(context, target);
         }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_details, parent, false);
-        view.setOnClickListener(OrgDetailsActivity.myOnClickListener);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -121,19 +122,20 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
         holder.setIsRecyclable(false);
-        final NeedItemDetails particularNeedItemDetails=needItemDetails.get(listPosition);
+        final NeedItemDetails particularNeedItemDetails=needItemDetailsList.get(listPosition);
+        holder.mainItemIcon.setImageResource(getItemImages(particularNeedItemDetails.getItem_type_id() - 1));
 
-        holder.imageView.setImageResource(getItemImages(particularNeedItemDetails.getItem_type_id() - 1));
-
-        for(int i=0;i<mainItemDetails.size();i++)
-            if(mainItemDetails.get(i).getMainItemCode()==particularNeedItemDetails.getItem_type_id())
-                holder.title.setText(mainItemDetails.get(i).getMainItemName());
-        for(int i=0;i<subItemDetails.size();i++)
-            if(subItemDetails.get(i).getSubItemCode()==particularNeedItemDetails.getSub_item_type_id())
-                holder.requested.setText(subItemDetails.get(i).getSubItemName());
+        for(MainItemDetails mainItemDetails:mainItemDetailsList)
+            if(mainItemDetails.getMainItemCode()==particularNeedItemDetails.getItem_type_id())
+                holder.mainIteName.setText(mainItemDetails.getMainItemName());
+        for(SubItemDetails subItemDetails:subItemDetailsList)
+            if(subItemDetails.getSubItemCode()==particularNeedItemDetails.getSub_item_type_id())
+                holder.subItemName.setText(subItemDetails.getSubItemName());
 
         holder.requestedQuantity.setText("Requested: "+particularNeedItemDetails.getQuantity()+"");
-        holder.promisedAmount.setText("Promised Amount: "+particularNeedItemDetails.getDonated_amount());
+        holder.promisedAmount.setText("Promised Amount: "+particularNeedItemDetails.getDonated_amount()+"");
+        holder.deliveredAmount.setText("Delivered Amount: "+particularNeedItemDetails.getDonated_and_received_amount()+"");
+        
         if(quantityEachNeed==0)
             holder.decrement.setVisibility(View.INVISIBLE);
         holder.increment.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +168,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     holder.value.setText((donatedItemDetails.getQuantity()+""));
                     donationDetails.setDonateditems(donatedItemDetailsList);
                     donationDetails.setNeed_id(needId);
-                    displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),quantityEachNeed,activity,donationDetails);
+                    displayCheckoutUI(activity.findViewById(R.id.activity_landing_page),quantityEachNeed,activity,donationDetails);
                     badge.setText(countDonatedItems+"");
                     if(countDonatedItems>0)
                         badge.setVisibility(View.VISIBLE);
@@ -199,7 +201,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
                     holder.value.setText((donatedItemDetails.getQuantity()+""));
 
-                    displayCheckoutUI(activity.findViewById(R.id.activity_donor_org_details),quantityEachNeed,activity,donationDetails);
+                    displayCheckoutUI(activity.findViewById(R.id.activity_landing_page),quantityEachNeed,activity,donationDetails);
                     badge.setText(countDonatedItems+"");
                     if(countDonatedItems==0)
                         badge.setVisibility(View.INVISIBLE);
@@ -214,7 +216,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
     @Override
     public int getItemCount() {
-        return needItemDetails!=null?needItemDetails.size():0;
+        return needItemDetailsList!=null?needItemDetailsList.size():0;
     }
 
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -229,7 +231,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         if(requestCode == 1){
             address.setEnabled(true);
             String receivedAddress = data.getStringExtra("Location");
-            Log.d("Inside Item Details Adater",receivedAddress);
             address.setText(receivedAddress);
             isLocationSelected=true;
 
@@ -302,9 +303,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = new Date();
                 donationDetails.setdonated_at(dateFormat.format(date)+"");
-                //Intent i = new Intent(context,AndroidGPSTrackingActivity.class);
-                //activity.startActivityForResult(i,1);
-
 
                 getLocation= (ImageView) dialogView.findViewById(R.id.btn_map);
                 getLocation.setOnClickListener(new View.OnClickListener() {
@@ -389,7 +387,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     }
     class PopulatingTask extends AsyncTask {
 
-        AndroidGPSTrackingActivity androidGPSTrackingActivity=new AndroidGPSTrackingActivity(activity);
+        GetCurrentLocation androidGPSTrackingActivity=new GetCurrentLocation(activity);
         String firstName;
         RegisterDetails profile;
         String mobile;

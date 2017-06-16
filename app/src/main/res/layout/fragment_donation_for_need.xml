@@ -12,13 +12,12 @@
      android:background="?attr/colorPrimary"
      android:theme="?attr/actionBarTheme"
      android:minHeight="?attr/actionBarSize"
-     android:id="@+id/toolbar3"
      android:layout_height="50dp">
 
  <ImageView
      android:layout_height="50dp"
      app:srcCompat="@drawable/cart"
-     android:id="@+id/cart"
+     android:id="@+id/donation_cart"
      android:layout_gravity="end"
      android:layout_width="70dp" />
 
@@ -39,7 +38,6 @@
 
 
     <LinearLayout
-    android:id="@+id/activity_donor_org_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="blocksDescendants"
@@ -60,7 +58,7 @@
                 app:srcCompat="@drawable/supportbanner"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"
-                android:id="@+id/imageView12"
+                android:id="@+id/org_logo"
                 android:cropToPadding="false" />
         </LinearLayout>
         <android.support.design.widget.CoordinatorLayout
@@ -85,7 +83,7 @@
                     android:textSize="20sp" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/my_recycler_view_donor_org"
+                    android:id="@+id/display_particular_need_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="vertical"

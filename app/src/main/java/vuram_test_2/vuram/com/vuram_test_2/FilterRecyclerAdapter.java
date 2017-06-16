@@ -19,18 +19,18 @@ import java.util.Map;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
 
-public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdapter.ViewHolder> {
+public class FilterRecyclerAdapter extends RecyclerView.Adapter<FilterRecyclerAdapter.ViewHolder> {
 
-    List<FilterItemCategoryList> list;
-    Context context;
-    ArrayList<MainItemDetails> mainItemDetails;
-    ArrayList<SubItemDetails> subItemDetails;
-    public static ArrayList<CheckBox> allCheckBoxes=new ArrayList<>();
+    public List<FilterItemCategoryList>filterItemCategoryLists;
+    public Context context;
+    public ArrayList<MainItemDetails> mainItemDetails;
+    public ArrayList<SubItemDetails> subItemDetails;
+    public static ArrayList<CheckBox> filterItemCheckBoxes=new ArrayList<>();
     public int selectedMainItemCode,selectedSubItemCode;
     public ArrayList<Integer> subItemCodeArrayList;
 
-    public FilterRecycleAdapter(Context context, ArrayList<FilterItemCategoryList> list,ArrayList<MainItemDetails> mainItemDetails,ArrayList<SubItemDetails> subItemDetails) {
-        this.list=list;
+    public FilterRecyclerAdapter(Context context, ArrayList<FilterItemCategoryList> filterItemCategoryLists,ArrayList<MainItemDetails> mainItemDetails,ArrayList<SubItemDetails> subItemDetails) {
+        this.filterItemCategoryLists=filterItemCategoryLists;
         this.context=context;
         this.mainItemDetails=mainItemDetails;
         this.subItemDetails=subItemDetails;
@@ -45,36 +45,37 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        holder.itemCategory.setText(list.get(position).getItemCategory());
+        holder.mainItemName.setText(filterItemCategoryLists.get(position).getMainItemName());
         for(int i=0;i<mainItemDetails.size();i++) {
-            if (mainItemDetails.get(i).getMainItemName() ==list.get(position).getItemCategory())
+            if (mainItemDetails.get(i).getMainItemName() ==filterItemCategoryLists.get(position).getMainItemName())
                 switch (mainItemDetails.get(i).getMainItemCode()) {
                     case 1:
-                        holder.filterItemIcon.setImageResource(R.drawable.ic_food_black);
+                        holder.filterMainItemIcon.setImageResource(R.drawable.ic_food_black);
                         break;
                     case 2:
-                        holder.filterItemIcon.setImageResource(R.drawable.ic_cloth_black);
+                        holder.filterMainItemIcon.setImageResource(R.drawable.ic_cloth_black);
                         break;
                     case 3:
-                        holder.filterItemIcon.setImageResource(R.drawable.ic_blood_black);
+                        holder.filterMainItemIcon.setImageResource(R.drawable.ic_blood_black);
                         break;
                     case 4:
-                        holder.filterItemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
+                        holder.filterMainItemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                         break;
                     case 5:
-                        holder.filterItemIcon.setImageResource(R.drawable.ic_stationery_black);
+                        holder.filterMainItemIcon.setImageResource(R.drawable.ic_stationery_black);
                         break;
                 }
         }
 
-        final LinearLayout genderMale= new LinearLayout(context);
-        final LinearLayout genderFemale= new LinearLayout(context);
-        LayoutInflater inflater;
-        View view;
-        for (int i = 0; i < list.get(position).getItemName().size(); i++)
+//        final LinearLayout genderMale= new LinearLayout(context);
+//        final LinearLayout genderFemale= new LinearLayout(context);
+//        LayoutInflater inflater;
+//        View view;
+        
+        for (int i = 0; i < filterItemCategoryLists.get(position).getSubItemNameList().size(); i++)
         {
-            final CheckBox itemName = new CheckBox(context);
-            itemName.setText(list.get(position).getItemName().get(i) + "");
+            final CheckBox filterItemName = new CheckBox(context);
+            filterItemName.setText(filterItemCategoryLists.get(position).getSubItemNameList().get(i) + "");
 
             Iterator it = HomeActivity.filterItems.entrySet().iterator();
             while (it.hasNext())
@@ -85,41 +86,40 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
                 for(int j=0;j<subItemCodeArrayList.size();j++)
                     for (int k = 0; k < subItemDetails.size(); k++)
                         if (subItemCodeArrayList.get(j) == subItemDetails.get(k).getSubItemCode())
-                            if (subItemDetails.get(k).getSubItemName().equals(itemName.getText().toString())) {
-                                itemName.setChecked(true);
+                            if (subItemDetails.get(k).getSubItemName().equals(filterItemName.getText().toString())) {
+                                filterItemName.setChecked(true);
                                 break;
                             }
             }
 
-            if(itemName.getText().toString().equals("Male"))
-            {
-                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.filter_clothes_gender, null);
-                genderMale.addView(view);
-                holder.filterLayout.addView(itemName);
-                holder.filterLayout.addView(genderMale);
+//            if(filterItemName.getText().toString().equals("Male"))
+//            {
+//                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                view = inflater.inflate(R.layout.filter_clothes_gender, null);
+//                genderMale.addView(view);
+//                holder.filterLayout.addView(filterItemName);
+//                holder.filterLayout.addView(genderMale);
+//
+//                genderMale.setVisibility(View.GONE);
+//            }
+//            else if(filterItemName.getText().toString().equals("Female"))
+//            {
+//                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                view = inflater.inflate(R.layout.filter_clothes_gender, null);
+//                genderFemale.addView(view);
+//                holder.filterLayout.addView(filterItemName);
+//                holder.filterLayout.addView(genderFemale);
+//
+//                genderFemale.setVisibility(View.GONE);
+//            }
+            
+            holder.filterLayout.addView(filterItemName);
+            filterItemCheckBoxes.add(filterItemName);
 
-                genderMale.setVisibility(View.GONE);
-            }
-            else if(itemName.getText().toString().equals("Female"))
-            {
-                inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.filter_clothes_gender, null);
-                genderFemale.addView(view);
-                holder.filterLayout.addView(itemName);
-                holder.filterLayout.addView(genderFemale);
-
-                genderFemale.setVisibility(View.GONE);
-            }
-            else
-                holder.filterLayout.addView(itemName);
-
-            allCheckBoxes.add(itemName);
-
-            itemName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            filterItemName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String selectedSubItemName = itemName.getText().toString();
+                    String selectedSubItemName = filterItemName.getText().toString();
                     if (isChecked) {
                         // Finding subItemCodeArrayList & mainItemCode of this checked item
                         for (SubItemDetails singleSubItemDetails : subItemDetails) {
@@ -128,7 +128,7 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
                                     selectedMainItemCode = singleSubItemDetails.getMainItemCode();
                                     selectedSubItemCode = singleSubItemDetails.getSubItemCode();
                                     if (HomeActivity.filterItems.size() == 0) {
-                                        System.out.println("new entry");
+                                        System.out.println("new entry in filter list");
                                         subItemCodeArrayList = new ArrayList<>();
                                     } else {
                                         boolean isNewItem = true;
@@ -136,13 +136,12 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
                                             Map.Entry<Integer, ArrayList<Integer>> filter = (Map.Entry) it.next();
                                             if (filter.getKey() == selectedMainItemCode) {
                                                 isNewItem = false;
-                                                System.out.println("update entry");
+                                                System.out.println("update entry in filter list");
                                                 subItemCodeArrayList = filter.getValue();
-                                                Log.d(TAG, "onCheckedChanged: ArrayList Main Item Code" + filter.getKey() + " Value " + filter.getValue().size());
                                             }
                                         }
                                         if (isNewItem) {
-                                            System.out.println("new entry");
+                                            System.out.println("new entryin filter list");
                                             subItemCodeArrayList = new ArrayList<>();
                                         }
                                     }
@@ -178,27 +177,23 @@ public class FilterRecycleAdapter extends RecyclerView.Adapter<FilterRecycleAdap
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return filterItemCategoryLists.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView itemCategory;
+        public TextView mainItemName;
         public LinearLayout filterLayout;
-        public ImageView filterItemIcon;
+        public ImageView filterMainItemIcon;
         public ImageView indicationIcon;
         public View view;
 
         public ViewHolder(View v) {
             super(v);
-            //System.out.println(v.getTag().toString());
-            itemCategory= (TextView) v.findViewById(R.id.itemCategory);
-            if (itemCategory == null) {
-                System.out.println("here");
-            }
+            mainItemName= (TextView) v.findViewById(R.id.filter_main_item_name);
             filterLayout= (LinearLayout) v.findViewById(R.id.filterLayout);
-            filterItemIcon= (ImageView) v.findViewById(R.id.itemIcon);
-            indicationIcon= (ImageView) v.findViewById(R.id.indicationIcon);
+            filterMainItemIcon= (ImageView) v.findViewById(R.id.filter_main_item_icon);
+            indicationIcon= (ImageView) v.findViewById(R.id.filter_item_indication_icon);
             view=v.findViewById(R.id.view);
             v.setOnClickListener(this);
         }

@@ -4,23 +4,22 @@ import java.util.ArrayList;
 
 public class FilterItemCategoryList
 {
-    String itemCategory;
-    ArrayList<String> itemName;
+    String mainItemName;
+    ArrayList<String> subItemNameList;
 
-    public ArrayList<String> getItemName() {
-        return itemName;
+    public String getMainItemName() {
+        return mainItemName;
     }
 
-    public void setItemName(ArrayList<String> itemName) {
-        this.itemName = itemName;
+    public void setMainItemName(String mainItemName) {
+        this.mainItemName = mainItemName;
     }
 
-    public String getItemCategory() {
-        return itemCategory;
+    public ArrayList<String> getSubItemNameList() {
+        return subItemNameList;
     }
 
-    public void setItemCategory(String itemCategory) {
-        this.itemCategory = itemCategory;
+    public void setSubItemNameList(ArrayList<String> subItemNameList) {
+        this.subItemNameList = subItemNameList;
     }
-
 }
