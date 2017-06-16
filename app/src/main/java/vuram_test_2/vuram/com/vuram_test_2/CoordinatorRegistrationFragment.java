@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import static com.google.android.gms.internal.zzt.TAG;
+
 
 public class CoordinatorRegistrationFragment extends Fragment {
 
@@ -68,8 +70,15 @@ public class CoordinatorRegistrationFragment extends Fragment {
                 if(register()) {
                     fragment = new OrganisationRegistrationFragment();
                     fragment.setArguments(bundle);
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    if(landingPage!= null)
+                    {
+                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    }
+                  else
+                    {
+                        Log.e(TAG, "Activity  is null", new NullPointerException());
+                    }
                 }
 
                 else
@@ -135,7 +144,6 @@ public class CoordinatorRegistrationFragment extends Fragment {
             userDetails.setEmail(emailId);
             registerDetails.setCountry(1);
             registerDetails.setMobile(mobileNo);
-            Log.d("god",registerDetails.getMobile());
             userDetails.setProfile(registerDetails);
 
 
