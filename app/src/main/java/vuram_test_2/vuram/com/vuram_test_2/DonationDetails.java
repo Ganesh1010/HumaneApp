@@ -5,13 +5,41 @@ import java.util.List;
 
 public class DonationDetails {
 
-
+    List<DonatedItemDetails> donated_items;
     boolean is_registereduser;
     boolean is_received;
     String donated_at;
     int need_id;
     String user;
-    List<DonatedItemDetails> donateditems;
+    public DonationDetails()
+    {
+        donated_items=new ArrayList<>();
+    }
+
+    public List<DonatedItemDetails> getDonated_items() {
+        return donated_items;
+    }
+
+    public void setDonated_items(List<DonatedItemDetails> donated_items) {
+        this.donated_items = donated_items;
+    }
+
+    public void setIs_registereduser(boolean is_registereduser) {
+        this.is_registereduser = is_registereduser;
+    }
+
+    public String getDonated_at() {
+        return donated_at;
+    }
+
+    public void setDonated_at(String donated_at) {
+        this.donated_at = donated_at;
+    }
+
+    public void setIs_received(boolean is_received) {
+        this.is_received = is_received;
+    }
+
     DonatingUserDetails donatingUserDetails;
 
     public String getUser() {
@@ -62,18 +90,5 @@ public class DonationDetails {
         this.donatingUserDetails = donatingUserDetails;
     }
 
-    public DonationDetails() {
-
-        donateditems = new ArrayList<>();
-    }
-
-    public List<DonatedItemDetails> getDonateditems() {
-        return donateditems;
-    }
-
-    public void setDonateditems(List<DonatedItemDetails> donateditems) {
-        this.donateditems = donateditems;
-
-    }
 
 }

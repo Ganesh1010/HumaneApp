@@ -135,7 +135,7 @@ public class DonationCart extends Fragment {
         donatedItems.add(donatedItemDetails);
 
         donationDetails=new DonationDetails();
-        donationDetails.setDonateditems(donatedItems);
+        donationDetails.setDonated_items(donatedItems);
 
         needDetails=new NeedDetails();
         needDetails.setItems(neededItems);

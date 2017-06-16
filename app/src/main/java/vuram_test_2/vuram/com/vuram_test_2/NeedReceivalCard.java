@@ -72,7 +72,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
             for (int i = 0; i < donatedDetailsList.size(); i++) {
                 DonationDetails donationDetails = donatedDetailsList.get(i);
 
-                donatedItemList = (ArrayList<DonatedItemDetails>) donationDetails.getDonateditems();
+                donatedItemList = (ArrayList<DonatedItemDetails>) donationDetails.getDonated_items();
                 donorName = donationDetails.getUser();
                 Log.d("donor Name", "doInBackground: " + donorName);
                 Log.d("size", "doInBackground: " + donatedItemList.size());

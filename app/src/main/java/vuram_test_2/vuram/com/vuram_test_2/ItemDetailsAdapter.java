@@ -2,6 +2,8 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +11,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
@@ -71,6 +74,8 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public HttpResponse response;
     public boolean isDataFilled=false;
     public static boolean isLocationSelected=false;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView mainIteName;
@@ -166,12 +171,14 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     }
 
                     holder.value.setText((donatedItemDetails.getQuantity()+""));
-                    donationDetails.setDonateditems(donatedItemDetailsList);
+                    donationDetails.setDonated_items(donatedItemDetailsList);
                     donationDetails.setNeed_id(needId);
-                    displayCheckoutUI(activity.findViewById(R.id.activity_landing_page),quantityEachNeed,activity,donationDetails);
-                    badge.setText(countDonatedItems+"");
-                    if(countDonatedItems>0)
+
+                    if(countDonatedItems>0) {
+                        displayCheckoutUI(activity.findViewById(R.id.activity_landing_page),quantityEachNeed,activity,donationDetails);
+                        badge.setText(countDonatedItems+"");
                         badge.setVisibility(View.VISIBLE);
+                    }
                     badge.show();
                 }
             });
@@ -201,8 +208,10 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
                     holder.value.setText((donatedItemDetails.getQuantity()+""));
 
-                    displayCheckoutUI(activity.findViewById(R.id.activity_landing_page),quantityEachNeed,activity,donationDetails);
-                    badge.setText(countDonatedItems+"");
+                    if(countDonatedItems>0) {
+                        displayCheckoutUI(activity.findViewById(R.id.activity_landing_page), quantityEachNeed, activity, donationDetails);
+                        badge.setText(countDonatedItems + "");
+                    }
                     if(countDonatedItems==0)
                         badge.setVisibility(View.INVISIBLE);
                     badge.show();
@@ -275,10 +284,12 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(activity,"donated successfully...",Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(activity,HomeActivity.class);
-                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(intent);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
+                    fragment = new HomeFragment();
+                    fragment.setArguments(bundle);
+                    fragmentManager = activity.getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
                 }
 
             super.onPostExecute(o);

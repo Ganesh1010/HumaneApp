@@ -37,7 +37,7 @@ public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapte
     public void onBindViewHolder(DonationCartAdapter.ViewHolder holder, int position) {
         for(int i=0;i<needDetails.getItems().size();i++) {
 
-            if(donationDetails.getDonateditems().get(position).getNeed_item_id()==needDetails.getItems().get(i).getNeed_item_id()) {
+            if(donationDetails.getDonated_items().get(position).getNeed_item_id()==needDetails.getItems().get(i).getNeed_item_id()) {
 
                 for(int j=0;j<mainItemDetailsList.size();j++)
                     if(mainItemDetailsList.get(j).getMainItemCode()==needDetails.getItems().get(i).getItem_type_id())
@@ -47,7 +47,7 @@ public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapte
                     if(subItemDetailsList.get(j).getSubItemCode()==needDetails.getItems().get(i).getSub_item_type_id())
                         holder.itemName.setText(subItemDetailsList.get(j).getSubItemName());
 
-                holder.quantity.setText(donationDetails.getDonateditems().get(position).getQuantity()+"");
+                holder.quantity.setText(donationDetails.getDonated_items().get(position).getQuantity()+"");
 
                 switch (needDetails.getItems().get(i).getItem_type_id())
                 {
@@ -71,7 +71,7 @@ public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapte
 
     @Override
     public int getItemCount() {
-        return donationDetails.getDonateditems().size();
+        return donationDetails.getDonated_items().size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {

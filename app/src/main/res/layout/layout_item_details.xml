@@ -74,23 +74,6 @@
                             android:textSize="15sp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/promised_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
-                        android:text="Promised Amount"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:text="Delivered Amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/delivered_amount"
-                        android:textColor="@color/colorPrimaryText"
-                        android:layout_weight="0.3" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -103,12 +86,11 @@
                             android:id="@+id/sub_item_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:text="Sub Item Name"
                             android:textColor="@color/colorSecondaryText"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:textStyle="normal|bold" />
 
                         <ImageView
                             android:id="@+id/decrement_custom"
@@ -118,20 +100,41 @@
 
                         <EditText
                             android:id="@+id/number_custom"
-                            android:layout_width="20dp"
-                            android:layout_height="30dp"
                             android:layout_alignBottom="@+id/button1"
                             android:layout_toRightOf="@+id/button1"
                             android:gravity="center"
                             android:paddingBottom="5dp"
                             android:text="0"
-                            android:inputType="number"/>
+                            android:inputType="number"
+                            android:layout_height="40dp"
+                            android:layout_width="30dp" />
 
                         <ImageView
                             android:id="@+id/increment_custom"
                             android:layout_width="40dp"
                             android:layout_height="30dp"
                             app:srcCompat="@drawable/plus" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/promised_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:text="Promised Amount"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:text="Delivered Amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/delivered_amount"
+                            android:textColor="@color/colorPrimaryText"
+                            android:layout_weight="0.3" />
                     </LinearLayout>
 
                     <LinearLayout

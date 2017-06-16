@@ -149,7 +149,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                                 for (int i = 0; i < donatedDetailsList.size(); i++) {
                                     DonationDetails donationDetails = donatedDetailsList.get(i);
 
-                                    donatedItemList = donationDetails.getDonateditems();
+                                    donatedItemList = donationDetails.getDonated_items();
                                     donorName = donationDetails.getUser();
                                     Log.d("donor Name", "doInBackground: " + donorName);
 
