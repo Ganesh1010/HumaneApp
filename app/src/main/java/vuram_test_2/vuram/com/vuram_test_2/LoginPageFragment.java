@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -31,6 +32,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.Validation;
 
 import static android.app.Activity.RESULT_OK;
+import static com.google.android.gms.internal.zzt.TAG;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
@@ -44,13 +46,12 @@ public class LoginPageFragment extends Fragment {
     ProgressDialog progressDialog;
     LandingPage landingPage;
     String email,password;
-    Bundle key;
     String user_selection;
     Boolean isCoordiantor=false;
     Fragment fragment = null;
     FragmentManager fragmentManager;
     TextView skipTextView,linkLoginTextView;
-    LinearLayout linearLayout,landingPageLayout;
+    LinearLayout login_page_linearLayout;
     RelativeLayout homeActivityLayout;
 
     @Nullable
@@ -66,12 +67,13 @@ public class LoginPageFragment extends Fragment {
         loginButton = (Button) v.findViewById(R.id.btn_login);
         signupButton = (Button) v.findViewById(R.id.link_login);
         linkLoginTextView = (TextView)v.findViewById(R.id.link_login_register);
+
         landingPage = (LandingPage) getActivity();
-        linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
+
+        login_page_linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
         homeActivityLayout = (RelativeLayout)getActivity().findViewById(R.id.activity_main);
 
-        user_selection = getArguments().get(USER_KEY_TYPE).toString();
-
+        user_selection = getArguments().get(USER_KEY_TYPE).toString(); //
         if(user_selection.equals(USER_TYPE_SELECTION_DONOR))
             skipTextView.setVisibility(View.VISIBLE);
 
@@ -88,12 +90,11 @@ public class LoginPageFragment extends Fragment {
 
                 fragment = new HomeFragment();
                 fragmentManager = getFragmentManager();
+                Activity landingpage=getActivity();
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                 fragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
-
-
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
@@ -102,33 +103,37 @@ public class LoginPageFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
+                if (user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
 
                     fragment = new DonorRegistrationFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    if (getActivity() != null) {
+                        fragmentManager = getActivity().getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                    isCoordiantor=false;
+                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        isCoordiantor = false;
 
-
-                    // startActivityForResult(intent, REQUEST_SIGNUP);
-                    //finish();
-
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                    } else {
+                        Log.e(TAG, "Activity is null", new NullPointerException());
+                    }
                 }
 
-                if(user_selection.equals(USER_TYPE_SELECTION_ORG)){
+                if (user_selection.equals(USER_TYPE_SELECTION_ORG)) {
 
                     fragment = new CoordinatorRegistrationFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    if (landingPage!= null) {
+                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                    isCoordiantor=true;
+                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        isCoordiantor = true;
 
-
+                    }
+                    else{
+                        Log.e(TAG, "Activity is null", new NullPointerException());
                 }
+            }
             }
         });
 
@@ -138,38 +143,59 @@ public class LoginPageFragment extends Fragment {
 
                 if(user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
                     fragment = new DonorRegistrationFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    if (landingPage != null) {
+                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-                    // startActivityForResult(intent, REQUEST_SIGNUP);
-                    //finish();
-
-                  //  landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                    }
+                }else
+                {
+                    Log.e(TAG, "Activity is null", new NullPointerException());
                 }
 
                 if(user_selection.equals(USER_TYPE_SELECTION_ORG)){
 
                     fragment = new CoordinatorRegistrationFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
+                    if (landingPage != null) {
+                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-                    landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
-
+                    }
+                }
+                else
+                {
+                    Log.e(TAG, "Activity is null", new NullPointerException());
                 }
             }
         });
 
 
         DetailsPopulator populator = new DetailsPopulator(landingPage);
-        populator.getMainItemDetailsFromAPI();
-        DatabaseHelper helper = new DatabaseHelper(landingPage);
-        ArrayList<MainItemDetails> list = helper.getAllMainItemDetails();
-        Log.d("Size", list.size() + "");
-        for (MainItemDetails details : list) {
-            Log.d("Look up", details.getMainItemName());
+        if(populator!=null)
+        {
+            populator.getMainItemDetailsFromAPI();
         }
+       else
+        {
+            Log.e(TAG, "populator is null", new NullPointerException());
+        }
+        DatabaseHelper helper = new DatabaseHelper(landingPage);
+        if(helper!=null)
+        {
+            ArrayList<MainItemDetails> list = helper.getAllMainItemDetails();
+            Log.d("Size", list.size() + "");
+            for (MainItemDetails details : list) {
+                Log.d("Look up", details.getMainItemName());
+            }
+        }
+        else
+        {
+            Log.e(TAG, "helper  is null", new NullPointerException());
+        }
+
 
         return v;
     }
@@ -183,7 +209,7 @@ public class LoginPageFragment extends Fragment {
         }
         //DetailsPopulator populator=new DetailsPopulator(this);
         //populator.getCountryDetailsFromAPI();
-        CommonUI.internetConnectionChecking(getActivity(),linearLayout,new CheckUser());
+        CommonUI.internetConnectionChecking(getActivity(),login_page_linearLayout,new CheckUser());
     }
 
     public boolean validate() {
@@ -294,10 +320,16 @@ public class LoginPageFragment extends Fragment {
 
             // Main Item & Sub Item details Synchronization Test
             DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
-            detailsPopulator.getMainItemDetailsFromAPI();
-            detailsPopulator.getSubItemDetailsFromAPI();
-            detailsPopulator.getCountryDetailsFromAPI();
-            detailsPopulator.getOrgTypeDetailsFromAPI();
+            if(detailsPopulator!=null) {
+                detailsPopulator.getMainItemDetailsFromAPI();
+                detailsPopulator.getSubItemDetailsFromAPI();
+                detailsPopulator.getCountryDetailsFromAPI();
+                detailsPopulator.getOrgTypeDetailsFromAPI();
+            }
+            else
+            {
+                Log.e(TAG, " detailsPopulator  is null", new NullPointerException());
+            }
             if(getArguments()!=null) {
                 if (user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
                    // Intent intent = new Intent(landingPage, HomeActivity.class);
@@ -333,17 +365,24 @@ public class LoginPageFragment extends Fragment {
 
 
                     Intent intent = new Intent(landingPage, OrganisationLandingPage.class);
-                    intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
-                    Toast.makeText(landingPage, "Organisation", Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                    landingPage.finish();
+                    if(intent!=null)
+                    {
+                        intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
+                        Toast.makeText(landingPage, "Organisation", Toast.LENGTH_LONG).show();
+                        startActivity(intent);
+                        landingPage.finish();
+                    }
+                    else
+                    {
+                        Log.e(TAG, "Intent  is null", new NullPointerException());
+                    }
                 }
             }
         }
 
         public void onLoginFailed() {
             Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
-            CommonUI.internalValidation(getActivity(),linearLayout,"Invalid Password");
+            CommonUI.internalValidation(getActivity(),login_page_linearLayout,"Invalid Password");
             loginButton.setEnabled(true);
         }
     }
