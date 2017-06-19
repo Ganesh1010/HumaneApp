@@ -169,7 +169,7 @@ public class OrganisationRegistrationFragment extends Fragment {
         orgAddress = orgaddressEditText.getText().toString();
         orgDesc = orgDescEditText.getText().toString();
         String orgTypeName = orgTypeFromSpinner.getSelectedItem().toString();
-        orgType = Integer.parseInt(orgTypeName.substring(1));
+    //    orgType = Integer.parseInt(orgTypeName.substring(1));
 
         if(!validate()){
             onSignupFailed();
@@ -249,7 +249,9 @@ public class OrganisationRegistrationFragment extends Fragment {
             organisationDetails.setDescription(orgDesc);
             organisationDetails.setOrg_name(orgName);
             organisationDetails.setOrg_reg_no(orgNo);
-            organisationDetails.setOrg_type(orgType);
+            organisationDetails.setOrg_type(1);
+            organisationDetails.setOrg_country(1);
+            organisationDetails.setCountryCode(1);
             organisationDetails.setLatitude(12);
             organisationDetails.setLongitude(50);
 
@@ -257,7 +259,7 @@ public class OrganisationRegistrationFragment extends Fragment {
             Log.d("Org", "doInBackground: "+orgDetailsString);
             userDetails = gson.fromJson(orgDetailsString,UserDetails.class);
             userDetails.getProfile().setOrg(organisationDetails);
-            Log.d("GAnesh", "doInBackground: "+ userDetails.getProfile().getMobile());
+            Log.d(TAG, "doInBackground: "+ userDetails.getProfile().getMobile());
             //userDetails.setOrganisationDetails(gson.fromJson(coordinatorInfo Class<UserDetails>()));
 
             response = Connectivity.makePostRequest(RestAPIURL.registerOrgandProfile, gson.toJson(userDetails).toString(), client, null);

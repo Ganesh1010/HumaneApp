@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -50,17 +51,12 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     public final String myProfile = "My Profile";
     public final String aboutUs = "About Us";
     public final String logout = "Logout";
-
     public final int MENU_ITEM_ONE = 1;
     public final int MENU_ITEM_TWO = 2;
     public final int MENU_ITEM_THREE = 3;
-
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
-   
-    public String compareValue;
     public static Set<String> appliedFilter;
-    public Handler handler;
     public HttpResponse response;
     public DonorNeedViewAdapter donorAdapter;
     public OrgNeedViewAdapter orgAdapter;
@@ -84,8 +80,10 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     public String userType;
     public Fragment fragment = null;
     public boolean noMoreDataToLoad=false;
-    public android.app.FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
     public LinearLayoutManager mLinearLayoutManager;
+    String authorType;
+    int spinnerPosition;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,7 +103,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
-        Log.d(TAG, "onCreateView: Create View of fragment called");
+
         if(v==null)
             v = inflater.inflate(R.layout.activity_home_page,container,false);
 
@@ -129,8 +127,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                     userType.setTextColor(Color.WHITE);
                 }
 
-                String authorType = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
+                authorType = adapterView.getItemAtPosition(i).toString();
+             //   Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onCreateView:" +authorType);
 
                 if (authorType.equals(USER_TYPE_SELECTION_DONOR)) {
                     newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
@@ -160,30 +159,28 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
         spinner.setAdapter(dataAdapter);
 
          Bundle bundle = getArguments();
-         userType = bundle.getString(USER_KEY_TYPE).toString();
-         Log.d("Donor Home Fragment",userType);
+        if(bundle!=null) {
+            userType = bundle.getString(USER_KEY_TYPE);
+            Log.d(" Home Fragment", userType);
+        }
+        else
+            Log.e(TAG, "onCreateView: user Type inside bundle is empty",new NullPointerException());
 
         if (userType.equals(USER_TYPE_SELECTION_DONOR)) {
-            if (compareValue != null) {
-                compareValue = "Donor";
-                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinnerPosition = dataAdapter.getPosition(USER_TYPE_SELECTION_DONOR);
                 spinner.setSelection(spinnerPosition);
-                Log.d("hai", spinnerPosition + "");
+                Log.d("User Type Spinner Position", spinnerPosition + "");
                 nextUrl = RestAPIURL.needList;
-            }
         }
 
         if(userType.equals(USER_TYPE_SELECTION_ORG)){
-            if (compareValue != null) {
-                compareValue = "Organisation";
-                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinnerPosition = dataAdapter.getPosition(USER_TYPE_SELECTION_ORG);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
                 nextUrl=RestAPIURL.orgDetails;
-            }
         }
 
-        handler = new Handler();
+
 
         /* Menu Button */
         menuButton = (ImageButton)v.findViewById(R.id.menu_imagebutton_donor_home);
@@ -207,8 +204,11 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                         }
                         else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(getActivity(),Connectivity.Donor_Token);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
                             fragment = new LoginPageFragment();
                             fragmentManager = getFragmentManager();
+                            fragment.setArguments(bundle);
                             fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
                         } else if (itemSelected.equals(aboutUs)) {
@@ -261,8 +261,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     }
 
     public void startNeedAsyncTask(boolean isFirstTime) {
+
         getDonorNeedDetails = new GetDonorNeedDetails(isFirstTime);
-        getDonorNeedDetails.nextNeedDetails= this;
+        getDonorNeedDetails.nextNeedDetails = this;
         getDonorNeedDetails.execute();
     }
 
@@ -312,28 +313,32 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
 
             if(nextUrl!=null) {
                 response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(getActivity(), Connectivity.Donor_Token));
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
-                        jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        if (!jsonObject.isNull("next"))
-                            nextUrl = jsonObject.getString("next");
-                        else {
-                            nextUrl = null;
-                            noMoreDataToLoad=true;
-                        }
-                        Gson gson = new Gson();
-                        tempOrgNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                        if (isFirstTime)
-                            orgNeeds.addAll(tempOrgNeeds);
+                if (response != null) {
+                    if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                        try {
+                            jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                            JSONArray results = jsonObject.getJSONArray("results");
+                            if (!jsonObject.isNull("next"))
+                                nextUrl = jsonObject.getString("next");
+                            else {
+                                nextUrl = null;
+                                noMoreDataToLoad = true;
+                            }
+                            Gson gson = new Gson();
+                            tempOrgNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                            }.getType());
+                            if (isFirstTime)
+                                orgNeeds.addAll(tempOrgNeeds);
 
-                        Log.d("Results", orgNeeds.size() + "");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Log.d("CAll ", "Response null");
+                            Log.d("Results", orgNeeds.size() + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else
+                        Log.d("CAll ", "Response null");
+                }
             }
+            Log.e(TAG, "doInBackground: Http Response is null",new NullPointerException() );
             return null;
         }
 
@@ -384,9 +389,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     }
 
     class GetDonorNeedDetails extends AsyncTask {
-        public LoadNextDetails nextNeedDetails;
-        public boolean isFirstTime;
-        public GetDonorNeedDetails(boolean isFirstTime)
+         public LoadNextDetails nextNeedDetails;
+         public boolean isFirstTime;
+         public GetDonorNeedDetails(boolean isFirstTime)
         {
             this.isFirstTime=isFirstTime;
         }
@@ -411,27 +416,31 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
             Log.d(TAG, "doInBackground: "+(isFirstTime?"Firstime":"Secondtme")+nextUrl);
             if(nextUrl!=null) {
                 response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(getActivity(), Connectivity.Donor_Token));
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
-                        jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        if (!jsonObject.isNull("next"))
-                            nextUrl = jsonObject.getString("next");
-                        else {
-                            nextUrl = null;
-                            noMoreDataToLoad=true;
+                if (response != null) {
+                    if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                        try {
+                            jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                            JSONArray results = jsonObject.getJSONArray("results");
+                            if (!jsonObject.isNull("next"))
+                                nextUrl = jsonObject.getString("next");
+                            else {
+                                nextUrl = null;
+                                noMoreDataToLoad = true;
+                            }
+                            Gson gson = new Gson();
+                            tempDonorNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                            }.getType());
+                            Log.d(TAG, "doInBackground: Temp Item" + tempDonorNeeds.size());
+                            if (isFirstTime)
+                                donorNeeds.addAll(tempDonorNeeds);
+                            Log.d("Results", donorNeeds.size() + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        Gson gson = new Gson();
-                        tempDonorNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                        Log.d(TAG, "doInBackground: Temp Item" + tempDonorNeeds.size());
-                        if (isFirstTime)
-                            donorNeeds.addAll(tempDonorNeeds);
-                        Log.d("Results", donorNeeds.size() + "");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Log.d("CAll ", "Response null");
+                    } else
+                        Log.d("CAll ", "Response null");
+                }
+                Log.e(TAG,"HTTP response is null ",new NullPointerException());
             }
             return null;
         }
@@ -457,7 +466,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                             @Override
                             public void onLoadMore() {
                                 Handler handler = new Handler();
-                                Log.d(TAG, "onLoadMore: Callled");
+                                Log.d(TAG, "onLoadMore: Called");
                                 final Runnable r = new Runnable() {
                                     public void run() {
                                         donorNeeds.add(null);
@@ -483,6 +492,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                         landingPage.setNeedDetailsinActivity(donorNeeds);
                 }
             }
+
+            else
+                Log.e(TAG, "onPostExecute: Http response is null", new NullPointerException());
         }
     }
 

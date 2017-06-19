@@ -13,8 +13,6 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.NeedDetailsInterface;
 
@@ -24,8 +22,8 @@ public class LandingPage extends AppCompatActivity implements NeedDetailsInterfa
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    //static String user;
     ArrayList<NeedDetails> needDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

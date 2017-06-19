@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import static com.google.android.gms.internal.zzt.TAG;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
@@ -26,9 +28,8 @@ public class LandingPageFragment extends Fragment {
     FrameLayout frameLayout;
     FragmentManager fragmentManager;
     Button donor,org;
-    Fragment fragment =null;
+    Fragment fragment = null;
 
-  //  static String user;
 
     @Nullable
     @Override
@@ -46,16 +47,19 @@ public class LandingPageFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-            // sets the user type as donor & login page is loaded
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
+                if(bundle !=null) {
+                    fragment = new LoginPageFragment();
+                    fragment.setArguments(bundle);
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).addToBackStack("tag").commit();
 
-                fragment = new  LoginPageFragment();
-                fragment.setArguments(bundle);
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack( "tag" ).commit();
-
-                //Toast.makeText(LandingPage.this,"Donor Clicked",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Log.e(TAG, "Arguments Passed in Bundle from LandingPageFragment as donor is null", new NullPointerException());
+                }
             }
         });
 
@@ -67,12 +71,18 @@ public class LandingPageFragment extends Fragment {
                 /*sets the user type as organisation & login page is loaded */
                 Bundle bundle = new Bundle();
                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
-
                 fragment = new LoginPageFragment();
-                fragment.setArguments(bundle);
-                fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).addToBackStack( "tag" ).commit();
 
+                if( bundle != null) {
+                    fragment.setArguments(bundle);
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).addToBackStack("tag").commit();
+                }
+
+                else
+                {
+                    Log.e(TAG, "Arguments Passed in Bundle from LandingPageFragment as org is null", new NullPointerException());
+                }
                // Toast.makeText(LandingPage.this,"Organisation Clicked",Toast.LENGTH_LONG).show();
             }
         });

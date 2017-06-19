@@ -72,9 +72,7 @@ public class NeedReceivalCard extends RecyclerView.Adapter<NeedReceivalCard.Need
            // adapter = new NeedListViewAdapter(context,needDetailsArrayList,needId);
 
           layout = (LinearLayout) itemView.findViewById(R.id.cardrecyclerViewLinearLayout_ReceivalPage);
-            //cardListHeading = (LinearLayout)itemView.findViewById(R.id.cardDonatedListHeadingLinearLayout_ReceivalPage);
-            //layout.setVisibility(View.GONE);
-           // cardListHeading.setVisibility(View.GONE);
+
 
             donatedItemDetailsRecyclerView = (RecyclerView)itemView.findViewById(R.id.donatedItemListRecyclerView_ReceivalPage);
             donorImg = (CircleImageView)itemView.findViewById(R.id.donorImgView_ReceivalPage);
