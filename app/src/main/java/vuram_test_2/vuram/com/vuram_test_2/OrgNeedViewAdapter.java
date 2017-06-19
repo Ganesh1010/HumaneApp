@@ -18,15 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-import com.readystatesoftware.viewbadger.BadgeView;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 
 public class OrgNeedViewAdapter extends RecyclerView.Adapter {
@@ -103,15 +100,16 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
 
         if (holder instanceof ViewHolder)
         {
-            NeedDetails needDetails = needs.get(position);
-            need_id=needDetails.getNeed_id();
+            final NeedDetails needDetails = needs.get(position);
+            Log.d("need org",need_id+"");
             ((ViewHolder)holder).orgNeedView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    need_id=needDetails.getNeed_id();
                     Toast.makeText(context, "Need Details Page will be opened", Toast.LENGTH_SHORT).show();
                     intent=new Intent(context, NeedDetailsActivity.class);
                     intent.putExtra(USER_KEY_TYPE,need_id);
-                    Log.d("ra",need_id+"");
+                    Log.d("need org view adapter",need_id+"");
                     context.startActivity(intent);
                 }
             });
@@ -139,9 +137,9 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
             int animationDuration = 1000; // 2500ms = 2,5s
             int totalQuantity=0;
             int totalDonatedReceived=0;
-            for(int i=0;i<needDetails.getItems().size();i++) {
-                totalQuantity += needDetails.getItems().get(i).getQuantity();
-                totalDonatedReceived += needDetails.getItems().get(i).getDonated_and_received_amount();
+            for(NeedItemDetails needItemDetails:needDetails.getItems()) {
+                totalQuantity += needItemDetails.getQuantity();
+                totalDonatedReceived += needItemDetails.getDonated_and_received_amount();
             }
             if(totalQuantity!=0 || totalDonatedReceived!=0) {
                 ((ViewHolder) holder).overallSatisfiedPercentageBar.setProgressWithAnimation(totalDonatedReceived * 100 / totalQuantity, animationDuration);
@@ -154,15 +152,18 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
             }
             ((ViewHolder)holder).needItems.removeAllViews();
             View itemView = null;
-            for (int i = 0; i < needDetails.getItems().size(); i++) {
-                NeedItemDetails itemDetails = needDetails.getItems().get(i);
+            for (NeedItemDetails needItemDetails:needDetails.getItems()) {
                 // Inflating a new Item View
                 itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_view, null);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "Org Details Page will be opened", Toast.LENGTH_SHORT).show();
-                        context.startActivity(new Intent(context, NeedDetailsActivity.class));
+                        Toast.makeText(context, "Need Details Page will be opened", Toast.LENGTH_SHORT).show();
+                        need_id=needDetails.getNeed_id();
+                        intent=new Intent(context, NeedDetailsActivity.class);
+                        intent.putExtra(USER_KEY_TYPE,need_id);
+                        Log.d("need org view adapter",need_id+"");
+                        context.startActivity(intent);
                     }
                 });
                 ImageView itemIcon = (ImageView) itemView.findViewById(R.id.item_image_item_view);
@@ -170,49 +171,49 @@ public class OrgNeedViewAdapter extends RecyclerView.Adapter {
                 ProgressBar satisfactionBar = (ProgressBar) itemView.findViewById(R.id.item_status_item_view);
 
                 // Defining Item Details
-                switch (itemDetails.getItem_type_id()) {
+                switch (needItemDetails.getItem_type_id()) {
                     case 1:
                         itemIcon.setImageResource(R.drawable.ic_food_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Food");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                     case 2:
                         itemIcon.setImageResource(R.drawable.ic_cloth_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Cloth");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                     case 3:
                         itemIcon.setImageResource(R.drawable.ic_blood_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Blood");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                     case 4:
                         itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Groceries");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                     case 5:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Stationeries");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                     default:
                         itemIcon.setImageResource(R.drawable.ic_stationery_black);
-                        //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
+                        //Glide.with(context).load(needItemDetails.itemIcon).into(itemIcon);
                         itemName.setText("Others");
-                        satisfactionBar.setProgress((needDetails.getItems().get(i).getDonated_and_received_amount()*100)/needDetails.getItems().get(i).getQuantity());
+                        satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                         break;
                 }
                 
                 // Adding the item to the items layout(Horizontal Scolling Linear Layout)
                 ((ViewHolder)holder).needItems.addView(itemView);
                 Log.d("Child count+ postiton", ((ViewHolder) holder).needItems.getChildCount() + "");
-                Log.d(TAG, "onBindViewHolder: " + (i + 1) + " item(s) added");
+                //Log.d(TAG, "onBindViewHolder: " + (i + 1) + " item(s) added");
             }
 
             Log.d(TAG, "onBindViewHolder: End");

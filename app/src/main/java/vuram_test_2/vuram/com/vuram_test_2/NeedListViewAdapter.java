@@ -17,57 +17,25 @@ import static com.google.android.gms.internal.zzt.TAG;
 public class NeedListViewAdapter extends  RecyclerView.Adapter< NeedListViewAdapter.MyViewHolder>{
 
     Context context;
-    TextView itemNameView,quantityView;
-    ArrayList needDetailsList;
-    String[] needName;
-    List itemslist;
-    int[] needQuantities;
-    NeedDetails need;
-    ArrayList<MainItemDetails> mainItemDetailsList;
-    int needItemId,needQuantity,needid;
-    ArrayList<DonatedItemDetails> donatedItemDetails;
-
-    public NeedListViewAdapter(Context context,ArrayList<NeedDetails> needDetailsArrayList,int needid){
+    NeedDetails needDetails;
+    ArrayList<SubItemDetails> subItemDetailsArrayList;
+    
+    public NeedListViewAdapter(Context context,NeedDetails needDetails){
 
         this.context = context;
-        this.needDetailsList= needDetailsArrayList;
-        this.needid =needid;
-        this.context=context;
-        for(NeedDetails needDetails:needDetailsArrayList)
-        {
-            Log.d("All need Id", "doInBackground: "+needDetails.getNeed_id());
-            Log.d(TAG, "NeedListViewAdapter: Received Need Id"+needid);
-            if(needid!=52)
-            {
-                needid=52;
-            }
-            if(needDetails.getNeed_id()==needid)
-            {
-                need = needDetails;
-                break;
-            }
-        }
-        itemslist=need.getItems();
-        Log.d(TAG, "NeedListViewAdapter: "+need.getNeed_id());
-        Log.d(TAG, "NeedListViewAdapter:items "+need.getItems().size());
-        needQuantities = new int[itemslist.size()];
-        needName = new String[itemslist.size()];
-
-        Log.d("ItemListsize", String.valueOf(itemslist.size()));
+        this.needDetails=needDetails;
 
         DatabaseHelper db = new DatabaseHelper(context);
         if(db!=null) {
-            mainItemDetailsList = db.getAllMainItemDetails();
+            subItemDetailsArrayList = db.getAllSubItemDetails();
         }
         else{
             Log.e(TAG, "Database  is null", new NullPointerException());
         }
-        donatedItemDetails = new ArrayList<>();
     }
 
     @Override
     public  NeedListViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
 
         View v = LayoutInflater.from(context).inflate(R.layout.layout_need_list_view,parent,false);
         return new  NeedListViewAdapter.MyViewHolder(v);
@@ -76,31 +44,22 @@ public class NeedListViewAdapter extends  RecyclerView.Adapter< NeedListViewAdap
     @Override
     public void onBindViewHolder(NeedListViewAdapter.MyViewHolder holder, int position) {
 
-        for (int i = 0; i < itemslist.size(); i++) {
-            NeedItemDetails needItemDetails = (NeedItemDetails) itemslist.get(i);
-            needItemId = needItemDetails.getItem_type_id();
-            needQuantity = needItemDetails.getQuantity();
-            Log.d("needItemId", needItemId + "");
-            needQuantities[i] = needQuantity;
-            //subItemId = needItemDetails.getSub_item_type_id();
-            for (int j = 0; j < mainItemDetailsList.size(); j++) {
-                MainItemDetails mainItemDetails = mainItemDetailsList.get(j);
-                if (needItemId == mainItemDetails.getMainItemCode()) {
-                    String mainItemName = mainItemDetails.getMainItemName();
-                    needName[i] = mainItemName;
-                }
+        System.out.println(needDetails.getNeed_id());
+        for(SubItemDetails subItemDetails:subItemDetailsArrayList)
+            if(subItemDetails.getSubItemCode()==needDetails.getItems().get(position).getSub_item_type_id())
+            {
+                holder.itemNameView.setText(subItemDetails.getSubItemName());
+                holder.quantityView.setText(needDetails.getItems().get(position).getQuantity()+"");
             }
-            itemNameView.setText(needName[position]);
-            quantityView.setText(needQuantities[position]+"");
-        }
     }
 
     @Override
     public int getItemCount() {
-        return need!=null?need.getItems().size():0;
+        return needDetails!=null?needDetails.getItems().size():0;
     }
 
     public  class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView itemNameView,quantityView;
         public MyViewHolder(View itemView) {
             super(itemView);
             itemNameView = (TextView)itemView.findViewById(R.id.itemNameTextView_ReceivalPage);

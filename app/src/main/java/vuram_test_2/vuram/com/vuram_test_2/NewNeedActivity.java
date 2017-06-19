@@ -154,24 +154,24 @@ public class NewNeedActivity extends AppCompatActivity {
         toolbarSubmit.setVisibility(View.INVISIBLE);
         fabAdd.setVisibility(View.INVISIBLE);
 
-        ArrayList<ItemSpinnerData> mainItemList=new ArrayList<>();
+        ArrayList<NewNeedItemSpinnerData> mainItemList=new ArrayList<>();
         for (int i=0;i<mainItemDetails.size();i++) {
             switch (mainItemDetails.get(i).getMainItemCode())
             {
                 case 1:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
+                    mainItemList.add(new NewNeedItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_food_black));
                     break;
                 case 2:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
+                    mainItemList.add(new NewNeedItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_cloth_black));
                     break;
                 case 3:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
+                    mainItemList.add(new NewNeedItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_blood_black));
                     break;
                 case 4:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
+                    mainItemList.add(new NewNeedItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_grocery_cart_black));
                     break;
                 case 5:
-                    mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
+                    mainItemList.add(new NewNeedItemSpinnerData(mainItemDetails.get(i).getMainItemName(),R.drawable.ic_stationery_black));
                     break;
             }
         }
@@ -187,7 +187,7 @@ public class NewNeedActivity extends AppCompatActivity {
                 String item  = ((TextView) findViewById(R.id.main_item_txt_spinner_needForm)).getText().toString();
                 mainItem=item;
 
-                ArrayList<ItemSpinnerData> subItemList=new ArrayList<>();
+                ArrayList<NewNeedItemSpinnerData> subItemList=new ArrayList<>();
                 itemQuantity.setText("");
                 itemQuantity.setError(null);
                 gender.clearCheck();
@@ -198,7 +198,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 for(int i=0;i<subItemDetails.size();i++)
                     if(subItemDetails.get(i).getMainItemCode()==(id+1))
-                        subItemList.add(new ItemSpinnerData(subItemDetails.get(i).getSubItemName()));
+                        subItemList.add(new NewNeedItemSpinnerData(subItemDetails.get(i).getSubItemName()));
 
                 SubItemSpinnerAdapter subItemSpinnerAdapter=new SubItemSpinnerAdapter(NewNeedActivity.this, R.layout.sub_item_spinner_layout,R.id.sub_item_txt_spinner_needForm,subItemList);
                 subItemSpinner.setAdapter(subItemSpinnerAdapter);
@@ -283,7 +283,7 @@ public class NewNeedActivity extends AppCompatActivity {
 
                 if(dataFilled) {
                     needDetails.add(needItemDetails);
-                    recyclerView.setAdapter(new NewNeedsListAdapter(NewNeedActivity.this, needDetails,mainItemDetails,subItemDetails));
+                    recyclerView.setAdapter(new NewNeedListAdapter(NewNeedActivity.this, needDetails,mainItemDetails,subItemDetails));
                     recyclerView.setLayoutManager(new LinearLayoutManager(NewNeedActivity.this));
                     hiddenPanel.startAnimation(bottomDown);
                     hiddenPanel.setVisibility(View.GONE);
