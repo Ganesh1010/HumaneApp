@@ -24,8 +24,8 @@ public class LandingPage extends AppCompatActivity implements NeedDetailsInterfa
     FrameLayout frameLayout;
     Fragment fragment = null;
     FragmentManager fragmentManager;
-    //static String user;
     ArrayList<NeedDetails> needDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
