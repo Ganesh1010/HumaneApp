@@ -73,9 +73,16 @@ public class LoginPageFragment extends Fragment {
         login_page_linearLayout= (LinearLayout) v.findViewById(R.id.login_page_linearlayout);
         homeActivityLayout = (RelativeLayout)getActivity().findViewById(R.id.activity_main);
 
-        user_selection = getArguments().get(USER_KEY_TYPE).toString(); //
-        if(user_selection.equals(USER_TYPE_SELECTION_DONOR))
-            skipTextView.setVisibility(View.VISIBLE);
+        Bundle bundle = getArguments();
+
+        if(bundle != null)
+             user_selection = bundle.getString(USER_KEY_TYPE);
+        else
+            Log.e(TAG, "onCreateView: user type from bundle is null",new NullPointerException() );
+
+
+        if (user_selection.equals(USER_TYPE_SELECTION_DONOR))
+                skipTextView.setVisibility(View.VISIBLE);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +97,6 @@ public class LoginPageFragment extends Fragment {
 
                 fragment = new HomeFragment();
                 fragmentManager = getFragmentManager();
-                Activity landingpage=getActivity();
-                Bundle bundle = new Bundle();
-                bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                fragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -107,12 +110,9 @@ public class LoginPageFragment extends Fragment {
 
                     fragment = new DonorRegistrationFragment();
                     if (landingPage != null) {
-                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
-
-                        landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                         isCoordiantor = false;
-
                         landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     } else {
                         Log.e(TAG, "Activity is null", new NullPointerException());
@@ -123,9 +123,8 @@ public class LoginPageFragment extends Fragment {
 
                     fragment = new CoordinatorRegistrationFragment();
                     if (landingPage!= null) {
-                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
-
                         landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                         isCoordiantor = true;
 
@@ -144,9 +143,8 @@ public class LoginPageFragment extends Fragment {
                 if(user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
                     fragment = new DonorRegistrationFragment();
                     if (landingPage != null) {
-                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
-
                         landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                     }
                 }else
@@ -158,7 +156,7 @@ public class LoginPageFragment extends Fragment {
 
                     fragment = new CoordinatorRegistrationFragment();
                     if (landingPage != null) {
-                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
                         landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -173,29 +171,14 @@ public class LoginPageFragment extends Fragment {
         });
 
 
-        DetailsPopulator populator = new DetailsPopulator(landingPage);
-        if(populator!=null)
-        {
+            DetailsPopulator populator = new DetailsPopulator(landingPage);
             populator.getMainItemDetailsFromAPI();
-        }
-       else
-        {
-            Log.e(TAG, "populator is null", new NullPointerException());
-        }
-        DatabaseHelper helper = new DatabaseHelper(landingPage);
-        if(helper!=null)
-        {
+            DatabaseHelper helper = new DatabaseHelper(landingPage);
             ArrayList<MainItemDetails> list = helper.getAllMainItemDetails();
             Log.d("Size", list.size() + "");
             for (MainItemDetails details : list) {
                 Log.d("Look up", details.getMainItemName());
             }
-        }
-        else
-        {
-            Log.e(TAG, "helper  is null", new NullPointerException());
-        }
-
 
         return v;
     }
@@ -206,8 +189,7 @@ public class LoginPageFragment extends Fragment {
             onLoginFailed();
             return;
         }
-        //DetailsPopulator populator=new DetailsPopulator(this);
-        //populator.getCountryDetailsFromAPI();
+
         CommonUI.internetConnectionChecking(getActivity(),login_page_linearLayout,new CheckUser());
     }
 
@@ -215,11 +197,11 @@ public class LoginPageFragment extends Fragment {
 
         boolean valid = true;
 
-        email = emailEditText.getText().toString();//So far no email validation
+        email = emailEditText.getText().toString();
         password = passwordEditText.getText().toString();
 
         if(!Validation.validate(email)){
-           Toast.makeText(landingPage,"invalid user name",Toast.LENGTH_SHORT).show();
+        //   Toast.makeText(landingPage,"invalid user name",Toast.LENGTH_SHORT).show();
             emailEditText.setError("enter valid user name");
         }
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
@@ -294,7 +276,11 @@ public class LoginPageFragment extends Fragment {
             progressDialog.setIndeterminate(true);
             progressDialog.setMessage("Authenticating...");
             progressDialog.show();
-            email = email.trim();
+
+            if(email != null)
+                email = email.trim();
+            else
+                Log.e(TAG, "onPreExecute: Email Is null ",new NullPointerException() );
             super.onPreExecute();
         }
 
@@ -319,37 +305,23 @@ public class LoginPageFragment extends Fragment {
 
             // Main Item & Sub Item details Synchronization Test
             DetailsPopulator detailsPopulator = new DetailsPopulator(landingPage);
-            if(detailsPopulator!=null) {
-                detailsPopulator.getMainItemDetailsFromAPI();
-                detailsPopulator.getSubItemDetailsFromAPI();
-                detailsPopulator.getCountryDetailsFromAPI();
-                detailsPopulator.getOrgTypeDetailsFromAPI();
-            }
-            else
-            {
-                Log.e(TAG, " detailsPopulator  is null", new NullPointerException());
-            }
+            detailsPopulator.getMainItemDetailsFromAPI();
+            detailsPopulator.getSubItemDetailsFromAPI();
+            detailsPopulator.getCountryDetailsFromAPI();
+            detailsPopulator.getOrgTypeDetailsFromAPI();
+
             if(getArguments()!=null) {
                 if (user_selection.equals(USER_TYPE_SELECTION_DONOR)) {
-                   // Intent intent = new Intent(landingPage, HomeActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
-                   // set Fragmentclass Arguments
                     fragment = new HomeFragment();
                     fragment.setArguments(bundle);
-                    fragmentManager = getActivity().getFragmentManager();
-
+                    fragmentManager = getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
 
 //                    Intent intent = new Intent(landingPage,HomeActivity.class);
 
-                   /* Intent intent = new Intent(landingPage,HomeActivity.class);
-
-                   intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    Toast.makeText(landingPage, "Donor", Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                    landingPage.finish();*/
                 }
                 if (user_selection.equals(USER_TYPE_SELECTION_ORG)) {
 
@@ -380,7 +352,7 @@ public class LoginPageFragment extends Fragment {
         }
 
         public void onLoginFailed() {
-            Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
+           // Toast.makeText(landingPage, "Login failed", Toast.LENGTH_LONG).show();
             CommonUI.internalValidation(getActivity(),login_page_linearLayout,"Invalid Password");
             loginButton.setEnabled(true);
         }

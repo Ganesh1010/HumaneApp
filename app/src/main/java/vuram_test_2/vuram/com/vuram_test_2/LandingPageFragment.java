@@ -28,7 +28,7 @@ public class LandingPageFragment extends Fragment {
     FrameLayout frameLayout;
     FragmentManager fragmentManager;
     Button donor,org;
-    Fragment fragment =null;
+    Fragment fragment = null;
 
 
     @Nullable

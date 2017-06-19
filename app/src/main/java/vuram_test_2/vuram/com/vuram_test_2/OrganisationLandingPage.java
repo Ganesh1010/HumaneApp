@@ -12,11 +12,16 @@ import android.support.v7.widget.PopupMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import layout.UserProfileFragment;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_ORG;
 
 public class OrganisationLandingPage extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
 
@@ -38,11 +43,14 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
     ImageButton currentLocationImageButton;
     ImageButton filterImageButton;
     BottomNavigationView bottomNavigationView;
+    Fragment fragment = null;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organisation_landing_page);
+
 
         /* Choose Location */
         currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_org_landing_page);

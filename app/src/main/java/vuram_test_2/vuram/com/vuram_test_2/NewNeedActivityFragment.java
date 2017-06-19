@@ -1,12 +1,13 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -81,7 +82,8 @@ public class NewNeedActivityFragment extends Fragment {
     public Animation bottomUp,bottomDown;
     LandingPage landingPage;
     Fragment fragment = null;
-    android.app.FragmentManager fragmentManager;
+   FragmentManager fragmentManager;
+    ProgressDialog progressDialog;
 
   @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -106,15 +108,10 @@ public class NewNeedActivityFragment extends Fragment {
         db = new DatabaseHelper(landingPage);
 
 
-        if(db!=null){
         mainItemDetails = db.getAllMainItemDetails();
         subItemDetails = db.getAllSubItemDetails();}
 
-        else {
-            Log.e(TAG, "Main Item and Sub Item Details fetched from the database is null", new NullPointerException());
-
-        }
-            // landingPage.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // landingPage.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dateTimeFragment = (SwitchDateTimeDialogFragment) landingPage.getSupportFragmentManager().findFragmentByTag(TAG_DATETIME_FRAGMENT);
         if (dateTimeFragment == null) {
@@ -164,6 +161,7 @@ public class NewNeedActivityFragment extends Fragment {
         });
 
         textView = (TextView) view.findViewById(R.id.textView);
+
         if (savedInstanceState != null)
             textView.setText(savedInstanceState.getCharSequence(STATE_TEXTVIEW));
 
@@ -188,7 +186,7 @@ public class NewNeedActivityFragment extends Fragment {
 
         ArrayList<ItemSpinnerData> mainItemList = new ArrayList<>();
         for (int i = 0; i < mainItemDetails.size(); i++) {
-
+           // for(ItemSpinnerData mainItemData : mainItemList)
             switch (mainItemDetails.get(i).getMainItemCode()) {
                 case 1:
                     mainItemList.add(new ItemSpinnerData(mainItemDetails.get(i).getMainItemName(), R.drawable.ic_food_black));
@@ -371,11 +369,7 @@ public class NewNeedActivityFragment extends Fragment {
             }
         });
 
-        }
-        else {
-            Log.e(TAG, "Activity is null", new NullPointerException());
 
-        }
         return view;
     }
     private boolean isPanelShown() {
@@ -419,29 +413,31 @@ public class NewNeedActivityFragment extends Fragment {
         @Override
         protected void onPreExecute() {
 
+            progressDialog = new ProgressDialog(getActivity(), R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
             super.onPreExecute();
         }
 
         @Override
         protected void onPostExecute(Object o) {
+
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
             if(response!=null)
                 if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
                 {
                     Toast.makeText(landingPage,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
 
-                    Bundle bundle = new Bundle();
-
-                  //  if(bundle==null) {
+                        Bundle bundle = new Bundle();
                         bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                         fragment = new HomeFragment();
-                        fragmentManager = landingPage.getFragmentManager();
+                        fragmentManager = getFragmentManager();
                         fragment.setArguments(bundle);
                         fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
-                    //}
-                  /*  else {
-                        Log.e(TAG, "Bundle in New Need Activity fragment is null", new NullPointerException());
 
-                    }*/
 
                   // Intent intent=new Intent(landingPage,HomeFragment.class);
                    // intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);

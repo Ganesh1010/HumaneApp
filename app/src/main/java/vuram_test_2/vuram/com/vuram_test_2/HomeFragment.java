@@ -1,6 +1,7 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,6 +26,8 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.internal.zzbin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpResponse;
@@ -38,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
@@ -60,7 +65,6 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
    
     public String compareValue;
     public static Set<String> appliedFilter;
-    public Handler handler;
     public HttpResponse response;
     public DonorNeedViewAdapter donorAdapter;
     public OrgNeedViewAdapter orgAdapter;
@@ -84,8 +88,10 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     public String userType;
     public Fragment fragment = null;
     public boolean noMoreDataToLoad=false;
-    public android.app.FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
     public LinearLayoutManager mLinearLayoutManager;
+    String authorType;
+    int spinnerPosition;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,7 +111,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
     {
-        Log.d(TAG, "onCreateView: Create View of fragment called");
+
         if(v==null)
             v = inflater.inflate(R.layout.activity_home_page,container,false);
 
@@ -129,8 +135,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                     userType.setTextColor(Color.WHITE);
                 }
 
-                String authorType = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
+                authorType = adapterView.getItemAtPosition(i).toString();
+             //   Toast.makeText(adapterView.getContext(), "Selected: " + authorType, Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onCreateView:" +authorType);
 
                 if (authorType.equals(USER_TYPE_SELECTION_DONOR)) {
                     newNeedFloatingActionButton.setVisibility(View.INVISIBLE);
@@ -160,30 +167,28 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
         spinner.setAdapter(dataAdapter);
 
          Bundle bundle = getArguments();
-         userType = bundle.getString(USER_KEY_TYPE).toString();
-         Log.d("Donor Home Fragment",userType);
+        if(bundle!=null) {
+            userType = bundle.getString(USER_KEY_TYPE);
+            Log.d("Donor Home Fragment", userType);
+        }
+        else
+            Log.e(TAG, "onCreateView: user Type inside bundle is empty",new NullPointerException());
 
         if (userType.equals(USER_TYPE_SELECTION_DONOR)) {
-            if (compareValue != null) {
-                compareValue = "Donor";
-                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinnerPosition = dataAdapter.getPosition(USER_TYPE_SELECTION_DONOR);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
                 nextUrl = RestAPIURL.needList;
-            }
         }
 
         if(userType.equals(USER_TYPE_SELECTION_ORG)){
-            if (compareValue != null) {
-                compareValue = "Organisation";
-                int spinnerPosition = dataAdapter.getPosition(compareValue);
+                spinnerPosition = dataAdapter.getPosition(USER_TYPE_SELECTION_ORG);
                 spinner.setSelection(spinnerPosition);
                 Log.d("hai", spinnerPosition + "");
                 nextUrl=RestAPIURL.orgDetails;
-            }
         }
 
-        handler = new Handler();
+
 
         /* Menu Button */
         menuButton = (ImageButton)v.findViewById(R.id.menu_imagebutton_donor_home);
@@ -207,8 +212,11 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                         }
                         else if(itemSelected.equals(logout)) {
                             Connectivity.deleteAuthToken(getActivity(),Connectivity.Donor_Token);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
                             fragment = new LoginPageFragment();
                             fragmentManager = getFragmentManager();
+                            fragment.setArguments(bundle);
                             fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
 
                         } else if (itemSelected.equals(aboutUs)) {
@@ -261,8 +269,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     }
 
     public void startNeedAsyncTask(boolean isFirstTime) {
+
         getDonorNeedDetails = new GetDonorNeedDetails(isFirstTime);
-        getDonorNeedDetails.nextNeedDetails= this;
+        getDonorNeedDetails.nextNeedDetails = this;
         getDonorNeedDetails.execute();
     }
 

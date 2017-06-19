@@ -90,8 +90,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fragment_holder_org_landing_page"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:weightSum="1">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.13">
+
+            </FrameLayout>
         </LinearLayout>
 
         <android.support.design.widget.BottomNavigationView

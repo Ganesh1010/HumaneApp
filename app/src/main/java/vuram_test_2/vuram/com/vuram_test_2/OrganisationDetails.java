@@ -9,7 +9,7 @@ public class OrganisationDetails
     String org_reg_no,org_name,address,email,description,phone;
     int people_count;
     int org_type;
-    int countryCode;
+    int countryCode,org_country;
     double latitude,longitude;
 
     public String getOrg_reg_no() {
@@ -34,6 +34,14 @@ public class OrganisationDetails
 
     public void setLatitude(int latitude) {
         this.latitude = latitude;
+    }
+
+    public int getOrg_country() {
+        return org_country;
+    }
+
+    public void setOrg_country(int org_country) {
+        this.org_country = org_country;
     }
 
     public double getLongitude() {
