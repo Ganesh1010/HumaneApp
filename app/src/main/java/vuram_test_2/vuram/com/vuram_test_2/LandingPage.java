@@ -13,8 +13,6 @@ import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
-
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import vuram_test_2.vuram.com.vuram_test_2.util.NeedDetailsInterface;
 

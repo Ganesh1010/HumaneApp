@@ -35,11 +35,8 @@ public class SwipeCardForReceival extends AppCompatActivity {
     RecyclerView swipeCardRecyclerView;
     private boolean add = false;
     private Paint p = new Paint();
-    public boolean confirmation = false;
-    AlertDialog alertDialog;
     View view;
     int donationID;
-    boolean received ;
     int position;
 
 

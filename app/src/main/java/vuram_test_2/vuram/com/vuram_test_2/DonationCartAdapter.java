@@ -2,12 +2,15 @@ package vuram_test_2.vuram.com.vuram_test_2;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
+
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
 
 public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapter.ViewHolder> {
 
@@ -35,37 +38,45 @@ public class DonationCartAdapter extends RecyclerView.Adapter<DonationCartAdapte
 
     @Override
     public void onBindViewHolder(DonationCartAdapter.ViewHolder holder, int position) {
-        for(int i=0;i<needDetails.getItems().size();i++) {
+        if(needDetails!=null && donationDetails!=null)
+        {
+            for(int i=0;i<needDetails.getItems().size();i++) {
 
-            if(donationDetails.getDonated_items().get(position).getNeed_item_id()==needDetails.getItems().get(i).getNeed_item_id()) {
+                if(donationDetails.getDonated_items().get(position).getNeed_item_id()==needDetails.getItems().get(i).getNeed_item_id()) {
 
-                for(int j=0;j<mainItemDetailsList.size();j++)
-                    if(mainItemDetailsList.get(j).getMainItemCode()==needDetails.getItems().get(i).getItem_type_id())
-                        holder.category.setText(mainItemDetailsList.get(j).getMainItemName());
+                    for(int j=0;j<mainItemDetailsList.size();j++)
+                        if(mainItemDetailsList.get(j).getMainItemCode()==needDetails.getItems().get(i).getItem_type_id())
+                            holder.category.setText(mainItemDetailsList.get(j).getMainItemName());
 
-                for(int j=0;j<subItemDetailsList.size();j++)
-                    if(subItemDetailsList.get(j).getSubItemCode()==needDetails.getItems().get(i).getSub_item_type_id())
-                        holder.itemName.setText(subItemDetailsList.get(j).getSubItemName());
+                    for(int j=0;j<subItemDetailsList.size();j++)
+                        if(subItemDetailsList.get(j).getSubItemCode()==needDetails.getItems().get(i).getSub_item_type_id())
+                            holder.itemName.setText(subItemDetailsList.get(j).getSubItemName());
 
-                holder.quantity.setText(donationDetails.getDonated_items().get(position).getQuantity()+"");
+                    holder.quantity.setText(donationDetails.getDonated_items().get(position).getQuantity()+"");
 
-                switch (needDetails.getItems().get(i).getItem_type_id())
-                {
-                    case 1:
-                        holder.categoryIcon.setImageResource(R.drawable.ic_food_black);
-                        break;
-                    case 2:
-                        holder.categoryIcon.setImageResource(R.drawable.ic_cloth_black);
-                        break;
-                    case 4:
-                        holder.categoryIcon.setImageResource(R.drawable.ic_grocery_cart_black);
-                        break;
-                    case 5:
-                        holder.categoryIcon.setImageResource(R.drawable.ic_stationery_black);
-                        break;
+                    switch (needDetails.getItems().get(i).getItem_type_id())
+                    {
+                        case 1:
+                            holder.categoryIcon.setImageResource(R.drawable.ic_food_black);
+                            break;
+                        case 2:
+                            holder.categoryIcon.setImageResource(R.drawable.ic_cloth_black);
+                            break;
+                        case 4:
+                            holder.categoryIcon.setImageResource(R.drawable.ic_grocery_cart_black);
+                            break;
+                        case 5:
+                            holder.categoryIcon.setImageResource(R.drawable.ic_stationery_black);
+                            break;
+                    }
                 }
             }
         }
+        else
+        {
+            Log.d(TAG,"donor and need details is null",new NullPointerException());
+        }
+
 
     }
 

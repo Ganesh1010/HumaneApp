@@ -134,45 +134,7 @@ public class NeedDetailsActivity extends AppCompatActivity {
                         Log.d("output for need id 3", need + "");
 
 
-                        if (need != null)
-                        {
-                            Log.d("Need Id", "doInBackground: "+need.getNeed_id());
-                            itemslist = need.getItems();
-                            Log.d("ItemsList", "doInBackground: " + itemslist);
 
-                            if (itemslist != null)
-                            {
-                                donatedDetailsList = (ArrayList<DonationDetails>) need.getDonations();
-                                for (int i = 0; i < donatedDetailsList.size(); i++) {
-                                    DonationDetails donationDetails = donatedDetailsList.get(i);
-
-                                    donatedItemList = donationDetails.getDonated_items();
-                                    donorName = donationDetails.getUser();
-                                    Log.d("donor Name", "doInBackground: " + donorName);
-
-
-                                    for (int j = 0; j < donatedItemList.size(); j++) {
-                                        DonatedItemDetails donatedItemDetails = (DonatedItemDetails) donatedItemList.get(j);
-
-                                        donatedItemId = donatedItemDetails.getDonated_item_id();
-                                        donatedQuantity = donatedItemDetails.getQuantity();
-
-                                        Log.d("donated Item", "doInBackground: " + donatedItemId);
-                                        Log.d("donated Quantity", "doInBackground: " + donatedQuantity);
-                                    }
-
-                                    donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId, donatedQuantity);
-
-                                    needCardData.add(donationDetailsToDisplay);
-                                }
-                            } else
-                                Toast.makeText(NeedDetailsActivity.this, "Json Object retreival failed", Toast.LENGTH_SHORT).show();
-                                donatedItemDetailsTodisplay = new DonatedItemDetails(donatedItemId,donatedQuantity);
-                                //donationDetailsToDisplay = new DonationDetails(donatedItemList.get(0),donorName);
-
-                                needCardData.add(donationDetailsToDisplay);
-
-                    }
                 } catch (JSONException e) {
                         e.printStackTrace();
                     }

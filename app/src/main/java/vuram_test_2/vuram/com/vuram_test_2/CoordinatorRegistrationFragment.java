@@ -51,14 +51,11 @@ public class CoordinatorRegistrationFragment extends Fragment {
         if (view == null)
             view = inflater.inflate(R.layout.fragment_coordinator_registration, container, false);
 
-        //coordinatorLoginTextView = (TextView) view.findViewById(R.id.link_login_coordinator_register);
         emailEditText = (EditText) view.findViewById(R.id.email_coordinator_register);
         firstNameEditText = (EditText) view.findViewById(R.id.first_name_coordinator_register);
         mobileEditText = (EditText) view.findViewById(R.id.mobile_coordinator_register);
         passwordEditText = (EditText) view.findViewById(R.id.password_coordinator_register);
-       // genderFromSpinner = (Spinner) view.findViewById(R.id.gender_spinner_coordinator_register);
         countryFromSpinner = (Spinner) view.findViewById(R.id.country_spinner_coordinator_register);
-       // coordinatorRegisterButton = (Button) view.findViewById(R.id.signup_coordinator_register);
         coordinatorNextButton = (Button)view.findViewById(R.id.signup_coordinator_register);
 
         landingPage = (LandingPage) getActivity();
@@ -89,26 +86,7 @@ public class CoordinatorRegistrationFragment extends Fragment {
 
 
 
-       /* coordinatorRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                register();
 
-            }
-        });*/
-
-/*        coordinatorLoginTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //  Intent intent = new Intent(getApplicationContext(),LoginPage.class);
-                //startActivity(intent);
-                //finish();
-                fragment = new LoginPageFragment();
-                fragmentManager = getActivity().getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
-                landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });*/
 
         return view;
 
@@ -121,12 +99,6 @@ public class CoordinatorRegistrationFragment extends Fragment {
         mobileNo = mobileEditText.getText().toString();
         password = passwordEditText.getText().toString();
         country = countryFromSpinner.getSelectedItemPosition();
-
-       /* Toast.makeText(landingPage,"email ID"+emailId,Toast.LENGTH_LONG).show();
-        Toast.makeText(landingPage,"name"+firstName,Toast.LENGTH_LONG).show();
-        Toast.makeText(landingPage,"mobileNo"+mobileNo,Toast.LENGTH_LONG).show();
-        Toast.makeText(landingPage,"password"+password,Toast.LENGTH_LONG).show();
-        Toast.makeText(landingPage,"Country"+country,Toast.LENGTH_LONG).show();*/
 
 
         if(validation()){
@@ -153,14 +125,6 @@ public class CoordinatorRegistrationFragment extends Fragment {
             bundle.putString("COORDINATOR",coordinatorDetails);
 
 
-
-
-          /*  progressDialog= new ProgressDialog(landingPage,
-                    R.style.AppTheme_Dark_Dialog);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Creating Account...");
-            progressDialog.show();*/
-         //   new CreateCoordinatorAccount().execute();
         }
         else {
             registered =false;
