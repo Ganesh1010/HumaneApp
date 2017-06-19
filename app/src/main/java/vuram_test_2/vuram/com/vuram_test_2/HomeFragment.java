@@ -26,8 +26,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.internal.zzbin;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpResponse;
@@ -41,8 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
@@ -55,15 +51,11 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     public final String myProfile = "My Profile";
     public final String aboutUs = "About Us";
     public final String logout = "Logout";
-
     public final int MENU_ITEM_ONE = 1;
     public final int MENU_ITEM_TWO = 2;
     public final int MENU_ITEM_THREE = 3;
-
     public static final int FILTER_REQUEST = 5;
     public static final int LOCATION_REQUEST = 6;
-   
-    public String compareValue;
     public static Set<String> appliedFilter;
     public HttpResponse response;
     public DonorNeedViewAdapter donorAdapter;
@@ -169,7 +161,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
          Bundle bundle = getArguments();
         if(bundle!=null) {
             userType = bundle.getString(USER_KEY_TYPE);
-            Log.d("Donor Home Fragment", userType);
+            Log.d(" Home Fragment", userType);
         }
         else
             Log.e(TAG, "onCreateView: user Type inside bundle is empty",new NullPointerException());
@@ -177,7 +169,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
         if (userType.equals(USER_TYPE_SELECTION_DONOR)) {
                 spinnerPosition = dataAdapter.getPosition(USER_TYPE_SELECTION_DONOR);
                 spinner.setSelection(spinnerPosition);
-                Log.d("hai", spinnerPosition + "");
+                Log.d("User Type Spinner Position", spinnerPosition + "");
                 nextUrl = RestAPIURL.needList;
         }
 
@@ -321,28 +313,32 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
 
             if(nextUrl!=null) {
                 response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(getActivity(), Connectivity.Donor_Token));
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
-                        jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        if (!jsonObject.isNull("next"))
-                            nextUrl = jsonObject.getString("next");
-                        else {
-                            nextUrl = null;
-                            noMoreDataToLoad=true;
-                        }
-                        Gson gson = new Gson();
-                        tempOrgNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                        if (isFirstTime)
-                            orgNeeds.addAll(tempOrgNeeds);
+                if (response != null) {
+                    if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                        try {
+                            jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                            JSONArray results = jsonObject.getJSONArray("results");
+                            if (!jsonObject.isNull("next"))
+                                nextUrl = jsonObject.getString("next");
+                            else {
+                                nextUrl = null;
+                                noMoreDataToLoad = true;
+                            }
+                            Gson gson = new Gson();
+                            tempOrgNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                            }.getType());
+                            if (isFirstTime)
+                                orgNeeds.addAll(tempOrgNeeds);
 
-                        Log.d("Results", orgNeeds.size() + "");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Log.d("CAll ", "Response null");
+                            Log.d("Results", orgNeeds.size() + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else
+                        Log.d("CAll ", "Response null");
+                }
             }
+            Log.e(TAG, "doInBackground: Http Response is null",new NullPointerException() );
             return null;
         }
 
@@ -393,9 +389,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
     }
 
     class GetDonorNeedDetails extends AsyncTask {
-        public LoadNextDetails nextNeedDetails;
-        public boolean isFirstTime;
-        public GetDonorNeedDetails(boolean isFirstTime)
+         public LoadNextDetails nextNeedDetails;
+         public boolean isFirstTime;
+         public GetDonorNeedDetails(boolean isFirstTime)
         {
             this.isFirstTime=isFirstTime;
         }
@@ -420,27 +416,31 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
             Log.d(TAG, "doInBackground: "+(isFirstTime?"Firstime":"Secondtme")+nextUrl);
             if(nextUrl!=null) {
                 response = Connectivity.makeGetRequest(nextUrl, client, Connectivity.getAuthToken(getActivity(), Connectivity.Donor_Token));
-                if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
-                        jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
-                        JSONArray results = jsonObject.getJSONArray("results");
-                        if (!jsonObject.isNull("next"))
-                            nextUrl = jsonObject.getString("next");
-                        else {
-                            nextUrl = null;
-                            noMoreDataToLoad=true;
+                if (response != null) {
+                    if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
+                        try {
+                            jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
+                            JSONArray results = jsonObject.getJSONArray("results");
+                            if (!jsonObject.isNull("next"))
+                                nextUrl = jsonObject.getString("next");
+                            else {
+                                nextUrl = null;
+                                noMoreDataToLoad = true;
+                            }
+                            Gson gson = new Gson();
+                            tempDonorNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {
+                            }.getType());
+                            Log.d(TAG, "doInBackground: Temp Item" + tempDonorNeeds.size());
+                            if (isFirstTime)
+                                donorNeeds.addAll(tempDonorNeeds);
+                            Log.d("Results", donorNeeds.size() + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        Gson gson = new Gson();
-                        tempDonorNeeds = gson.fromJson(results.toString(), new TypeToken<List<NeedDetails>>() {}.getType());
-                        Log.d(TAG, "doInBackground: Temp Item" + tempDonorNeeds.size());
-                        if (isFirstTime)
-                            donorNeeds.addAll(tempDonorNeeds);
-                        Log.d("Results", donorNeeds.size() + "");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else
-                    Log.d("CAll ", "Response null");
+                    } else
+                        Log.d("CAll ", "Response null");
+                }
+                Log.e(TAG,"HTTP response is null ",new NullPointerException());
             }
             return null;
         }
@@ -466,7 +466,7 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                             @Override
                             public void onLoadMore() {
                                 Handler handler = new Handler();
-                                Log.d(TAG, "onLoadMore: Callled");
+                                Log.d(TAG, "onLoadMore: Called");
                                 final Runnable r = new Runnable() {
                                     public void run() {
                                         donorNeeds.add(null);
@@ -492,6 +492,9 @@ public class HomeFragment extends Fragment implements LoadNextDetails{
                         landingPage.setNeedDetailsinActivity(donorNeeds);
                 }
             }
+
+            else
+                Log.e(TAG, "onPostExecute: Http response is null", new NullPointerException());
         }
     }
 

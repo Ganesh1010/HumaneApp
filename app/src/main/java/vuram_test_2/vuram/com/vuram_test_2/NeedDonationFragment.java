@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class NeedDonationFragment extends Fragment {
     View v;
-    
+    public  final String TAG="Need Donation Fragment";
     public ImageButton backButton;
     public ArrayList<NeedItemDetails> needItemDetailsArrayList;
     private RecyclerView displayParticularNeedRecyclerView;
@@ -65,6 +65,8 @@ public class NeedDonationFragment extends Fragment {
                     displayParticularNeedRecyclerView.setAdapter(adapter);
                 }
         }
+        else
+            Log.e(TAG, "onCreateView: need details Arraylist is null",new NullPointerException() );
         return v;
     }
 }
