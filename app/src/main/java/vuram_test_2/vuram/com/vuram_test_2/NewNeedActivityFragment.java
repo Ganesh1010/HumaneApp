@@ -46,6 +46,7 @@ import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
+import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
 
 /**
  * Created by akshayagr on 13-06-2017.
@@ -104,9 +105,17 @@ public class NewNeedActivityFragment extends Fragment {
         DetailsPopulator detailsPopulator =new DetailsPopulator(landingPage);
         detailsPopulator.getCountryDetailsFromAPI();
 
-        db=new DatabaseHelper(landingPage);
-        mainItemDetails=db.getAllMainItemDetails();
-        subItemDetails=db.getAllSubItemDetails();
+        if(landingPage!=null)
+        {
+            db=new DatabaseHelper(landingPage);
+            mainItemDetails=db.getAllMainItemDetails();
+            subItemDetails=db.getAllSubItemDetails();
+        }
+        else
+        {
+            Log.d(TAG,"Activity is null",new NullPointerException());
+        }
+
 
        // landingPage.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -386,28 +395,34 @@ public class NewNeedActivityFragment extends Fragment {
 
             client = new DefaultHttpClient();
 
-            NeedDetails need_details=new NeedDetails();
+            NeedDetails need_details = new NeedDetails();
             need_details.setLatitude("1234");
             need_details.setLongitude("12345");
-            need_details.items=needDetails;
+            need_details.items = needDetails;
 
             String coordinator_token = Connectivity.getAuthToken(landingPage, Connectivity.Coordinator_Token);
             String donor_token = Connectivity.getAuthToken(landingPage, Connectivity.Donor_Token);
-            response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details,NeedDetails.class), client, donor_token);
-            Log.d("Request JSON", gson.toJson(need_details,NeedDetails.class));
-            if (response != null) {
-                Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
+            if (donor_token != null) {
+                response = Connectivity.makePostRequest(RestAPIURL.postNeedURL, gson.toJson(need_details, NeedDetails.class), client, donor_token);
+                Log.d("Request JSON", gson.toJson(need_details, NeedDetails.class));
+                if (response != null) {
+                    Log.d("Response Code", response.getStatusLine().getStatusCode() + "");
 
-                try {
-                    Connectivity.getJosnFromResponse(response);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+                        Connectivity.getJosnFromResponse(response);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.d("Response", "Null");
                 }
+
             } else {
-                Log.d("Response", "Null");
+                 Log.d(TAG,"Donor Token is null",new NullPointerException());
             }
             return null;
         }
+
 
         @Override
         protected void onPreExecute() {
@@ -418,21 +433,21 @@ public class NewNeedActivityFragment extends Fragment {
         @Override
         protected void onPostExecute(Object o) {
             if(response!=null)
-                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201)
-                {
-                    Toast.makeText(landingPage,"needItemDetails successfully posted...",Toast.LENGTH_LONG).show();
+                if(response.getStatusLine().getStatusCode()==200 || response.getStatusLine().getStatusCode()==201) {
+                    Toast.makeText(landingPage, "needItemDetails successfully posted...", Toast.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
                     bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
                     fragment = new HomeFragment();
-                    fragmentManager = getActivity().getFragmentManager();
-                    fragment.setArguments(bundle);
-                    fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
+                    if (getActivity() != null) {
+                        fragmentManager = getActivity().getFragmentManager();
+                        fragment.setArguments(bundle);
+                        fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-                  // Intent intent=new Intent(landingPage,HomeFragment.class);
-                   // intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                   // startActivity(intent);
-                    //NewNeedActivity.this.finish();
+                    }
+                }else
+                {
+                    Log.d(TAG,"activity is null",new NullPointerException());
                 }
 
             super.onPostExecute(o);

@@ -207,8 +207,7 @@ public class LoginPageFragment extends Fragment {
             onLoginFailed();
             return;
         }
-        //DetailsPopulator populator=new DetailsPopulator(this);
-        //populator.getCountryDetailsFromAPI();
+
         CommonUI.internetConnectionChecking(getActivity(),login_page_linearLayout,new CheckUser());
     }
 
@@ -307,7 +306,7 @@ public class LoginPageFragment extends Fragment {
                 Toast.makeText(landingPage, "Success", Toast.LENGTH_LONG).show();
                 onLoginSuccess();
             } else {
-              //  CommonUI.internalValidation(getActivity(),homeActivityLayout,"REGISTRATION SUCCESSFUL");
+
                 onLoginFailed();
             }
             super.onPostExecute(o);
@@ -342,15 +341,6 @@ public class LoginPageFragment extends Fragment {
 
                     fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).commit();
 
-
-//                    Intent intent = new Intent(landingPage,HomeActivity.class);
-
-                   /* Intent intent = new Intent(landingPage,HomeActivity.class);
-
-                   intent.putExtra(USER_KEY_TYPE, USER_TYPE_SELECTION_DONOR);
-                    Toast.makeText(landingPage, "Donor", Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                    landingPage.finish();*/
                 }
                 if (user_selection.equals(USER_TYPE_SELECTION_ORG)) {
 

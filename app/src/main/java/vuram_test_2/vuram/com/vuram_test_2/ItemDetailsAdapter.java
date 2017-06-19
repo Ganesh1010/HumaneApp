@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import vuram_test_2.vuram.com.vuram_test_2.util.CommonUI;
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
 
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
@@ -255,7 +254,6 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         protected Object doInBackground(Object[] params) {
 
             client = new DefaultHttpClient();
-            //String coordinator_token = Connectivity.getAuthToken(NewNeedActivity.this, Connectivity.Coordinator_Token);
             response = Connectivity.makePostRequest(RestAPIURL.donateNeedURL, gson.toJson(params[0],DonationDetails.class), client, donor_token);
             Log.d("Request JSON", gson.toJson(params[0],DonationDetails.class));
             if (response != null) {
