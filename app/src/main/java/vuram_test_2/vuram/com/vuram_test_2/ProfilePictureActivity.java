@@ -1,21 +1,29 @@
 package vuram_test_2.vuram.com.vuram_test_2;
 
-import android.*;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.SyncHttpClient;
+import com.loopj.android.http.TextHttpResponseHandler;
+import java.io.File;
+import java.io.FileNotFoundException;
+import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
+import static vuram_test_2.vuram.com.vuram_test_2.util.Connectivity.getAuthToken;
 
 public class ProfilePictureActivity extends AppCompatActivity {
 
@@ -52,7 +60,7 @@ public class ProfilePictureActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new PostData().execute();
             }
         });
     }
@@ -86,4 +94,61 @@ public class ProfilePictureActivity extends AppCompatActivity {
             }
         }
     }
+    class PostData extends AsyncTask {
+
+        ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(ProfilePictureActivity.this);
+            progressDialog.setMessage("Loading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            postFile(profilePictureFilePath);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.cancel();
+        }
+    }
+
+    private void postFile(String orgImageFilePath)
+    {
+        SyncHttpClient client = new SyncHttpClient();
+        String token= getAuthToken(ProfilePictureActivity.this, Connectivity.Donor_Token);
+        client.addHeader("Authorization","Token "+token);
+        RequestParams params = new RequestParams();
+
+        try {
+            if(orgImageFilePath != null) {
+                if (new File(orgImageFilePath).exists()) {
+                    params.put("image", new File(orgImageFilePath));
+                    params.put("imageType", 1);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        client.post(RestAPIURL.postProfilePic, params, new TextHttpResponseHandler() {
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString, Throwable throwable) {
+                Log.d("Edit", "onFailure: "+statusCode);
+            }
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, String responseString) {
+                Log.d("Edit", "onSuccess: "+responseString);
+            }
+        });
+
+    }
+
 }

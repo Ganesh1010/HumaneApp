@@ -114,7 +114,7 @@ public class OrganisationRegistrationFragment extends Fragment {
                 // create class object
                 gps = new GPSTracker(landingPage);
                 // check if GPS enabled
-                if(gps.getIsGPSTrackingEnabled()){
+                if(gps.canGetLocation()){
                     if(isNetworkAvailable()) {
                      /*   fragment = new MapActivityFragment();
                         fragmentManager = getActivity().getFragmentManager();

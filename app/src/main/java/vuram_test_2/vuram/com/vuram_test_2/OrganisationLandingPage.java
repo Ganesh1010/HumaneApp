@@ -51,6 +51,8 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_organisation_landing_page);
 
+        /* Load Organisation Need View Fragment by Default*/
+        loadFragment(new OrganisationNeedViewFragment());
 
         /* Choose Location */
         currentLocationImageButton = (ImageButton) findViewById(R.id.current_location_imagebutton_org_landing_page);
@@ -74,6 +76,7 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.action_home:
+                loadFragment(new OrganisationNeedViewFragment());
                 break;
             case R.id.action_donations:
                 loadFragment(new DonationListFragment());
