@@ -96,7 +96,10 @@ public class LoginPageFragment extends Fragment {
             public void onClick(View view) {
 
                 fragment = new HomeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(USER_KEY_TYPE,USER_TYPE_SELECTION_DONOR);
                 fragmentManager = getFragmentManager();
+                fragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.fragmentLayout,fragment).commit();
                 landingPage.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
