@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,24 +19,27 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapter.ViewHolder> {
-    List<NeedItemDetails> list;
-    ArrayList<SubItemDetails> subItemDetails;
-    ArrayList<MainItemDetails> mainItemDetails;
+public class NewNeedListAdapter extends RecyclerView.Adapter<NewNeedListAdapter.ViewHolder> {
+    List<NeedItemDetails> needItemDetailsList;
+    ArrayList<SubItemDetails> subItemDetailsArrayList;
+    ArrayList<MainItemDetails> mainItemDetailsArrayList;
     Context context;
     AlertDialog.Builder alertDialogBuilder;
     AlertDialog alertDialog;
 
-    public NewNeedsListAdapter(Context context, ArrayList<NeedItemDetails> list,ArrayList<MainItemDetails>mainItemDetails,ArrayList<SubItemDetails>subItemDetails)
+    public NewNeedListAdapter(Context context, ArrayList<NeedItemDetails> needItemDetailsList, ArrayList<MainItemDetails>mainItemDetailsArrayList, ArrayList<SubItemDetails>subItemDetailsArrayList)
     {
-        this.list=list;
+        if(needItemDetailsList!=null)
+            this.needItemDetailsList=needItemDetailsList;
         this.context=context;
-        this.subItemDetails=subItemDetails;
-        this.mainItemDetails=mainItemDetails;
+        if(subItemDetailsArrayList!=null)
+            this.subItemDetailsArrayList=subItemDetailsArrayList;
+        if(mainItemDetailsArrayList!=null)
+            this.mainItemDetailsArrayList=mainItemDetailsArrayList;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view_item, parent, false);
+        View inflatedView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_new_need_row_view_item, parent, false);
         return new ViewHolder(inflatedView);
     }
 
@@ -45,14 +47,14 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.clothesViewLayout.setVisibility(View.GONE);
         
-        for(int i=0;i<subItemDetails.size();i++)
-            if(list.get(position).getSub_item_type_id()==subItemDetails.get(i).getSubItemCode())
+        for(SubItemDetails subItemDetails:subItemDetailsArrayList)
+            if(needItemDetailsList.get(position).getSub_item_type_id()==subItemDetails.getSubItemCode())
             {
-                holder.category.setText(holder.category.getText() + mainItemDetails.get(subItemDetails.get(i).getMainItemCode()-1).getMainItemName());
-                holder.itemViewName.setText(holder.itemViewName.getText() + subItemDetails.get(i).getSubItemName());
+                holder.category.setText(holder.category.getText() + mainItemDetailsArrayList.get(subItemDetails.getMainItemCode()-1).getMainItemName());
+                holder.itemViewName.setText(holder.itemViewName.getText() + subItemDetails.getSubItemName());
             }
 
-        holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + list.get(position).getQuantity() + "");
+        holder.itemViewQuantity.setText(holder.itemViewQuantity.getText() + "" + needItemDetailsList.get(position).getQuantity() + "");
 
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.getDefault());
@@ -61,10 +63,10 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
         SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy hh:mm a",Locale.getDefault());
         Date d = null;
         try {
-            d = sdf1.parse(list.get(position).getDeadline());
+            d = sdf1.parse(needItemDetailsList.get(position).getDeadline());
         } catch (ParseException e) {
             try {
-                d= sdf2.parse(list.get(position).getDeadline());
+                d= sdf2.parse(needItemDetailsList.get(position).getDeadline());
             } catch (ParseException e1) {
                 e1.printStackTrace();
             }
@@ -73,12 +75,12 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
         String formattedTime = output.format(d);
         holder.dateView.setText(holder.dateView.getText()+ formattedTime);
 
-        if (list.get(position).getItem_type_id()==2) {
+        if (needItemDetailsList.get(position).getItem_type_id()==2) {
             holder.clothesViewLayout.setVisibility(View.VISIBLE);
-            holder.genderView.setText(holder.genderView.getText() + list.get(position).getGender());
-            holder.ageView.setText(holder.ageView.getText() + "" + list.get(position).getAge() + "");
+            holder.genderView.setText(holder.genderView.getText() + needItemDetailsList.get(position).getGender());
+            holder.ageView.setText(holder.ageView.getText() + "" + needItemDetailsList.get(position).getAge() + "");
         }
-        switch (list.get(position).getItem_type_id())
+        switch (needItemDetailsList.get(position).getItem_type_id())
         {
             case 1:
                 holder.categoryIcon.setImageResource(R.drawable.ic_food_black);
@@ -100,7 +102,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return needItemDetailsList.size();
     }
 
     public class ViewHolder extends  RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
@@ -124,7 +126,7 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    removeAt(list.get(getAdapterPosition()).getNeed_item_id());
+                    removeAt(needItemDetailsList.get(getAdapterPosition()).getNeed_item_id());
                 }
             });
 
@@ -134,13 +136,13 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
 
         @Override
         public boolean onLongClick(View v) {
-            removeAt(list.get(getAdapterPosition()).getNeed_item_id());
+            removeAt(needItemDetailsList.get(getAdapterPosition()).getNeed_item_id());
             return true;
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(context,list.get(getAdapterPosition()).getNeed_item_id()+"",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,needItemDetailsList.get(getAdapterPosition()).getNeed_item_id()+"",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -152,9 +154,9 @@ public class NewNeedsListAdapter extends RecyclerView.Adapter<NewNeedsListAdapte
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                list.remove(position);
+                needItemDetailsList.remove(position);
                 notifyItemRemoved(position);
-                notifyItemRangeChanged(position, list.size());
+                notifyItemRangeChanged(position, needItemDetailsList.size());
             }
         });
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {

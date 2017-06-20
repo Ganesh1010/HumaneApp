@@ -170,7 +170,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     }
 
                     holder.value.setText((donatedItemDetails.getQuantity()+""));
-                    donationDetails.setDonated_items(donatedItemDetailsList);
+                    donationDetails.setDonateditems(donatedItemDetailsList);
                     donationDetails.setNeed_id(needId);
 
                     if(countDonatedItems>0) {

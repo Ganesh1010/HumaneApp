@@ -34,28 +34,18 @@ import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_
 
 public class NeedDetailsActivity extends AppCompatActivity {
 
-    ArrayList<NeedItemDetails> needListData;
-    ArrayList<DonationDetails> needCardData;
-    ArrayList<DonationDetails> donatedDetailsList;
     ArrayList<NeedDetails> needDetailsArrayList;
-    List  donatedItemList,itemslist;
-    int donatedItemId,donatedQuantity,needId;
-    String donorName;
-    RecyclerView needrecyclerView, receivalCardView;
+    int needId;
+    RecyclerView needRecyclerView, receivalCardView;
     NeedListViewAdapter needListViewAdapter;
     NeedReceivalCard needReceivalCard;
-    Button showlistButton;
+    Button showNeedListButton;
     LinearLayout needListLayout, headingLayout;
     CircularProgressBar progressBar;
     TextView percentage;
     View divider1;
     Toolbar toolbar;
-    NeedDetails needDetails,need;
-    NeedItemDetails needItemDetails;
-     DonationDetails donationDetailsToDisplay;
-     DonatedItemDetails donatedItemDetailsTodisplay;
-     DatabaseHelper databaseHelper;
-
+    DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,40 +64,26 @@ public class NeedDetailsActivity extends AppCompatActivity {
             }
         });
 
-
-        needDetails = new NeedDetails();
-        needItemDetails = new NeedItemDetails();
-        needDetailsArrayList = new ArrayList<NeedDetails>();
-        donatedDetailsList = new ArrayList<>();
-        need = new NeedDetails();
-        itemslist = new ArrayList();
-
-        //   needDetails.setNeed_id(8);
-
-        needListData = new ArrayList();
-        needCardData = new ArrayList();
-        //needViewData();
-        //needCardViewData();
+        needDetailsArrayList = new ArrayList<>();
 
         progressBar = (CircularProgressBar) findViewById(R.id.circularProgressBar_ReceivalPage);
         percentage = (TextView) findViewById(R.id.circularProgressPercentageTextVIew_ReceivalPage);
 
-        int animationDuration = 1000; // 2500ms = 2,5s
-        progressBar.setProgressWithAnimation(80, animationDuration);
-        percentage.setText("80%");
-
-        showlistButton = (Button) findViewById(R.id.showListButton_ReceivalPage);
-        needrecyclerView = (RecyclerView) findViewById(R.id.needListRecyclerView_ReceivalPage);
+        showNeedListButton = (Button) findViewById(R.id.showListButton_ReceivalPage);
+        needRecyclerView = (RecyclerView) findViewById(R.id.needListRecyclerView_ReceivalPage);
         receivalCardView = (RecyclerView) findViewById(R.id.donorListRecyclerView_ReceivalPage);
         needListLayout = (LinearLayout) findViewById(R.id.needListDivider_ReceivalPage);
         headingLayout = (LinearLayout) findViewById(R.id.listHeadingLinearLayout_ReceivalPage);
 
         new NeedAndDonatedDetails().execute();
+        needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
 
     }
     class NeedAndDonatedDetails extends AsyncTask {
         HttpResponse response;
         HttpClient client;
+        NeedDetails needDetails;
+        List<DonationDetails> donationDetailsArrayList=new ArrayList<>();
 
         @Override
         protected void onPreExecute() {
@@ -123,19 +99,21 @@ public class NeedDetailsActivity extends AppCompatActivity {
             response = Connectivity.makeGetRequest(RestAPIURL.orgDetails, client, Connectivity.getAuthToken(NeedDetailsActivity.this, Connectivity.Donor_Token));
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {
-                    try {
+                    try
+                    {
                         JSONObject jsonObject = new JSONObject(Connectivity.getJosnFromResponse(response));
                         JSONArray results = jsonObject.getJSONArray("results");
                         Gson gson = new Gson();
                         Log.d("Result ", "doInBackground: "+results.toString());
                         needDetailsArrayList = gson.fromJson(results.toString(),new TypeToken<List<NeedDetails>>() {}.getType());
-                        needId =getIntent().getExtras().getInt(USER_KEY_TYPE);
-                        Log.d("ju",needId+"");
-                        Log.d("output for need id 3", need + "");
 
-
-
-                } catch (JSONException e) {
+                        for(NeedDetails needDetails:needDetailsArrayList)
+                            if(needDetails.getNeed_id()==needId) {
+                                this.needDetails = needDetails;
+                                break;
+                            }
+                    }
+                    catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -145,44 +123,53 @@ public class NeedDetailsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Object o) {
 
-            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needDetailsArrayList,needId);
-            needrecyclerView.setAdapter(needListViewAdapter);
-            needrecyclerView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
+            System.out.println("need from need activity: "+needDetails.getNeed_id());
+
+            needListViewAdapter = new NeedListViewAdapter(NeedDetailsActivity.this,needDetails);
+            needRecyclerView.setAdapter(needListViewAdapter);
+            needRecyclerView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
             needListLayout.setVisibility(View.GONE);
             headingLayout.setVisibility(View.GONE);
 
+            int animationDuration = 1000; // 2500ms = 2,5s
+            int totalQuantity=0;
+            int totalDonatedReceived=0;
+            for(int i=0;i<needDetails.getItems().size();i++) {
+                totalQuantity += needDetails.getItems().get(i).getQuantity();
+                totalDonatedReceived += needDetails.getItems().get(i).getDonated_and_received_amount();
+            }
+            if(totalQuantity!=0 || totalDonatedReceived!=0) {
+                progressBar.setProgressWithAnimation(totalDonatedReceived * 100 / totalQuantity, animationDuration);
+                percentage.setText(totalDonatedReceived * 100 / totalQuantity + "%");
+            }
 
-            needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,needCardData,needId,needDetailsArrayList);
+            donationDetailsArrayList=needDetails.getDonations();
+
+            needReceivalCard = new NeedReceivalCard(NeedDetailsActivity.this,donationDetailsArrayList);
             receivalCardView.setAdapter(needReceivalCard);
             receivalCardView.setLayoutManager(new LinearLayoutManager(NeedDetailsActivity.this));
 
             divider1 = findViewById(R.id.divider1);
 
-            showlistButton.setOnClickListener(new View.OnClickListener() {
+            showNeedListButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(NeedDetailsActivity.this, DonationListActivity.class));
-                    /*
                     if (needListLayout.getVisibility() == View.GONE) {
                         needListLayout.setVisibility(View.VISIBLE);
                         headingLayout.setVisibility(View.VISIBLE);
                         divider1.setVisibility(View.VISIBLE);
-                        showlistButton.setText("Hide Need List");
+                        showNeedListButton.setText("Hide Need List");
                     } else {
                         needListLayout.setVisibility(View.GONE);
                         headingLayout.setVisibility(View.GONE);
                         divider1.setVisibility(View.GONE);
-                        showlistButton.setText("Show Need List");
+                        showNeedListButton.setText("Show Need List");
                     }
-                    */
                 }
             });
-
-
             Toast.makeText(NeedDetailsActivity.this, "Displayed Succesfully", Toast.LENGTH_SHORT).show();
             super.onPostExecute(o);
         }
-
     }
 }
 

@@ -158,32 +158,32 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                             case 1:
                                 itemIcon.setImageResource(R.drawable.ic_food_black);
                                 itemName.setText(getMainItemName(needItemDetails.getItem_type_id()));
-                                satisfactionBar.setProgress(needItemDetails.getDonated_and_received_amount());
+                                satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                                 //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                                 break;
                             case 2:
                                 itemIcon.setImageResource(R.drawable.ic_cloth_black);
                                 itemName.setText(getMainItemName(needItemDetails.getItem_type_id()));
-                                satisfactionBar.setProgress(needItemDetails.getDonated_and_received_amount());
+                                satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                                 //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
 
                                 break;
                             case 3:
                                 itemIcon.setImageResource(R.drawable.ic_blood_black);
                                 itemName.setText(getMainItemName(needItemDetails.getItem_type_id()));
-                                satisfactionBar.setProgress(needItemDetails.getDonated_and_received_amount());
+                                satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                                 //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                                 break;
                             case 4:
                                 itemIcon.setImageResource(R.drawable.ic_grocery_cart_black);
                                 itemName.setText(getMainItemName(needItemDetails.getItem_type_id()));
-                                satisfactionBar.setProgress(needItemDetails.getDonated_and_received_amount());
+                                satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                                 //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                                 break;
                             case 5:
                                 itemIcon.setImageResource(R.drawable.ic_stationery_black);
                                 itemName.setText(getMainItemName(needItemDetails.getItem_type_id()));
-                                satisfactionBar.setProgress(needItemDetails.getDonated_and_received_amount());
+                                satisfactionBar.setProgress((needItemDetails.getDonated_and_received_amount()*100)/needItemDetails.getQuantity());
                                 //Glide.with(context).load(itemDetails.itemIcon).into(itemIcon);
                                 break;
                         }
