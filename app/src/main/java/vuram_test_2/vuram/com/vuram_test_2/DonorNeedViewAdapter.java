@@ -18,10 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import java.util.ArrayList;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DonorNeedViewAdapter extends RecyclerView.Adapter {
@@ -103,7 +101,8 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
             if(needDetailsList!=null) 
             {
                 final NeedDetails needDetails = needDetailsList.get(position);
-                if (needDetails != null) {
+                if (needDetails != null)
+                {
                     ((ViewHolder) holder).donorNeedView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -191,10 +190,10 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
                     }
                 }
                 else
-                    Log.e(TAG,"each needDetail is null",new Throwable());
+                    Log.e(TAG,"each needDetail is null in donor need view adapter",new Throwable());
             }
             else
-                Log.e(TAG,"needDetailsList is null",new Throwable());
+                Log.e(TAG,"needDetailsList is null in donor need view adapter",new Throwable());
             Log.d(TAG, "onBindViewHolder: End");
         }
         else
@@ -242,13 +241,21 @@ public class DonorNeedViewAdapter extends RecyclerView.Adapter {
     public String getMainItemName(int mainItemCode)
     {
         DatabaseHelper db=new DatabaseHelper(activity);
-        String mainItemName = "Main Item Name";
-        ArrayList<MainItemDetails> mainItemDetailsList=db.getAllMainItemDetails();
-        if(mainItemDetailsList!=null) {
-            for (MainItemDetails mainItemDetails : mainItemDetailsList)
-                if (mainItemCode == mainItemDetails.getMainItemCode())
-                    mainItemName = mainItemDetails.getMainItemName();
+        if(db!=null) {
+            String mainItemName = "Main Item Name";
+            ArrayList<MainItemDetails> mainItemDetailsList = db.getAllMainItemDetails();
+            if (mainItemDetailsList != null)
+            {
+                for (MainItemDetails mainItemDetails : mainItemDetailsList)
+                    if (mainItemCode == mainItemDetails.getMainItemCode())
+                            mainItemName = mainItemDetails.getMainItemName();
+                return mainItemName;
+            }
+            else
+                Log.e(TAG,"main Item details list is null in donor need view adapter",new Throwable());
         }
-        return mainItemName;
+        else
+            Log.e(TAG,"database is null in donor need view adapter",new Throwable());
+        return "";
     }
 }

@@ -18,11 +18,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
-
 import static vuram_test_2.vuram.com.vuram_test_2.R.id.detect_my_location_imagebutton;
 
 public class ChooseLocationActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
@@ -36,9 +35,6 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
     ArrayList<String> citiesList;
     ChooseLocationAdapter chooseLocationAdapter;
     RecyclerView citiesNameRecyclerView;
-
-    private GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +52,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         citiesNameRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         /* Cities List */
-        citiesList =  new ArrayList<String>();
+        citiesList = new ArrayList<>();
         citiesList.add("Chennai");
         citiesList.add("Coimbatore");
         citiesList.add("Coin");
@@ -83,7 +79,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         switch (viewId) {
             case detect_my_location_imagebutton:
             case R.id.detect_my_location_textview:
-                if (new GPSTracker(ChooseLocationActivity.this).getIsGPSTrackingEnabled()) {
+                if (new GPSTracker(ChooseLocationActivity.this).canGetLocation()) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (ContextCompat.checkSelfPermission(ChooseLocationActivity.this,
                                 android.Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -137,6 +133,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements View.On
         GPSTracker gpsTracker = new GPSTracker(ChooseLocationActivity.this);
         String cityName = gpsTracker.getLocality(ChooseLocationActivity.this);
         if (cityName != null) {
+            Toast.makeText(ChooseLocationActivity.this,"cities : "+cityName,Toast.LENGTH_SHORT).show();
             HomeActivity.locationName = cityName;
             OrganisationLandingPage.locationName = cityName;
             finish();

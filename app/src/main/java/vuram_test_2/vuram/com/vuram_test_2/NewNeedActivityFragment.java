@@ -83,7 +83,7 @@ public class NewNeedActivityFragment extends Fragment {
     private static final String STATE_TEXTVIEW = "STATE_TEXTVIEW";
     private SwitchDateTimeDialogFragment dateTimeFragment;
     public Animation bottomUp,bottomDown;
-    LandingPage landingPage;
+    OrganisationLandingPage landingPage;
     Fragment fragment = null;
     android.app.FragmentManager fragmentManager;
 
@@ -100,7 +100,7 @@ public class NewNeedActivityFragment extends Fragment {
         if(view==null)
          view = inflater.inflate(R.layout.activity_new_need,container,false);
 
-        landingPage = (LandingPage)getActivity();
+        landingPage = (OrganisationLandingPage) getActivity();
         DetailsPopulator detailsPopulator =new DetailsPopulator(landingPage);
         detailsPopulator.getCountryDetailsFromAPI();
 
