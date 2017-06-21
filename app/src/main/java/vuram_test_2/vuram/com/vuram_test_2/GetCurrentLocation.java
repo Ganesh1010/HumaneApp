@@ -5,15 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.widget.Toast;
-
-import com.google.android.gms.location.LocationRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +21,7 @@ public class GetCurrentLocation {
     public String TAG = "GetCurrentLocation";
     final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
-    GPSTrackerSample gps;
+    GPSTracker gps;
     LocationAddress locationAddress, location;
     public List<Address> fetchedAddress = new ArrayList<>();
     public Geocoder geocoder;
@@ -41,7 +37,7 @@ public class GetCurrentLocation {
     }
 
     public LocationAddress getAddress() {
-        gps = new GPSTrackerSample(activity);
+        gps = new GPSTracker(activity);
         // check if GPS enabled
         if (gps.canGetLocation())
         {

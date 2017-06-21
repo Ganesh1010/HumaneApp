@@ -319,7 +319,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
                     public void onClick(View v) {
                         gps = new GPSTracker(context);
 
-                        if(gps.getIsGPSTrackingEnabled()) {
+                        if(gps.canGetLocation()) {
                             if(isNetworkAvailable(context)) {
 
                                 Intent intent = new Intent(context, MapActivity.class);
