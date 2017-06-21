@@ -294,9 +294,10 @@ public class OrganisationRegistrationFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            fragment = new LoginPageFragment();
+
                             if(landingPage!=null)
                             {
+                                fragment = new LoginPageFragment();
                                 fragmentManager =landingPage.getFragmentManager();
                                 Bundle bundle = new Bundle();
                                 bundle.putString(USER_KEY_TYPE, USER_TYPE_SELECTION_ORG);
