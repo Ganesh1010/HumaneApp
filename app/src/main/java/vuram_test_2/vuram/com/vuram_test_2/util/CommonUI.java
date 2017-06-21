@@ -25,24 +25,26 @@ public class CommonUI{
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
-
-    public static void internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask) {
+    public static Snackbar internetConnectionChecking(final Context context, final View v, final AsyncTask asyncTask) {
+        Snackbar snackbar = null;
         if(asyncTask != null && context !=null && v != null) {
             if (isNetworkAvailable(context)) {
                 asyncTask.execute();
             } else {
-                Snackbar.make(v, "Internet Connection not available.", Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
+                snackbar= Snackbar.make(v, "Internet Connection not available.", Snackbar.LENGTH_INDEFINITE).setAction("RETRY", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         internetConnectionChecking(context, v, asyncTask);
                     }
-                }).show();
+                });
+                snackbar.show();
             }
         }
         else
         {
             Log.e(TAG, "internetConnectionChecking: ",new Throwable("Null Value Input") );
         }
+        return snackbar;
     }
 
     public static void internalValidation(final Context context, final View v, final String data) {
