@@ -33,7 +33,6 @@
         <activity android:name=".OrgProfileActivity" />
         <activity android:name=".SplashScreenActivity" />
         <activity android:name=".EditOrgProfileActivity"></activity>
-        <activity android:name=".test" />
         <activity
             android:name=".FilterActivity"
             android:label="@string/app_name"

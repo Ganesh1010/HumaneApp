@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class DonationCart extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //see this
-        //this.context=OrgDetailsActivity.context;
+        this.context=getActivity();
     }
 
     @Override
@@ -72,13 +74,14 @@ public class DonationCart extends Fragment {
         loadData();
         System.out.println("after loading data");
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new DonationCartAdapter(context, donationDetails,needDetails));
+        recyclerView.setAdapter(new DonationCartAdapter(context, DonationItemDetailsAdapter.donationDetails,needDetails));
 
         return view;
     }
 
     public void loadData()
     {
+        Toast.makeText(getActivity(),DonationItemDetailsAdapter.donationDetails.getNeed_id()+"",Toast.LENGTH_SHORT).show();
         donatedItems=new ArrayList<>();
         neededItems=new ArrayList<>();
 

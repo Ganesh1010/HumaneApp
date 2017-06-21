@@ -142,7 +142,8 @@ public class OrganisationLandingPage extends AppCompatActivity implements Bottom
                 break;
 
             case R.id.new_need_home_page:
-                startActivity(new Intent(OrganisationLandingPage.this, NewNeedActivity.class));
+                loadFragment(new NewNeedActivityFragment());
+                //startActivity(new Intent(OrganisationLandingPage.this, NewNeedActivity.class));
                 break;
         }
     }

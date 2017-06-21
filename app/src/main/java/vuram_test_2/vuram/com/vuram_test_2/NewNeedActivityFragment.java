@@ -26,23 +26,18 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
-
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommonUI.TAG;
@@ -184,7 +179,7 @@ public class NewNeedActivityFragment extends Fragment {
         post= (Button)view.findViewById(R.id.post_needForm);
         cancel= (Button)view.findViewById(R.id.cancel_needForm);
 
-        toolbarSubmit.setVisibility(View.INVISIBLE);
+        toolbarSubmit.setVisibility(View.GONE);
         fabAdd.setVisibility(View.INVISIBLE);
 
         ArrayList<NewNeedItemSpinnerData> mainItemList=new ArrayList<>();
@@ -279,7 +274,6 @@ public class NewNeedActivityFragment extends Fragment {
                     textView.setTextColor(Color.RED);
                 }
                 else {
-                    needItemDetails.setNeed_item_id(++NewNeedActivity.id);
                     for(int i=0;i<=subItemDetails.size();i++)
                         if(!subItem.isEmpty() && mainItemDetails!=null && subItemDetails!=null) {
                             if (subItem.equals(subItemDetails.get(i).getSubItemName()))
@@ -371,6 +365,7 @@ public class NewNeedActivityFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(),"here in submit",Toast.LENGTH_SHORT).show();
                 gson= new Gson();
                 new PostItemDetails().execute();
             }
@@ -382,7 +377,6 @@ public class NewNeedActivityFragment extends Fragment {
     private boolean isPanelShown() {
         return hiddenPanel.getVisibility() == View.VISIBLE;
     }
-
 
     class PostItemDetails extends AsyncTask {
 

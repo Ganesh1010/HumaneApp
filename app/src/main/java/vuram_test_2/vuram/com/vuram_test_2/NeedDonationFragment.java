@@ -12,8 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-import org.apache.http.client.HttpClient;
+
 import java.util.ArrayList;
 
 public class NeedDonationFragment extends Fragment {
@@ -26,7 +25,8 @@ public class NeedDonationFragment extends Fragment {
     public ImageView donationCart;
     public String needId;
     public ArrayList<NeedDetails> needDetailsArrayList;
-    public LandingPage landingPage;
+    public LandingPage landingPage; public Fragment fragment=null;
+    public android.app.FragmentManager fragmentManager;
 
     @Nullable
     @Override
@@ -47,6 +47,15 @@ public class NeedDonationFragment extends Fragment {
         });
 
         donationCart = (ImageView) v.findViewById(R.id.donation_cart);
+        donationCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragment = new DonationCart();
+                fragmentManager = getActivity().getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragmentLayout, fragment).addToBackStack("tag").commit();
+            }
+        });
+
 
         needItemDetails = new NeedItemDetails();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(landingPage);
@@ -57,7 +66,7 @@ public class NeedDonationFragment extends Fragment {
                 if (needDetails!=null && needDetails.getNeed_id() == Integer.parseInt(needId))
                 {
                     needItemDetailsArrayList = (ArrayList<NeedItemDetails>) needDetails.getItems();
-                    ItemDetailsAdapter adapter = new ItemDetailsAdapter(needItemDetailsArrayList, landingPage, landingPage, needId);
+                    DonationItemDetailsAdapter adapter = new DonationItemDetailsAdapter(needItemDetailsArrayList, landingPage, needId);
                     displayParticularNeedRecyclerView = (RecyclerView) v.findViewById(R.id.display_particular_need_recycler_view);
                     displayParticularNeedRecyclerView.setHasFixedSize(true);
                     displayParticularNeedRecyclerView.setLayoutManager(layoutManager);

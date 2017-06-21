@@ -25,45 +25,40 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.readystatesoftware.viewbadger.BadgeView;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import vuram_test_2.vuram.com.vuram_test_2.util.Connectivity;
-
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_KEY_TYPE;
 import static vuram_test_2.vuram.com.vuram_test_2.util.CommomKeyValues.USER_TYPE_SELECTION_DONOR;
 
-public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.MyViewHolder> {
+public class DonationItemDetailsAdapter extends RecyclerView.Adapter<DonationItemDetailsAdapter.MyViewHolder> {
+
     public int quantityEachNeed=0,needId;
     public int countDonatedItems=0;
     public ArrayList<NeedItemDetails>needItemDetailsList;
     public ArrayList<DonatedItemDetails> donatedItemDetailsList;
     public ArrayList<MainItemDetails> mainItemDetailsList;
     public ArrayList<SubItemDetails> subItemDetailsList;
-    public DonationDetails donationDetails=new DonationDetails();
+    public static DonationDetails donationDetails=new DonationDetails();
     public DonatedItemDetails donatedItemDetails;
     public DatabaseHelper db;
     public View target;
     public BadgeView badge;
     public ImageView getLocation;
-    public static Context context;
-    public static Activity activity;
-    public static EditText address;
+    public Activity activity;
+    public EditText address;
     public EditText name;
     public EditText mobileNumber;
     public GPSTracker gps;
-    public static LocationAddress mapAddress;
+    public LocationAddress mapAddress;
     public View dialogView;
     public DonatingUserDetails donatingUserDetails;
     public static String TAG="CommonUI.java";
@@ -72,7 +67,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
     public HttpClient client;
     public HttpResponse response;
     public boolean isDataFilled=false;
-    public static boolean isLocationSelected=false;
+    public boolean isLocationSelected=false;
     Fragment fragment = null;
     FragmentManager fragmentManager;
 
@@ -101,11 +96,10 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         }
     }
 
-    public ItemDetailsAdapter()
+    public DonationItemDetailsAdapter()
     {}
-    public ItemDetailsAdapter(ArrayList<NeedItemDetails>needItemDetailsList,Context context,Activity activity,String needId) {
+    public DonationItemDetailsAdapter(ArrayList<NeedItemDetails>needItemDetailsList, Activity activity, String needId) {
         this.needItemDetailsList=needItemDetailsList;
-        this.context=context;
         this.activity=activity;
         this.needId=Integer.parseInt(needId);
         db=new DatabaseHelper(this.activity);
@@ -113,7 +107,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         subItemDetailsList=db.getAllSubItemDetails();
         donatedItemDetailsList = new ArrayList<>();
         target = activity.findViewById(R.id.donation_cart);
-        badge = new BadgeView(context, target);
+        badge = new BadgeView(activity, target);
         }
 
     @Override
@@ -139,7 +133,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         holder.requestedQuantity.setText("Requested: "+particularNeedItemDetails.getQuantity()+"");
         holder.promisedAmount.setText("Promised Amount: "+particularNeedItemDetails.getDonated_amount()+"");
         holder.deliveredAmount.setText("Delivered Amount: "+particularNeedItemDetails.getDonated_and_received_amount()+"");
-        
+
         if(quantityEachNeed==0)
             holder.decrement.setVisibility(View.INVISIBLE);
         holder.increment.setOnClickListener(new View.OnClickListener() {
@@ -227,7 +221,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
         return needItemDetailsList!=null?needItemDetailsList.size():0;
     }
 
-    public static void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, Intent data) {
 
         if (requestCode == 2) {
             address.setEnabled(true);
@@ -417,7 +411,7 @@ public class ItemDetailsAdapter extends RecyclerView.Adapter<ItemDetailsAdapter.
 
         @Override
         protected Object doInBackground(Object[] params) {
-            donor_token = Connectivity.getAuthToken(context, Connectivity.Donor_Token);
+            donor_token = Connectivity.getAuthToken(activity, Connectivity.Donor_Token);
             client = new DefaultHttpClient();
             response = Connectivity.makeGetRequest(RestAPIURL.getUserDetails, client, donor_token);
             if (response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 201) {

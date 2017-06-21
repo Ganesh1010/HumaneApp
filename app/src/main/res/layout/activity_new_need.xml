@@ -229,19 +229,13 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/toolbarSubmit">
 
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:background="?attr/colorPrimary"
-            android:theme="?attr/actionBarTheme"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_weight="0.16"
-            android:layout_height="50dp">
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom">
+                android:background="?attr/colorPrimary"
+                android:gravity="bottom"
+                android:layout_weight="0.16"
+                android:layout_height="50dp">
 
                 <Button
                     android:text="Submit"
@@ -252,7 +246,7 @@
                     android:background="?attr/colorPrimary"/>
 
             </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton

@@ -23,7 +23,7 @@ public class LandingPage extends AppCompatActivity implements NeedDetailsInterfa
     Fragment fragment = null;
     FragmentManager fragmentManager;
     ArrayList<NeedDetails> needDetails;
-    ItemDetailsAdapter itemDetailsAdapter=new ItemDetailsAdapter();
+    DonationItemDetailsAdapter donationItemDetailsAdapter =new DonationItemDetailsAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,7 +71,7 @@ public class LandingPage extends AppCompatActivity implements NeedDetailsInterfa
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==2 && !(resultCode==RESULT_CANCELED))
-            itemDetailsAdapter.onActivityResult(requestCode,resultCode,data);
+            donationItemDetailsAdapter.onActivityResult(requestCode, data);
     }
     @Override
     public void setNeedDetailsinActivity(ArrayList<NeedDetails> needDetails) {
