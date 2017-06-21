@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class LoginPageFragment extends Fragment {
     LandingPage landingPage;
     String email,password;
     String user_selection;
+    Snackbar snackbar;
     Boolean isCoordiantor=false;
     Fragment fragment = null;
     FragmentManager fragmentManager;
@@ -87,6 +89,13 @@ public class LoginPageFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(snackbar!=null)
+                {
+                    if(snackbar.isShown())
+                    {
+                        snackbar.dismiss();
+                    }
+                }
                 login();
             }
         });
@@ -193,7 +202,7 @@ public class LoginPageFragment extends Fragment {
             return;
         }
 
-        CommonUI.internetConnectionChecking(getActivity(),login_page_linearLayout,new CheckUser());
+        snackbar= CommonUI.internetConnectionChecking(getActivity(),login_page_linearLayout,new CheckUser());
     }
 
     public boolean validate() {
